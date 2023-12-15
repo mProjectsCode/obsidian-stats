@@ -1,17 +1,122 @@
 ---
-import PluginDataFile from '../../../plugin-data.json' assert { type: "json" };
-import {PluginData} from '../../../src';
+import PluginDataFile from '../../../plugin-data.json' assert { type: 'json' };
+import { PluginData } from '../../../src/types';
+import GithubLink from './githubLink.astro';
+import Commit from './commit.astro';
+import Aside from './aside.astro';
+import PluginDownloadChart from './svelte/pluginDownloadChart.svelte';
+import { getDownloadDataPoints } from '../utils/utils';
 
 const { pluginId } = Astro.props;
-const plugin: PluginData = (PluginDataFile as PluginData[]).find(p => p.id === pluginId);
+const plugin = (PluginDataFile as PluginData[]).find(p => p.id === pluginId) as PluginData;
+const pluginDownloadData = getDownloadDataPoints([plugin]);
 ---
 
-<div>Hello {pluginId}</div>
-<p>
-	Added: {plugin.addedCommit.hash} ({plugin.addedCommit.date})
-</p>
-{plugin.removedCommit && (
-	<p>
-		Removed: {plugin.removedCommit.hash} ({plugin.removedCommit.date})
-	</p>
-)}
+{
+	plugin.removedCommit && (
+		<Aside variant="caution" title="Plugin has been Removed">
+			<p>
+				This plugin has been removed from the community list on <Commit commit={plugin.removedCommit} /> and can no longer be installed.
+			</p>
+		</Aside>
+	)
+}
+
+<table>
+	<tbody>
+		<tr>
+			<td>ID</td>
+			<td>{plugin.id}</td>
+		</tr>
+		<tr>
+			<td>Name</td>
+			<td>{plugin.currentEntry.name}</td>
+		</tr>
+		<tr>
+			<td>Author</td>
+			<td>{plugin.currentEntry.author}</td>
+		</tr>
+		<tr>
+			<td>Description</td>
+			<td>{plugin.currentEntry.description}</td>
+		</tr>
+		<tr>
+			<td>GitHub Repo</td>
+			<td><GithubLink repo={plugin.currentEntry.repo} /></td>
+		</tr>
+		<tr>
+			<td>Official Release Date</td>
+			<td><Commit commit={plugin.addedCommit} /></td>
+		</tr>
+	</tbody>
+</table>
+
+<h2>Changes</h2>
+
+<table>
+	<thead>
+		<tr>
+			<th>Date</th>
+			<th>Changed Property</th>
+			<th>Old Value</th>
+			<th>New Value</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><Commit commit={plugin.addedCommit} /></td>
+			<td>Plugin Released</td>
+			<td></td>
+			<td></td>
+		</tr>
+		{
+			plugin.changeHistory.map(change => (
+				<tr>
+					<td>
+						<Commit commit={change.commit} />
+					</td>
+					<td>{change.property}</td>
+					<td>{change.oldValue}</td>
+					<td>{change.newValue}</td>
+				</tr>
+			))
+		}
+		{
+			plugin.removedCommit && (
+				<tr>
+					<td>
+						<Commit commit={plugin.removedCommit} />
+					</td>
+					<td>Plugin Removed</td>
+					<td />
+					<td />
+				</tr>
+			)
+		}
+	</tbody>
+</table>
+
+<h2>Downloads</h2>
+
+<PluginDownloadChart dataPoints={pluginDownloadData} client:only />
+
+<h2>Version History</h2>
+
+<table>
+	<thead>
+		<tr>
+			<th>Version</th>
+			<th>Release Date</th>
+		</tr>
+	</thead>
+	<tbody>
+		{
+			plugin.versionHistory.map(version => (
+				<tr>
+					<td>{version.version}</td>
+					<td>{version.initialReleaseDate}</td>
+				</tr>
+			))
+		}
+	</tbody>
+</table>

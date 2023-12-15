@@ -1,5 +1,7 @@
 import {$, Verboseness} from './shellUtils.ts';
 import process from 'process';
+import { Commit, PluginData, PluginDownloadStats, PluginList,  } from './types.ts';
+import {dateToString} from './utils.ts';
 
 const PLUGIN_LIST_PATH = 'community-plugins.json';
 const PLUGIN_STATS_PATH = 'community-plugin-stats.json';
@@ -10,147 +12,13 @@ const TEMPLATE_FILE_PATH = 'src/template.txt';
 const TEMPLATE_REPLACEMENT_STRING = 'PLUGIN_ID';
 const TEMPLATE_OUTPUT_PATH = 'website/src/content/docs/plugins';
 
+function dateDiffInDays(a: Date, b: Date): number {
+	const _MS_PER_DAY = 1000 * 60 * 60 * 24;
+	// Discard the time and time-zone information.
+	const utc1 = Date.UTC(a.getFullYear(), a.getMonth(), a.getDate());
+	const utc2 = Date.UTC(b.getFullYear(), b.getMonth(), b.getDate());
 
-
-export interface Commit {
-	date: string;
-	hash: string;
-}
-
-export interface PluginListEntry {
-	id: string;
-	name: string;
-	author: string;
-	description: string;
-	repo: string;
-}
-
-class PluginList {
-	entries: PluginListEntry[];
-	commit: Commit;
-
-	constructor(entries: PluginListEntry[], commit: Commit) {
-		this.entries = entries;
-		this.commit = commit;
-	}
-}
-
-type PluginDownloadStatsEntry = {
-	downloads: number
-} & Record<string, number>
-
-class PluginDownloadStats {
-	entries: Record<string, PluginDownloadStatsEntry>;
-	commit: Commit;
-	date: Date;
-
-	constructor(entries: Record<string, PluginDownloadStatsEntry>, commit: Commit) {
-		this.entries = entries;
-		this.commit = commit;
-		this.date = new Date(commit.date);
-	}
-
-	getDateString(): string {
-		return `${this.date.getFullYear()}-${this.date.getMonth()}-${this.date.getDate()}`;
-	}
-}
-
-export interface EntryChange {
-	property: string;
-	commit: Commit;
-	oldValue: string;
-	newValue: string;
-}
-
-export type DownloadHistory = Record<string, number>
-
-export interface VersionHistory {
-	version: string;
-	initialReleaseDate: string;
-}
-
-export class PluginData {
-	id: string;
-	addedCommit: Commit;
-	removedCommit?: Commit;
-	initialEntry: PluginListEntry;
-	currentEntry: PluginListEntry;
-	changeHistory: EntryChange[];
-	downloadHistory: DownloadHistory | undefined
-	versionHistory: VersionHistory[];
-
-	constructor(id: string, addedCommit: Commit, initialEntry: PluginListEntry) {
-		this.id = id;
-		this.addedCommit = addedCommit;
-		this.initialEntry = initialEntry;
-		this.currentEntry = initialEntry;
-		this.changeHistory = [];
-		this.versionHistory = [];
-	}
-
-	addChange(change: EntryChange) {
-		this.changeHistory.push(change);
-	}
-
-	findChanges(pluginList: PluginList) {
-		const newEntry = pluginList.entries.find(x => x.id === this.id);
-		if (newEntry === undefined) {
-			this.removedCommit = pluginList.commit;
-			return;
-		} else {
-			const keys = new Set(Object.keys(this.currentEntry));
-			Object.keys(newEntry).forEach(x => keys.add(x));
-
-			const changes = [...keys].map(key => {
-				// @ts-expect-error TS7053
-				const oldValue = this.currentEntry[key];
-				// @ts-expect-error TS7053
-				const newValue = newEntry[key];
-
-				if (oldValue !== newValue) {
-					return {
-						property: key,
-						commit: pluginList.commit,
-						oldValue,
-						newValue,
-					} satisfies EntryChange;
-				}
-			}).filter(x => x !== undefined) as EntryChange[];
-			this.changeHistory.push(...changes);
-			this.currentEntry = newEntry;
-		}
-	}
-
-	updateDownloadHistory(pluginDownloadStats: PluginDownloadStats) {
-		const entry = Object.entries(pluginDownloadStats.entries).find(x => x[0] === this.id)?.[1];
-		if (entry === undefined) {
-			return;
-		}
-
-		if (this.downloadHistory === undefined) {
-			this.downloadHistory = {
-				[pluginDownloadStats.getDateString()]: entry.downloads,
-			};
-		} else {
-			if (pluginDownloadStats.date.getDay() === 0) {
-				this.downloadHistory[pluginDownloadStats.getDateString()] = entry.downloads;
-			}
-		}
-
-		for (const version of Object.keys(entry)) {
-			if (version === 'downloads' || version === 'latest' || version === 'updated') {
-				continue;
-			}
-
-			const versionHistory = this.versionHistory.find(x => x.version === version);
-			if (versionHistory === undefined) {
-				this.versionHistory.push({
-					version,
-					initialReleaseDate: pluginDownloadStats.getDateString(),
-				});
-			}
-		}
-	}
+	return Math.floor((utc2 - utc1) / _MS_PER_DAY);
 }
 
 function gitLogToCommits(log: string): Commit[] {
@@ -239,14 +107,43 @@ async function buildPluginStats() {
 		}
 	}
 
-	let i = 0;
-	for (const pluginDataEntry of pluginData) {
-		console.log(`Processing downloads for plugin ${i + 1} of ${pluginData.length}`);
+	const startDate = new Date('2020-01-01');
+	const endDate = new Date();
 
-		for (const pluginDownload of pluginDownloads) {
-			pluginDataEntry.updateDownloadHistory(pluginDownload);
+	startDate.setDate(startDate.getDate() + (7 - startDate.getDay()));
+
+	for (let d = startDate; d <= endDate; d.setDate(d.getDate() + 7)) {
+		const date = dateToString(d);
+		console.log(`Processing downloads for week ${date}`);
+
+		let pluginDownload;
+
+		for (let j = 0; j < 6; j++) {
+			const currentDate = new Date(d);
+			currentDate.setDate(currentDate.getDate() + j);
+			const currentDateString = dateToString(currentDate);
+
+			pluginDownload = pluginDownloads.find(x => dateToString(x.date) === currentDateString);
+			if (pluginDownload !== undefined) break;
 		}
 
+		if (pluginDownload === undefined) {
+			console.log(`No plugin download stats found for ${date}`);
+			continue;
+		}
+
+		for (const pluginDataEntry of pluginData) {
+			pluginDataEntry.updateDownloadHistory(pluginDownload, date);
+		}
+	}
+
+	let i = 0;
+	for (const pluginDownload of pluginDownloads) {
+		console.log(`Processing plugin versions for commit ${i + 1} of ${pluginDownloads.length}`);
+		for (const pluginDataEntry of pluginData) {
+			pluginDataEntry.updateVersionHistory(pluginDownload);
+		}
+		
 		i++;
 	}
 

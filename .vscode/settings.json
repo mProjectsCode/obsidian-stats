@@ -1,0 +1,6 @@
+{
+    "files.exclude": {
+        "**/docs/plugins": true,
+        "obsidian-releases": true
+    }
+}
