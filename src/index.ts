@@ -6,18 +6,18 @@ const PLUGIN_STATS_PATH = 'community-plugin-stats.json';
 const OBSIDIAN_RELEASES_PATH = 'obsidian-releases';
 const OBSIDIAN_RELEASES_FULL_PATH = `${process.cwd()}/${OBSIDIAN_RELEASES_PATH}`;
 const PLUGIN_DATA_PATH = `plugin-data.json`;
-const TEMPLATE_FILE_PATH = 'src/template.md';
+const TEMPLATE_FILE_PATH = 'src/template.txt';
 const TEMPLATE_REPLACEMENT_STRING = 'PLUGIN_ID';
 const TEMPLATE_OUTPUT_PATH = 'website/src/content/docs/plugins';
 
 
 
-interface Commit {
+export interface Commit {
 	date: string;
 	hash: string;
 }
 
-interface PluginListEntry {
+export interface PluginListEntry {
 	id: string;
 	name: string;
 	author: string;
@@ -55,21 +55,21 @@ class PluginDownloadStats {
 	}
 }
 
-interface EntryChange {
+export interface EntryChange {
 	property: string;
 	commit: Commit;
 	oldValue: string;
 	newValue: string;
 }
 
-type DownloadHistory = Record<string, number>
+export type DownloadHistory = Record<string, number>
 
-interface VersionHistory {
+export interface VersionHistory {
 	version: string;
 	initialReleaseDate: string;
 }
 
-class PluginData {
+export class PluginData {
 	id: string;
 	addedCommit: Commit;
 	removedCommit?: Commit;

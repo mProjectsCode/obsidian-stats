@@ -1,4 +1,17 @@
 ---
-const { pluginId} = Astro.params;
+import PluginDataFile from '../../../plugin-data.json' assert { type: "json" };
+import {PluginData} from '../../../src';
+
+const { pluginId } = Astro.props;
+const plugin: PluginData = (PluginDataFile as PluginData[]).find(p => p.id === pluginId);
 ---
+
 <div>Hello {pluginId}</div>
+<p>
+	Added: {plugin.addedCommit.hash} ({plugin.addedCommit.date})
+</p>
+{plugin.removedCommit && (
+	<p>
+		Removed: {plugin.removedCommit.hash} ({plugin.removedCommit.date})
+	</p>
+)}
