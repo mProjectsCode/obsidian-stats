@@ -6,6 +6,9 @@ const PLUGIN_STATS_PATH = 'community-plugin-stats.json';
 const OBSIDIAN_RELEASES_PATH = 'obsidian-releases';
 const OBSIDIAN_RELEASES_FULL_PATH = `${process.cwd()}/${OBSIDIAN_RELEASES_PATH}`;
 const PLUGIN_DATA_PATH = `plugin-data.json`;
+const TEMPLATE_FILE_PATH = 'src/template.md';
+const TEMPLATE_REPLACEMENT_STRING = 'PLUGIN_ID';
+const TEMPLATE_OUTPUT_PATH = 'website/src/content/docs/plugins';
 
 
 
@@ -252,6 +255,18 @@ async function buildPluginStats() {
 	const pluginDataFile = Bun.file(PLUGIN_DATA_PATH);
 
 	await Bun.write(pluginDataFile, JSON.stringify(pluginData, null, 4));
+
+	const templateFile = Bun.file(TEMPLATE_FILE_PATH);
+
+	const template = await templateFile.text();
+
+	for (const plugin of pluginData) {
+		const output = template.replaceAll(TEMPLATE_REPLACEMENT_STRING, plugin.id);
+		const outputFile = Bun.file(`${TEMPLATE_OUTPUT_PATH}/${plugin.id}.mdx`);
+		await Bun.write(outputFile, output);
+	}
+
+
 }
 
 await buildPluginStats();
