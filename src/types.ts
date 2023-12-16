@@ -1,3 +1,5 @@
+import semver from 'semver';
+
 export interface Commit {
 	date: string;
 	hash: string;
@@ -53,6 +55,17 @@ export type DownloadHistory = Record<string, number>
 export interface VersionHistory {
 	version: string;
 	initialReleaseDate: string;
+}
+
+export interface PluginDataInterface {
+	id: string;
+	addedCommit: Commit;
+	removedCommit?: Commit;
+	initialEntry: PluginListEntry;
+	currentEntry: PluginListEntry;
+	changeHistory: EntryChange[];
+	downloadHistory: DownloadHistory;
+	versionHistory: VersionHistory[];
 }
 
 export class PluginData {
@@ -130,13 +143,21 @@ export class PluginData {
 				continue;
 			}
 
+			if (!semver.valid(version)) {
+				continue;
+			}
+
 			const versionHistory = this.versionHistory.find(x => x.version === version);
 			if (versionHistory === undefined) {
 				this.versionHistory.push({
-					version,
+					version: version,
 					initialReleaseDate: pluginDownloadStats.getDateString(),
 				});
 			}
 		}
+	}
+
+	sortVersionHistory() {
+		this.versionHistory.sort((a, b) => Bun.semver.order(a.version, b.version));
 	}
 }

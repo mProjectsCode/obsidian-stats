@@ -15,19 +15,28 @@ export default defineConfig({
 			},
 			sidebar: [
 				{
-					label: 'Global Stats',
+					label: 'Home',
 					autogenerate: {
-						directory: 'globalStats',
+						directory: 'home',
+					},
+				},
+				{
+					label: 'Plugin Stats',
+					autogenerate: {
+						directory: 'pluginStats',
 					},
 				},
 				{
 					label: 'Plugins',
 					autogenerate: {
 						directory: 'plugins',
-					},
+					}
 				},
 			],
 		}),
 		svelte(),
 	],
+	redirects: {
+		'/globalstats/plugins/': '/obsidian-stats/home/about/'
+	}
 });

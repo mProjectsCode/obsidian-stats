@@ -1,7 +1,8 @@
 import {$, Verboseness} from './shellUtils.ts';
 import process from 'process';
 import { Commit, PluginData, PluginDownloadStats, PluginList,  } from './types.ts';
-import {dateToString} from './utils.ts';
+import {dateToString, stringToBase64} from './utils.ts';
+import CliProgress from 'cli-progress';
 
 const PLUGIN_LIST_PATH = 'community-plugins.json';
 const PLUGIN_STATS_PATH = 'community-plugin-stats.json';
@@ -10,6 +11,7 @@ const OBSIDIAN_RELEASES_FULL_PATH = `${process.cwd()}/${OBSIDIAN_RELEASES_PATH}`
 const PLUGIN_DATA_PATH = `plugin-data.json`;
 const TEMPLATE_FILE_PATH = 'src/template.txt';
 const TEMPLATE_REPLACEMENT_STRING = 'PLUGIN_ID';
+const TEMPLATE_REPLACEMENT_STRING_JSON = 'PLUGIN_JSON';
 const TEMPLATE_OUTPUT_PATH = 'website/src/content/docs/plugins';
 
 function dateDiffInDays(a: Date, b: Date): number {
@@ -37,21 +39,8 @@ async function getPluginListChanges(): Promise<Commit[]> {
 	return gitLogToCommits(pluginListChanges.stdout);
 }
 
-async function getPluginDownloadChanges(): Promise<Commit[]> {
-	const pluginDownloadChanges = await $(`git log --diff-filter=M --date-order --reverse --format="%ad %H" --date=iso-strict "${PLUGIN_STATS_PATH}"`, OBSIDIAN_RELEASES_FULL_PATH)
-
-	return gitLogToCommits(pluginDownloadChanges.stdout);
-}
-
-async function buildPluginStats() {
-	// update submodule
-	await $('git submodule update --remote')
-
+async function getPluginLists(): Promise<PluginList[]> {
 	const pluginListChangeCommits = await getPluginListChanges();
-
-	console.log(`Found ${pluginListChangeCommits.length} plugin list changes`);
-
-	console.log(`Fetching plugin lists`);
 
 	const pluginLists = (await Promise.all(pluginListChangeCommits.map(async (x, i) => {
 		const pluginList = await $(`git cat-file -p ${x.hash}:${PLUGIN_LIST_PATH}`, OBSIDIAN_RELEASES_FULL_PATH, Verboseness.QUITET);
@@ -64,13 +53,21 @@ async function buildPluginStats() {
 		}
 	}))).filter(x => x !== undefined) as PluginList[];
 
-	console.log(`Found ${pluginLists.length} plugin lists`);
+	console.log(`Found ${pluginLists.length} version of "community-plugins.json"`);
 
+	return pluginLists;
+}
+
+async function getPluginDownloadChanges(): Promise<Commit[]> {
+	const pluginDownloadChanges = await $(`git log --diff-filter=M --date-order --reverse --format="%ad %H" --date=iso-strict "${PLUGIN_STATS_PATH}"`, OBSIDIAN_RELEASES_FULL_PATH)
+
+	return gitLogToCommits(pluginDownloadChanges.stdout);
+}
+
+async function getPluginDownloadStats(): Promise<PluginDownloadStats[]> {
 	const pluginDownloadChangeCommits = await getPluginDownloadChanges();
 
-	console.log(`Found ${pluginDownloadChangeCommits.length} plugin download changes`);
-
-	const pluginDownloads = (await Promise.all(pluginDownloadChangeCommits.map(async (x, i) => {
+	const pluginDownloadStats = (await Promise.all(pluginDownloadChangeCommits.map(async (x, i) => {
 		const pluginList = await $(`git cat-file -p ${x.hash}:${PLUGIN_STATS_PATH}`, OBSIDIAN_RELEASES_FULL_PATH, Verboseness.QUITET);
 		try {
 			const pluginDownloadStats = JSON.parse(pluginList.stdout);
@@ -81,18 +78,25 @@ async function buildPluginStats() {
 		}
 	}))).filter(x => x !== undefined) as PluginDownloadStats[];
 
-	console.log(`Found ${pluginDownloads.length} plugin download stats`);
+	console.log(`Found ${pluginDownloadStats.length} versions of "community-plugin-stats.json"`);
 
-	const pluginData: PluginData[] = [];
+	return pluginDownloadStats;
+}
 
-	console.log(`Processing plugin list 1 of ${pluginLists.length}`);
+function buildPluginData(pluginLists: PluginList[]): PluginData[] {
+	let pluginData: PluginData[] = [];
+
+	console.log(`Building plugin data`);
+
+	const progress = new CliProgress.SingleBar({}, CliProgress.Presets.rect);
+	progress.start(pluginLists.length, 0);
 
 	for (const entry of pluginLists[0].entries) {
 		pluginData.push(new PluginData(entry.id, pluginLists[0].commit, entry));
 	}
 
 	for (let i = 1; i < pluginLists.length; i++) {
-		console.log(`Processing plugin list ${i + 1} of ${pluginLists.length}`);
+		progress.increment();
 
 		const pluginList = pluginLists[i];
 
@@ -107,14 +111,25 @@ async function buildPluginStats() {
 		}
 	}
 
+	progress.stop();
+
+	return pluginData;
+}
+
+function updateWeeklyDownloadStats(pluginData: PluginData[], pluginDownloadStats: PluginDownloadStats[]) {
+	console.log(`Updating weekly download stats`);
+
 	const startDate = new Date('2020-01-01');
 	const endDate = new Date();
 
 	startDate.setDate(startDate.getDate() + (7 - startDate.getDay()));
 
+	const progress = new CliProgress.SingleBar({}, CliProgress.Presets.rect);
+	progress.start(Math.ceil(dateDiffInDays(startDate, endDate) / 7), 0);
+
 	for (let d = startDate; d <= endDate; d.setDate(d.getDate() + 7)) {
 		const date = dateToString(d);
-		console.log(`Processing downloads for week ${date}`);
+		progress.increment();
 
 		let pluginDownload;
 
@@ -123,12 +138,12 @@ async function buildPluginStats() {
 			currentDate.setDate(currentDate.getDate() + j);
 			const currentDateString = dateToString(currentDate);
 
-			pluginDownload = pluginDownloads.find(x => dateToString(x.date) === currentDateString);
+			pluginDownload = pluginDownloadStats.find(x => dateToString(x.date) === currentDateString);
 			if (pluginDownload !== undefined) break;
 		}
 
 		if (pluginDownload === undefined) {
-			console.log(`No plugin download stats found for ${date}`);
+			// console.log(`No plugin download stats found for ${date}`);
 			continue;
 		}
 
@@ -137,28 +152,57 @@ async function buildPluginStats() {
 		}
 	}
 
-	let i = 0;
-	for (const pluginDownload of pluginDownloads) {
-		console.log(`Processing plugin versions for commit ${i + 1} of ${pluginDownloads.length}`);
+	progress.stop();
+}
+
+function updateVersionHistory(pluginData: PluginData[], pluginDownloadStats: PluginDownloadStats[]) {
+
+	console.log(`Updating version history`);
+
+	const progress = new CliProgress.SingleBar({}, CliProgress.Presets.rect);
+	progress.start(pluginDownloadStats.length, 0);
+
+	for (const pluginDownload of pluginDownloadStats) {
+		progress.increment();
+
 		for (const pluginDataEntry of pluginData) {
 			pluginDataEntry.updateVersionHistory(pluginDownload);
 		}
-		
-		i++;
+
 	}
+
+	progress.stop();
+
+	console.log(`Sorting Versions`);
+	for (const pluginDataEntry of pluginData) {
+		pluginDataEntry.sortVersionHistory();
+	}
+}
+
+async function buildPluginStats() {
+	// update submodule
+	await $('git submodule update --remote')
+
+	const pluginLists= await getPluginLists();
+	let pluginData = buildPluginData(pluginLists);
+
+	const pluginDownloadStats = await getPluginDownloadStats();
+	updateWeeklyDownloadStats(pluginData, pluginDownloadStats);
+	updateVersionHistory(pluginData, pluginDownloadStats);
+
+	pluginData = pluginData.filter(x => x !== undefined);
 
 	console.log(`Processed all plugins, writing to ${PLUGIN_DATA_PATH}`);
 
 	const pluginDataFile = Bun.file(PLUGIN_DATA_PATH);
-
 	await Bun.write(pluginDataFile, JSON.stringify(pluginData, null, 4));
 
 	const templateFile = Bun.file(TEMPLATE_FILE_PATH);
-
 	const template = await templateFile.text();
 
 	for (const plugin of pluginData) {
-		const output = template.replaceAll(TEMPLATE_REPLACEMENT_STRING, plugin.id);
+		let output = template.replaceAll(TEMPLATE_REPLACEMENT_STRING, plugin.id);
+		output = output.replaceAll(TEMPLATE_REPLACEMENT_STRING_JSON, JSON.stringify(plugin));
 		const outputFile = Bun.file(`${TEMPLATE_OUTPUT_PATH}/${plugin.id}.mdx`);
 		await Bun.write(outputFile, output);
 	}

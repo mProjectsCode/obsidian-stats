@@ -1,14 +1,13 @@
 ---
-import PluginDataFile from '../../../plugin-data.json' assert { type: 'json' };
-import { PluginData } from '../../../src/types';
+// import PluginDataFile from '../../../plugin-data.json' assert { type: 'json' };
+import { type PluginDataInterface } from '../../../src/types';
 import GithubLink from './githubLink.astro';
 import Commit from './commit.astro';
 import Aside from './aside.astro';
 import PluginDownloadChart from './svelte/pluginDownloadChart.svelte';
 import { getDownloadDataPoints } from '../utils/utils';
 
-const { pluginId } = Astro.props;
-const plugin = (PluginDataFile as PluginData[]).find(p => p.id === pluginId) as PluginData;
+const { plugin } = Astro.props as { plugin: PluginDataInterface };
 const pluginDownloadData = getDownloadDataPoints([plugin]);
 ---
 
@@ -98,7 +97,7 @@ const pluginDownloadData = getDownloadDataPoints([plugin]);
 
 <h2>Downloads</h2>
 
-<PluginDownloadChart dataPoints={pluginDownloadData} client:only />
+<PluginDownloadChart dataPoints={pluginDownloadData} client:only="svelte" />
 
 <h2>Version History</h2>
 

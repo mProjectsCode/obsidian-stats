@@ -1,0 +1,13 @@
+---
+import PluginDataFile from '../../../plugin-data.json' assert { type: 'json' };
+import {getPercentageOfRetiredPluginsByReleaseMonth} from '../utils/utils';
+import PluginPerMonthChart from './svelte/pluginPerMonthChart.svelte'
+
+const dataPoints = getPercentageOfRetiredPluginsByReleaseMonth(PluginDataFile);
+---
+
+<PluginPerMonthChart
+		dataPoints={dataPoints}
+		max={100}
+		title="Percentage of Retired Plugins by Release Month"
+		client:only="svelte"></PluginPerMonthChart>

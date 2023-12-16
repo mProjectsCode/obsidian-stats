@@ -1,0 +1,12 @@
+---
+import PluginDataFile from '../../../plugin-data.json' assert { type: 'json' };
+import {getNewReleasesPerMonth} from '../utils/utils';
+import PluginPerMonthChart from './svelte/pluginPerMonthChart.svelte'
+
+const dataPoints = getNewReleasesPerMonth(PluginDataFile);
+---
+
+<PluginPerMonthChart
+		dataPoints={dataPoints}
+		title="New Plugin Releases per Month"
+		client:only="svelte"></PluginPerMonthChart>
