@@ -1,6 +1,6 @@
 ---
 import PluginDataFile from '../../../plugin-data.json' assert { type: 'json' };
-import {getRetiredPlugins} from '../utils/utils';
+import { getRetiredPlugins } from '../utils/utils';
 import PluginLink from './pluginLink.astro';
 import Commit from './commit.astro';
 
@@ -15,15 +15,17 @@ const retiredPlugins = getRetiredPlugins(PluginDataFile);
 		</tr>
 	</thead>
 	<tbody>
-		{retiredPlugins.map(x =>
-			<tr>
-				<td>
-					<PluginLink id={x.id}></PluginLink>
-				</td>
-				<td>
-					<Commit commit={x.removedCommit}></Commit>
-				</td>
-			</tr>
-		)}
+		{
+			retiredPlugins.map(x => (
+				<tr>
+					<td>
+						<PluginLink id={x.id} />
+					</td>
+					<td>
+						<Commit commit={x.removedCommit} />
+					</td>
+				</tr>
+			))
+		}
 	</tbody>
 </table>

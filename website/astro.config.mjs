@@ -11,7 +11,7 @@ export default defineConfig({
 		starlight({
 			title: 'Obsidian Stats',
 			social: {
-				github: 'https://github.com/withastro/starlight',
+				github: 'https://github.com/mProjectsCode/obsidian-stats',
 			},
 			sidebar: [
 				{
@@ -30,13 +30,13 @@ export default defineConfig({
 					label: 'Plugins',
 					autogenerate: {
 						directory: 'plugins',
-					}
+					},
 				},
 			],
 		}),
 		svelte(),
 	],
 	redirects: {
-		'/globalstats/plugins/': '/obsidian-stats/home/about/'
-	}
+		'/globalstats/plugins/': '/obsidian-stats/home/about/',
+	},
 });

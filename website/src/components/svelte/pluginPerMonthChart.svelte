@@ -1,9 +1,8 @@
 <script lang="ts">
 	import Chart from 'chart.js/auto';
-	import {onMount} from 'svelte';
-	import {
-		type PerMonthDataPoint,
-	} from '../../utils/utils';
+	import { onDestroy, onMount } from 'svelte';
+	import { type PerMonthDataPoint } from '../../utils/utils';
+	import { ThemeObserver } from './svelteUtils.ts';
 
 	export let dataPoints: PerMonthDataPoint[];
 	export let title: string;
@@ -13,49 +12,56 @@
 
 	let chartEl: HTMLCanvasElement;
 
+	let themeObserver: ThemeObserver;
+
 	onMount(() => {
-		const style = getComputedStyle(document.body);
-		const accentColor = style.getPropertyValue('--sl-color-accent-high');
+		themeObserver = new ThemeObserver();
 
-		Chart.defaults.borderColor = style.getPropertyValue('--sl-color-hairline-light');
-		Chart.defaults.color = style.getPropertyValue('--sl-color-text');
+		themeObserver.addChart(chartStyle => {
+			Chart.defaults.color = chartStyle.text;
+			Chart.defaults.borderColor = chartStyle.line;
 
-		new Chart(chartEl!, {
-			type: type,
-			data: {
-				labels: dataPoints.map(d => `${d.year}-${d.month}`),
-				datasets: [
-					{
-						label: title,
-						data: dataPoints.map(d => d.value),
-						backgroundColor: accentColor,
-						borderColor: accentColor,
-					},
-				]
-			},
-			options: {
-				scales: {
-					y: {
-						min: min,
-                        max: max,
-					}
+			return new Chart(chartEl!, {
+				type: type,
+				data: {
+					labels: dataPoints.map(d => `${d.year}-${d.month}`),
+					datasets: [
+						{
+							label: title,
+							data: dataPoints.map(d => d.value),
+							backgroundColor: chartStyle.accent,
+							borderColor: chartStyle.accent,
+						},
+					],
 				},
-				aspectRatio: 3/2,
-			}
+				options: {
+					scales: {
+						y: {
+							min: min,
+							max: max,
+						},
+					},
+					aspectRatio: 3 / 2,
+				},
+			});
 		});
 
+		themeObserver.initObserver();
+	});
 
+	onDestroy(() => {
+		themeObserver?.destroy();
 	});
 </script>
 
-<style>
-    .chart-wrapper {
-        width: 100%;
-        aspect-ratio: 3/2;
-        position: relative;
-    }
-</style>
-
 <div class="chart-wrapper">
-    <canvas bind:this={chartEl} id="percentage-per-month-chart"></canvas>
+	<canvas bind:this={chartEl} id="percentage-per-month-chart"></canvas>
 </div>
+
+<style>
+	.chart-wrapper {
+		width: 100%;
+		aspect-ratio: 3/2;
+		position: relative;
+	}
+</style>

@@ -1,82 +1,97 @@
 <script lang="ts">
 	import Chart from 'chart.js/auto';
-	import {onMount} from 'svelte';
-	import {type DownloadDataPoint} from '../../utils/utils';
+	import { onDestroy, onMount } from 'svelte';
+	import { type DownloadDataPoint } from '../../utils/utils';
+	import { ThemeObserver } from './svelteUtils.ts';
 
 	export let dataPoints: DownloadDataPoint[];
 
-    let downloadChartEl: HTMLCanvasElement;
-    let downloadGrowthChartEl: HTMLCanvasElement;
+	let downloadChartEl: HTMLCanvasElement;
+	let downloadGrowthChartEl: HTMLCanvasElement;
 
-    onMount(() => {
-        const style = getComputedStyle(document.body);
-        const accentColor = style.getPropertyValue('--sl-color-accent-high');
+	let themeObserver: ThemeObserver;
 
-        Chart.defaults.borderColor = style.getPropertyValue('--sl-color-hairline-light');
-        Chart.defaults.color = style.getPropertyValue('--sl-color-text');
+	onMount(() => {
+		themeObserver = new ThemeObserver();
 
-        new Chart(downloadChartEl!, {
-            data: {
-                labels: dataPoints.map(d => d.date),
-                datasets: [
-                    {
-                        type: 'line',
-                        showLine: false,
-                        label: 'Downloads',
-                        data: dataPoints.map(d => d.downloads),
-                        backgroundColor: accentColor,
-                        borderColor: accentColor,
-                    },
-                ]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                    }
-                },
-                aspectRatio: 3/2
-            }
-        });
+		themeObserver.addChart(chartStyle => {
+			Chart.defaults.color = chartStyle.text;
+			Chart.defaults.borderColor = chartStyle.line;
 
-        new Chart(downloadGrowthChartEl!, {
-            data: {
-                labels: dataPoints.map(d => d.date),
-                datasets: [
-                    {
-                        type: 'line',
-                        showLine: false,
-                        label: 'Download Growth Week over Week',
-                        data: dataPoints.map(d => d.growth),
-                        backgroundColor: accentColor,
-                        borderColor: accentColor,
-                    },
-                ]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                    }
-                },
-                aspectRatio: 3/2
-            }
-        });
-    });
+			return new Chart(downloadChartEl!, {
+				data: {
+					labels: dataPoints.map(d => d.date),
+					datasets: [
+						{
+							type: 'line',
+							label: 'Downloads',
+							data: dataPoints.map(d => d.downloads),
+							borderColor: chartStyle.accent,
+							backgroundColor: chartStyle.accent,
+						},
+					],
+				},
+				options: {
+					scales: {
+						y: {
+							beginAtZero: true,
+						},
+					},
+					aspectRatio: 3 / 2,
+				},
+			});
+		});
+
+		themeObserver.addChart(chartStyle => {
+			Chart.defaults.color = chartStyle.text;
+			Chart.defaults.borderColor = chartStyle.line;
+
+			return new Chart(downloadGrowthChartEl!, {
+				data: {
+					labels: dataPoints.map(d => d.date),
+					datasets: [
+						{
+							type: 'bar',
+							label: 'Download Growth Week over Week',
+							data: dataPoints.map(d => d.growth),
+							borderColor: chartStyle.accent,
+							backgroundColor: chartStyle.accent,
+						},
+					],
+				},
+				options: {
+					scales: {
+						y: {
+							beginAtZero: true,
+						},
+					},
+					aspectRatio: 3 / 2,
+				},
+			});
+		});
+
+		console.log('added charts');
+
+		themeObserver.initObserver();
+	});
+
+	onDestroy(() => {
+		themeObserver?.destroy();
+	});
 </script>
 
+<div class="chart-wrapper">
+	<canvas bind:this={downloadChartEl} id="plugin-download-chart"></canvas>
+</div>
+
+<div class="chart-wrapper">
+	<canvas bind:this={downloadGrowthChartEl} id="plugin-download-growth-chart"></canvas>
+</div>
+
 <style>
-    .chart-wrapper {
-        width: 100%;
-        aspect-ratio: 3/2;
-        position: relative;
-    }
+	.chart-wrapper {
+		width: 100%;
+		aspect-ratio: 3/2;
+		position: relative;
+	}
 </style>
-
-<div class="chart-wrapper">
-    <canvas bind:this={downloadChartEl} id="plugin-download-chart"></canvas>
-</div>
-
-<div class="chart-wrapper">
-    <canvas bind:this={downloadGrowthChartEl} id="plugin-download-growth-chart"></canvas>
-</div>

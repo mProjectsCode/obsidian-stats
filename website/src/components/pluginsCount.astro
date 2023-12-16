@@ -1,27 +1,15 @@
 ---
 import PluginDataFile from '../../../plugin-data.json' assert { type: 'json' };
-import {getPluginCountPerMonth, getPluginCountPerMonthWoRetiredPlugins, getRetiredPluginCountPerMonth} from '../utils/utils';
-import PluginPerMonthChart from './svelte/pluginPerMonthChart.svelte'
+import { getPluginCountPerMonth, getPluginCountPerMonthWoRetiredPlugins, getRetiredPluginCountPerMonth } from '../utils/utils';
+import PluginPerMonthChart from './svelte/pluginPerMonthChart.svelte';
 
 const dataPoints = getPluginCountPerMonth(PluginDataFile);
 const dataPoints2 = getPluginCountPerMonthWoRetiredPlugins(PluginDataFile);
 const dataPoints3 = getRetiredPluginCountPerMonth(PluginDataFile);
 ---
 
-<PluginPerMonthChart
-        dataPoints={dataPoints}
-        title="Total Plugin Count"
-		type="line"
-        client:only="svelte"></PluginPerMonthChart>
+<PluginPerMonthChart dataPoints={dataPoints} title="Total Plugin Count" type="line" client:only="svelte" />
 
-<PluginPerMonthChart
-        dataPoints={dataPoints2}
-        title="Total Plugin Count without Retired Plugins"
-        type="line"
-        client:only="svelte"></PluginPerMonthChart>
+<PluginPerMonthChart dataPoints={dataPoints2} title="Total Plugin Count without Retired Plugins" type="line" client:only="svelte" />
 
-<PluginPerMonthChart
-        dataPoints={dataPoints3}
-        title="Total Retired Plugin Count"
-        type="line"
-        client:only="svelte"></PluginPerMonthChart>
+<PluginPerMonthChart dataPoints={dataPoints3} title="Total Retired Plugin Count" type="line" client:only="svelte" />

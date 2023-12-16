@@ -1,5 +1,4 @@
-import type { PluginData } from '../../../src/types.ts';
-import type {PluginDataInterface} from '../../../src/types.ts';
+import type { PluginDataInterface } from '../../../src/types.ts';
 
 export function dateToString(date: Date): string {
 	return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
@@ -21,6 +20,9 @@ export function getDownloadDataPoints(plugins: PluginDataInterface[]): DownloadD
 		const startDate = new Date(downloadHistoryData[0][0]);
 		const endDate = new Date(downloadHistoryData[downloadHistoryData.length - 1][0]);
 
+		// advance the end date by one day, otherwise the last week will be missing sometimes
+		endDate.setDate(endDate.getDate() + 1);
+
 		startDate.setDate(startDate.getDate() + (7 - startDate.getDay()));
 
 		let lastDownloadCount: number | undefined = 0;
@@ -36,6 +38,7 @@ export function getDownloadDataPoints(plugins: PluginDataInterface[]): DownloadD
 			lastDownloadCount = downloadCount;
 
 			const existingData = data.find(x => x.date === date);
+
 			if (existingData !== undefined) {
 				if (existingData.downloads === undefined) {
 					existingData.downloads = downloadCount;
@@ -101,7 +104,10 @@ export function getRetiredPlugins(plugins: PluginDataInterface[]): PluginDataInt
 }
 
 export function getRecentRetiredPlugins(plugins: PluginDataInterface[]): PluginDataInterface[] {
-	return plugins.filter(plugin => plugin.removedCommit !== undefined).sort((a, b) => new Date(b.removedCommit!.date).valueOf() - new Date(a.removedCommit!.date).valueOf()).slice(0, 15);
+	return plugins
+		.filter(plugin => plugin.removedCommit !== undefined)
+		.sort((a, b) => new Date(b.removedCommit!.date).valueOf() - new Date(a.removedCommit!.date).valueOf())
+		.slice(0, 15);
 }
 
 export interface PerMonthDataPoint {
@@ -210,7 +216,12 @@ export function getPluginCountPerMonthWoRetiredPlugins(plugins: PluginDataInterf
 			return releaseDate.getFullYear() === d.getFullYear() && releaseDate.getMonth() === d.getMonth();
 		});
 
-		const retiredPlugins = releasedPlugins.filter(plugin => plugin.removedCommit !== undefined);
+		const retiredPlugins = plugins
+			.filter(plugin => plugin.removedCommit !== undefined)
+			.filter(plugin => {
+				const removedDate = new Date(plugin.removedCommit!.date);
+				return removedDate.getFullYear() === d.getFullYear() && removedDate.getMonth() === d.getMonth();
+			});
 
 		totalPlugins += releasedPlugins.length - retiredPlugins.length;
 
@@ -236,12 +247,12 @@ export function getRetiredPluginCountPerMonth(plugins: PluginDataInterface[]): P
 		const year = d.getFullYear().toString();
 		const month = (d.getMonth() + 1).toString().padStart(2, '0');
 
-		const releasedPlugins = plugins.filter(plugin => {
-			const releaseDate = new Date(plugin.addedCommit.date);
-			return releaseDate.getFullYear() === d.getFullYear() && releaseDate.getMonth() === d.getMonth();
-		});
-
-		const retiredPlugins = releasedPlugins.filter(plugin => plugin.removedCommit !== undefined);
+		const retiredPlugins = plugins
+			.filter(plugin => plugin.removedCommit !== undefined)
+			.filter(plugin => {
+				const removedDate = new Date(plugin.removedCommit!.date);
+				return removedDate.getFullYear() === d.getFullYear() && removedDate.getMonth() === d.getMonth();
+			});
 
 		totalRetiredPlugins += retiredPlugins.length;
 
@@ -249,6 +260,33 @@ export function getRetiredPluginCountPerMonth(plugins: PluginDataInterface[]): P
 			year: year,
 			month: month,
 			value: totalRetiredPlugins,
+		});
+	}
+
+	return data;
+}
+
+export function getRetiredPluginsPerMonth(plugins: PluginDataInterface[]): PerMonthDataPoint[] {
+	const data: PerMonthDataPoint[] = [];
+
+	const firstReleaseDate = new Date(plugins[0].addedCommit.date);
+	const lastReleaseDate = new Date(plugins[plugins.length - 1].addedCommit.date);
+
+	for (let d = firstReleaseDate; d <= lastReleaseDate; d.setMonth(d.getMonth() + 1)) {
+		const year = d.getFullYear().toString();
+		const month = (d.getMonth() + 1).toString().padStart(2, '0');
+
+		const retiredPlugins = plugins
+			.filter(plugin => plugin.removedCommit !== undefined)
+			.filter(plugin => {
+				const removedDate = new Date(plugin.removedCommit!.date);
+				return removedDate.getFullYear() === d.getFullYear() && removedDate.getMonth() === d.getMonth();
+			});
+
+		data.push({
+			year: year,
+			month: month,
+			value: retiredPlugins.length,
 		});
 	}
 
