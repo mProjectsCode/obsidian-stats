@@ -1,11 +1,11 @@
 ---
 // import PluginDataFile from '../../../plugin-data.json' assert { type: 'json' };
-import { type PluginDataInterface } from '../../../src/types';
 import GithubLink from './githubLink.astro';
 import Commit from './commit.astro';
 import Aside from './aside.astro';
 import PluginDownloadChart from './svelte/pluginDownloadChart.svelte';
 import { getDownloadDataPoints } from '../utils/utils';
+import { PluginDataInterface } from '../../../src/plugin';
 
 const { plugin } = Astro.props as { plugin: PluginDataInterface };
 const pluginDownloadData = getDownloadDataPoints([plugin]);
@@ -62,12 +62,6 @@ const pluginDownloadData = getDownloadDataPoints([plugin]);
 		</tr>
 	</thead>
 	<tbody>
-		<tr>
-			<td><Commit commit={plugin.addedCommit} /></td>
-			<td>Plugin Released</td>
-			<td></td>
-			<td></td>
-		</tr>
 		{
 			plugin.changeHistory.map(change => (
 				<tr>
@@ -79,18 +73,6 @@ const pluginDownloadData = getDownloadDataPoints([plugin]);
 					<td>{change.newValue}</td>
 				</tr>
 			))
-		}
-		{
-			plugin.removedCommit && (
-				<tr>
-					<td>
-						<Commit commit={plugin.removedCommit} />
-					</td>
-					<td>Plugin Removed</td>
-					<td />
-					<td />
-				</tr>
-			)
 		}
 	</tbody>
 </table>

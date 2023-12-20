@@ -1,0 +1,70 @@
+---
+import GithubLink from './githubLink.astro';
+import Commit from './commit.astro';
+import Aside from './aside.astro';
+import { ThemeDataInterface } from '../../../src/theme';
+
+const { theme } = Astro.props as { theme: ThemeDataInterface };
+---
+
+{
+	theme.removedCommit && (
+		<Aside variant="caution" title="Theme has been Removed">
+			<p>
+				This theme has been removed from the community list on <Commit commit={theme.removedCommit} /> and can no longer be installed.
+			</p>
+		</Aside>
+	)
+}
+
+<table>
+	<tbody>
+		<tr>
+			<td>Name</td>
+			<td>{theme.currentEntry.name}</td>
+		</tr>
+		<tr>
+			<td>Author</td>
+			<td>{theme.currentEntry.author}</td>
+		</tr>
+		<tr>
+			<td>Modes</td>
+			<td>{theme.currentEntry.modes.join(', ')}</td>
+		</tr>
+		<tr>
+			<td>GitHub Repo</td>
+			<td><GithubLink repo={theme.currentEntry.repo} /></td>
+		</tr>
+		<tr>
+			<td>Official Release Date</td>
+			<td><Commit commit={theme.addedCommit} /></td>
+		</tr>
+	</tbody>
+</table>
+
+<h2>Changes</h2>
+
+<table>
+	<thead>
+		<tr>
+			<th>Date</th>
+			<th>Changed Property</th>
+			<th>Old Value</th>
+			<th>New Value</th>
+		</tr>
+	</thead>
+	<tbody>
+		{
+			theme.changeHistory.map(change => (
+				<tr>
+					<td>
+						<Commit commit={change.commit} />
+					</td>
+					<td>{change.property}</td>
+					<td>{change.oldValue}</td>
+					<td>{change.newValue}</td>
+				</tr>
+			))
+		}
+	</tbody>
+</table>

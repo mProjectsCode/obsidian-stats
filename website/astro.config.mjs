@@ -28,8 +28,16 @@ export default defineConfig({
 				},
 				{
 					label: 'Plugins',
+					collapsed: true,
 					autogenerate: {
 						directory: 'plugins',
+					},
+				},
+				{
+					label: 'Themes',
+					collapsed: true,
+					autogenerate: {
+						directory: 'themes',
 					},
 				},
 			],
@@ -38,5 +46,5 @@ export default defineConfig({
 	],
 	redirects: {
 		'/globalstats/plugins/': '/obsidian-stats/home/about/',
-	}
+	},
 });
