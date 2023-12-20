@@ -1,18 +1,30 @@
 import {$, Verboseness} from './shellUtils.ts';
 import process from 'process';
-import { Commit, PluginData, PluginDownloadStats, PluginList,  } from './types.ts';
-import {dateToString, stringToBase64} from './utils.ts';
+import {Commit} from './types.ts';
+import {dateToString} from './utils.ts';
 import CliProgress from 'cli-progress';
+import {PluginData, PluginDownloadStats, PluginList} from './plugin.ts';
+import {ThemeData, ThemeList} from './theme.ts';
 
 const PLUGIN_LIST_PATH = 'community-plugins.json';
 const PLUGIN_STATS_PATH = 'community-plugin-stats.json';
+const THEME_LIST_PATH = 'community-css-themes.json';
+
+const PLUGIN_DATA_PATH = `plugin-data.json`;
+const THEME_DATA_PATH = `theme-data.json`;
+
 const OBSIDIAN_RELEASES_PATH = 'obsidian-releases';
 const OBSIDIAN_RELEASES_FULL_PATH = `${process.cwd()}/${OBSIDIAN_RELEASES_PATH}`;
-const PLUGIN_DATA_PATH = `plugin-data.json`;
-const TEMPLATE_FILE_PATH = 'src/template.txt';
-const TEMPLATE_REPLACEMENT_STRING = 'PLUGIN_ID';
-const TEMPLATE_REPLACEMENT_STRING_JSON = 'PLUGIN_JSON';
-const TEMPLATE_OUTPUT_PATH = 'website/src/content/docs/plugins';
+
+const PLUGIN_TEMPLATE_FILE_PATH = 'src/plugin_template.txt';
+const PLUGIN_TEMPLATE_REPLACEMENT_STRING = 'PLUGIN_ID';
+const PLUGIN_TEMPLATE_REPLACEMENT_STRING_JSON = 'PLUGIN_JSON';
+const PLUGIN_TEMPLATE_OUTPUT_PATH = 'website/src/content/docs/plugins';
+
+const THEME_TEMPLATE_FILE_PATH = 'src/theme_template.txt';
+const THEME_TEMPLATE_REPLACEMENT_STRING = 'THEME_ID';
+const THEME_TEMPLATE_REPLACEMENT_STRING_JSON = 'THEME_JSON';
+const THEME_TEMPLATE_OUTPUT_PATH = 'website/src/content/docs/themes';
 
 function dateDiffInDays(a: Date, b: Date): number {
 	const _MS_PER_DAY = 1000 * 60 * 60 * 24;
@@ -33,8 +45,66 @@ function gitLogToCommits(log: string): Commit[] {
 
 }
 
+async function getThemeListChanges(): Promise<Commit[]> {
+	const themeListChanges = await $(`git log --diff-filter=M --date-order --reverse --format="%ad %H" --date=iso-strict "${THEME_LIST_PATH}"`, OBSIDIAN_RELEASES_FULL_PATH);
+
+	return gitLogToCommits(themeListChanges.stdout);
+}
+
+async function getThemeLists(): Promise<ThemeList[]> {
+	const themeListChangeCommits = await getThemeListChanges();
+
+	const themeLists = (await Promise.all(themeListChangeCommits.map(async (x, i) => {
+		const themeList = await $(`git cat-file -p ${x.hash}:${THEME_LIST_PATH}`, OBSIDIAN_RELEASES_FULL_PATH, Verboseness.QUITET);
+		try {
+			const themeListEntries = JSON.parse(themeList.stdout);
+			return new ThemeList(themeListEntries, x);
+		} catch (e) {
+			console.log(`Error parsing theme list at commit ${x.hash}`);
+			return undefined;
+		}
+	}))).filter(x => x !== undefined) as ThemeList[];
+
+	console.log(`Found ${themeLists.length} version of "community-plugins.json"`);
+
+	return themeLists;
+}
+
+function buildThemeData(themeLists: ThemeList[]): ThemeData[] {
+	let themeData: ThemeData[] = [];
+
+	console.log(`Building theme data`);
+
+	const progress = new CliProgress.SingleBar({}, CliProgress.Presets.rect);
+	progress.start(themeLists.length, 0);
+
+	for (const entry of themeLists[0].entries) {
+		themeData.push(new ThemeData(entry.name, themeLists[0].commit, entry));
+	}
+
+	for (let i = 1; i < themeLists.length; i++) {
+		progress.increment();
+
+		const themeList = themeLists[i];
+
+		for (const theme of themeData) {
+			theme.findChanges(themeList);
+		}
+
+		for (const entry of themeList.entries) {
+			if (themeData.find(x => x.name === entry.name) === undefined) {
+				themeData.push(new ThemeData(entry.name, themeList.commit, entry));
+			}
+		}
+	}
+
+	progress.stop();
+
+	return themeData;
+}
+
 async function getPluginListChanges(): Promise<Commit[]> {
-	const pluginListChanges = await $(`git log --diff-filter=M --date-order --reverse --format="%ad %H" --date=iso-strict "${PLUGIN_LIST_PATH}"`, OBSIDIAN_RELEASES_FULL_PATH)
+	const pluginListChanges = await $(`git log --diff-filter=M --date-order --reverse --format="%ad %H" --date=iso-strict "${PLUGIN_LIST_PATH}"`, OBSIDIAN_RELEASES_FULL_PATH);
 
 	return gitLogToCommits(pluginListChanges.stdout);
 }
@@ -59,7 +129,7 @@ async function getPluginLists(): Promise<PluginList[]> {
 }
 
 async function getPluginDownloadChanges(): Promise<Commit[]> {
-	const pluginDownloadChanges = await $(`git log --diff-filter=M --date-order --reverse --format="%ad %H" --date=iso-strict "${PLUGIN_STATS_PATH}"`, OBSIDIAN_RELEASES_FULL_PATH)
+	const pluginDownloadChanges = await $(`git log --diff-filter=M --date-order --reverse --format="%ad %H" --date=iso-strict "${PLUGIN_STATS_PATH}"`, OBSIDIAN_RELEASES_FULL_PATH);
 
 	return gitLogToCommits(pluginDownloadChanges.stdout);
 }
@@ -180,10 +250,7 @@ function updateVersionHistory(pluginData: PluginData[], pluginDownloadStats: Plu
 }
 
 async function buildPluginStats() {
-	// update submodule
-	await $('git submodule update --remote')
-
-	const pluginLists= await getPluginLists();
+	const pluginLists = await getPluginLists();
 	let pluginData = buildPluginData(pluginLists);
 
 	const pluginDownloadStats = await getPluginDownloadStats();
@@ -197,17 +264,43 @@ async function buildPluginStats() {
 	const pluginDataFile = Bun.file(PLUGIN_DATA_PATH);
 	await Bun.write(pluginDataFile, JSON.stringify(pluginData, null, 4));
 
-	const templateFile = Bun.file(TEMPLATE_FILE_PATH);
+	const templateFile = Bun.file(PLUGIN_TEMPLATE_FILE_PATH);
 	const template = await templateFile.text();
 
 	for (const plugin of pluginData) {
-		let output = template.replaceAll(TEMPLATE_REPLACEMENT_STRING, plugin.id);
-		output = output.replaceAll(TEMPLATE_REPLACEMENT_STRING_JSON, JSON.stringify(plugin));
-		const outputFile = Bun.file(`${TEMPLATE_OUTPUT_PATH}/${plugin.id}.mdx`);
+		let output = template.replaceAll(PLUGIN_TEMPLATE_REPLACEMENT_STRING, plugin.id);
+		output = output.replaceAll(PLUGIN_TEMPLATE_REPLACEMENT_STRING_JSON, JSON.stringify(plugin));
+		const outputFile = Bun.file(`${PLUGIN_TEMPLATE_OUTPUT_PATH}/${plugin.id}.mdx`);
 		await Bun.write(outputFile, output);
 	}
-
-
 }
 
-await buildPluginStats();
+async function buildThemeStats() {
+	const themeLists = await getThemeLists();
+	let themeData = buildThemeData(themeLists);
+
+	console.log(`Processed all themes writing to ${THEME_DATA_PATH}`);
+
+	const pluginDataFile = Bun.file(THEME_DATA_PATH);
+	await Bun.write(pluginDataFile, JSON.stringify(themeData, null, 4));
+
+	const templateFile = Bun.file(THEME_TEMPLATE_FILE_PATH);
+	const template = await templateFile.text();
+
+	for (const theme of themeData) {
+		let output = template.replaceAll(THEME_TEMPLATE_REPLACEMENT_STRING, theme.name);
+		output = output.replaceAll(THEME_TEMPLATE_REPLACEMENT_STRING_JSON, JSON.stringify(theme));
+		const outputFile = Bun.file(`${THEME_TEMPLATE_OUTPUT_PATH}/${theme.id}.mdx`);
+		await Bun.write(outputFile, output);
+	}
+}
+
+async function main() {
+	// update submodule
+	await $('git submodule update --remote');
+
+	await buildPluginStats();
+	await buildThemeStats();
+}
+
+await main();

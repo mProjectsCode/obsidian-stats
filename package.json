@@ -3,7 +3,7 @@
   "module": "src/index.ts",
   "type": "module",
   "scripts": {
-    "updatePlugins": "bun run src/index.ts"
+    "data": "bun run src/index.ts"
   },
   "devDependencies": {
     "bun-types": "latest"
@@ -14,8 +14,10 @@
   "dependencies": {
     "@types/cli-progress": "^3.11.5",
     "@types/semver": "^7.5.6",
+    "@types/slug": "^5.0.7",
     "cli-progress": "^3.12.0",
     "semver": "^7.5.4",
+    "slug": "^8.2.3",
     "string-argv": "^0.3.2"
   }
 }

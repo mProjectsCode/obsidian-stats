@@ -1,4 +1,4 @@
-import { Subprocess } from 'bun';
+import {Subprocess} from 'bun';
 import stringArgv from 'string-argv';
 
 export enum Verboseness {
@@ -8,7 +8,7 @@ export enum Verboseness {
 }
 
 function exec(c: string, cwd?: string): Subprocess<'ignore', 'pipe', 'inherit'> {
-	return Bun.spawn(stringArgv(c), { cwd: cwd });
+	return Bun.spawn(stringArgv(c), {cwd: cwd});
 }
 
 export async function $(
