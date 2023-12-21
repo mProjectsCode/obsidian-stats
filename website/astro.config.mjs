@@ -53,5 +53,4 @@ export default defineConfig({
 	redirects: {
 		'/globalstats/plugins/': '/obsidian-stats/home/about/',
 	},
-	outDir: 'dist/obsidian-stats',
 });
