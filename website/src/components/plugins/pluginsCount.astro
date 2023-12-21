@@ -1,7 +1,7 @@
 ---
-import PluginDataFile from '../../../plugin-data.json' assert { type: 'json' };
-import { getPluginCountPerMonth, getPluginCountPerMonthWoRetiredPlugins, getRetiredPluginCountPerMonth } from '../utils/utils';
-import PluginPerMonthChart from './svelte/pluginPerMonthChart.svelte';
+import PluginDataFile from '../../../../plugin-data.json' assert { type: 'json' };
+import { getPluginCountPerMonth, getPluginCountPerMonthWoRetiredPlugins, getRetiredPluginCountPerMonth } from '../../utils/utils';
+import PluginPerMonthChart from '../svelte/dataPerMonthChart.svelte';
 
 const dataPoints = getPluginCountPerMonth(PluginDataFile);
 const dataPoints2 = getPluginCountPerMonthWoRetiredPlugins(PluginDataFile);

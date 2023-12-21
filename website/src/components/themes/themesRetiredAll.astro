@@ -1,0 +1,31 @@
+---
+import ThemeDataFile from '../../../../theme-data.json' assert { type: 'json' };
+import { getRetiredThemes } from '../../utils/utils';
+import Commit from '../commit.astro';
+import ThemeLink from '../themeLink.astro';
+
+const retiredThemes = getRetiredThemes(ThemeDataFile);
+---
+
+<table>
+	<thead>
+		<tr>
+			<th>Plugin</th>
+			<th>Removed Date</th>
+		</tr>
+	</thead>
+	<tbody>
+		{
+			retiredThemes.map(x => (
+				<tr>
+					<td>
+						<ThemeLink id={x.id} name={x.name} />
+					</td>
+					<td>
+						<Commit commit={x.removedCommit} />
+					</td>
+				</tr>
+			))
+		}
+	</tbody>
+</table>

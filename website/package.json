@@ -1,31 +1,31 @@
 {
-	"name": "",
-	"type": "module",
-	"version": "0.0.1",
-	"scripts": {
-		"dev": "astro dev",
-		"start": "astro dev",
-		"check": "astro check",
-		"build": "astro build",
-		"preview": "astro preview",
-		"astro": "astro",
-		"format": "prettier --write ."
-	},
-	"dependencies": {
-		"@astrojs/check": "^0.3.2",
-		"@astrojs/starlight": "^0.15.0",
-		"@astrojs/svelte": "^5.0.1",
-		"astro": "^4.0.1",
-		"chart.js": "^4.4.1",
-		"chartjs-plugin-annotation": "^3.0.1",
-		"prettier": "^3.1.1",
-		"prettier-plugin-astro": "^0.12.2",
-		"sharp": "^0.32.5",
-		"svelte": "^4.2.8",
-		"typescript": "^5.3.3",
-		"zod": "^3.22.4"
-	},
-	"devDependencies": {
-		"prettier-plugin-svelte": "^3.1.2"
-	}
+  "name": "",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "check": "astro check",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "format": "prettier --write ."
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.3.2",
+    "@astrojs/starlight": "^0.15.0",
+    "@astrojs/svelte": "^5.0.1",
+    "astro": "^4.0.1",
+    "chart.js": "^4.4.1",
+    "chartjs-plugin-annotation": "^3.0.1",
+    "prettier": "^3.1.1",
+    "prettier-plugin-astro": "^0.12.2",
+    "sharp": "^0.32.5",
+    "svelte": "^4.2.8",
+    "typescript": "^5.3.3",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "prettier-plugin-svelte": "^3.1.2"
+  }
 }

@@ -1,0 +1,9 @@
+---
+import ThemeDataFile from '../../../../theme-data.json' assert { type: 'json' };
+import { getRetiredThemesPerMonth } from '../../utils/utils';
+import DataPerMonthChart from '../svelte/dataPerMonthChart.svelte';
+
+const dataPoints = getRetiredThemesPerMonth(ThemeDataFile);
+---
+
+<DataPerMonthChart dataPoints={dataPoints} title="Newly Retired Themes Per Month" type="bar" client:only="svelte" />

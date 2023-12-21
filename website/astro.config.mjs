@@ -27,6 +27,12 @@ export default defineConfig({
 					},
 				},
 				{
+					label: 'Theme Stats',
+					autogenerate: {
+						directory: 'themeStats',
+					},
+				},
+				{
 					label: 'Plugins',
 					collapsed: true,
 					autogenerate: {

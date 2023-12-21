@@ -11,10 +11,17 @@ My script that extracts the data uses git submodules to extract the data from th
 The sidebar on the left has a category `Plugins` that contains a file for each plugin, named after the plugin id.
 The sidebar category `Plugin Stats` contains some pages for different stats for all plugins.
 
+### Known Data Errors
+
+Until the 2023-12-21 Obsidian only updated the download count of the 30 latest releases.
+This means that plugins with more than 30 releases might have had a lower download count than they should have.
+This should be especially prominent for plugins that have been removed and readded to the community plugins list.
+
 ## Themes
 
-Currently, there is only a `Themes` sidebar category that contains a file for each theme, named after the theme.
-More stats for themes will be added in the future, but there will be no theme download history, as there exists no data for that.
+There is only a `Themes` sidebar category that contains a file for each theme, named after the theme.
+The sidebar category `Theme Stats` contains some pages for different stats for all themes.
+There are no download stats for themes, as there exists no data in the repo for that.
 
 ## Disclaimer
 

@@ -1,9 +1,0 @@
----
-import { getDownloadReleaseCorrelationDataPoints } from '../utils/utils';
-import PluginDataFile from '../../../plugin-data.json' assert { type: 'json' };
-import PluginReleaseDownloadsCorrelationChart from './svelte/pluginReleaseDownloadsCorrelationChart.svelte';
-
-const downloadReleaseCorrelationDataPoints = getDownloadReleaseCorrelationDataPoints(PluginDataFile);
----
-
-<PluginReleaseDownloadsCorrelationChart dataPoints={downloadReleaseCorrelationDataPoints} client:only="svelte" />
