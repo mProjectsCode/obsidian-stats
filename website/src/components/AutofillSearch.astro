@@ -16,6 +16,15 @@
 			.catch(() => console.error('Failed to load search in time.'));
 	}
 
+	const openSeachEls = document.querySelectorAll<HTMLElement>('#open-search');
+	openSeachEls.forEach((el) => {
+		el.addEventListener('click', (e) => {
+			e.preventDefault();
+			e.stopPropagation();
+			openAndFillSearch('');
+		});
+	});
+
 	function openAndFillSearch(query: string) {
 		// Open the search modal
 		const openModalButton = document.querySelector<HTMLButtonElement>('site-search [data-open-modal]');
