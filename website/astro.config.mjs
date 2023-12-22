@@ -53,4 +53,7 @@ export default defineConfig({
 	redirects: {
 		'/globalstats/plugins/': '/obsidian-stats/home/about/',
 	},
+	experimental: {
+		contentCollectionCache: true,
+	}
 });
