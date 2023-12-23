@@ -1,5 +1,5 @@
-import type { PluginDataInterface } from '../../../src/plugin.ts';
-import type { ThemeDataInterface } from '../../../src/theme.ts';
+import type { PluginDataInterface } from '../../../src/plugin/plugin.ts';
+import type {ThemeDataInterface} from '../../../src/theme/theme.ts';
 
 export function dateToString(date: Date): string {
 	return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
@@ -487,3 +487,4 @@ export function getRetiredThemesPerMonth(themes: ThemeDataInterface[]): PerMonth
 
 	return data;
 }
+

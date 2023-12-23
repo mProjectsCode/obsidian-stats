@@ -1,0 +1,67 @@
+name: Update Data
+
+on:
+  schedule:
+    - cron: "0 0 * * *"
+
+jobs:
+  fetch-plugin-data:
+    name: Fetch Plugin Data
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+      - name: Install dependencies
+        run: bun install
+      - name: Run script
+        run: bun run fetch-plugin-data
+      - name: Commit changes
+        run: |
+          git config user.name "${{ github.actor }}"
+          git config user.email "${{ github.actor }}@users.noreply.github.com"
+          git add release-data.json
+          git commit -m "Update plugin data" || true
+          git push
+          
+
+  fetch-theme-data:
+    name: Fetch Theme Data
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+      - name: Install dependencies
+        run: bun install
+      - name: Run script
+        run: bun run fetch-theme-data
+      - name: Commit changes
+        run: |
+          git config user.name "${{ github.actor }}"
+          git config user.email "${{ github.actor }}@users.noreply.github.com"
+          git add release-data.json
+          git commit -m "Update theme data" || true
+          git push
+
+  fetch-release-data:
+    name: Fetch Release Data
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+      - name: Install dependencies
+        run: bun install
+      - name: Run script
+        run: bun run fetch-release-data
+      - name: Commit changes
+        run: |
+          git config user.name "${{ github.actor }}"
+          git config user.email "${{ github.actor }}@users.noreply.github.com"
+          git add release-data.json
+          git commit -m "Update release data" || true
+          git push
