@@ -69,7 +69,7 @@ function buildThemeData(themeLists: ThemeList[]): ThemeData[] {
 }
 
 
-async function buildThemeStats() {
+export async function buildThemeStats() {
     const themeLists = await getThemeLists();
     let themeData = buildThemeData(themeLists);
 

@@ -157,7 +157,7 @@ async function getPluginDownloadStats(): Promise<PluginDownloadStats[]> {
     return pluginDownloadStats;
 }
 
-async function buildPluginStats() {
+export async function buildPluginStats() {
     const pluginLists = await getPluginLists();
     let pluginData = buildPluginData(pluginLists);
 
