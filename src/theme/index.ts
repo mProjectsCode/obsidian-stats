@@ -89,5 +89,4 @@ export async function buildThemeStats() {
     }
 }
 
-await $('git submodule update --remote');
 await buildThemeStats();

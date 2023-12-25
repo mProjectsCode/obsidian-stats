@@ -183,5 +183,4 @@ export async function buildPluginStats() {
     }
 }
 
-await $('git submodule update --remote');
 await buildPluginStats();
