@@ -1,0 +1,13 @@
+---
+import { getDownloadsPerOS, getNormalisedDownloadsPerOS } from "../../../../src/release/data";
+import ReleaseDataFile from '../../../../releases-full-data.json' assert { type: 'json' };
+import ReleaseDownloadsChart from '../svelte/releaseDownloadChart.svelte';
+import ReleaseRelativeDownloadsChart from '../svelte/releaseRelativeDownloadChart.svelte';
+
+const downloadDataPoints = getDownloadsPerOS(ReleaseDataFile);
+const normalisedDownloadDataPoints = getNormalisedDownloadsPerOS(ReleaseDataFile);
+---
+
+<ReleaseDownloadsChart dataPoints={downloadDataPoints} client:only="svelte" />
+
+<ReleaseRelativeDownloadsChart dataPoints={normalisedDownloadDataPoints} client:only="svelte" />

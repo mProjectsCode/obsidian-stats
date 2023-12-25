@@ -114,11 +114,9 @@ export async function buildReleaseStats() {
 
     const lastModifiedDate = new Date(releaseFullDataFile.lastModified);
     const previousReleaseData = JSON.parse(await releaseFullDataFile.text()) as ReleaseEntry[];
-    let currentDate = new Date();
-    currentDate.setDate(currentDate.getDate() + 1);
+    const currentDate = new Date();
 
     const dailyDownloads = await computeDailyDownloads(previousReleaseData, releaseData, lastModifiedDate, currentDate);
-
 
     const dailyDownloadsFile = Bun.file(RELEASE_DAILY_DATA_PATH);
     let dailyDownloadsText = await dailyDownloadsFile.text();

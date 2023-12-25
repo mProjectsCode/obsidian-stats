@@ -86,3 +86,6 @@ export interface ReleaseEntry {
     date: Date;
     assets: ReleaseAsset[];
 }
+
+
+export const ALL_OS = ['macos', 'windows', 'linux'] as const;
