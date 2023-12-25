@@ -21,7 +21,7 @@ jobs:
         run: |
           git config user.name "${{ github.actor }}"
           git config user.email "${{ github.actor }}@users.noreply.github.com"
-          git add release-data.json
+          git add plugin-data.json
           git commit -m "Update plugin data" || true
           git push
           
@@ -42,7 +42,7 @@ jobs:
         run: |
           git config user.name "${{ github.actor }}"
           git config user.email "${{ github.actor }}@users.noreply.github.com"
-          git add release-data.json
+          git add theme-data.json
           git commit -m "Update theme data" || true
           git push
 
@@ -62,6 +62,7 @@ jobs:
         run: |
           git config user.name "${{ github.actor }}"
           git config user.email "${{ github.actor }}@users.noreply.github.com"
-          git add release-data.json
+          git add release-full-data.json
+          git add release-weekly-data.json
           git commit -m "Update release data" || true
           git push
