@@ -1,11 +1,6 @@
 import { type PluginDataInterface } from './plugin.ts';
 import {type DownloadDataPoint, type DownloadReleaseCorrelationDataPoint, type PerMonthDataPoint} from "../types.ts";
-
-export function dateToString(date: Date): string {
-    return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
-}
-
-
+import {dateToString} from "../utils.ts";
 
 export function getDownloadDataPoints(plugins: PluginDataInterface[]): DownloadDataPoint[] {
     const data: DownloadDataPoint[] = [];
