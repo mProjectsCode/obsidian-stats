@@ -1,13 +1,9 @@
 ---
 import ThemeDataFile from '../../../../theme-data.json' assert { type: 'json' };
-import {getPercentageOfRetiredThemesByReleaseMonth} from '../../utils/utils';
+import { getPercentageOfRetiredThemesByReleaseMonth } from '../../utils/utils';
 import DataPerMonthChart from '../svelte/dataPerMonthChart.svelte';
 
 const dataPoints = getPercentageOfRetiredThemesByReleaseMonth(ThemeDataFile);
 ---
 
-<DataPerMonthChart
-		dataPoints={dataPoints}
-		max={100}
-		title="Percentage of Retired Themes by Release Month"
-		client:only="svelte" />
+<DataPerMonthChart dataPoints={dataPoints} max={100} title="Percentage of Retired Themes by Release Month" client:only="svelte" />

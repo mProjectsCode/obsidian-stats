@@ -32,20 +32,6 @@ export default defineConfig({
 						directory: 'themeStats',
 					},
 				},
-				{
-					label: 'Plugins',
-					collapsed: true,
-					autogenerate: {
-						directory: 'plugins',
-					},
-				},
-				{
-					label: 'Themes',
-					collapsed: true,
-					autogenerate: {
-						directory: 'themes',
-					},
-				},
 			],
 		}),
 		svelte(),

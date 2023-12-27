@@ -1,0 +1,6 @@
+---
+import ThemesIndex from '../svelte/themesIndex.svelte';
+import ThemeDataFile from '../../../../theme-data.json' assert { type: 'json' };
+---
+
+<ThemesIndex data={ThemeDataFile} client:only="svelte" />

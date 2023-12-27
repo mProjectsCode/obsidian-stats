@@ -1,0 +1,6 @@
+---
+import PluginsIndex from '../svelte/pluginsIndex.svelte';
+import PluginDataFile from '../../../../plugin-data.json' assert { type: 'json' };
+---
+
+<PluginsIndex data={PluginDataFile} client:only="svelte" />

@@ -27,3 +27,16 @@ There are no download stats for themes, as there exists no data in the repo for 
 
 There is no guarantee that the stats displayed on this website are 100% correct.
 Errors might already be present in the data extracted from the GitHub repo, and my script to extract the data might also contain bugs.
+
+## Check out my Other Work
+
+Check out [my website](https://www.moritzjung.dev).
+
+Here is a list of my Obsidian related projects.
+
+- [Meta Bind Plugin](https://github.com/mProjectsCode/obsidian-meta-bind-plugin)
+- [JS Engine Plugin](https://github.com/mProjectsCode/obsidian-js-engine-plugin)
+- [Media DB Plugin](https://github.com/mProjectsCode/obsidian-media-db-plugin)
+- [Lemons Theme](https://github.com/mProjectsCode/obsidian-lemons-theme)
+- [Obsidian Stats](https://www.moritzjung.dev/obsidian-stats) (You are here)
+- [Obsidian Collection](https://www.moritzjung.dev/obsidian-collection)

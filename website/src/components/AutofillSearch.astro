@@ -17,8 +17,8 @@
 	}
 
 	const openSeachEls = document.querySelectorAll<HTMLElement>('#open-search');
-	openSeachEls.forEach((el) => {
-		el.addEventListener('click', (e) => {
+	openSeachEls.forEach(el => {
+		el.addEventListener('click', e => {
 			e.preventDefault();
 			e.stopPropagation();
 			openAndFillSearch('');
