@@ -2,9 +2,10 @@
     import Chart from 'chart.js/auto';
     import { onDestroy, onMount } from 'svelte';
     import { ThemeObserver } from './svelteUtils.ts';
-    import {ALL_OS} from "../../../../src/release/release.ts";
+    import {ALL_OS, type WeeklyReleaseGrowthEntry} from "../../../../src/release/release.ts";
 
-    export let dataPoints: { [os in typeof ALL_OS[number]]: { [release: string]: number } };
+    export let dataPoints: Record<string, number[]>;
+    export let labels: string[];
 
     let downloadChartEl: HTMLCanvasElement;
 
@@ -26,12 +27,13 @@
             return new Chart(downloadChartEl!, {
                 type: 'bar',
                 data: {
-                    labels: Object.keys(dataPoints[ALL_OS[0]]),
+                    labels,
                     datasets: ALL_OS.map(os => ({
                         label: os,
-                        data: Object.values(dataPoints[os]),
+                        data: dataPoints[os],
                         backgroundColor: osColors[os],
-
+                        borderColor: osColors[os],
+                        fill: false,
                     })),
                 },
                 options: {
@@ -47,6 +49,8 @@
                     aspectRatio: 3 / 2,
                 },
             });
+
+
         });
 
         console.log('added charts');

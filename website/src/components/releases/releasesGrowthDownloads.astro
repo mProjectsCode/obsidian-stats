@@ -1,0 +1,19 @@
+---
+import {getReleaseGrowthPerWeek, getReleaseGrowthPerWeekPerOS, parseReleaseGrowth,} from "../../../../src/release/data";
+import { readFileSync } from 'fs';
+
+const ReleaseDataFile = readFileSync('../releases-weekly-data.csv', 'utf8');
+
+import ReleaseDownloadsChart from '../svelte/releaseDownloadChart.svelte';
+import ReleaseDownloadGrowthChart from '../svelte/releaseDownloadGrowthChart.svelte';
+
+const downloadsGrowth = parseReleaseGrowth(ReleaseDataFile);
+// const releaseGrowthPerWeek = getReleaseGrowthPerWeek(downloadsGrowth);
+const releaseGrowthByWeekPerOS = getReleaseGrowthPerWeekPerOS(downloadsGrowth);
+
+
+---
+
+<ReleaseDownloadGrowthChart dataPoints={releaseGrowthByWeekPerOS.data} labels={releaseGrowthByWeekPerOS.labels}
+                            client:only="svelte" />
+

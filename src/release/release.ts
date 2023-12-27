@@ -87,5 +87,12 @@ export interface ReleaseEntry {
     assets: ReleaseAsset[];
 }
 
+export interface WeeklyReleaseGrowthEntry {
+    date: Date;
+    version: string;
+    asset: string;
+    downloads: number;
+}
+
 
 export const ALL_OS = ['macos', 'windows', 'linux'] as const;

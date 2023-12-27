@@ -17,19 +17,12 @@
     };
 
     onMount(() => {
-        // Group by release version and consoel log
         const groupedDataPoints: { [release: string]: { [os in typeof ALL_OS[number]]: number } } = {};
         for (const release of Object.keys(dataPoints[ALL_OS[0]])) {
             groupedDataPoints[release] = {};
             for (const os of ALL_OS) {
                 groupedDataPoints[release][os] = dataPoints[os][release];
             }
-        }
-        console.log(groupedDataPoints);
-
-
-        for (const os of ALL_OS) {
-            dataPoints[os] = Object.fromEntries(Object.entries(dataPoints[os]).reverse());
         }
 
         themeObserver = new ThemeObserver();
