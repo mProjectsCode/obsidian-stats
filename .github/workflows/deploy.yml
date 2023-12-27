@@ -3,6 +3,11 @@ name: Deploy to GitHub Pages
 on:
   # Allows you to run this workflow manually from the Actions tab on GitHub.
   workflow_dispatch:
+  # Trigger workflow when one of the data files was changed (check if separate jobs of gather-data each trigger this workflow separately)
+  #  push:
+  #    paths:
+  #      - '**/*.json'
+
 
 # Allow this job to clone the repo and create a page deployment
 permissions:
