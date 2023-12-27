@@ -1,0 +1,12 @@
+---
+import { getTimeBetweenMajorReleases, getTimeBetweenReleases } from "../../../../src/release/data";
+import ReleaseDataFile from '../../../../releases-full-data.json' assert { type: 'json' };
+import ReleaseTimeBetween from '../svelte/releaseTimeBetween.svelte';
+
+const regularDataPoints = getTimeBetweenReleases(ReleaseDataFile);
+const majorDataPoints = getTimeBetweenMajorReleases(ReleaseDataFile);
+---
+
+<ReleaseTimeBetween dataPoints={regularDataPoints} client:only="svelte" />
+
+<ReleaseTimeBetween dataPoints={majorDataPoints} client:only="svelte" />
