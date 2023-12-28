@@ -5,7 +5,6 @@ import { readFileSync } from 'fs';
 import { escape, fromCSV, op, desc } from 'arquero';
 
 import PieChart from '../svelte/pieChart.svelte';
-import StackedBarChart from '../svelte/stackedBarChart.svelte';
 
 let ReleaseData = fromCSV(readFileSync('../releases-full-data.csv', 'utf8'));
 
@@ -31,22 +30,6 @@ const assetDownloadsOS: { label: string; value: any } = ReleaseDataGroupedOS.nor
 	.select({ os: 'label', downloads: 'value' })
 	.objects({ grouped: true });
 
-const firstAssetAppearance = ReleaseDataWithAssetType.groupby('assetType').filter(d => op.first_value(d.asset) === d.asset);
-
-const ReleaseDataGroupedWithFirstAssetAppearance = firstAssetAppearance
-	.select('assetType', 'size')
-	.rename({ size: 'firstAssetSize' })
-	.join(ReleaseDataWithAssetType, 'assetType');
-
-const allVersions = ReleaseData.distinctArray('version');
-const normalisedAssetSize = ReleaseDataGroupedWithFirstAssetAppearance.derive({ normalisedSize: d => d.size / d.firstAssetSize })
-	.select('version', 'assetType', 'normalisedSize')
-	.imputeAll(['version', 'assetType'], ['normalisedSize'])
-	.groupby('assetType')
-	.rollup({ normalisedSize: d => op.array_agg(d.normalisedSize) })
-	.select({ assetType: 'label', normalisedSize: 'data' })
-	.objects({ grouped: true });
-
 const assetDownloadsIS = ReleaseData.derive({ is: escape(d => determineAssetIS(d.asset)) })
 	.groupby('is')
 	.rollup({ downloads: d => op.sum(d.downloads) })
@@ -64,12 +47,18 @@ const assetDownloadsArchitecture = ReleaseData.derive({ architecture: escape(d =
 	.objects({ grouped: true });
 ---
 
+<p>The percentage of downloads for each release asset type.</p>
+
 <PieChart dataPoints={assetDownloads} isPercentual={true} client:only="svelte" />
+
+<p>The percentage of downloads for each operating system.</p>
 
 <PieChart dataPoints={assetDownloadsOS} isPercentual={true} client:only="svelte" />
 
+<p>The percentage of downloads for each processor architecture.</p>
+
 <PieChart dataPoints={assetDownloadsIS} isPercentual={true} client:only="svelte" />
 
-<PieChart dataPoints={assetDownloadsArchitecture} isPercentual={true} client:only="svelte" />
+<p>The percentage of downloads for 64 bit and 32 bit systems.</p>
 
-<StackedBarChart dataPoints={normalisedAssetSize} labels={allVersions} client:only="svelte" />
+<PieChart dataPoints={assetDownloadsArchitecture} isPercentual={true} client:only="svelte" />
