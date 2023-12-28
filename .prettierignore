@@ -1,0 +1,15 @@
+website/src/content/docs/plugins/*
+website/src/content/docs/themes/*
+
+node_modules/
+obsidian-releases/
+
+LICENSE
+
+plugin-data.json
+theme-data.json
+
+releases-full-data.csv
+releases-full-data.json
+releases-weekly-data.csv
+

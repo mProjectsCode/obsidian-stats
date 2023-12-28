@@ -1,5 +1,5 @@
 import semver from 'semver';
-import {Commit, DownloadHistory, EntryChange, VersionHistory} from '../types.ts';
+import { Commit, DownloadHistory, EntryChange, VersionHistory } from '../types.ts';
 
 export interface PluginListEntry {
 	id: string;
@@ -20,8 +20,8 @@ export class PluginList {
 }
 
 export type PluginDownloadStatsEntry = {
-	downloads: number
-} & Record<string, number>
+	downloads: number;
+} & Record<string, number>;
 
 export interface PluginDataInterface {
 	id: string;
@@ -65,12 +65,14 @@ export class PluginData {
 		this.addedCommit = addedCommit;
 		this.initialEntry = initialEntry;
 		this.currentEntry = initialEntry;
-		this.changeHistory = [{
-			property: 'Plugin Added',
-			commit: addedCommit,
-			oldValue: '',
-			newValue: '',
-		}];
+		this.changeHistory = [
+			{
+				property: 'Plugin Added',
+				commit: addedCommit,
+				oldValue: '',
+				newValue: '',
+			},
+		];
 		this.versionHistory = [];
 		this.downloadHistory = {};
 	}
@@ -109,21 +111,23 @@ export class PluginData {
 				});
 			}
 
-			const changes = [...keys].map(key => {
-				// @ts-expect-error TS7053
-				const oldValue = this.currentEntry[key];
-				// @ts-expect-error TS7053
-				const newValue = newEntry[key];
+			const changes = [...keys]
+				.map(key => {
+					// @ts-expect-error TS7053
+					const oldValue = this.currentEntry[key];
+					// @ts-expect-error TS7053
+					const newValue = newEntry[key];
 
-				if (oldValue !== newValue) {
-					return {
-						property: key,
-						commit: pluginList.commit,
-						oldValue,
-						newValue,
-					} satisfies EntryChange;
-				}
-			}).filter(x => x !== undefined) as EntryChange[];
+					if (oldValue !== newValue) {
+						return {
+							property: key,
+							commit: pluginList.commit,
+							oldValue,
+							newValue,
+						} satisfies EntryChange;
+					}
+				})
+				.filter(x => x !== undefined) as EntryChange[];
 			this.changeHistory.push(...changes);
 			this.currentEntry = newEntry;
 		}

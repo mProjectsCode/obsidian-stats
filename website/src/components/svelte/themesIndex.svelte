@@ -3,8 +3,8 @@
 	import GithubLink from './githubLink.svelte';
 	import Commit from './commit.svelte';
 	import { onMount } from 'svelte';
-	import type { ThemeDataInterface } from '../../../../src/theme.ts';
-	import {utcStringToString} from "../../../../src/utils.ts";
+	import type { ThemeDataInterface } from '../../../../src/theme/data.ts';
+	import { utcStringToString } from '../../../../src/utils.ts';
 
 	export let data: ThemeDataInterface[] = [];
 

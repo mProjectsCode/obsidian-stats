@@ -33,9 +33,9 @@ export default defineConfig({
 					},
 				},
 				{
-					label: "Release Stats",
+					label: 'Release Stats',
 					autogenerate: {
-						directory: "releaseStats",
+						directory: 'releaseStats',
 					},
 				},
 			],

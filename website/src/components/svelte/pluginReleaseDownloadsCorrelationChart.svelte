@@ -1,8 +1,8 @@
 <script lang="ts">
 	import Chart from 'chart.js/auto';
 	import { onDestroy, onMount } from 'svelte';
-	import { type DownloadReleaseCorrelationDataPoint} from "../../../../src/types.ts";
-	import {dateToString} from "../../../../src/utils.ts"
+	import { type DownloadReleaseCorrelationDataPoint } from '../../../../src/types.ts';
+	import { dateToString } from '../../../../src/utils.ts';
 
 	import { ThemeObserver } from './svelteUtils.ts';
 

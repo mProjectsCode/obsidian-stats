@@ -1,10 +1,10 @@
 <script lang="ts">
-	import type { PluginDataInterface } from '../../../../src/plugin.ts';
+	import type { PluginDataInterface } from '../../../../src/plugin/data.ts';
 	import PluginLink from './pluginLink.svelte';
 	import GithubLink from './githubLink.svelte';
 	import Commit from './commit.svelte';
 	import { onMount } from 'svelte';
-	import {utcStringToString} from "../../../../src/utils.ts";
+	import { utcStringToString } from '../../../../src/utils.ts';
 
 	export let data: PluginDataInterface[] = [];
 

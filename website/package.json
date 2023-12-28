@@ -8,8 +8,7 @@
 		"check": "astro check",
 		"build": "astro build",
 		"preview": "astro preview",
-		"astro": "astro",
-		"format": "prettier --write ."
+		"astro": "astro"
 	},
 	"dependencies": {
 		"@astrojs/check": "^0.3.2",
@@ -19,14 +18,9 @@
 		"chart.js": "^4.4.1",
 		"chartjs-plugin-annotation": "^3.0.1",
 		"chartjs-plugin-datalabels": "^2.2.0",
-		"prettier": "^3.1.1",
-		"prettier-plugin-astro": "^0.12.2",
 		"sharp": "^0.32.5",
 		"svelte": "^4.2.8",
 		"typescript": "^5.3.3",
 		"zod": "^3.22.4"
-	},
-	"devDependencies": {
-		"prettier-plugin-svelte": "^3.1.2"
 	}
 }

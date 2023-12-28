@@ -1,6 +1,6 @@
 ---
 import { type Commit } from '../../../src/types';
-import {dateToString} from "../../../src/utils";
+import { dateToString } from '../../../src/utils';
 
 const { commit } = Astro.props as { commit: Commit };
 const url = 'https://github.com/obsidianmd/obsidian-releases/commit/' + commit.hash;

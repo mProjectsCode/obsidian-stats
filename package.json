@@ -1,26 +1,30 @@
 {
-  "name": ".",
-  "module": "src/index.ts",
-  "type": "module",
-  "scripts": {
-    "fetch-plugin-data": "bun run src/plugin/index.ts",
-    "fetch-theme-data": "bun run src/theme/index.ts",
-    "fetch-release-data": "bun run src/release/index.ts"
-  },
-  "devDependencies": {
-    "bun-types": "latest"
-  },
-  "peerDependencies": {
-    "typescript": "^5.0.0"
-  },
-  "dependencies": {
-    "@types/cli-progress": "^3.11.5",
-    "@types/semver": "^7.5.6",
-    "@types/slug": "^5.0.7",
-    "arquero": "^5.3.0",
-    "cli-progress": "^3.12.0",
-    "semver": "^7.5.4",
-    "slug": "^8.2.3",
-    "string-argv": "^0.3.2"
-  }
+	"name": ".",
+	"module": "src/index.ts",
+	"type": "module",
+	"scripts": {
+		"fetch-plugin-data": "bun run src/plugin/index.ts",
+		"fetch-theme-data": "bun run src/theme/index.ts",
+		"fetch-release-data": "bun run src/release/index.ts",
+		"format": "prettier --write ."
+	},
+	"devDependencies": {
+		"bun-types": "latest"
+	},
+	"peerDependencies": {
+		"typescript": "^5.0.0"
+	},
+	"dependencies": {
+		"@types/cli-progress": "^3.11.5",
+		"@types/semver": "^7.5.6",
+		"@types/slug": "^5.0.7",
+		"arquero": "^5.3.0",
+		"cli-progress": "^3.12.0",
+		"semver": "^7.5.4",
+		"slug": "^8.2.3",
+		"string-argv": "^0.3.2",
+		"prettier": "^3.1.1",
+		"prettier-plugin-astro": "^0.12.2",
+		"prettier-plugin-svelte": "^3.1.2"
+	}
 }

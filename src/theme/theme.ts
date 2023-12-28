@@ -1,4 +1,4 @@
-import {Commit, EntryChange} from '../types.ts';
+import { Commit, EntryChange } from '../types.ts';
 import slug from 'slug';
 
 export interface ThemeListEntry {
@@ -59,12 +59,14 @@ export class ThemeData {
 		this.addedCommit = addedCommit;
 		this.initialEntry = initialEntry;
 		this.currentEntry = initialEntry;
-		this.changeHistory = [{
-			property: 'Theme Added',
-			commit: addedCommit,
-			oldValue: '',
-			newValue: '',
-		}];
+		this.changeHistory = [
+			{
+				property: 'Theme Added',
+				commit: addedCommit,
+				oldValue: '',
+				newValue: '',
+			},
+		];
 	}
 
 	findChanges(themeList: ThemeList) {
@@ -97,24 +99,15 @@ export class ThemeData {
 				});
 			}
 
-			const changes = [...keys].map(key => {
-				// @ts-expect-error TS7053
-				const oldValue = this.currentEntry[key];
-				// @ts-expect-error TS7053
-				const newValue = newEntry[key];
+			const changes = [...keys]
+				.map(key => {
+					// @ts-expect-error TS7053
+					const oldValue = this.currentEntry[key];
+					// @ts-expect-error TS7053
+					const newValue = newEntry[key];
 
-				if (Array.isArray(oldValue) && Array.isArray(newValue)) {
-					if (oldValue.length !== newValue.length) {
-						return {
-							property: key,
-							commit: themeList.commit,
-							oldValue: oldValue.join(', '),
-							newValue: newValue.join(', '),
-						} satisfies EntryChange;
-					}
-
-					for (let i = 0; i < oldValue.length; i++) {
-						if (oldValue[i] !== newValue[i]) {
+					if (Array.isArray(oldValue) && Array.isArray(newValue)) {
+						if (oldValue.length !== newValue.length) {
 							return {
 								property: key,
 								commit: themeList.commit,
@@ -122,20 +115,31 @@ export class ThemeData {
 								newValue: newValue.join(', '),
 							} satisfies EntryChange;
 						}
+
+						for (let i = 0; i < oldValue.length; i++) {
+							if (oldValue[i] !== newValue[i]) {
+								return {
+									property: key,
+									commit: themeList.commit,
+									oldValue: oldValue.join(', '),
+									newValue: newValue.join(', '),
+								} satisfies EntryChange;
+							}
+						}
+
+						return undefined;
 					}
 
-					return undefined;
-				}
-
-				if (oldValue !== newValue) {
-					return {
-						property: key,
-						commit: themeList.commit,
-						oldValue,
-						newValue,
-					} satisfies EntryChange;
-				}
-			}).filter(x => x !== undefined) as EntryChange[];
+					if (oldValue !== newValue) {
+						return {
+							property: key,
+							commit: themeList.commit,
+							oldValue,
+							newValue,
+						} satisfies EntryChange;
+					}
+				})
+				.filter(x => x !== undefined) as EntryChange[];
 			this.changeHistory.push(...changes);
 			this.currentEntry = newEntry;
 		}

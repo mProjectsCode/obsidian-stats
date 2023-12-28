@@ -10,7 +10,7 @@ export interface EntryChange {
 	newValue: string;
 }
 
-export type DownloadHistory = Record<string, number>
+export type DownloadHistory = Record<string, number>;
 
 export interface VersionHistory {
 	version: string;

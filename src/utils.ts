@@ -1,7 +1,6 @@
-import {type Commit} from "./types.ts";
+import { type Commit } from './types.ts';
 
-export class UserError extends Error {
-}
+export class UserError extends Error {}
 
 export function dateToString(date: Date): string {
 	return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
@@ -19,7 +18,6 @@ export function base64ToString(str: string): string {
 	return Buffer.from(str, 'base64').toString();
 }
 
-
 export function dateDiffInDays(a: Date, b: Date): number {
 	const _MS_PER_DAY = 1000 * 60 * 60 * 24;
 	// Discard the time and time-zone information.
@@ -33,12 +31,10 @@ export function gitLogToCommits(log: string): Commit[] {
 	return log
 		.split('\n')
 		.filter(x => x.trim() !== '')
-		.map(x => x.replaceAll('\"', ''))
+		.map(x => x.replaceAll('"', ''))
 		.map(x => x.split(' '))
-		.map(x => ({date: x[0], hash: x[1]}));
-
+		.map(x => ({ date: x[0], hash: x[1] }));
 }
-
 
 /**
  * Maps a date to the next monday at 1am UTC
@@ -51,7 +47,6 @@ export function getNextMonday(date: Date): Date {
 	nextMonday.setUTCHours(1, 0, 0, 0);
 	return nextMonday;
 }
-
 
 /**
  * Returns all mondays at 1am UTC between the two dates
@@ -83,7 +78,6 @@ export function getNextMondays(start: Date, end: Date): Date[] {
 	return result;
 }
 
-
 /**
  * Distribute a value proportionally to a set of factors.
  * @param value The value to distribute.
@@ -96,9 +90,9 @@ export function distributeValueEqually(value: number, factors: number[]) {
 	if (factors.length === 1) return [value];
 
 	const totalWeight = factors.reduce((a, b) => a + b, 0);
-	const actual = new Array(factors.length),
-		  error = new Array(factors.length),
-		  rounded = new Array(factors.length);
+	const actual = new Array(factors.length);
+	const error = new Array(factors.length);
+	const rounded = new Array(factors.length);
 
 	let added = 0;
 	for (let i = 0; i < factors.length; i++) {

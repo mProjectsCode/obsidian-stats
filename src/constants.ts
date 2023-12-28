@@ -1,4 +1,4 @@
-import process from "process";
+import process from 'process';
 
 export const PLUGIN_LIST_PATH = 'community-plugins.json';
 export const PLUGIN_STATS_PATH = 'community-plugin-stats.json';
