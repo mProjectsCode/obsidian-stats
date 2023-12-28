@@ -18,6 +18,7 @@
 		"astro": "^4.0.1",
 		"chart.js": "^4.4.1",
 		"chartjs-plugin-annotation": "^3.0.1",
+		"chartjs-plugin-datalabels": "^2.2.0",
 		"prettier": "^3.1.1",
 		"prettier-plugin-astro": "^0.12.2",
 		"sharp": "^0.32.5",

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Commit } from '../../../../src/types.ts';
-	import { dateToString } from '../../utils/utils.ts';
+    import {dateToString} from "../../../../src/utils.ts";
 
 	export let commit: Commit;
 	let url = 'https://github.com/obsidianmd/obsidian-releases/commit/' + commit.hash;

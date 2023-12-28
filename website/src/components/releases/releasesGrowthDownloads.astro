@@ -1,19 +1,25 @@
 ---
-import {getReleaseGrowthPerWeek, getReleaseGrowthPerWeekPerOS, parseReleaseGrowth,} from "../../../../src/release/data";
-import { readFileSync } from 'fs';
+import {readFileSync} from "fs";
+import {escape, fromCSV, op} from "arquero";
+import {determineAssetOS} from "../../../../src/release/data";
 
-const ReleaseDataFile = readFileSync('../releases-weekly-data.csv', 'utf8');
+import StackedBarChart from '../svelte/stackedBarChart.svelte';
 
-import ReleaseDownloadsChart from '../svelte/releaseDownloadChart.svelte';
-import ReleaseDownloadGrowthChart from '../svelte/releaseDownloadGrowthChart.svelte';
+const ReleaseData = fromCSV(readFileSync('../releases-weekly-data.csv', 'utf8'), {parse: {date: String}});
 
-const downloadsGrowth = parseReleaseGrowth(ReleaseDataFile);
-// const releaseGrowthPerWeek = getReleaseGrowthPerWeek(downloadsGrowth);
-const releaseGrowthByWeekPerOS = getReleaseGrowthPerWeekPerOS(downloadsGrowth);
+const ReleaseDataWithOS = ReleaseData
+    .derive({os: escape(d => determineAssetOS(d.asset))});
+const allWeeks = ReleaseDataWithOS.distinctArray('date');
 
+const ReleaseDataByWeekAndOS = ReleaseDataWithOS
+    .groupby('date', 'os')
+    .rollup({downloads: d => op.sum(d.downloads)})
+    .imputeAll(["date", "os"], ["downloads"])
+    .groupby('os')
+    .rollup({downloads: d => op.array_agg(d.downloads)})
+    .select({os: "label", downloads: "data"})
 
 ---
 
-<ReleaseDownloadGrowthChart dataPoints={releaseGrowthByWeekPerOS.data} labels={releaseGrowthByWeekPerOS.labels}
-                            client:only="svelte" />
+<StackedBarChart dataPoints={ReleaseDataByWeekAndOS.objects()} labels={allWeeks} client:only="svelte" />
 

@@ -7,6 +7,10 @@ export function dateToString(date: Date): string {
 	return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
 }
 
+export function utcStringToString(date: string): string {
+	return dateToString(new Date(date));
+}
+
 export function stringToBase64(str: string): string {
 	return Buffer.from(str).toString('base64');
 }

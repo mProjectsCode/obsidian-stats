@@ -1,0 +1,98 @@
+---
+import {
+    determineAssetType,
+    determineAssetOS,
+    determineAssetIS,
+    determineAssetArchitecture
+} from "../../../../src/release/data";
+
+import {readFileSync} from "fs";
+import {escape, fromCSV, op, desc} from "arquero";
+
+import PieChart from '../svelte/pieChart.svelte';
+import StackedBarChart from '../svelte/stackedBarChart.svelte';
+
+let ReleaseData = fromCSV(readFileSync('../releases-full-data.csv', 'utf8'));
+
+
+const ReleaseDataWithAssetType = ReleaseData
+    .derive({ assetType: escape(d => determineAssetType(d.asset)) });
+
+const ReleaseDataGrouped = ReleaseDataWithAssetType
+    .groupby('assetType')
+    .rollup({ downloads: d => op.sum(d.downloads) })
+    .orderby(desc("downloads"));
+
+const assetDownloads: {label: string, value: any} = ReleaseDataGrouped
+    .normalize("downloads")
+    .objects({ grouped: true })
+    .map((row) => {return {label: row.assetType, value: row.downloads}});
+
+const ReleaseDataWithOS = ReleaseData
+    .derive({ os: escape(d => determineAssetOS(d.asset)) })
+    .filter(d => d.os !== null);
+
+const ReleaseDataGroupedOS = ReleaseDataWithOS
+    .groupby('os')
+    .rollup({ downloads: d => op.sum(d.downloads) })
+    .orderby(desc("downloads"));
+
+const assetDownloadsOS: {label: string, value: any} = ReleaseDataGroupedOS
+    .normalize("downloads")
+    .select({os: "label", downloads: "value"})
+    .objects({ grouped: true });
+
+
+const firstAssetAppearance = ReleaseDataWithAssetType
+    .groupby('assetType')
+    .filter(d => op.first_value(d.asset) === d.asset);
+
+
+const ReleaseDataGroupedWithFirstAssetAppearance = firstAssetAppearance
+    .select("assetType", "size")
+    .rename({size: "firstAssetSize"})
+    .join(ReleaseDataWithAssetType, "assetType");
+
+
+const allVersions = ReleaseData.distinctArray("version");
+const normalisedAssetSize = ReleaseDataGroupedWithFirstAssetAppearance
+    .derive({ normalisedSize: d => d.size / d.firstAssetSize })
+    .select("version", "assetType", "normalisedSize")
+    .imputeAll(["version", "assetType"], ["normalisedSize"])
+    .groupby("assetType")
+    .rollup({ normalisedSize: d => op.array_agg(d.normalisedSize) })
+    .select({assetType: "label", normalisedSize: "data"})
+    .objects({ grouped: true });
+
+const assetDownloadsIS = ReleaseData
+    .derive({ is: escape(d => determineAssetIS(d.asset))})
+    .groupby('is')
+    .rollup({ downloads: d => op.sum(d.downloads) })
+    .normalize("downloads")
+    .orderby(desc("downloads"))
+    .rename({downloads: "value", is: "label"})
+    .objects({ grouped: true });
+
+const assetDownloadsArchitecture = ReleaseData
+    .derive({ architecture: escape(d => determineAssetArchitecture(d.asset))})
+    .groupby('architecture')
+    .rollup({ downloads: d => op.sum(d.downloads) })
+    .normalize("downloads")
+    .orderby(desc("downloads"))
+    .rename({downloads: "value", architecture: "label"})
+    .objects({ grouped: true });
+
+
+---
+
+<PieChart dataPoints={assetDownloads} isPercentual={true} client:only="svelte" />
+
+<PieChart dataPoints={assetDownloadsOS} isPercentual={true} client:only="svelte" />
+
+<PieChart dataPoints={assetDownloadsIS} isPercentual={true} client:only="svelte" />
+
+<PieChart dataPoints={assetDownloadsArchitecture} isPercentual={true} client:only="svelte" />
+
+
+<StackedBarChart dataPoints={normalisedAssetSize} labels={allVersions} client:only="svelte" />
+
