@@ -1,0 +1,37 @@
+---
+import {readFileSync} from "fs";
+import {escape, fromCSV, op} from "arquero";
+import { determineAssetOS } from "../../../../src/release/data";
+
+import StackedBarChart from '../svelte/stackedBarChart.svelte';
+
+
+const ReleaseData = fromCSV(readFileSync('../releases-full-data.csv', 'utf8'));
+const allVersions = ReleaseData.distinctArray('version');
+
+
+const ReleaseDataOS = ReleaseData
+    .derive({ os: escape(d => determineAssetOS(d.asset)) })
+
+const ReleaseDataOSGrouped = ReleaseDataOS
+    .groupby('version', 'os')
+    .rollup({ downloads: d => op.sum(d.downloads) })
+    .imputeAll(["version", "os"], ["downloads"]);
+
+const downloadDataOSGrouped = ReleaseDataOSGrouped
+    .groupby("os")
+    .rollup({ downloads: d => op.array_agg(d.downloads) })
+    .select({os: "label", downloads: "data"})
+    .objects({ grouped: true });
+
+
+const normalisedDownloadDataOSGrouped = ReleaseDataOSGrouped.normalizeBy("downloads", "version")
+    .groupby("os")
+    .rollup({ downloads: d => op.array_agg(d.downloads) })
+    .select({os: "label", downloads: "data"})
+    .objects({ grouped: true });
+
+---
+
+<StackedBarChart dataPoints={downloadDataOSGrouped} labels={allVersions} client:only="svelte" />
+<StackedBarChart dataPoints={normalisedDownloadDataOSGrouped} labels={allVersions} isPercentual={true} client:only="svelte" />

@@ -1,0 +1,32 @@
+---
+import {readFileSync} from "fs";
+import {escape, fromCSV, op} from "arquero";
+import {getMajorVersions} from "../../../../src/release/data";
+
+import BarChart from '../svelte/barChart.svelte';
+
+const ReleaseData = fromCSV(readFileSync('../releases-full-data.csv', 'utf8'));
+const ReleaseTimeData = ReleaseData.select('date', 'version').dedupe();
+
+const allVersions = ReleaseData.distinctArray('version');
+const majorVersions = getMajorVersions(allVersions);
+
+const timeBetweenAllVersions = ReleaseTimeData
+    .derive({timeBetween: (d) => op.timestamp(d.date) - op.timestamp(op.lag(d.date))})
+    .impute({timeBetween: 0})
+    .derive({timeBetween: (d) => op.round(d.timeBetween / 24 / 60 / 60 / 1000)})
+    .rollup({timeBetween: d => op.array_agg(d.timeBetween)})
+    .objects()[0].timeBetween;
+
+const timeBetweenMajorVersions = ReleaseTimeData
+    .filter(escape(d => op.includes(majorVersions, d.version, 0)))
+    .derive({timeBetween: (d) => op.timestamp(d.date) - op.timestamp(op.lag(d.date))})
+    .impute({timeBetween: 0})
+    .derive({timeBetween: (d) => op.round(d.timeBetween / 24 / 60 / 60 / 1000)})
+    .rollup({timeBetween: d => op.array_agg(d.timeBetween)})
+    .objects()[0].timeBetween;
+
+---
+
+<BarChart dataPoints={timeBetweenAllVersions} labels={allVersions} seriesName="Days between releases" client:only="svelte"/>
+<BarChart dataPoints={timeBetweenMajorVersions} labels={majorVersions} seriesName="Days between major releases" client:only="svelte"/>

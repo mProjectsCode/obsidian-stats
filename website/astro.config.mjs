@@ -32,6 +32,12 @@ export default defineConfig({
 						directory: 'themeStats',
 					},
 				},
+				{
+					label: "Release Stats",
+					autogenerate: {
+						directory: "releaseStats",
+					},
+				},
 			],
 		}),
 		svelte(),

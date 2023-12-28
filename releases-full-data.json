@@ -1,0 +1,4262 @@
+[
+    {
+        "version": "v0.5.0",
+        "date": "2020-05-10T20:09:58.000Z",
+        "assets": [
+            {
+                "name": "obsidian-0.5.0.asar.gz",
+                "download_count": 81,
+                "size": 3305911
+            }
+        ]
+    },
+    {
+        "version": "v0.5.1",
+        "date": "2020-05-13T23:39:13.000Z",
+        "assets": [
+            {
+                "name": "obsidian-0.5.1.asar.gz",
+                "download_count": 410,
+                "size": 3333033
+            }
+        ]
+    },
+    {
+        "version": "v0.5.2",
+        "date": "2020-05-15T19:37:07.000Z",
+        "assets": [
+            {
+                "name": "obsidian-0.5.2.asar.gz",
+                "download_count": 148,
+                "size": 4013743
+            }
+        ]
+    },
+    {
+        "version": "v0.5.3",
+        "date": "2020-05-15T22:13:35.000Z",
+        "assets": [
+            {
+                "name": "obsidian-0.5.3.asar.gz",
+                "download_count": 582,
+                "size": 4015242
+            }
+        ]
+    },
+    {
+        "version": "v0.6.0",
+        "date": "2020-05-18T22:02:49.000Z",
+        "assets": [
+            {
+                "name": "obsidian-0.6.0.asar.gz",
+                "download_count": 795,
+                "size": 4021171
+            }
+        ]
+    },
+    {
+        "version": "v0.6.1",
+        "date": "2020-05-22T23:57:56.000Z",
+        "assets": [
+            {
+                "name": "obsidian-0.6.1.asar.gz",
+                "download_count": 556,
+                "size": 4029073
+            }
+        ]
+    },
+    {
+        "version": "v0.6.2",
+        "date": "2020-05-23T18:34:45.000Z",
+        "assets": [
+            {
+                "name": "obsidian-0.6.2.asar.gz",
+                "download_count": 1182,
+                "size": 4030425
+            }
+        ]
+    },
+    {
+        "version": "v0.6.3",
+        "date": "2020-05-25T22:13:12.000Z",
+        "assets": [
+            {
+                "name": "obsidian-0.6.3.asar.gz",
+                "download_count": 333,
+                "size": 4112484
+            }
+        ]
+    },
+    {
+        "version": "v0.6.4",
+        "date": "2020-05-26T02:15:20.000Z",
+        "assets": [
+            {
+                "name": "Obsidian-0.6.4.AppImage",
+                "download_count": 3076,
+                "size": 76799131
+            },
+            {
+                "name": "obsidian-0.6.4.asar.gz",
+                "download_count": 1727,
+                "size": 4112670
+            },
+            {
+                "name": "Obsidian-0.6.4.dmg",
+                "download_count": 7882,
+                "size": 71583869
+            },
+            {
+                "name": "Obsidian.0.6.4.exe",
+                "download_count": 5159,
+                "size": 53594352
+            },
+            {
+                "name": "obsidian_0.6.4_amd64.snap",
+                "download_count": 1229,
+                "size": 64380928
+            }
+        ]
+    },
+    {
+        "version": "v0.6.5",
+        "date": "2020-05-29T22:17:51.000Z",
+        "assets": [
+            {
+                "name": "Obsidian-0.6.5.AppImage",
+                "download_count": 1242,
+                "size": 76803451
+            },
+            {
+                "name": "obsidian-0.6.5.asar.gz",
+                "download_count": 4501,
+                "size": 4118514
+            },
+            {
+                "name": "Obsidian-0.6.5.dmg",
+                "download_count": 3846,
+                "size": 71600842
+            },
+            {
+                "name": "Obsidian.0.6.5.exe",
+                "download_count": 2768,
+                "size": 53600600
+            },
+            {
+                "name": "obsidian_0.6.5_amd64.snap",
+                "download_count": 404,
+                "size": 64385024
+            }
+        ]
+    },
+    {
+        "version": "v0.6.6",
+        "date": "2020-06-01T18:28:11.000Z",
+        "assets": [
+            {
+                "name": "obsidian-0.6.6.asar.gz",
+                "download_count": 96,
+                "size": 4124111
+            }
+        ]
+    },
+    {
+        "version": "v0.6.7",
+        "date": "2020-06-02T19:11:21.000Z",
+        "assets": [
+            {
+                "name": "Obsidian-0.6.7.AppImage",
+                "download_count": 2506,
+                "size": 76811536
+            },
+            {
+                "name": "obsidian-0.6.7.asar.gz",
+                "download_count": 7487,
+                "size": 4124359
+            },
+            {
+                "name": "Obsidian-0.6.7.dmg",
+                "download_count": 7414,
+                "size": 71590866
+            },
+            {
+                "name": "Obsidian.0.6.7.exe",
+                "download_count": 8830,
+                "size": 53563350
+            },
+            {
+                "name": "obsidian_0.6.7_amd64.snap",
+                "download_count": 1094,
+                "size": 64393216
+            }
+        ]
+    },
+    {
+        "version": "v0.7.0",
+        "date": "2020-06-09T20:45:43.000Z",
+        "assets": [
+            {
+                "name": "obsidian-0.7.0.asar.gz",
+                "download_count": 150,
+                "size": 4142920
+            }
+        ]
+    },
+    {
+        "version": "v0.7.1",
+        "date": "2020-06-11T01:17:41.000Z",
+        "assets": [
+            {
+                "name": "obsidian-0.7.1.asar.gz",
+                "download_count": 219,
+                "size": 4143178
+            }
+        ]
+    },
+    {
+        "version": "v0.7.2",
+        "date": "2020-06-14T04:06:17.000Z",
+        "assets": [
+            {
+                "name": "obsidian-0.7.2.asar.gz",
+                "download_count": 161,
+                "size": 4160636
+            }
+        ]
+    },
+    {
+        "version": "v0.7.3",
+        "date": "2020-06-14T22:50:10.000Z",
+        "assets": [
+            {
+                "name": "Obsidian-0.7.3.AppImage",
+                "download_count": 2863,
+                "size": 76840432
+            },
+            {
+                "name": "obsidian-0.7.3.asar.gz",
+                "download_count": 14488,
+                "size": 4160655
+            },
+            {
+                "name": "Obsidian-0.7.3.dmg",
+                "download_count": 8596,
+                "size": 71633596
+            },
+            {
+                "name": "Obsidian.0.7.3.exe",
+                "download_count": 9968,
+                "size": 53632600
+            },
+            {
+                "name": "obsidian_0.7.3_amd64.snap",
+                "download_count": 1096,
+                "size": 64417792
+            }
+        ]
+    },
+    {
+        "version": "v0.7.4",
+        "date": "2020-06-23T20:58:54.000Z",
+        "assets": [
+            {
+                "name": "Obsidian-0.7.4.AppImage",
+                "download_count": 1534,
+                "size": 77196940
+            },
+            {
+                "name": "obsidian-0.7.4.asar.gz",
+                "download_count": 9370,
+                "size": 4510098
+            },
+            {
+                "name": "Obsidian-0.7.4.dmg",
+                "download_count": 3717,
+                "size": 72013221
+            },
+            {
+                "name": "Obsidian.0.7.4.exe",
+                "download_count": 5417,
+                "size": 53952760
+            },
+            {
+                "name": "obsidian_0.7.4_amd64.snap",
+                "download_count": 533,
+                "size": 64745472
+            }
+        ]
+    },
+    {
+        "version": "v0.7.5",
+        "date": "2020-07-01T09:30:27.000Z",
+        "assets": [
+            {
+                "name": "obsidian-0.7.5.asar.gz",
+                "download_count": 239,
+                "size": 4511872
+            }
+        ]
+    },
+    {
+        "version": "v0.7.6",
+        "date": "2020-07-03T04:15:53.000Z",
+        "assets": [
+            {
+                "name": "Obsidian-0.7.6.AppImage",
+                "download_count": 2045,
+                "size": 77414392
+            },
+            {
+                "name": "obsidian-0.7.6.asar.gz",
+                "download_count": 13666,
+                "size": 4721426
+            },
+            {
+                "name": "Obsidian-0.7.6.dmg",
+                "download_count": 5624,
+                "size": 72196817
+            },
+            {
+                "name": "Obsidian.0.7.6.exe",
+                "download_count": 7587,
+                "size": 54106872
+            },
+            {
+                "name": "obsidian_0.7.6_amd64.snap",
+                "download_count": 699,
+                "size": 64929792
+            }
+        ]
+    },
+    {
+        "version": "v0.8.0",
+        "date": "2020-07-14T04:24:48.000Z",
+        "assets": [
+            {
+                "name": "Obsidian-0.8.0.AppImage",
+                "download_count": 2085,
+                "size": 77459925
+            },
+            {
+                "name": "obsidian-0.8.0.asar.gz",
+                "download_count": 12127,
+                "size": 4768475
+            },
+            {
+                "name": "Obsidian-0.8.0.dmg",
+                "download_count": 5051,
+                "size": 72253385
+            },
+            {
+                "name": "Obsidian.0.8.0.exe",
+                "download_count": 7070,
+                "size": 54082144
+            },
+            {
+                "name": "obsidian_0.8.0_amd64.snap",
+                "download_count": 672,
+                "size": 64974848
+            }
+        ]
+    },
+    {
+        "version": "v0.8.1",
+        "date": "2020-07-21T20:14:50.000Z",
+        "assets": [
+            {
+                "name": "Obsidian-0.8.1.AppImage",
+                "download_count": 1817,
+                "size": 77471796
+            },
+            {
+                "name": "obsidian-0.8.1.asar.gz",
+                "download_count": 10958,
+                "size": 4777786
+            },
+            {
+                "name": "Obsidian-0.8.1.dmg",
+                "download_count": 5072,
+                "size": 72256424
+            },
+            {
+                "name": "Obsidian.0.8.1.exe",
+                "download_count": 7448,
+                "size": 54094552
+            },
+            {
+                "name": "obsidian_0.8.1_amd64.snap",
+                "download_count": 598,
+                "size": 64983040
+            }
+        ]
+    },
+    {
+        "version": "v0.8.2",
+        "date": "2020-07-30T19:05:08.000Z",
+        "assets": [
+            {
+                "name": "Obsidian-0.8.2.AppImage",
+                "download_count": 3444,
+                "size": 77660391
+            },
+            {
+                "name": "obsidian-0.8.2.asar.gz",
+                "download_count": 11569,
+                "size": 4969961
+            },
+            {
+                "name": "Obsidian-0.8.2.dmg",
+                "download_count": 6208,
+                "size": 72444672
+            },
+            {
+                "name": "Obsidian.0.8.2.exe",
+                "download_count": 9939,
+                "size": 54235808
+            },
+            {
+                "name": "obsidian_0.8.2_amd64.snap",
+                "download_count": 975,
+                "size": 65138688
+            }
+        ]
+    },
+    {
+        "version": "v0.8.3",
+        "date": "2020-08-11T00:24:52.000Z",
+        "assets": [
+            {
+                "name": "obsidian-0.8.3.asar.gz",
+                "download_count": 493,
+                "size": 5042211
+            }
+        ]
+    },
+    {
+        "version": "v0.8.4",
+        "date": "2020-08-12T16:52:19.000Z",
+        "assets": [
+            {
+                "name": "Obsidian-0.8.4.AppImage",
+                "download_count": 3682,
+                "size": 77733925
+            },
+            {
+                "name": "obsidian-0.8.4.asar.gz",
+                "download_count": 13824,
+                "size": 5037098
+            },
+            {
+                "name": "Obsidian-0.8.4.dmg",
+                "download_count": 8270,
+                "size": 72521708
+            },
+            {
+                "name": "Obsidian.0.8.4.exe",
+                "download_count": 12671,
+                "size": 54286400
+            },
+            {
+                "name": "obsidian_0.8.4_amd64.snap",
+                "download_count": 1375,
+                "size": 65204224
+            }
+        ]
+    },
+    {
+        "version": "v0.8.5",
+        "date": "2020-08-22T00:30:26.000Z",
+        "assets": [
+            {
+                "name": "obsidian-0.8.5.asar.gz",
+                "download_count": 592,
+                "size": 5097910
+            }
+        ]
+    },
+    {
+        "version": "v0.8.6",
+        "date": "2020-08-24T22:15:37.000Z",
+        "assets": [
+            {
+                "name": "obsidian-0.8.6.asar.gz",
+                "download_count": 105,
+                "size": 5123031
+            }
+        ]
+    },
+    {
+        "version": "v0.8.7",
+        "date": "2020-08-24T23:03:12.000Z",
+        "assets": [
+            {
+                "name": "obsidian-0.8.7.asar.gz",
+                "download_count": 138,
+                "size": 5123086
+            }
+        ]
+    },
+    {
+        "version": "v0.8.8",
+        "date": "2020-08-25T00:48:33.000Z",
+        "assets": [
+            {
+                "name": "obsidian-0.8.8.asar.gz",
+                "download_count": 804,
+                "size": 5123137
+            }
+        ]
+    },
+    {
+        "version": "v0.8.9",
+        "date": "2020-08-31T18:37:11.000Z",
+        "assets": [
+            {
+                "name": "Obsidian-0.8.9.AppImage",
+                "download_count": 1999,
+                "size": 77832597
+            },
+            {
+                "name": "obsidian-0.8.9.asar.gz",
+                "download_count": 10605,
+                "size": 5123157
+            },
+            {
+                "name": "Obsidian-0.8.9.dmg",
+                "download_count": 4887,
+                "size": 72606782
+            },
+            {
+                "name": "Obsidian.0.8.9.exe",
+                "download_count": 6476,
+                "size": 54347736
+            },
+            {
+                "name": "obsidian_0.8.9_amd64.snap",
+                "download_count": 667,
+                "size": 65290240
+            }
+        ]
+    },
+    {
+        "version": "v0.8.10",
+        "date": "2020-08-31T18:37:30.000Z",
+        "assets": [
+            {
+                "name": "obsidian-0.8.10.asar.gz",
+                "download_count": 445,
+                "size": 5121938
+            }
+        ]
+    },
+    {
+        "version": "v0.8.11",
+        "date": "2020-09-01T20:23:59.000Z",
+        "assets": [
+            {
+                "name": "obsidian-0.8.11.asar.gz",
+                "download_count": 756,
+                "size": 5125859
+            }
+        ]
+    },
+    {
+        "version": "v0.8.12",
+        "date": "2020-09-07T19:24:14.000Z",
+        "assets": [
+            {
+                "name": "Obsidian-0.8.12.AppImage",
+                "download_count": 1992,
+                "size": 81347115
+            },
+            {
+                "name": "obsidian-0.8.12.asar.gz",
+                "download_count": 11414,
+                "size": 5125860
+            },
+            {
+                "name": "Obsidian-0.8.12.dmg",
+                "download_count": 4565,
+                "size": 82989104
+            },
+            {
+                "name": "Obsidian.0.8.12.exe",
+                "download_count": 5688,
+                "size": 58845312
+            },
+            {
+                "name": "obsidian_0.8.12_amd64.snap",
+                "download_count": 547,
+                "size": 68386816
+            }
+        ]
+    },
+    {
+        "version": "v0.8.13",
+        "date": "2020-09-07T19:24:33.000Z",
+        "assets": [
+            {
+                "name": "obsidian-0.8.13.asar.gz",
+                "download_count": 667,
+                "size": 5139398
+            }
+        ]
+    },
+    {
+        "version": "v0.8.14",
+        "date": "2020-09-10T21:39:57.000Z",
+        "assets": [
+            {
+                "name": "Obsidian-0.8.14.AppImage",
+                "download_count": 2088,
+                "size": 81359524
+            },
+            {
+                "name": "obsidian-0.8.14.asar.gz",
+                "download_count": 11776,
+                "size": 5139953
+            },
+            {
+                "name": "Obsidian-0.8.14.dmg",
+                "download_count": 4589,
+                "size": 83043984
+            },
+            {
+                "name": "Obsidian.0.8.14.exe",
+                "download_count": 6123,
+                "size": 58858768
+            },
+            {
+                "name": "obsidian_0.8.14_amd64.snap",
+                "download_count": 668,
+                "size": 68399104
+            }
+        ]
+    },
+    {
+        "version": "v0.8.15",
+        "date": "2020-09-14T21:26:48.000Z",
+        "assets": [
+            {
+                "name": "Obsidian-0.8.15.AppImage",
+                "download_count": 2078,
+                "size": 81376000
+            },
+            {
+                "name": "obsidian-0.8.15.asar.gz",
+                "download_count": 12306,
+                "size": 5161165
+            },
+            {
+                "name": "Obsidian-0.8.15.dmg",
+                "download_count": 4123,
+                "size": 83065579
+            },
+            {
+                "name": "Obsidian.0.8.15.exe",
+                "download_count": 5092,
+                "size": 58872664
+            },
+            {
+                "name": "obsidian_0.8.15_amd64.snap",
+                "download_count": 828,
+                "size": 68419584
+            }
+        ]
+    },
+    {
+        "version": "v0.9.0",
+        "date": "2020-09-21T19:52:41.000Z",
+        "assets": [
+            {
+                "name": "obsidian-0.9.0.asar.gz",
+                "download_count": 773,
+                "size": 5143577
+            }
+        ]
+    },
+    {
+        "version": "v0.9.1",
+        "date": "2020-09-24T19:11:11.000Z",
+        "assets": [
+            {
+                "name": "Obsidian-0.9.1.AppImage",
+                "download_count": 1904,
+                "size": 81380156
+            },
+            {
+                "name": "obsidian-0.9.1.asar.gz",
+                "download_count": 11657,
+                "size": 5166490
+            },
+            {
+                "name": "Obsidian-0.9.1.dmg",
+                "download_count": 4060,
+                "size": 83072203
+            },
+            {
+                "name": "obsidian-0.9.1.tar.gz",
+                "download_count": 27,
+                "size": 77178761
+            },
+            {
+                "name": "Obsidian.0.9.1.exe",
+                "download_count": 5181,
+                "size": 58841592
+            },
+            {
+                "name": "obsidian_0.9.1_amd64.snap",
+                "download_count": 606,
+                "size": 68386816
+            }
+        ]
+    },
+    {
+        "version": "v0.9.2",
+        "date": "2020-09-30T19:40:54.000Z",
+        "assets": [
+            {
+                "name": "Obsidian-0.9.2.AppImage",
+                "download_count": 2081,
+                "size": 81384080
+            },
+            {
+                "name": "obsidian-0.9.2.asar.gz",
+                "download_count": 11908,
+                "size": 5174879
+            },
+            {
+                "name": "Obsidian-0.9.2.dmg",
+                "download_count": 4072,
+                "size": 83072032
+            },
+            {
+                "name": "obsidian-0.9.2.tar.gz",
+                "download_count": 47,
+                "size": 77186356
+            },
+            {
+                "name": "Obsidian.0.9.2.exe",
+                "download_count": 5021,
+                "size": 58848168
+            },
+            {
+                "name": "obsidian_0.9.2_amd64.snap",
+                "download_count": 600,
+                "size": 68395008
+            }
+        ]
+    },
+    {
+        "version": "v0.9.3",
+        "date": "2020-10-05T19:57:18.000Z",
+        "assets": [
+            {
+                "name": "Obsidian-0.9.3.AppImage",
+                "download_count": 1946,
+                "size": 81429208
+            },
+            {
+                "name": "obsidian-0.9.3.asar.gz",
+                "download_count": 13570,
+                "size": 5227190
+            },
+            {
+                "name": "Obsidian-0.9.3.dmg",
+                "download_count": 4139,
+                "size": 83136253
+            },
+            {
+                "name": "obsidian-0.9.3.tar.gz",
+                "download_count": 47,
+                "size": 77243167
+            },
+            {
+                "name": "Obsidian.0.9.3.exe",
+                "download_count": 5403,
+                "size": 58857968
+            },
+            {
+                "name": "obsidian_0.9.3_amd64.snap",
+                "download_count": 636,
+                "size": 68407296
+            }
+        ]
+    },
+    {
+        "version": "v0.9.4",
+        "date": "2020-10-13T14:29:14.000Z",
+        "assets": [
+            {
+                "name": "Obsidian-0.9.4.AppImage",
+                "download_count": 2052,
+                "size": 81449787
+            },
+            {
+                "name": "obsidian-0.9.4.asar.gz",
+                "download_count": 12294,
+                "size": 5239176
+            },
+            {
+                "name": "Obsidian-0.9.4.dmg",
+                "download_count": 4909,
+                "size": 83144276
+            },
+            {
+                "name": "obsidian-0.9.4.tar.gz",
+                "download_count": 48,
+                "size": 77254354
+            },
+            {
+                "name": "Obsidian.0.9.4.exe",
+                "download_count": 6283,
+                "size": 58866168
+            },
+            {
+                "name": "obsidian_0.9.4_amd64.snap",
+                "download_count": 598,
+                "size": 68440064
+            }
+        ]
+    },
+    {
+        "version": "v0.9.5",
+        "date": "2020-10-19T16:53:24.000Z",
+        "assets": [
+            {
+                "name": "obsidian-0.9.5.asar.gz",
+                "download_count": 643,
+                "size": 5241916
+            }
+        ]
+    },
+    {
+        "version": "v0.9.6",
+        "date": "2020-10-20T15:23:39.000Z",
+        "assets": [
+            {
+                "name": "Obsidian-0.9.6.AppImage",
+                "download_count": 2570,
+                "size": 81474176
+            },
+            {
+                "name": "obsidian-0.9.6.asar.gz",
+                "download_count": 14021,
+                "size": 5260536
+            },
+            {
+                "name": "Obsidian-0.9.6.dmg",
+                "download_count": 7016,
+                "size": 83172748
+            },
+            {
+                "name": "obsidian-0.9.6.tar.gz",
+                "download_count": 24,
+                "size": 77275023
+            },
+            {
+                "name": "Obsidian.0.9.6.exe",
+                "download_count": 8663,
+                "size": 58890544
+            },
+            {
+                "name": "obsidian_0.9.6_amd64.snap",
+                "download_count": 740,
+                "size": 68472832
+            }
+        ]
+    },
+    {
+        "version": "v0.9.7",
+        "date": "2020-10-26T18:09:09.000Z",
+        "assets": [
+            {
+                "name": "obsidian-0.9.7.asar.gz",
+                "download_count": 926,
+                "size": 5307241
+            }
+        ]
+    },
+    {
+        "version": "v0.9.8",
+        "date": "2020-10-29T23:33:18.000Z",
+        "assets": [
+            {
+                "name": "obsidian-0.9.8.asar.gz",
+                "download_count": 275,
+                "size": 5310986
+            }
+        ]
+    },
+    {
+        "version": "v0.9.9",
+        "date": "2020-10-30T02:18:42.000Z",
+        "assets": [
+            {
+                "name": "obsidian-0.9.9.asar.gz",
+                "download_count": 694,
+                "size": 5310946
+            }
+        ]
+    },
+    {
+        "version": "v0.9.10",
+        "date": "2020-10-31T01:54:41.000Z",
+        "assets": [
+            {
+                "name": "Obsidian-0.9.10.AppImage",
+                "download_count": 1987,
+                "size": 81555946
+            },
+            {
+                "name": "obsidian-0.9.10.asar.gz",
+                "download_count": 13885,
+                "size": 5318867
+            },
+            {
+                "name": "Obsidian-0.9.10.dmg",
+                "download_count": 4767,
+                "size": 83241926
+            },
+            {
+                "name": "obsidian-0.9.10.tar.gz",
+                "download_count": 24,
+                "size": 77332548
+            },
+            {
+                "name": "Obsidian.0.9.10.exe",
+                "download_count": 7719,
+                "size": 58924064
+            },
+            {
+                "name": "obsidian_0.9.10_amd64.snap",
+                "download_count": 548,
+                "size": 68534272
+            }
+        ]
+    },
+    {
+        "version": "v0.9.11",
+        "date": "2020-11-03T23:29:15.000Z",
+        "assets": [
+            {
+                "name": "Obsidian-0.9.11.AppImage",
+                "download_count": 2179,
+                "size": 81560463
+            },
+            {
+                "name": "obsidian-0.9.11.asar.gz",
+                "download_count": 15296,
+                "size": 5322855
+            },
+            {
+                "name": "Obsidian-0.9.11.dmg",
+                "download_count": 6071,
+                "size": 83260699
+            },
+            {
+                "name": "obsidian-0.9.11.tar.gz",
+                "download_count": 39,
+                "size": 77336069
+            },
+            {
+                "name": "Obsidian.0.9.11.exe",
+                "download_count": 7811,
+                "size": 58927144
+            },
+            {
+                "name": "obsidian_0.9.11_amd64.snap",
+                "download_count": 612,
+                "size": 68538368
+            }
+        ]
+    },
+    {
+        "version": "v0.9.12",
+        "date": "2020-11-10T21:17:33.000Z",
+        "assets": [
+            {
+                "name": "obsidian-0.9.12.asar.gz",
+                "download_count": 966,
+                "size": 5337141
+            }
+        ]
+    },
+    {
+        "version": "v0.9.13",
+        "date": "2020-11-13T01:07:51.000Z",
+        "assets": [
+            {
+                "name": "obsidian-0.9.13.asar.gz",
+                "download_count": 702,
+                "size": 5338721
+            }
+        ]
+    },
+    {
+        "version": "v0.9.14",
+        "date": "2020-11-13T22:28:00.000Z",
+        "assets": [
+            {
+                "name": "obsidian-0.9.14.asar.gz",
+                "download_count": 1427,
+                "size": 5344742
+            }
+        ]
+    },
+    {
+        "version": "v0.9.15",
+        "date": "2020-11-18T01:19:23.000Z",
+        "assets": [
+            {
+                "name": "Obsidian-0.9.15.AppImage",
+                "download_count": 2119,
+                "size": 81580896
+            },
+            {
+                "name": "obsidian-0.9.15.asar.gz",
+                "download_count": 13887,
+                "size": 5346806
+            },
+            {
+                "name": "Obsidian-0.9.15.dmg",
+                "download_count": 5645,
+                "size": 83269112
+            },
+            {
+                "name": "obsidian-0.9.15.tar.gz",
+                "download_count": 40,
+                "size": 77358125
+            },
+            {
+                "name": "Obsidian.0.9.15.exe",
+                "download_count": 6880,
+                "size": 58948480
+            },
+            {
+                "name": "obsidian_0.9.15_amd64.snap",
+                "download_count": 615,
+                "size": 68550656
+            }
+        ]
+    },
+    {
+        "version": "v0.9.16",
+        "date": "2020-11-20T00:23:55.000Z",
+        "assets": [
+            {
+                "name": "obsidian-0.9.16.asar.gz",
+                "download_count": 731,
+                "size": 5424634
+            }
+        ]
+    },
+    {
+        "version": "v0.9.17",
+        "date": "2020-11-21T09:02:00.000Z",
+        "assets": [
+            {
+                "name": "Obsidian-0.9.17-arm64.AppImage",
+                "download_count": 2072,
+                "size": 88272461
+            },
+            {
+                "name": "Obsidian-0.9.17-arm64.dmg",
+                "download_count": 213,
+                "size": 86485664
+            },
+            {
+                "name": "obsidian-0.9.17-arm64.tar.gz",
+                "download_count": 1738,
+                "size": 83638038
+            },
+            {
+                "name": "Obsidian-0.9.17.AppImage",
+                "download_count": 4159,
+                "size": 83110761
+            },
+            {
+                "name": "obsidian-0.9.17.asar.gz",
+                "download_count": 19547,
+                "size": 5425229
+            },
+            {
+                "name": "Obsidian-0.9.17.dmg",
+                "download_count": 9106,
+                "size": 85676632
+            },
+            {
+                "name": "obsidian-0.9.17.tar.gz",
+                "download_count": 56,
+                "size": 78885934
+            },
+            {
+                "name": "Obsidian.0.9.17-32.exe",
+                "download_count": 3130,
+                "size": 57579728
+            },
+            {
+                "name": "Obsidian.0.9.17-arm64.exe",
+                "download_count": 1925,
+                "size": 65097664
+            },
+            {
+                "name": "Obsidian.0.9.17.exe",
+                "download_count": 13827,
+                "size": 60546392
+            },
+            {
+                "name": "obsidian_0.9.17_amd64.snap",
+                "download_count": 1228,
+                "size": 70406144
+            }
+        ]
+    },
+    {
+        "version": "v0.9.18",
+        "date": "2020-11-26T00:31:05.000Z",
+        "assets": [
+            {
+                "name": "obsidian-0.9.18.asar.gz",
+                "download_count": 670,
+                "size": 5497243
+            }
+        ]
+    },
+    {
+        "version": "v0.9.19",
+        "date": "2020-11-26T23:08:31.000Z",
+        "assets": [
+            {
+                "name": "obsidian-0.9.19.asar.gz",
+                "download_count": 1297,
+                "size": 5499683
+            }
+        ]
+    },
+    {
+        "version": "v0.9.20",
+        "date": "2020-12-02T23:35:31.000Z",
+        "assets": [
+            {
+                "name": "Obsidian-0.9.20-arm64.dmg",
+                "download_count": 160,
+                "size": 86570233
+            },
+            {
+                "name": "Obsidian-0.9.20.AppImage",
+                "download_count": 1940,
+                "size": 83184616
+            },
+            {
+                "name": "obsidian-0.9.20.asar.gz",
+                "download_count": 13973,
+                "size": 5502482
+            },
+            {
+                "name": "Obsidian-0.9.20.dmg",
+                "download_count": 4750,
+                "size": 85700860
+            },
+            {
+                "name": "obsidian-0.9.20.tar.gz",
+                "download_count": 34,
+                "size": 78959413
+            },
+            {
+                "name": "Obsidian.0.9.20.exe",
+                "download_count": 6147,
+                "size": 60603976
+            },
+            {
+                "name": "obsidian_0.9.20_amd64.deb",
+                "download_count": 12998,
+                "size": 58711954
+            },
+            {
+                "name": "obsidian_0.9.20_amd64.snap",
+                "download_count": 533,
+                "size": 70467584
+            }
+        ]
+    },
+    {
+        "version": "v0.9.21",
+        "date": "2020-12-08T03:16:27.000Z",
+        "assets": [
+            {
+                "name": "obsidian-0.9.21.asar.gz",
+                "download_count": 462,
+                "size": 5521591
+            }
+        ]
+    },
+    {
+        "version": "v0.9.22",
+        "date": "2020-12-08T12:17:28.000Z",
+        "assets": [
+            {
+                "name": "Obsidian-0.9.22-arm64.dmg",
+                "download_count": 146,
+                "size": 86203452
+            },
+            {
+                "name": "Obsidian-0.9.22.AppImage",
+                "download_count": 2171,
+                "size": 82825987
+            },
+            {
+                "name": "obsidian-0.9.22.asar.gz",
+                "download_count": 15524,
+                "size": 5521625
+            },
+            {
+                "name": "Obsidian-0.9.22.dmg",
+                "download_count": 5182,
+                "size": 85263197
+            },
+            {
+                "name": "obsidian-0.9.22.tar.gz",
+                "download_count": 26,
+                "size": 78631110
+            },
+            {
+                "name": "Obsidian.0.9.22.exe",
+                "download_count": 7287,
+                "size": 60528784
+            },
+            {
+                "name": "obsidian_0.9.22_amd64.snap",
+                "download_count": 518,
+                "size": 70144000
+            }
+        ]
+    },
+    {
+        "version": "v0.10.0",
+        "date": "2020-12-14T14:01:30.000Z",
+        "assets": [
+            {
+                "name": "obsidian-0.10.0.asar.gz",
+                "download_count": 997,
+                "size": 5530923
+            }
+        ]
+    },
+    {
+        "version": "v0.10.1",
+        "date": "2020-12-16T21:24:38.000Z",
+        "assets": [
+            {
+                "name": "Obsidian-0.10.1-arm64.dmg",
+                "download_count": 310,
+                "size": 86187001
+            },
+            {
+                "name": "Obsidian-0.10.1.AppImage",
+                "download_count": 3794,
+                "size": 82834301
+            },
+            {
+                "name": "obsidian-0.10.1.asar.gz",
+                "download_count": 22666,
+                "size": 5534974
+            },
+            {
+                "name": "Obsidian-0.10.1.dmg",
+                "download_count": 9893,
+                "size": 85307129
+            },
+            {
+                "name": "obsidian-0.10.1.tar.gz",
+                "download_count": 34,
+                "size": 78648735
+            },
+            {
+                "name": "Obsidian.0.10.1.exe",
+                "download_count": 12685,
+                "size": 60542560
+            },
+            {
+                "name": "obsidian_0.10.1_amd64.snap",
+                "download_count": 1255,
+                "size": 70148096
+            }
+        ]
+    },
+    {
+        "version": "v0.10.2",
+        "date": "2020-12-21T17:46:43.000Z",
+        "assets": [
+            {
+                "name": "obsidian-0.10.2.asar.gz",
+                "download_count": 1367,
+                "size": 5539687
+            }
+        ]
+    },
+    {
+        "version": "v0.10.3",
+        "date": "2020-12-29T18:48:32.000Z",
+        "assets": [
+            {
+                "name": "obsidian-0.10.3.asar.gz",
+                "download_count": 720,
+                "size": 5543850
+            }
+        ]
+    },
+    {
+        "version": "v0.10.4",
+        "date": "2020-12-30T18:54:03.000Z",
+        "assets": [
+            {
+                "name": "obsidian-0.10.4.asar.gz",
+                "download_count": 726,
+                "size": 5543489
+            }
+        ]
+    },
+    {
+        "version": "v0.10.5",
+        "date": "2021-01-01T02:14:02.000Z",
+        "assets": [
+            {
+                "name": "obsidian-0.10.5.asar.gz",
+                "download_count": 1356,
+                "size": 5548434
+            }
+        ]
+    },
+    {
+        "version": "v0.10.6",
+        "date": "2021-01-04T23:46:50.000Z",
+        "assets": [
+            {
+                "name": "Obsidian-0.10.6-arm64.dmg",
+                "download_count": 165,
+                "size": 86217369
+            },
+            {
+                "name": "Obsidian-0.10.6.AppImage",
+                "download_count": 2437,
+                "size": 82850989
+            },
+            {
+                "name": "obsidian-0.10.6.asar.gz",
+                "download_count": 14780,
+                "size": 5548588
+            },
+            {
+                "name": "Obsidian-0.10.6.dmg",
+                "download_count": 5938,
+                "size": 85320943
+            },
+            {
+                "name": "obsidian-0.10.6.tar.gz",
+                "download_count": 19,
+                "size": 78659417
+            },
+            {
+                "name": "Obsidian.0.10.6.exe",
+                "download_count": 8032,
+                "size": 60555768
+            },
+            {
+                "name": "obsidian_0.10.6_amd64.snap",
+                "download_count": 663,
+                "size": 70164480
+            }
+        ]
+    },
+    {
+        "version": "v0.10.7",
+        "date": "2021-01-07T19:58:38.000Z",
+        "assets": [
+            {
+                "name": "Obsidian-0.10.7-arm64.dmg",
+                "download_count": 207,
+                "size": 86217967
+            },
+            {
+                "name": "Obsidian-0.10.7.AppImage",
+                "download_count": 3197,
+                "size": 82850705
+            },
+            {
+                "name": "obsidian-0.10.7.asar.gz",
+                "download_count": 16837,
+                "size": 5551429
+            },
+            {
+                "name": "Obsidian-0.10.7.dmg",
+                "download_count": 7652,
+                "size": 85318989
+            },
+            {
+                "name": "obsidian-0.10.7.tar.gz",
+                "download_count": 32,
+                "size": 78661109
+            },
+            {
+                "name": "Obsidian.0.10.7.exe",
+                "download_count": 11027,
+                "size": 60556544
+            },
+            {
+                "name": "obsidian_0.10.7_amd64.snap",
+                "download_count": 881,
+                "size": 70164480
+            }
+        ]
+    },
+    {
+        "version": "v0.10.8",
+        "date": "2021-01-12T00:07:48.000Z",
+        "assets": [
+            {
+                "name": "Obsidian-0.10.8.AppImage",
+                "download_count": 2110,
+                "size": 82821733
+            },
+            {
+                "name": "obsidian-0.10.8.asar.gz",
+                "download_count": 15368,
+                "size": 5516393
+            },
+            {
+                "name": "Obsidian-0.10.8.dmg",
+                "download_count": 5608,
+                "size": 154877426
+            },
+            {
+                "name": "obsidian-0.10.8.tar.gz",
+                "download_count": 22,
+                "size": 78629966
+            },
+            {
+                "name": "Obsidian.0.10.8.exe",
+                "download_count": 6713,
+                "size": 60518304
+            },
+            {
+                "name": "obsidian_0.10.8_amd64.snap",
+                "download_count": 559,
+                "size": 70135808
+            }
+        ]
+    },
+    {
+        "version": "v0.10.9",
+        "date": "2021-01-19T19:31:40.000Z",
+        "assets": [
+            {
+                "name": "Obsidian-0.10.9-universal.dmg",
+                "download_count": 2903,
+                "size": 157607471
+            },
+            {
+                "name": "Obsidian-0.10.9.AppImage",
+                "download_count": 1306,
+                "size": 85531787
+            },
+            {
+                "name": "obsidian-0.10.9.asar.gz",
+                "download_count": 11070,
+                "size": 8222178
+            },
+            {
+                "name": "obsidian-0.10.9.tar.gz",
+                "download_count": 23,
+                "size": 81320384
+            },
+            {
+                "name": "Obsidian.0.10.9.exe",
+                "download_count": 4361,
+                "size": 62553840
+            },
+            {
+                "name": "obsidian_0.10.9_amd64.snap",
+                "download_count": 326,
+                "size": 72822784
+            }
+        ]
+    },
+    {
+        "version": "v0.10.10",
+        "date": "2021-01-25T15:38:37.000Z",
+        "assets": [
+            {
+                "name": "obsidian-0.10.10.asar.gz",
+                "download_count": 1117,
+                "size": 8308898
+            }
+        ]
+    },
+    {
+        "version": "v0.10.11",
+        "date": "2021-01-28T16:54:58.000Z",
+        "assets": [
+            {
+                "name": "Obsidian-0.10.11-universal.dmg",
+                "download_count": 9543,
+                "size": 157754496
+            },
+            {
+                "name": "Obsidian-0.10.11.AppImage",
+                "download_count": 4364,
+                "size": 85774333
+            },
+            {
+                "name": "obsidian-0.10.11.asar.gz",
+                "download_count": 20522,
+                "size": 8308946
+            },
+            {
+                "name": "obsidian-0.10.11.tar.gz",
+                "download_count": 41,
+                "size": 81516961
+            },
+            {
+                "name": "Obsidian.0.10.11.exe",
+                "download_count": 12417,
+                "size": 62664056
+            },
+            {
+                "name": "obsidian_0.10.11_amd64.snap",
+                "download_count": 1326,
+                "size": 73011200
+            }
+        ]
+    },
+    {
+        "version": "v0.10.12",
+        "date": "2021-02-01T16:21:23.000Z",
+        "assets": [
+            {
+                "name": "obsidian-0.10.12.asar.gz",
+                "download_count": 1323,
+                "size": 8399994
+            }
+        ]
+    },
+    {
+        "version": "v0.10.13",
+        "date": "2021-02-06T01:41:56.000Z",
+        "assets": [
+            {
+                "name": "Obsidian-0.10.13-universal.dmg",
+                "download_count": 7010,
+                "size": 157921584
+            },
+            {
+                "name": "Obsidian-0.10.13.AppImage",
+                "download_count": 3348,
+                "size": 85872572
+            },
+            {
+                "name": "obsidian-0.10.13.asar.gz",
+                "download_count": 17171,
+                "size": 8400883
+            },
+            {
+                "name": "obsidian-0.10.13.tar.gz",
+                "download_count": 36,
+                "size": 81622364
+            },
+            {
+                "name": "Obsidian.0.10.13.exe",
+                "download_count": 9549,
+                "size": 62760872
+            },
+            {
+                "name": "obsidian_0.10.13_amd64.snap",
+                "download_count": 1102,
+                "size": 73117696
+            }
+        ]
+    },
+    {
+        "version": "v0.11.0",
+        "date": "2021-02-09T21:56:05.000Z",
+        "assets": [
+            {
+                "name": "Obsidian-0.11.0-universal.dmg",
+                "download_count": 13158,
+                "size": 158057666
+            },
+            {
+                "name": "Obsidian-0.11.0.AppImage",
+                "download_count": 5551,
+                "size": 85975813
+            },
+            {
+                "name": "obsidian-0.11.0.asar.gz",
+                "download_count": 27176,
+                "size": 8507329
+            },
+            {
+                "name": "obsidian-0.11.0.tar.gz",
+                "download_count": 86,
+                "size": 81727215
+            },
+            {
+                "name": "Obsidian.0.11.0.exe",
+                "download_count": 20569,
+                "size": 62827792
+            },
+            {
+                "name": "obsidian_0.11.0_amd64.snap",
+                "download_count": 1892,
+                "size": 73203712
+            }
+        ]
+    },
+    {
+        "version": "v0.11.1",
+        "date": "2021-02-16T19:04:06.000Z",
+        "assets": [
+            {
+                "name": "obsidian-0.11.1.asar.gz",
+                "download_count": 1011,
+                "size": 8526841
+            }
+        ]
+    },
+    {
+        "version": "v0.11.2",
+        "date": "2021-02-18T18:51:45.000Z",
+        "assets": [
+            {
+                "name": "obsidian-0.11.2.asar.gz",
+                "download_count": 1135,
+                "size": 8522030
+            }
+        ]
+    },
+    {
+        "version": "v0.11.3",
+        "date": "2021-02-20T21:42:21.000Z",
+        "assets": [
+            {
+                "name": "Obsidian-0.11.3-universal.dmg",
+                "download_count": 8233,
+                "size": 158031038
+            },
+            {
+                "name": "Obsidian-0.11.3.AppImage",
+                "download_count": 3552,
+                "size": 86000228
+            },
+            {
+                "name": "obsidian-0.11.3.asar.gz",
+                "download_count": 25437,
+                "size": 8522226
+            },
+            {
+                "name": "obsidian-0.11.3.tar.gz",
+                "download_count": 54,
+                "size": 81750810
+            },
+            {
+                "name": "Obsidian.0.11.3.exe",
+                "download_count": 12547,
+                "size": 62826160
+            },
+            {
+                "name": "obsidian_0.11.3_amd64.snap",
+                "download_count": 1057,
+                "size": 73220096
+            }
+        ]
+    },
+    {
+        "version": "v0.11.4",
+        "date": "2021-02-26T22:04:18.000Z",
+        "assets": [
+            {
+                "name": "obsidian-0.11.4.asar.gz",
+                "download_count": 1642,
+                "size": 7747248
+            }
+        ]
+    },
+    {
+        "version": "v0.11.5",
+        "date": "2021-03-02T23:57:45.000Z",
+        "assets": [
+            {
+                "name": "Obsidian-0.11.5-universal.dmg",
+                "download_count": 14324,
+                "size": 157253035
+            },
+            {
+                "name": "Obsidian-0.11.5.AppImage",
+                "download_count": 6701,
+                "size": 85229580
+            },
+            {
+                "name": "obsidian-0.11.5.asar.gz",
+                "download_count": 35482,
+                "size": 7755311
+            },
+            {
+                "name": "obsidian-0.11.5.tar.gz",
+                "download_count": 169,
+                "size": 81069223
+            },
+            {
+                "name": "Obsidian.0.11.5.exe",
+                "download_count": 25586,
+                "size": 62388952
+            },
+            {
+                "name": "obsidian_0.11.5_amd64.snap",
+                "download_count": 2061,
+                "size": 72769536
+            }
+        ]
+    },
+    {
+        "version": "v0.11.6",
+        "date": "2021-03-10T01:13:45.000Z",
+        "assets": [
+            {
+                "name": "obsidian-0.11.6.asar.gz",
+                "download_count": 1875,
+                "size": 7765671
+            }
+        ]
+    },
+    {
+        "version": "v0.11.7",
+        "date": "2021-03-15T00:56:04.000Z",
+        "assets": [
+            {
+                "name": "obsidian-0.11.7.asar.gz",
+                "download_count": 2258,
+                "size": 7824216
+            }
+        ]
+    },
+    {
+        "version": "v0.11.8",
+        "date": "2021-03-21T07:52:08.000Z",
+        "assets": [
+            {
+                "name": "obsidian-0.11.8.asar.gz",
+                "download_count": 381,
+                "size": 7839999
+            }
+        ]
+    },
+    {
+        "version": "v0.11.9",
+        "date": "2021-03-21T10:13:15.000Z",
+        "assets": [
+            {
+                "name": "Obsidian-0.11.9-universal.dmg",
+                "download_count": 9841,
+                "size": 157370610
+            },
+            {
+                "name": "Obsidian-0.11.9.AppImage",
+                "download_count": 5298,
+                "size": 85319711
+            },
+            {
+                "name": "obsidian-0.11.9.asar.gz",
+                "download_count": 26663,
+                "size": 7840011
+            },
+            {
+                "name": "obsidian-0.11.9.tar.gz",
+                "download_count": 904,
+                "size": 81149038
+            },
+            {
+                "name": "Obsidian.0.11.9.exe",
+                "download_count": 14347,
+                "size": 62413656
+            },
+            {
+                "name": "obsidian_0.11.9_amd64.snap",
+                "download_count": 1599,
+                "size": 72830976
+            }
+        ]
+    },
+    {
+        "version": "v0.11.10",
+        "date": "2021-03-26T20:51:00.000Z",
+        "assets": [
+            {
+                "name": "obsidian-0.11.10.asar.gz",
+                "download_count": 2190,
+                "size": 7833417
+            }
+        ]
+    },
+    {
+        "version": "v0.11.11",
+        "date": "2021-04-01T19:22:57.000Z",
+        "assets": [
+            {
+                "name": "obsidian-0.11.11.asar.gz",
+                "download_count": 115,
+                "size": 9177377
+            }
+        ]
+    },
+    {
+        "version": "v0.11.12",
+        "date": "2021-04-01T19:52:35.000Z",
+        "assets": [
+            {
+                "name": "obsidian-0.11.12.asar.gz",
+                "download_count": 2096,
+                "size": 9177371
+            }
+        ]
+    },
+    {
+        "version": "v0.11.13",
+        "date": "2021-04-04T17:02:05.000Z",
+        "assets": [
+            {
+                "name": "Obsidian-0.11.13-universal.dmg",
+                "download_count": 29000,
+                "size": 158685881
+            },
+            {
+                "name": "Obsidian-0.11.13.AppImage",
+                "download_count": 13499,
+                "size": 86680468
+            },
+            {
+                "name": "obsidian-0.11.13.asar.gz",
+                "download_count": 51331,
+                "size": 9195352
+            },
+            {
+                "name": "obsidian-0.11.13.tar.gz",
+                "download_count": 1508,
+                "size": 82495769
+            },
+            {
+                "name": "Obsidian.0.11.13.exe",
+                "download_count": 44700,
+                "size": 64079488
+            },
+            {
+                "name": "obsidian_0.11.13_amd64.snap",
+                "download_count": 5123,
+                "size": 74182656
+            }
+        ]
+    },
+    {
+        "version": "v0.12.0",
+        "date": "2021-04-19T17:13:54.000Z",
+        "assets": [
+            {
+                "name": "obsidian-0.12.0.asar.gz",
+                "download_count": 1238,
+                "size": 9325460
+            }
+        ]
+    },
+    {
+        "version": "v0.12.1",
+        "date": "2021-04-21T00:18:07.000Z",
+        "assets": [
+            {
+                "name": "obsidian-0.12.1.asar.gz",
+                "download_count": 3181,
+                "size": 9326309
+            }
+        ]
+    },
+    {
+        "version": "v0.12.2",
+        "date": "2021-05-03T22:01:45.000Z",
+        "assets": [
+            {
+                "name": "obsidian-0.12.2.asar.gz",
+                "download_count": 2505,
+                "size": 9362224
+            }
+        ]
+    },
+    {
+        "version": "v0.12.3",
+        "date": "2021-05-10T20:35:19.000Z",
+        "assets": [
+            {
+                "name": "Obsidian-0.12.3-universal.dmg",
+                "download_count": 25881,
+                "size": 162544615
+            },
+            {
+                "name": "Obsidian-0.12.3.AppImage",
+                "download_count": 12135,
+                "size": 90137401
+            },
+            {
+                "name": "obsidian-0.12.3.asar.gz",
+                "download_count": 52015,
+                "size": 9362817
+            },
+            {
+                "name": "obsidian-0.12.3.tar.gz",
+                "download_count": 3061,
+                "size": 85843429
+            },
+            {
+                "name": "Obsidian.0.12.3.exe",
+                "download_count": 41182,
+                "size": 67071800
+            },
+            {
+                "name": "obsidian_0.12.3_amd64.snap",
+                "download_count": 4012,
+                "size": 77516800
+            }
+        ]
+    },
+    {
+        "version": "v0.12.4",
+        "date": "2021-05-25T17:08:53.000Z",
+        "assets": [
+            {
+                "name": "Obsidian-0.12.4-universal.dmg",
+                "download_count": 10819,
+                "size": 163533629
+            },
+            {
+                "name": "Obsidian-0.12.4.AppImage",
+                "download_count": 5814,
+                "size": 91064160
+            },
+            {
+                "name": "obsidian-0.12.4.asar.gz",
+                "download_count": 36846,
+                "size": 10283316
+            },
+            {
+                "name": "obsidian-0.12.4.tar.gz",
+                "download_count": 1244,
+                "size": 86757581
+            },
+            {
+                "name": "Obsidian.0.12.4.exe",
+                "download_count": 19759,
+                "size": 67966640
+            },
+            {
+                "name": "obsidian_0.12.4_amd64.snap",
+                "download_count": 1841,
+                "size": 78434304
+            }
+        ]
+    },
+    {
+        "version": "v0.12.5",
+        "date": "2021-06-07T19:39:53.000Z",
+        "assets": [
+            {
+                "name": "Obsidian-0.12.5-universal.dmg",
+                "download_count": 15649,
+                "size": 163478460
+            },
+            {
+                "name": "Obsidian-0.12.5.AppImage",
+                "download_count": 7635,
+                "size": 91039614
+            },
+            {
+                "name": "obsidian-0.12.5.asar.gz",
+                "download_count": 48161,
+                "size": 10256256
+            },
+            {
+                "name": "obsidian-0.12.5.tar.gz",
+                "download_count": 1303,
+                "size": 86732673
+            },
+            {
+                "name": "Obsidian.0.12.5.exe",
+                "download_count": 24631,
+                "size": 67952528
+            },
+            {
+                "name": "obsidian_0.12.5_amd64.snap",
+                "download_count": 2549,
+                "size": 78409728
+            }
+        ]
+    },
+    {
+        "version": "v0.12.6",
+        "date": "2021-06-21T19:26:29.000Z",
+        "assets": [
+            {
+                "name": "obsidian-0.12.6.asar.gz",
+                "download_count": 1697,
+                "size": 10265710
+            }
+        ]
+    },
+    {
+        "version": "v0.12.7",
+        "date": "2021-06-23T19:11:41.000Z",
+        "assets": [
+            {
+                "name": "obsidian-0.12.7.asar.gz",
+                "download_count": 2357,
+                "size": 10266861
+            }
+        ]
+    },
+    {
+        "version": "v0.12.8",
+        "date": "2021-06-28T16:11:55.000Z",
+        "assets": [
+            {
+                "name": "obsidian-0.12.8.asar.gz",
+                "download_count": 1894,
+                "size": 10270259
+            }
+        ]
+    },
+    {
+        "version": "v0.12.9",
+        "date": "2021-07-01T01:02:20.000Z",
+        "assets": [
+            {
+                "name": "obsidian-0.12.9.asar.gz",
+                "download_count": 2891,
+                "size": 11321126
+            }
+        ]
+    },
+    {
+        "version": "v0.12.10",
+        "date": "2021-07-07T22:40:16.000Z",
+        "assets": [
+            {
+                "name": "Obsidian-0.12.10-universal.dmg",
+                "download_count": 29927,
+                "size": 164534300
+            },
+            {
+                "name": "Obsidian-0.12.10.AppImage",
+                "download_count": 10707,
+                "size": 92118335
+            },
+            {
+                "name": "obsidian-0.12.10.asar.gz",
+                "download_count": 54776,
+                "size": 11327570
+            },
+            {
+                "name": "obsidian-0.12.10.tar.gz",
+                "download_count": 3226,
+                "size": 87792490
+            },
+            {
+                "name": "Obsidian.0.12.10.exe",
+                "download_count": 43205,
+                "size": 68811520
+            },
+            {
+                "name": "obsidian_0.12.10_amd64.snap",
+                "download_count": 3973,
+                "size": 79441920
+            }
+        ]
+    },
+    {
+        "version": "v0.12.11",
+        "date": "2021-07-19T21:19:26.000Z",
+        "assets": [
+            {
+                "name": "obsidian-0.12.11.asar.gz",
+                "download_count": 2563,
+                "size": 11385071
+            }
+        ]
+    },
+    {
+        "version": "v0.12.12",
+        "date": "2021-07-26T18:32:01.000Z",
+        "assets": [
+            {
+                "name": "Obsidian-0.12.12-universal.dmg",
+                "download_count": 42747,
+                "size": 164601431
+            },
+            {
+                "name": "Obsidian-0.12.12.AppImage",
+                "download_count": 14186,
+                "size": 92187777
+            },
+            {
+                "name": "obsidian-0.12.12.asar.gz",
+                "download_count": 69929,
+                "size": 11387503
+            },
+            {
+                "name": "obsidian-0.12.12.tar.gz",
+                "download_count": 2040,
+                "size": 87848410
+            },
+            {
+                "name": "Obsidian.0.12.12.exe",
+                "download_count": 69042,
+                "size": 68862424
+            },
+            {
+                "name": "obsidian_0.12.12_amd64.snap",
+                "download_count": 5765,
+                "size": 79499264
+            }
+        ]
+    },
+    {
+        "version": "v0.12.13",
+        "date": "2021-08-03T19:01:15.000Z",
+        "assets": [
+            {
+                "name": "obsidian-0.12.13.asar.gz",
+                "download_count": 3659,
+                "size": 11389550
+            }
+        ]
+    },
+    {
+        "version": "v0.12.14",
+        "date": "2021-08-23T15:51:37.000Z",
+        "assets": [
+            {
+                "name": "obsidian-0.12.14.asar.gz",
+                "download_count": 2662,
+                "size": 11389964
+            }
+        ]
+    },
+    {
+        "version": "v0.12.15",
+        "date": "2021-08-29T16:43:45.000Z",
+        "assets": [
+            {
+                "name": "Obsidian-0.12.15-arm64.AppImage",
+                "download_count": 2341,
+                "size": 98249164
+            },
+            {
+                "name": "obsidian-0.12.15-arm64.tar.gz",
+                "download_count": 2144,
+                "size": 93442851
+            },
+            {
+                "name": "Obsidian-0.12.15-universal.dmg",
+                "download_count": 58125,
+                "size": 164616209
+            },
+            {
+                "name": "Obsidian-0.12.15.AppImage",
+                "download_count": 24077,
+                "size": 92187857
+            },
+            {
+                "name": "obsidian-0.12.15.asar.gz",
+                "download_count": 91893,
+                "size": 11390253
+            },
+            {
+                "name": "obsidian-0.12.15.tar.gz",
+                "download_count": 5270,
+                "size": 87854912
+            },
+            {
+                "name": "Obsidian.0.12.15-32.exe",
+                "download_count": 4570,
+                "size": 65829264
+            },
+            {
+                "name": "Obsidian.0.12.15-arm64.exe",
+                "download_count": 3682,
+                "size": 72021584
+            },
+            {
+                "name": "Obsidian.0.12.15.exe",
+                "download_count": 107945,
+                "size": 68878936
+            },
+            {
+                "name": "obsidian_0.12.15_amd64.deb",
+                "download_count": 17752,
+                "size": 63627728
+            },
+            {
+                "name": "obsidian_0.12.15_amd64.snap",
+                "download_count": 9592,
+                "size": 79499264
+            }
+        ]
+    },
+    {
+        "version": "v0.12.16",
+        "date": "2021-09-14T19:01:27.000Z",
+        "assets": []
+    },
+    {
+        "version": "v0.12.17",
+        "date": "2021-10-18T19:00:49.000Z",
+        "assets": [
+            {
+                "name": "obsidian-0.12.17.asar.gz",
+                "download_count": 27,
+                "size": 11546909
+            }
+        ]
+    },
+    {
+        "version": "v0.12.18",
+        "date": "2021-10-18T19:01:17.000Z",
+        "assets": [
+            {
+                "name": "obsidian-0.12.18.asar.gz",
+                "download_count": 16,
+                "size": 11546765
+            }
+        ]
+    },
+    {
+        "version": "v0.12.19",
+        "date": "2021-10-18T19:01:27.000Z",
+        "assets": [
+            {
+                "name": "Obsidian-0.12.19-universal.dmg",
+                "download_count": 98841,
+                "size": 163168823
+            },
+            {
+                "name": "Obsidian-0.12.19.AppImage",
+                "download_count": 37600,
+                "size": 90398700
+            },
+            {
+                "name": "obsidian-0.12.19.asar.gz",
+                "download_count": 106142,
+                "size": 11547650
+            },
+            {
+                "name": "obsidian-0.12.19.tar.gz",
+                "download_count": 8410,
+                "size": 86065354
+            },
+            {
+                "name": "Obsidian.0.12.19.exe",
+                "download_count": 168207,
+                "size": 68987592
+            },
+            {
+                "name": "obsidian_0.12.19_amd64.snap",
+                "download_count": 13703,
+                "size": 78573568
+            }
+        ]
+    },
+    {
+        "version": "v0.13.14",
+        "date": "2021-12-21T17:55:55.000Z",
+        "assets": [
+            {
+                "name": "Obsidian-0.13.14-universal.dmg",
+                "download_count": 28442,
+                "size": 163868458
+            },
+            {
+                "name": "Obsidian-0.13.14.AppImage",
+                "download_count": 9568,
+                "size": 90751229
+            },
+            {
+                "name": "obsidian-0.13.14.asar.gz",
+                "download_count": 55108,
+                "size": 11893966
+            },
+            {
+                "name": "obsidian-0.13.14.tar.gz",
+                "download_count": 3838,
+                "size": 86398769
+            },
+            {
+                "name": "Obsidian.0.13.14.exe",
+                "download_count": 47279,
+                "size": 69179752
+            },
+            {
+                "name": "obsidian_0.13.14_amd64.snap",
+                "download_count": 3180,
+                "size": 78893056
+            }
+        ]
+    },
+    {
+        "version": "v0.13.19",
+        "date": "2022-01-05T20:18:12.000Z",
+        "assets": [
+            {
+                "name": "Obsidian-0.13.19-universal.dmg",
+                "download_count": 41259,
+                "size": 163907545
+            },
+            {
+                "name": "Obsidian-0.13.19.AppImage",
+                "download_count": 14958,
+                "size": 90800704
+            },
+            {
+                "name": "obsidian-0.13.19.asar.gz",
+                "download_count": 74949,
+                "size": 11943976
+            },
+            {
+                "name": "obsidian-0.13.19.tar.gz",
+                "download_count": 5477,
+                "size": 86447194
+            },
+            {
+                "name": "Obsidian.0.13.19.exe",
+                "download_count": 83998,
+                "size": 69148392
+            },
+            {
+                "name": "obsidian_0.13.19_amd64.snap",
+                "download_count": 5321,
+                "size": 78950400
+            }
+        ]
+    },
+    {
+        "version": "v0.13.23",
+        "date": "2022-01-27T22:40:19.000Z",
+        "assets": [
+            {
+                "name": "Obsidian-0.13.23-universal.dmg",
+                "download_count": 70885,
+                "size": 163907737
+            },
+            {
+                "name": "Obsidian-0.13.23.AppImage",
+                "download_count": 25255,
+                "size": 90800532
+            },
+            {
+                "name": "obsidian-0.13.23.asar.gz",
+                "download_count": 101297,
+                "size": 11947505
+            },
+            {
+                "name": "obsidian-0.13.23.tar.gz",
+                "download_count": 5731,
+                "size": 86452298
+            },
+            {
+                "name": "Obsidian.0.13.23.exe",
+                "download_count": 123311,
+                "size": 69140104
+            },
+            {
+                "name": "obsidian_0.13.23_amd64.snap",
+                "download_count": 9941,
+                "size": 78950400
+            }
+        ]
+    },
+    {
+        "version": "v0.13.24",
+        "date": "2022-02-03T17:04:15.000Z",
+        "assets": [
+            {
+                "name": "Obsidian-0.13.24-universal.dmg",
+                "download_count": 263,
+                "size": 173121160
+            },
+            {
+                "name": "Obsidian-0.13.24.AppImage",
+                "download_count": 340,
+                "size": 140176786
+            },
+            {
+                "name": "obsidian-0.13.24.asar.gz",
+                "download_count": 3741,
+                "size": 11947866
+            },
+            {
+                "name": "obsidian-0.13.24.tar.gz",
+                "download_count": 112,
+                "size": 133263832
+            },
+            {
+                "name": "Obsidian.0.13.24.exe",
+                "download_count": 2361,
+                "size": 70744448
+            },
+            {
+                "name": "obsidian_0.13.24_amd64.snap",
+                "download_count": 51,
+                "size": 118009856
+            }
+        ]
+    },
+    {
+        "version": "v0.13.30",
+        "date": "2022-03-07T15:13:36.000Z",
+        "assets": [
+            {
+                "name": "Obsidian-0.13.30-arm64.AppImage",
+                "download_count": 80,
+                "size": 118373776
+            },
+            {
+                "name": "obsidian-0.13.30-arm64.tar.gz",
+                "download_count": 48,
+                "size": 112289955
+            },
+            {
+                "name": "Obsidian-0.13.30-universal.dmg",
+                "download_count": 4697,
+                "size": 173245549
+            },
+            {
+                "name": "Obsidian-0.13.30.AppImage",
+                "download_count": 1574,
+                "size": 112688550
+            },
+            {
+                "name": "obsidian-0.13.30.asar.gz",
+                "download_count": 9474,
+                "size": 12042766
+            },
+            {
+                "name": "obsidian-0.13.30.tar.gz",
+                "download_count": 1097,
+                "size": 107091185
+            },
+            {
+                "name": "Obsidian.0.13.30-32.exe",
+                "download_count": 250,
+                "size": 68743160
+            },
+            {
+                "name": "Obsidian.0.13.30-arm64.exe",
+                "download_count": 115,
+                "size": 76642088
+            },
+            {
+                "name": "Obsidian.0.13.30.exe",
+                "download_count": 10024,
+                "size": 70789928
+            },
+            {
+                "name": "obsidian_0.13.30_amd64.deb",
+                "download_count": 272,
+                "size": 77682066
+            },
+            {
+                "name": "obsidian_0.13.30_amd64.snap",
+                "download_count": 439,
+                "size": 96333824
+            }
+        ]
+    },
+    {
+        "version": "v0.13.31",
+        "date": "2022-03-08T23:04:37.000Z",
+        "assets": [
+            {
+                "name": "Obsidian.0.13.31.exe",
+                "download_count": 76092,
+                "size": 72996560
+            },
+            {
+                "name": "Obsidian.0.13.31-32.exe",
+                "download_count": 1605,
+                "size": 69582520
+            },
+            {
+                "name": "Obsidian.0.13.31-arm64.exe",
+                "download_count": 1140,
+                "size": 77714120
+            },
+            {
+                "name": "obsidian_0.13.31_amd64.deb",
+                "download_count": 6127,
+                "size": 77887350
+            },
+            {
+                "name": "obsidian_0.13.31_amd64.snap",
+                "download_count": 5204,
+                "size": 96698368
+            },
+            {
+                "name": "obsidian-0.13.31.tar.gz",
+                "download_count": 128,
+                "size": 107604339
+            },
+            {
+                "name": "obsidian-0.13.31-arm64.tar.gz",
+                "download_count": 623,
+                "size": 113039713
+            },
+            {
+                "name": "Obsidian-0.13.31-universal.dmg",
+                "download_count": 42237,
+                "size": 166500764
+            },
+            {
+                "name": "obsidian-0.13.31.asar.gz",
+                "download_count": 19761,
+                "size": 12043268
+            },
+            {
+                "name": "Obsidian-0.13.31-arm64.AppImage",
+                "download_count": 755,
+                "size": 119038715
+            },
+            {
+                "name": "Obsidian-0.13.31.AppImage",
+                "download_count": 14479,
+                "size": 113099362
+            }
+        ]
+    },
+    {
+        "version": "v0.13.33",
+        "date": "2022-03-11T19:02:01.000Z",
+        "assets": [
+            {
+                "name": "obsidian-0.13.33.asar.gz",
+                "download_count": 86169,
+                "size": 12043312
+            }
+        ]
+    },
+    {
+        "version": "v0.14.2",
+        "date": "2022-03-28T15:11:28.000Z",
+        "assets": [
+            {
+                "name": "Obsidian.0.14.2.exe",
+                "download_count": 64878,
+                "size": 72986232
+            },
+            {
+                "name": "obsidian_0.14.2_amd64.snap",
+                "download_count": 4329,
+                "size": 96624640
+            },
+            {
+                "name": "Obsidian-0.14.2.AppImage",
+                "download_count": 13019,
+                "size": 113102774
+            },
+            {
+                "name": "obsidian-0.14.2.tar.gz",
+                "download_count": 244,
+                "size": 107611534
+            },
+            {
+                "name": "Obsidian-0.14.2-universal.dmg",
+                "download_count": 34858,
+                "size": 166488659
+            },
+            {
+                "name": "obsidian-0.14.2.asar.gz",
+                "download_count": 57803,
+                "size": 12048988
+            }
+        ]
+    },
+    {
+        "version": "v0.14.5",
+        "date": "2022-04-11T14:10:40.000Z",
+        "assets": [
+            {
+                "name": "Obsidian.0.14.5.exe",
+                "download_count": 29310,
+                "size": 67454048
+            },
+            {
+                "name": "Obsidian.0.14.5-arm64.exe",
+                "download_count": 940,
+                "size": 72280640
+            },
+            {
+                "name": "obsidian_0.14.5_amd64.deb",
+                "download_count": 189,
+                "size": 63320846
+            },
+            {
+                "name": "obsidian_0.14.5_amd64.snap",
+                "download_count": 1953,
+                "size": 76836864
+            },
+            {
+                "name": "Obsidian-0.14.5.AppImage",
+                "download_count": 6084,
+                "size": 89552361
+            },
+            {
+                "name": "obsidian-0.14.5.tar.gz",
+                "download_count": 118,
+                "size": 85023691
+            },
+            {
+                "name": "Obsidian-0.14.5-arm64.AppImage",
+                "download_count": 115,
+                "size": 95797141
+            },
+            {
+                "name": "Obsidian-0.14.5-universal.dmg",
+                "download_count": 16286,
+                "size": 160757665
+            },
+            {
+                "name": "Obsidian.0.14.5-32.exe",
+                "download_count": 1146,
+                "size": 64109104
+            },
+            {
+                "name": "obsidian-0.14.5.asar.gz",
+                "download_count": 36801,
+                "size": 5287918
+            }
+        ]
+    },
+    {
+        "version": "v0.14.6",
+        "date": "2022-04-18T19:30:01.000Z",
+        "assets": [
+            {
+                "name": "Obsidian.0.14.6-32.exe",
+                "download_count": 2680,
+                "size": 64114888
+            },
+            {
+                "name": "Obsidian.0.14.6-arm64.exe",
+                "download_count": 2556,
+                "size": 72304432
+            },
+            {
+                "name": "obsidian_0.14.6_amd64.deb",
+                "download_count": 8897,
+                "size": 63340914
+            },
+            {
+                "name": "obsidian_0.14.6_amd64.snap",
+                "download_count": 14410,
+                "size": 76881920
+            },
+            {
+                "name": "Obsidian-0.14.6.AppImage",
+                "download_count": 34217,
+                "size": 89584783
+            },
+            {
+                "name": "obsidian-0.14.6.tar.gz",
+                "download_count": 2114,
+                "size": 85045346
+            },
+            {
+                "name": "Obsidian-0.14.6-arm64.AppImage",
+                "download_count": 1456,
+                "size": 95809129
+            },
+            {
+                "name": "Obsidian.0.14.6.exe",
+                "download_count": 178543,
+                "size": 67466440
+            },
+            {
+                "name": "obsidian-0.14.6.asar.gz",
+                "download_count": 127482,
+                "size": 5291318
+            },
+            {
+                "name": "Obsidian-0.14.6-universal.dmg",
+                "download_count": 94011,
+                "size": 160755998
+            }
+        ]
+    },
+    {
+        "version": "v0.14.15",
+        "date": "2022-06-07T14:14:04.000Z",
+        "assets": [
+            {
+                "name": "obsidian-0.14.15.asar.gz",
+                "download_count": 112821,
+                "size": 5370314
+            },
+            {
+                "name": "obsidian_0.14.15_amd64.deb",
+                "download_count": 7157,
+                "size": 63437704
+            },
+            {
+                "name": "obsidian_0.14.15_amd64.snap",
+                "download_count": 8601,
+                "size": 77025280
+            },
+            {
+                "name": "Obsidian-0.14.15.AppImage",
+                "download_count": 21504,
+                "size": 89797885
+            },
+            {
+                "name": "obsidian-0.14.15.tar.gz",
+                "download_count": 1219,
+                "size": 85246984
+            },
+            {
+                "name": "Obsidian-0.14.15-arm64.AppImage",
+                "download_count": 1256,
+                "size": 96019174
+            },
+            {
+                "name": "Obsidian.0.14.15.exe",
+                "download_count": 125474,
+                "size": 67550032
+            },
+            {
+                "name": "Obsidian.0.14.15-32.exe",
+                "download_count": 2126,
+                "size": 64219656
+            },
+            {
+                "name": "Obsidian.0.14.15-arm64.exe",
+                "download_count": 2027,
+                "size": 72397992
+            },
+            {
+                "name": "Obsidian-0.14.15-universal.dmg",
+                "download_count": 63529,
+                "size": 160990086
+            }
+        ]
+    },
+    {
+        "version": "v0.15.6",
+        "date": "2022-07-12T18:02:49.000Z",
+        "assets": [
+            {
+                "name": "obsidian_0.15.6_amd64.deb",
+                "download_count": 2010,
+                "size": 63486316
+            },
+            {
+                "name": "obsidian_0.15.6_amd64.snap",
+                "download_count": 2798,
+                "size": 77238272
+            },
+            {
+                "name": "Obsidian-0.15.6.AppImage",
+                "download_count": 8445,
+                "size": 90051541
+            },
+            {
+                "name": "obsidian-0.15.6.tar.gz",
+                "download_count": 151,
+                "size": 85478231
+            },
+            {
+                "name": "Obsidian-0.15.6-arm64.AppImage",
+                "download_count": 402,
+                "size": 96301842
+            },
+            {
+                "name": "Obsidian-0.15.6-universal.dmg",
+                "download_count": 24125,
+                "size": 161264933
+            },
+            {
+                "name": "Obsidian.0.15.6.exe",
+                "download_count": 45657,
+                "size": 67662568
+            },
+            {
+                "name": "Obsidian.0.15.6-32.exe",
+                "download_count": 1326,
+                "size": 64329248
+            },
+            {
+                "name": "Obsidian.0.15.6-arm64.exe",
+                "download_count": 1012,
+                "size": 72500808
+            },
+            {
+                "name": "obsidian-0.15.6.asar.gz",
+                "download_count": 51965,
+                "size": 5609293
+            }
+        ]
+    },
+    {
+        "version": "v0.15.8",
+        "date": "2022-07-22T20:34:51.000Z",
+        "assets": [
+            {
+                "name": "obsidian_0.15.8_amd64.snap",
+                "download_count": 1800,
+                "size": 77275136
+            },
+            {
+                "name": "Obsidian-0.15.8.AppImage",
+                "download_count": 4007,
+                "size": 90084185
+            },
+            {
+                "name": "obsidian-0.15.8.tar.gz",
+                "download_count": 146,
+                "size": 85506816
+            },
+            {
+                "name": "Obsidian-0.15.8-arm64.AppImage",
+                "download_count": 312,
+                "size": 96334554
+            },
+            {
+                "name": "Obsidian-0.15.8-universal.dmg",
+                "download_count": 23350,
+                "size": 161276069
+            },
+            {
+                "name": "Obsidian.0.15.8.exe",
+                "download_count": 38866,
+                "size": 67681552
+            },
+            {
+                "name": "Obsidian.0.15.8-32.exe",
+                "download_count": 639,
+                "size": 64348144
+            },
+            {
+                "name": "Obsidian.0.15.8-arm64.exe",
+                "download_count": 544,
+                "size": 72519472
+            },
+            {
+                "name": "obsidian_0.15.8_amd64.deb",
+                "download_count": 1450,
+                "size": 63501570
+            },
+            {
+                "name": "obsidian-0.15.8.asar.gz",
+                "download_count": 24986,
+                "size": 5639539
+            }
+        ]
+    },
+    {
+        "version": "v0.15.9",
+        "date": "2022-07-26T18:42:08.000Z",
+        "assets": [
+            {
+                "name": "Obsidian.0.15.9.exe",
+                "download_count": 469235,
+                "size": 67681704
+            },
+            {
+                "name": "Obsidian.0.15.9-32.exe",
+                "download_count": 4676,
+                "size": 64348264
+            },
+            {
+                "name": "Obsidian.0.15.9-arm64.exe",
+                "download_count": 6337,
+                "size": 72519720
+            },
+            {
+                "name": "obsidian_0.15.9_amd64.deb",
+                "download_count": 19841,
+                "size": 63494036
+            },
+            {
+                "name": "obsidian_0.15.9_amd64.snap",
+                "download_count": 27600,
+                "size": 77275136
+            },
+            {
+                "name": "Obsidian-0.15.9.AppImage",
+                "download_count": 62375,
+                "size": 90088579
+            },
+            {
+                "name": "obsidian-0.15.9.tar.gz",
+                "download_count": 4091,
+                "size": 85508508
+            },
+            {
+                "name": "Obsidian-0.15.9-arm64.AppImage",
+                "download_count": 3262,
+                "size": 96338858
+            },
+            {
+                "name": "Obsidian-0.15.9-universal.dmg",
+                "download_count": 283185,
+                "size": 161280857
+            },
+            {
+                "name": "obsidian-0.15.9.asar.gz",
+                "download_count": 213615,
+                "size": 5641851
+            },
+            {
+                "name": "obsidian-0.15.9-arm64.tar.gz",
+                "download_count": 352,
+                "size": 91274071
+            }
+        ]
+    },
+    {
+        "version": "v1.0.0",
+        "date": "2022-10-13T12:44:50.000Z",
+        "assets": [
+            {
+                "name": "Obsidian-1.0.0.AppImage",
+                "download_count": 19991,
+                "size": 90080316
+            },
+            {
+                "name": "obsidian-1.0.0.tar.gz",
+                "download_count": 1072,
+                "size": 85505605
+            },
+            {
+                "name": "Obsidian-1.0.0-arm64.AppImage",
+                "download_count": 932,
+                "size": 96330602
+            },
+            {
+                "name": "obsidian-1.0.0-arm64.tar.gz",
+                "download_count": 121,
+                "size": 91273887
+            },
+            {
+                "name": "Obsidian-1.0.0-universal.dmg",
+                "download_count": 79201,
+                "size": 161247049
+            },
+            {
+                "name": "Obsidian.1.0.0.exe",
+                "download_count": 142413,
+                "size": 67676840
+            },
+            {
+                "name": "Obsidian.1.0.0-32.exe",
+                "download_count": 1492,
+                "size": 64343368
+            },
+            {
+                "name": "Obsidian.1.0.0-arm64.exe",
+                "download_count": 1714,
+                "size": 72514792
+            },
+            {
+                "name": "obsidian_1.0.0_amd64.deb",
+                "download_count": 7141,
+                "size": 63516048
+            },
+            {
+                "name": "obsidian_1.0.0_amd64.snap",
+                "download_count": 8929,
+                "size": 98070528
+            },
+            {
+                "name": "obsidian-1.0.0.asar.gz",
+                "download_count": 109531,
+                "size": 5637590
+            }
+        ]
+    },
+    {
+        "version": "v1.0.3",
+        "date": "2022-10-26T15:10:05.000Z",
+        "assets": [
+            {
+                "name": "obsidian-1.0.3.asar.gz",
+                "download_count": 249547,
+                "size": 5638132
+            },
+            {
+                "name": "Obsidian.1.0.3-32.exe",
+                "download_count": 8453,
+                "size": 64344048
+            },
+            {
+                "name": "Obsidian.1.0.3-arm64.exe",
+                "download_count": 5726,
+                "size": 72515368
+            },
+            {
+                "name": "Obsidian-1.0.3.AppImage",
+                "download_count": 50697,
+                "size": 90080092
+            },
+            {
+                "name": "obsidian-1.0.3.tar.gz",
+                "download_count": 6902,
+                "size": 85507238
+            },
+            {
+                "name": "Obsidian-1.0.3-arm64.AppImage",
+                "download_count": 2255,
+                "size": 96334515
+            },
+            {
+                "name": "obsidian-1.0.3-arm64.tar.gz",
+                "download_count": 189,
+                "size": 91275157
+            },
+            {
+                "name": "obsidian_1.0.3_amd64.deb",
+                "download_count": 17222,
+                "size": 63516828
+            },
+            {
+                "name": "obsidian_1.0.3_amd64.snap",
+                "download_count": 25459,
+                "size": 98070528
+            },
+            {
+                "name": "Obsidian-1.0.3-universal.dmg",
+                "download_count": 181870,
+                "size": 161248537
+            },
+            {
+                "name": "Obsidian.1.0.3.exe",
+                "download_count": 349735,
+                "size": 67677656
+            }
+        ]
+    },
+    {
+        "version": "v1.1.8",
+        "date": "2022-12-20T14:44:50.000Z",
+        "assets": [
+            {
+                "name": "Obsidian.1.1.8-32.exe",
+                "download_count": 888,
+                "size": 64412272
+            },
+            {
+                "name": "Obsidian.1.1.8-arm64.exe",
+                "download_count": 2507,
+                "size": 72600728
+            },
+            {
+                "name": "Obsidian.1.1.8.exe",
+                "download_count": 32754,
+                "size": 67746312
+            },
+            {
+                "name": "obsidian-1.1.8.tar.gz",
+                "download_count": 111,
+                "size": 85628572
+            },
+            {
+                "name": "Obsidian-1.1.8-arm64.AppImage",
+                "download_count": 228,
+                "size": 96461241
+            },
+            {
+                "name": "obsidian-1.1.8-arm64.tar.gz",
+                "download_count": 41,
+                "size": 91395770
+            },
+            {
+                "name": "Obsidian-1.1.8-universal.dmg",
+                "download_count": 19851,
+                "size": 161436270
+            },
+            {
+                "name": "obsidian_1.1.8_amd64.deb",
+                "download_count": 1360,
+                "size": 63580880
+            },
+            {
+                "name": "obsidian_1.1.8_amd64.snap",
+                "download_count": 1946,
+                "size": 98217984
+            },
+            {
+                "name": "Obsidian-1.1.8.AppImage",
+                "download_count": 4740,
+                "size": 90206883
+            },
+            {
+                "name": "obsidian-1.1.8.asar.gz",
+                "download_count": 44444,
+                "size": 5753499
+            }
+        ]
+    },
+    {
+        "version": "v1.1.8-E21",
+        "date": "2022-12-21T01:04:32.000Z",
+        "assets": [
+            {
+                "name": "obsidian_1.1.8_amd64.snap",
+                "download_count": 18,
+                "size": 107171840
+            },
+            {
+                "name": "Obsidian-1.1.8.AppImage",
+                "download_count": 1887,
+                "size": 98185986
+            },
+            {
+                "name": "obsidian-1.1.8.tar.gz",
+                "download_count": 25,
+                "size": 93056254
+            },
+            {
+                "name": "Obsidian-1.1.8-arm64.AppImage",
+                "download_count": 46,
+                "size": 99055772
+            },
+            {
+                "name": "obsidian-1.1.8-arm64.tar.gz",
+                "download_count": 27,
+                "size": 93663010
+            },
+            {
+                "name": "Obsidian-1.1.8-universal.dmg",
+                "download_count": 115,
+                "size": 162429019
+            },
+            {
+                "name": "Obsidian.1.1.8.exe",
+                "download_count": 218,
+                "size": 72690696
+            },
+            {
+                "name": "Obsidian.1.1.8-32.exe",
+                "download_count": 103,
+                "size": 68626952
+            },
+            {
+                "name": "Obsidian.1.1.8-arm64.exe",
+                "download_count": 50,
+                "size": 72523280
+            },
+            {
+                "name": "obsidian_1.1.8_amd64.deb",
+                "download_count": 50,
+                "size": 69119658
+            }
+        ]
+    },
+    {
+        "version": "v1.1.9",
+        "date": "2022-12-23T16:56:44.000Z",
+        "assets": [
+            {
+                "name": "obsidian-1.1.9.asar.gz",
+                "download_count": 305938,
+                "size": 5753685
+            },
+            {
+                "name": "Obsidian.1.1.9-32.exe",
+                "download_count": 4238,
+                "size": 68627128
+            },
+            {
+                "name": "Obsidian.1.1.9-arm64.exe",
+                "download_count": 5449,
+                "size": 72690776
+            },
+            {
+                "name": "Obsidian.1.1.9.exe",
+                "download_count": 437487,
+                "size": 72690816
+            },
+            {
+                "name": "Obsidian-1.1.9.AppImage",
+                "download_count": 57574,
+                "size": 98186300
+            },
+            {
+                "name": "obsidian-1.1.9.tar.gz",
+                "download_count": 2984,
+                "size": 93057094
+            },
+            {
+                "name": "Obsidian-1.1.9-arm64.AppImage",
+                "download_count": 2437,
+                "size": 99056074
+            },
+            {
+                "name": "obsidian-1.1.9-arm64.tar.gz",
+                "download_count": 221,
+                "size": 93663325
+            },
+            {
+                "name": "Obsidian-1.1.9-universal.dmg",
+                "download_count": 211731,
+                "size": 162429009
+            },
+            {
+                "name": "obsidian_1.1.9_amd64.deb",
+                "download_count": 19482,
+                "size": 69117910
+            },
+            {
+                "name": "obsidian_1.1.9_amd64.snap",
+                "download_count": 28510,
+                "size": 107171840
+            }
+        ]
+    },
+    {
+        "version": "v1.1.15",
+        "date": "2023-02-22T16:05:41.000Z",
+        "assets": [
+            {
+                "name": "obsidian-1.1.15.tar.gz",
+                "download_count": 1038,
+                "size": 93062934
+            },
+            {
+                "name": "Obsidian-1.1.15-arm64.AppImage",
+                "download_count": 631,
+                "size": 99044445
+            },
+            {
+                "name": "obsidian-1.1.15-arm64.tar.gz",
+                "download_count": 109,
+                "size": 93673624
+            },
+            {
+                "name": "Obsidian-1.1.15-universal.dmg",
+                "download_count": 32368,
+                "size": 162457807
+            },
+            {
+                "name": "Obsidian.1.1.15.exe",
+                "download_count": 75098,
+                "size": 72743952
+            },
+            {
+                "name": "Obsidian.1.1.15-32.exe",
+                "download_count": 1407,
+                "size": 68690184
+            },
+            {
+                "name": "Obsidian.1.1.15-arm64.exe",
+                "download_count": 1360,
+                "size": 72582528
+            },
+            {
+                "name": "obsidian_1.1.15_amd64.deb",
+                "download_count": 6599,
+                "size": 69099568
+            },
+            {
+                "name": "obsidian_1.1.15_amd64.snap",
+                "download_count": 3420,
+                "size": 107163648
+            },
+            {
+                "name": "Obsidian-1.1.15.AppImage",
+                "download_count": 9538,
+                "size": 98186108
+            },
+            {
+                "name": "obsidian-1.1.15.asar.gz",
+                "download_count": 91982,
+                "size": 5765357
+            }
+        ]
+    },
+    {
+        "version": "v1.1.16",
+        "date": "2023-03-02T03:32:11.000Z",
+        "assets": [
+            {
+                "name": "Obsidian.1.1.16-32.exe",
+                "download_count": 6576,
+                "size": 68691976
+            },
+            {
+                "name": "Obsidian.1.1.16-arm64.exe",
+                "download_count": 7725,
+                "size": 72584872
+            },
+            {
+                "name": "obsidian_1.1.16_amd64.deb",
+                "download_count": 18218,
+                "size": 69117356
+            },
+            {
+                "name": "obsidian_1.1.16_amd64.snap",
+                "download_count": 26681,
+                "size": 107163648
+            },
+            {
+                "name": "Obsidian-1.1.16.AppImage",
+                "download_count": 53602,
+                "size": 98186710
+            },
+            {
+                "name": "obsidian-1.1.16.tar.gz",
+                "download_count": 4132,
+                "size": 93065325
+            },
+            {
+                "name": "Obsidian-1.1.16-arm64.AppImage",
+                "download_count": 2396,
+                "size": 99044953
+            },
+            {
+                "name": "obsidian-1.1.16-arm64.tar.gz",
+                "download_count": 274,
+                "size": 93674095
+            },
+            {
+                "name": "Obsidian-1.1.16-universal.dmg",
+                "download_count": 206067,
+                "size": 162460556
+            },
+            {
+                "name": "Obsidian.1.1.16.exe",
+                "download_count": 452154,
+                "size": 72745968
+            },
+            {
+                "name": "obsidian-1.1.16.asar.gz",
+                "download_count": 328746,
+                "size": 5766915
+            }
+        ]
+    },
+    {
+        "version": "v1.2.7",
+        "date": "2023-05-02T15:55:35.000Z",
+        "assets": [
+            {
+                "name": "Obsidian.1.2.7.exe",
+                "download_count": 79704,
+                "size": 74920656
+            },
+            {
+                "name": "Obsidian.1.2.7-32.exe",
+                "download_count": 1278,
+                "size": 70618352
+            },
+            {
+                "name": "Obsidian.1.2.7-arm64.exe",
+                "download_count": 916,
+                "size": 77939344
+            },
+            {
+                "name": "obsidian_1.2.7_amd64.deb",
+                "download_count": 2213,
+                "size": 71758808
+            },
+            {
+                "name": "obsidian_1.2.7_amd64.snap",
+                "download_count": 2761,
+                "size": 111857664
+            },
+            {
+                "name": "Obsidian-1.2.7.AppImage",
+                "download_count": 7835,
+                "size": 102740058
+            },
+            {
+                "name": "obsidian-1.2.7.tar.gz",
+                "download_count": 779,
+                "size": 97377386
+            },
+            {
+                "name": "Obsidian-1.2.7-arm64.AppImage",
+                "download_count": 380,
+                "size": 103792761
+            },
+            {
+                "name": "obsidian-1.2.7-arm64.tar.gz",
+                "download_count": 54,
+                "size": 98111120
+            },
+            {
+                "name": "Obsidian-1.2.7-universal.dmg",
+                "download_count": 30459,
+                "size": 168366745
+            },
+            {
+                "name": "obsidian-1.2.7.asar.gz",
+                "download_count": 96007,
+                "size": 6032857
+            },
+            {
+                "name": "Obsidian.1.2.7-all-users.exe",
+                "download_count": 433,
+                "size": 74895776
+            }
+        ]
+    },
+    {
+        "version": "v1.2.8",
+        "date": "2023-05-09T16:00:05.000Z",
+        "assets": [
+            {
+                "name": "obsidian-1.2.8.asar.gz",
+                "download_count": 153120,
+                "size": 6033374
+            },
+            {
+                "name": "obsidian_1.2.8_amd64.snap",
+                "download_count": 5023,
+                "size": 111861760
+            },
+            {
+                "name": "Obsidian-1.2.8.AppImage",
+                "download_count": 13756,
+                "size": 102744227
+            },
+            {
+                "name": "obsidian-1.2.8.tar.gz",
+                "download_count": 10859,
+                "size": 97378942
+            },
+            {
+                "name": "Obsidian-1.2.8-arm64.AppImage",
+                "download_count": 713,
+                "size": 103792907
+            },
+            {
+                "name": "obsidian-1.2.8-arm64.tar.gz",
+                "download_count": 96,
+                "size": 98111880
+            },
+            {
+                "name": "Obsidian-1.2.8-universal.dmg",
+                "download_count": 49113,
+                "size": 168357556
+            },
+            {
+                "name": "Obsidian.1.2.8.exe",
+                "download_count": 111082,
+                "size": 74920904
+            },
+            {
+                "name": "Obsidian.1.2.8-32.exe",
+                "download_count": 1482,
+                "size": 70618976
+            },
+            {
+                "name": "Obsidian.1.2.8-arm64.exe",
+                "download_count": 1506,
+                "size": 77939312
+            },
+            {
+                "name": "obsidian_1.2.8_amd64.deb",
+                "download_count": 3990,
+                "size": 71750440
+            }
+        ]
+    },
+    {
+        "version": "v1.3.3",
+        "date": "2023-05-23T15:19:22.000Z",
+        "assets": [
+            {
+                "name": "obsidian-1.3.3.asar.gz",
+                "download_count": 26210,
+                "size": 7575965
+            },
+            {
+                "name": "Obsidian.1.3.3.exe",
+                "download_count": 27362,
+                "size": 75883616
+            },
+            {
+                "name": "Obsidian.1.3.3-32.exe",
+                "download_count": 688,
+                "size": 71555208
+            },
+            {
+                "name": "Obsidian.1.3.3-arm64.exe",
+                "download_count": 436,
+                "size": 78892168
+            },
+            {
+                "name": "Obsidian-1.3.3-universal.dmg",
+                "download_count": 14970,
+                "size": 169844763
+            },
+            {
+                "name": "Obsidian-1.3.3.AppImage",
+                "download_count": 1849,
+                "size": 104328129
+            },
+            {
+                "name": "obsidian-1.3.3.tar.gz",
+                "download_count": 44,
+                "size": 98909043
+            },
+            {
+                "name": "Obsidian-1.3.3-arm64.AppImage",
+                "download_count": 116,
+                "size": 105384305
+            },
+            {
+                "name": "obsidian-1.3.3-arm64.tar.gz",
+                "download_count": 38,
+                "size": 99636763
+            },
+            {
+                "name": "obsidian_1.3.3_amd64.deb",
+                "download_count": 918,
+                "size": 72727322
+            },
+            {
+                "name": "obsidian_1.3.3_amd64.snap",
+                "download_count": 721,
+                "size": 113356800
+            }
+        ]
+    },
+    {
+        "version": "v1.3.4",
+        "date": "2023-05-24T16:22:51.000Z",
+        "assets": [
+            {
+                "name": "obsidian-1.3.4.asar.gz",
+                "download_count": 103895,
+                "size": 7579467
+            },
+            {
+                "name": "Obsidian.1.3.4.exe",
+                "download_count": 148790,
+                "size": 75873688
+            },
+            {
+                "name": "Obsidian.1.3.4-32.exe",
+                "download_count": 1870,
+                "size": 71557248
+            },
+            {
+                "name": "Obsidian.1.3.4-arm64.exe",
+                "download_count": 2459,
+                "size": 78893912
+            },
+            {
+                "name": "obsidian-1.3.4.tar.gz",
+                "download_count": 679,
+                "size": 98911410
+            },
+            {
+                "name": "Obsidian-1.3.4-arm64.AppImage",
+                "download_count": 542,
+                "size": 105384355
+            },
+            {
+                "name": "obsidian-1.3.4-arm64.tar.gz",
+                "download_count": 80,
+                "size": 99642196
+            },
+            {
+                "name": "Obsidian-1.3.4-universal.dmg",
+                "download_count": 80432,
+                "size": 169873442
+            },
+            {
+                "name": "obsidian_1.3.4_amd64.deb",
+                "download_count": 4162,
+                "size": 72733992
+            },
+            {
+                "name": "obsidian_1.3.4_amd64.snap",
+                "download_count": 3966,
+                "size": 113364992
+            },
+            {
+                "name": "Obsidian-1.3.4.AppImage",
+                "download_count": 9538,
+                "size": 104328171
+            }
+        ]
+    },
+    {
+        "version": "v1.3.5",
+        "date": "2023-06-01T15:08:47.000Z",
+        "assets": [
+            {
+                "name": "obsidian-1.3.5.asar.gz",
+                "download_count": 352144,
+                "size": 7610287
+            },
+            {
+                "name": "obsidian_1.3.5_amd64.deb",
+                "download_count": 35165,
+                "size": 72916766
+            },
+            {
+                "name": "obsidian_1.3.5_amd64.snap",
+                "download_count": 12083,
+                "size": 113520640
+            },
+            {
+                "name": "Obsidian-1.3.5.AppImage",
+                "download_count": 69167,
+                "size": 104537653
+            },
+            {
+                "name": "obsidian-1.3.5.tar.gz",
+                "download_count": 5249,
+                "size": 98938181
+            },
+            {
+                "name": "Obsidian-1.3.5-arm64.AppImage",
+                "download_count": 3694,
+                "size": 105593794
+            },
+            {
+                "name": "obsidian-1.3.5-arm64.tar.gz",
+                "download_count": 277,
+                "size": 99667056
+            },
+            {
+                "name": "Obsidian-1.3.5-universal.dmg",
+                "download_count": 356288,
+                "size": 170377104
+            },
+            {
+                "name": "Obsidian.1.3.5.exe",
+                "download_count": 678176,
+                "size": 75906648
+            },
+            {
+                "name": "Obsidian.1.3.5-32.exe",
+                "download_count": 7110,
+                "size": 71570696
+            },
+            {
+                "name": "Obsidian.1.3.5-arm64.exe",
+                "download_count": 4089,
+                "size": 78919688
+            },
+            {
+                "name": "Obsidian.1.3.5-allusers.exe",
+                "download_count": 585,
+                "size": 75881528
+            }
+        ]
+    },
+    {
+        "version": "v1.3.7",
+        "date": "2023-07-31T16:39:37.000Z",
+        "assets": [
+            {
+                "name": "Obsidian.1.3.7.exe",
+                "download_count": 328918,
+                "size": 75837952
+            },
+            {
+                "name": "Obsidian.1.3.7-32.exe",
+                "download_count": 3352,
+                "size": 71501456
+            },
+            {
+                "name": "Obsidian.1.3.7-arm64.exe",
+                "download_count": 2293,
+                "size": 78851432
+            },
+            {
+                "name": "Obsidian-1.3.7-universal.dmg",
+                "download_count": 150246,
+                "size": 170318743
+            },
+            {
+                "name": "Obsidian-1.3.7-arm64.AppImage",
+                "download_count": 2425,
+                "size": 105511312
+            },
+            {
+                "name": "obsidian-1.3.7-arm64.tar.gz",
+                "download_count": 259,
+                "size": 99599694
+            },
+            {
+                "name": "obsidian_1.3.7_amd64.deb",
+                "download_count": 17892,
+                "size": 72884884
+            },
+            {
+                "name": "obsidian_1.3.7_amd64.snap",
+                "download_count": 6277,
+                "size": 113463296
+            },
+            {
+                "name": "Obsidian-1.3.7.AppImage",
+                "download_count": 38584,
+                "size": 104455127
+            },
+            {
+                "name": "obsidian-1.3.7.tar.gz",
+                "download_count": 3622,
+                "size": 98868914
+            },
+            {
+                "name": "obsidian-1.3.7.asar.gz",
+                "download_count": 274550,
+                "size": 7540911
+            },
+            {
+                "name": "Obsidian.1.3.7-allusers.exe",
+                "download_count": 245,
+                "size": 75908144
+            }
+        ]
+    },
+    {
+        "version": "v1.4.5",
+        "date": "2023-08-31T19:40:23.000Z",
+        "assets": [
+            {
+                "name": "Obsidian.1.4.5-32.exe",
+                "download_count": 1580,
+                "size": 71771632
+            },
+            {
+                "name": "Obsidian.1.4.5-allusers.exe",
+                "download_count": 233,
+                "size": 76500704
+            },
+            {
+                "name": "Obsidian.1.4.5-arm64.exe",
+                "download_count": 1307,
+                "size": 79113184
+            },
+            {
+                "name": "obsidian_1.4.5_amd64.deb",
+                "download_count": 12313,
+                "size": 73343042
+            },
+            {
+                "name": "obsidian_1.4.5_amd64.snap",
+                "download_count": 2453,
+                "size": 114503680
+            },
+            {
+                "name": "Obsidian-1.4.5.AppImage",
+                "download_count": 13962,
+                "size": 105275457
+            },
+            {
+                "name": "obsidian-1.4.5.tar.gz",
+                "download_count": 1882,
+                "size": 99585362
+            },
+            {
+                "name": "Obsidian-1.4.5-arm64.AppImage",
+                "download_count": 852,
+                "size": 106019110
+            },
+            {
+                "name": "obsidian-1.4.5-arm64.tar.gz",
+                "download_count": 91,
+                "size": 100016893
+            },
+            {
+                "name": "Obsidian-1.4.5-universal.dmg",
+                "download_count": 60972,
+                "size": 170607755
+            },
+            {
+                "name": "Obsidian.1.4.5.exe",
+                "download_count": 138638,
+                "size": 76430248
+            },
+            {
+                "name": "obsidian-1.4.5.asar.gz",
+                "download_count": 143112,
+                "size": 8267902
+            }
+        ]
+    },
+    {
+        "version": "v1.4.10",
+        "date": "2023-09-11T19:36:09.000Z",
+        "assets": [
+            {
+                "name": "Obsidian.1.4.10.exe",
+                "download_count": 6316,
+                "size": 76453912
+            },
+            {
+                "name": "Obsidian.1.4.10-32.exe",
+                "download_count": 158,
+                "size": 71795536
+            },
+            {
+                "name": "Obsidian.1.4.10-allusers.exe",
+                "download_count": 24,
+                "size": 76524472
+            },
+            {
+                "name": "Obsidian.1.4.10-arm64.exe",
+                "download_count": 147,
+                "size": 79136520
+            },
+            {
+                "name": "Obsidian-1.4.10-universal.dmg",
+                "download_count": 550,
+                "size": 170723026
+            },
+            {
+                "name": "obsidian-1.4.10.asar.gz",
+                "download_count": 2976,
+                "size": 8394463
+            },
+            {
+                "name": "obsidian_1.4.10_amd64.snap",
+                "download_count": 30,
+                "size": 114569216
+            },
+            {
+                "name": "Obsidian-1.4.10.AppImage",
+                "download_count": 113,
+                "size": 105406562
+            },
+            {
+                "name": "obsidian-1.4.10.tar.gz",
+                "download_count": 22,
+                "size": 99705801
+            },
+            {
+                "name": "Obsidian-1.4.10-arm64.AppImage",
+                "download_count": 27,
+                "size": 106146097
+            },
+            {
+                "name": "obsidian-1.4.10-arm64.tar.gz",
+                "download_count": 18,
+                "size": 100138007
+            },
+            {
+                "name": "obsidian_1.4.10_amd64.deb",
+                "download_count": 121,
+                "size": 73359198
+            }
+        ]
+    },
+    {
+        "version": "v1.4.11",
+        "date": "2023-09-11T21:11:03.000Z",
+        "assets": [
+            {
+                "name": "obsidian-1.4.11.asar.gz",
+                "download_count": 26380,
+                "size": 8394463
+            },
+            {
+                "name": "Obsidian.1.4.11.exe",
+                "download_count": 14961,
+                "size": 76454744
+            },
+            {
+                "name": "Obsidian.1.4.11-32.exe",
+                "download_count": 475,
+                "size": 71795368
+            },
+            {
+                "name": "Obsidian.1.4.11-allusers.exe",
+                "download_count": 93,
+                "size": 76524624
+            },
+            {
+                "name": "Obsidian.1.4.11-arm64.exe",
+                "download_count": 377,
+                "size": 79136624
+            },
+            {
+                "name": "Obsidian-1.4.11-universal.dmg",
+                "download_count": 6755,
+                "size": 170722902
+            },
+            {
+                "name": "Obsidian-1.4.11.AppImage",
+                "download_count": 1198,
+                "size": 105406660
+            },
+            {
+                "name": "obsidian-1.4.11.tar.gz",
+                "download_count": 867,
+                "size": 99705859
+            },
+            {
+                "name": "Obsidian-1.4.11-arm64.AppImage",
+                "download_count": 120,
+                "size": 106146169
+            },
+            {
+                "name": "obsidian-1.4.11-arm64.tar.gz",
+                "download_count": 54,
+                "size": 100138401
+            },
+            {
+                "name": "obsidian_1.4.11_amd64.deb",
+                "download_count": 1193,
+                "size": 73327870
+            },
+            {
+                "name": "obsidian_1.4.11_amd64.snap",
+                "download_count": 257,
+                "size": 114569216
+            }
+        ]
+    },
+    {
+        "version": "v1.4.12",
+        "date": "2023-09-12T16:34:04.000Z",
+        "assets": [
+            {
+                "name": "obsidian-1.4.12.asar.gz",
+                "download_count": 62176,
+                "size": 8394475
+            },
+            {
+                "name": "Obsidian.1.4.12-32.exe",
+                "download_count": 773,
+                "size": 71795904
+            },
+            {
+                "name": "Obsidian.1.4.12-allusers.exe",
+                "download_count": 165,
+                "size": 76524616
+            },
+            {
+                "name": "Obsidian.1.4.12-arm64.exe",
+                "download_count": 595,
+                "size": 79137272
+            },
+            {
+                "name": "Obsidian.1.4.12.exe",
+                "download_count": 47905,
+                "size": 76454040
+            },
+            {
+                "name": "Obsidian-1.4.12.AppImage",
+                "download_count": 4070,
+                "size": 105406707
+            },
+            {
+                "name": "obsidian-1.4.12.tar.gz",
+                "download_count": 82,
+                "size": 99705946
+            },
+            {
+                "name": "Obsidian-1.4.12-arm64.AppImage",
+                "download_count": 229,
+                "size": 106146201
+            },
+            {
+                "name": "obsidian-1.4.12-arm64.tar.gz",
+                "download_count": 43,
+                "size": 100138219
+            },
+            {
+                "name": "Obsidian-1.4.12-universal.dmg",
+                "download_count": 19359,
+                "size": 170723409
+            },
+            {
+                "name": "obsidian_1.4.12_amd64.deb",
+                "download_count": 3912,
+                "size": 73340932
+            },
+            {
+                "name": "obsidian_1.4.12_amd64.snap",
+                "download_count": 679,
+                "size": 114569216
+            }
+        ]
+    },
+    {
+        "version": "v1.4.13",
+        "date": "2023-09-15T15:54:14.000Z",
+        "assets": [
+            {
+                "name": "obsidian-1.4.13.asar.gz",
+                "download_count": 155200,
+                "size": 8394487
+            },
+            {
+                "name": "obsidian_1.4.13_amd64.snap",
+                "download_count": 3665,
+                "size": 114577408
+            },
+            {
+                "name": "Obsidian-1.4.13.AppImage",
+                "download_count": 26463,
+                "size": 105411110
+            },
+            {
+                "name": "obsidian-1.4.13.tar.gz",
+                "download_count": 2195,
+                "size": 99706160
+            },
+            {
+                "name": "Obsidian-1.4.13-arm64.AppImage",
+                "download_count": 982,
+                "size": 106142692
+            },
+            {
+                "name": "obsidian-1.4.13-arm64.tar.gz",
+                "download_count": 134,
+                "size": 100139943
+            },
+            {
+                "name": "Obsidian-1.4.13-universal.dmg",
+                "download_count": 209522,
+                "size": 170718316
+            },
+            {
+                "name": "Obsidian.1.4.13.exe",
+                "download_count": 351629,
+                "size": 76454120
+            },
+            {
+                "name": "Obsidian.1.4.13-32.exe",
+                "download_count": 3210,
+                "size": 71787840
+            },
+            {
+                "name": "Obsidian.1.4.13-allusers.exe",
+                "download_count": 1520,
+                "size": 76523760
+            },
+            {
+                "name": "Obsidian.1.4.13-arm64.exe",
+                "download_count": 2548,
+                "size": 79132320
+            },
+            {
+                "name": "obsidian_1.4.13_amd64.deb",
+                "download_count": 20703,
+                "size": 73357626
+            }
+        ]
+    },
+    {
+        "version": "v1.4.14",
+        "date": "2023-09-26T18:33:03.000Z",
+        "assets": [
+            {
+                "name": "obsidian-1.4.14.asar.gz",
+                "download_count": 206079,
+                "size": 8393737
+            },
+            {
+                "name": "Obsidian.1.4.14-32.exe",
+                "download_count": 4965,
+                "size": 71786056
+            },
+            {
+                "name": "Obsidian.1.4.14-allusers.exe",
+                "download_count": 2514,
+                "size": 76522424
+            },
+            {
+                "name": "Obsidian.1.4.14-arm64.exe",
+                "download_count": 2258,
+                "size": 79131768
+            },
+            {
+                "name": "Obsidian-1.4.14-universal.dmg",
+                "download_count": 112419,
+                "size": 170716365
+            },
+            {
+                "name": "Obsidian.1.4.14.exe",
+                "download_count": 294092,
+                "size": 76451680
+            },
+            {
+                "name": "obsidian-1.4.14.tar.gz",
+                "download_count": 3356,
+                "size": 99705283
+            },
+            {
+                "name": "Obsidian-1.4.14-arm64.AppImage",
+                "download_count": 1124,
+                "size": 106134727
+            },
+            {
+                "name": "obsidian-1.4.14-arm64.tar.gz",
+                "download_count": 129,
+                "size": 100139051
+            },
+            {
+                "name": "obsidian_1.4.14_amd64.deb",
+                "download_count": 20697,
+                "size": 73334984
+            },
+            {
+                "name": "obsidian_1.4.14_amd64.snap",
+                "download_count": 3620,
+                "size": 114573312
+            },
+            {
+                "name": "Obsidian-1.4.14.AppImage",
+                "download_count": 21921,
+                "size": 105403151
+            }
+        ]
+    },
+    {
+        "version": "v1.4.16",
+        "date": "2023-10-13T16:20:39.000Z",
+        "assets": [
+            {
+                "name": "obsidian-1.4.16.asar.gz",
+                "download_count": 489349,
+                "size": 8394471
+            },
+            {
+                "name": "obsidian-1.4.16.tar.gz",
+                "download_count": 10111,
+                "size": 99705807
+            },
+            {
+                "name": "Obsidian-1.4.16-arm64.AppImage",
+                "download_count": 6757,
+                "size": 106134338
+            },
+            {
+                "name": "obsidian-1.4.16-arm64.tar.gz",
+                "download_count": 573,
+                "size": 100139135
+            },
+            {
+                "name": "Obsidian-1.4.16-universal.dmg",
+                "download_count": 599733,
+                "size": 170716746
+            },
+            {
+                "name": "obsidian_1.4.16_amd64.deb",
+                "download_count": 99187,
+                "size": 73362498
+            },
+            {
+                "name": "obsidian_1.4.16_amd64.snap",
+                "download_count": 18154,
+                "size": 114573312
+            },
+            {
+                "name": "Obsidian-1.4.14-universal.dmg",
+                "download_count": 10987,
+                "size": 170716365
+            },
+            {
+                "name": "Obsidian-1.4.16.AppImage",
+                "download_count": 102151,
+                "size": 105406892
+            },
+            {
+                "name": "Obsidian.1.4.16-arm64.exe",
+                "download_count": 10550,
+                "size": 79131336
+            },
+            {
+                "name": "Obsidian.1.4.16.exe",
+                "download_count": 1067388,
+                "size": 76452496
+            },
+            {
+                "name": "Obsidian.1.4.16-32.exe",
+                "download_count": 11625,
+                "size": 71786376
+            },
+            {
+                "name": "Obsidian.1.4.16-allusers.exe",
+                "download_count": 2166,
+                "size": 76480232
+            }
+        ]
+    },
+    {
+        "version": "v1.5.3",
+        "date": "2023-12-26T02:02:16.000Z",
+        "assets": [
+            {
+                "name": "Obsidian.1.5.3.exe",
+                "download_count": 21336,
+                "size": 76508424
+            },
+            {
+                "name": "Obsidian.1.5.3-32.exe",
+                "download_count": 918,
+                "size": 71842344
+            },
+            {
+                "name": "Obsidian.1.5.3-allusers.exe",
+                "download_count": 203,
+                "size": 76535992
+            },
+            {
+                "name": "Obsidian.1.5.3-arm64.exe",
+                "download_count": 806,
+                "size": 79187704
+            },
+            {
+                "name": "obsidian-1.5.3.tar.gz",
+                "download_count": 99,
+                "size": 99822395
+            },
+            {
+                "name": "Obsidian-1.5.3-arm64.AppImage",
+                "download_count": 243,
+                "size": 106265544
+            },
+            {
+                "name": "obsidian-1.5.3-arm64.tar.gz",
+                "download_count": 79,
+                "size": 100258718
+            },
+            {
+                "name": "obsidian_1.5.3_amd64.deb",
+                "download_count": 2153,
+                "size": 73415050
+            },
+            {
+                "name": "obsidian_1.5.3_amd64.snap",
+                "download_count": 341,
+                "size": 114704384
+            },
+            {
+                "name": "Obsidian-1.5.3.AppImage",
+                "download_count": 2307,
+                "size": 105533955
+            },
+            {
+                "name": "obsidian-1.5.3.asar.gz",
+                "download_count": 42994,
+                "size": 8515395
+            },
+            {
+                "name": "Obsidian-1.5.3-universal.dmg",
+                "download_count": 12184,
+                "size": 170861787
+            }
+        ]
+    }
+]

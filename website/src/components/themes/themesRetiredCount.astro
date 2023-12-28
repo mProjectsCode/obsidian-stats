@@ -1,6 +1,6 @@
 ---
 import ThemeDataFile from '../../../../theme-data.json' assert { type: 'json' };
-import { getRetiredThemeCountPerMonth } from '../../utils/utils';
+import { getRetiredThemeCountPerMonth } from "../../../../src/theme/data";
 import DataPerMonthChart from '../svelte/dataPerMonthChart.svelte';
 
 const dataPoints = getRetiredThemeCountPerMonth(ThemeDataFile);

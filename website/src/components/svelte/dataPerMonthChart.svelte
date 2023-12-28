@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Chart from 'chart.js/auto';
 	import { onDestroy, onMount } from 'svelte';
-	import { type PerMonthDataPoint } from '../../utils/utils';
+	import {type PerMonthDataPoint} from "../../../../src/types.ts";
 	import { ThemeObserver } from './svelteUtils.ts';
 
 	export let dataPoints: PerMonthDataPoint[];
