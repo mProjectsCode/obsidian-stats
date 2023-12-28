@@ -7,7 +7,7 @@ export const RELEASE_STATS_URL = 'https://api.github.com/repos/obsidianmd/obsidi
 
 export const PLUGIN_DATA_PATH = `plugin-data.json`;
 export const THEME_DATA_PATH = `theme-data.json`;
-export const RELEASE_FULL_DATA_PATH = `releases-full-data.json`;
+export const RELEASE_FULL_DATA_PATH = `releases-full-data.csv`;
 export const RELEASE_WEEKLY_DATA_PATH = `releases-weekly-data.csv`;
 
 export const OBSIDIAN_RELEASES_PATH = 'obsidian-releases';

@@ -1,5 +1,37 @@
-import {ALL_OS, ReleaseEntry, WeeklyReleaseGrowthEntry} from "./release.ts";
+import {ALL_OS, WeeklyReleaseGrowthEntry} from "./release.ts";
 
+import {addTableMethod, addVerb, escape, op, table} from "arquero";
+import ColumnTable from "arquero/dist/types/table/column-table";
+
+addTableMethod('distinctArray', (table, columnName: string) => {
+    return table.rollup({ values: op.array_agg_distinct(columnName) }).get('values', 0);
+}, { override: true });
+
+addVerb('normalize', (table: ColumnTable, column: string) => {
+    const sum = table.rollup({ sum: op.sum(column) }).get('sum', 0);
+    return table.derive({ downloads: escape(d => d[column] / sum) });
+}, [{ name: 'column', type: 'Expr' }], { override: true });
+
+// Normalize by group
+addVerb('normalizeBy', (table: ColumnTable, column: string, group: string) => {
+    const sum = table.groupby(group).rollup({ sum: op.sum(column) }).orderby(group);
+    return table
+        .join(sum, [group])
+        .derive({[column]: escape(d => d[column] / d['sum'])})
+        .select(...table.columnNames())
+        .impute({[column]: 0})
+        .orderby(group);
+}, [{ name: 'column', type: 'Expr' }, { name: 'group', type: 'Expr' }], { override: true });
+
+addVerb("imputeAll", (tab: ColumnTable, columns: string[], nullable: string[]) => {
+    const distinctValues = columns.map(column => table({[column]: tab.distinctArray(column)}));
+    const allCombinations = distinctValues.reduce((acc, curr) => acc.cross(curr));
+
+    return allCombinations
+        .join_left(tab, columns.map(_ => columns))
+        .impute(nullable.reduce((acc, curr) => ({...acc, [curr]: 0}), {}))
+        .orderby(...columns);
+}, [{ name: 'columns', type: 'ExprList' }, { name: 'nullable', type: 'ExprList' }], { override: true });
 
 // | Distribution | OS | TYPE | IS | COMMENTS |
 // | ---- | ---- | ---- | ---- | ---- |
@@ -17,9 +49,9 @@ import {ALL_OS, ReleaseEntry, WeeklyReleaseGrowthEntry} from "./release.ts";
 // | obsidian_x.y.z_arm64.exe | Windows |  | ARM |  |
 
 
-function determineAssetOS(assetName: string) {
+export function determineAssetOS(assetName: string) {
     if (assetName.endsWith('.asar.gz')) {
-        return undefined;
+        return null;
     } else if (assetName.endsWith('.dmg')) {
         return 'macos';
     } else if (assetName.endsWith('.exe')) {
@@ -29,80 +61,36 @@ function determineAssetOS(assetName: string) {
     }
 }
 
-
-function getAllReleaseVersions(releaseData: ReleaseEntry[]) {
-    return [...new Set(releaseData.map(x => x.version))];
+export function determineAssetType(assetName: string) {
+    const versionRegex = /\d+\.\d+\.\d+/;
+    return assetName.slice(assetName.search(versionRegex) + versionRegex.exec(assetName)[0].length + 1);
 }
 
 
-export function getMajorReleaseVersions(releaseData: ReleaseEntry[]) {
-    const allVersions = getAllReleaseVersions(releaseData);
-    const majorVersions = [...new Set(allVersions.map(x => x.split('.').slice(0, 2).join('.')))];
-    return majorVersions.map(x => allVersions.find(y => y.startsWith(x))!);
+export function determineAssetIS(assetName: string) {
+    if (assetName.endsWith('.dmg'))
+        return 'both';
+    return assetName.includes('arm64') ? 'arm64' : 'x86';
+}
+
+export function determineAssetArchitecture(assetName: string) {
+    if (assetName.includes('32'))
+        return '32bit';
+    else
+        return '64bit';
+}
+
+export function fixVersion(version: string) {
+    const parts = version.split(".");
+    return parts.map((part) => part.padStart(2, "0")).join(".");
 }
 
 
-export function getDownloadsPerOS(releaseData: ReleaseEntry[]) {
-    const downloadsPerOS = Object.fromEntries(ALL_OS.map(x =>
-        [x, Object.fromEntries(getAllReleaseVersions(releaseData).map(x => [x, 0]))])
-    );
-
-    // Multiple assets can count towards the same OS
-    for (const release of releaseData) {
-        for (const asset of release.assets) {
-            const os = determineAssetOS(asset.name);
-            if (os !== undefined)
-                downloadsPerOS[os][release.version] += asset.download_count;
-        }
-    }
-
-    return downloadsPerOS;
-}
-
-
-export function getNormalisedDownloadsPerOS(releaseData: ReleaseEntry[]) {
-    const downloadsPerOS = getDownloadsPerOS(releaseData);
-
-    const releases = getAllReleaseVersions(releaseData);
-
-    for (const release of releases) {
-        const total = ALL_OS.reduce((acc, os) => acc + downloadsPerOS[os][release], 0);
-        for (const os of ALL_OS) {
-            downloadsPerOS[os][release] /= total;
-            if (isNaN(downloadsPerOS[os][release]))
-                downloadsPerOS[os][release] = 0;
-        }
-    }
-
-    return downloadsPerOS as { [os in typeof ALL_OS[number]]: { [release: string]: number } };
-}
-
-export function getDownloadSizeOverTime()
-
-
-export function getTimeBetweenReleases(releaseData: ReleaseEntry[]) {
-    const releases = getAllReleaseVersions(releaseData);
-    const releaseDates = Object.fromEntries(releases.map(x => [x, new Date(releaseData.find(y => y.version === x)!.date)]));
-
-    // Get time in ms between releases
-    const timeBetweenReleases: { [release: string]: number } = {};
-    for (let i = 1; i < releases.length; i++) {
-        const prev = releases[i - 1];
-        const curr = releases[i];
-        timeBetweenReleases[curr] = releaseDates[curr].getTime() - releaseDates[prev].getTime();
-    }
-
-    return timeBetweenReleases;
-}
-
-export function getTimeBetweenMajorReleases(releaseData: ReleaseEntry[]) {
-    const majorReleases = getMajorReleaseVersions(releaseData);
-    const majorReleaseData = releaseData.filter(x => majorReleases.includes(x.version));
-    return getTimeBetweenReleases(majorReleaseData);
+export function getMajorVersions(versions: string[]) {
+    return [...new Set(versions.map(x => x.split('.').slice(0, 2).join('.')))].map(x => versions.find(y => y.startsWith(x))!);
 }
 
 export function parseReleaseGrowth(csv: string): WeeklyReleaseGrowthEntry[] {
-    console.log(csv);
     const lines = csv.split('\n').slice(1).map(x => x.split(','));
     return lines.map(x => ({
         date: new Date(x[0]),
@@ -145,7 +133,7 @@ export function getReleaseGrowthPerWeekPerOS(releaseData: WeeklyReleaseGrowthEnt
     for (const release of releasesPerWeek) {
         const downloadsPerOS = release.entries.reduce((acc, entry) => {
             const os = determineAssetOS(entry.asset);
-            if (os !== undefined)
+            if (os !== null)
                 acc[os] += entry.downloads;
             return acc;
         }, Object.fromEntries(ALL_OS.map(x => [x, 0])));

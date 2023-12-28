@@ -88,6 +88,9 @@ export function getNextMondays(start: Date, end: Date): Date[] {
  * @remark Adapted from https://stackoverflow.com/questions/1925691/proportionately-distribute-prorate-a-value-across-a-set-of-values
  */
 export function distributeValueEqually(value: number, factors: number[]) {
+	if (factors.length === 0) return [];
+	if (factors.length === 1) return [value];
+
 	const totalWeight = factors.reduce((a, b) => a + b, 0);
 	const actual = new Array(factors.length),
 		  error = new Array(factors.length),

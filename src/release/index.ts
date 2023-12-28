@@ -1,6 +1,9 @@
-import {GithubReleaseEntry, GithubReleases, ReleaseAsset, ReleaseEntry} from "./release.ts";
-import {RELEASE_FULL_DATA_PATH, RELEASE_WEEKLY_DATA_PATH, RELEASE_STATS_URL, THEME_DATA_PATH} from "../constants.ts";
-import {dateDiffInDays, dateToString, distributeValueEqually, getNextMondays} from "../utils.ts";
+import {GithubReleaseEntry} from "./release.ts";
+import {RELEASE_FULL_DATA_PATH, RELEASE_STATS_URL, RELEASE_WEEKLY_DATA_PATH} from "../constants.ts";
+import {dateToString, distributeValueEqually, getNextMondays} from "../utils.ts";
+import {escape, from, fromCSV, op, table} from "arquero";
+import ColumnTable from "arquero/dist/types/table/column-table";
+import {fixVersion} from "./data.ts";
 
 
 async function fetchReleaseStats() {
@@ -14,10 +17,9 @@ async function fetchReleaseStats() {
             throw new Error("Error while fetching releases data: " + (await response.json() as any).message)
         }
 
-        const releasesPage= await response.json() as GithubReleaseEntry[];
+        const releasesPage = await response.json() as GithubReleaseEntry[];
 
         releases.push(...releasesPage);
-
         let nextLink: string | null = null;
         const link = response.headers.get("link");
         if (link) {
@@ -32,148 +34,116 @@ async function fetchReleaseStats() {
         currentPage = nextLink;
     }
 
+    const releaseData = releases.flatMap(x => x.assets.map(y => ({
+        version: fixVersion(x.tag_name),
+        date: new Date(x.published_at),
+        asset: y.name,
+        downloads: y.download_count,
+        size: y.size
+    })));
 
-
-    const releasesData: ReleaseEntry[] = [];
-    for (const release of releases) {
-        const assets: ReleaseAsset[] = [];
-        for (const asset of release.assets) {
-            assets.push({
-                name: asset.name,
-                download_count: asset.download_count,
-                size: asset.size
-            });
-        }
-
-        releasesData.push({
-            version: release.tag_name,
-            date: new Date(release.published_at),
-            assets: assets
-        });
-    }
-
-    releasesData.sort((a, b) => a.date.getTime() - b.date.getTime());
-
-    return releasesData;
+    return from(releaseData)
+        .orderby("version", "asset", "date");
 }
 
-async function computeWeeklyDownloads(prev: ReleaseEntry[], current: ReleaseEntry[], startDate: Date, endDate: Date) {
-    // Get all mondays at UTC midnight between the two dates
-    const dates = getNextMondays(startDate, endDate);
+function computeWeeklyDownloads(previousData: ColumnTable, currentData: ColumnTable, previousDate: Date, endDate: Date) {
+    const incrementalData = previousData
+        .join(currentData, [["version", "asset"], ["version", "asset"]])
+        .derive({downloads: d => d.downloads_2 - d.downloads_1})
+        .select("version", "asset", "downloads")
+        .filter(d => d.downloads > 0);
 
-    //  Equally divide the downloadso over the given interval
+    const weeklyDates = getNextMondays(previousDate, endDate);
+    const weeklyWeights = weeklyFactors(weeklyDates, previousDate, endDate);
+    const stringDates = weeklyDates.map(x => dateToString(x));
+
+    return incrementalData
+        .derive({downloads: escape(d => distributeValueEqually(d.downloads, weeklyWeights))})
+        .unroll("downloads", {index: "date"})
+        .derive({date: escape(d => stringDates[d.date])})
+        .filter(d => d.downloads > 0);
+}
+
+
+function combineWeeklyDownloads(weeklyData: ColumnTable, newData: ColumnTable) {
+    return from(weeklyData.objects().concat(newData.objects()))
+        .groupby("date", "version", "asset")
+        .rollup({downloads: d => op.sum(d.downloads)})
+        .orderby("date", "version", "asset")
+}
+
+
+/**
+ * Determine how a value should be spread across an interval of weeks
+ */
+function weeklyFactors(dates: Date[], startDate: Date, endDate: Date) {
+    if (dates.length === 0) return [];
+    if (dates.length === 1) return [1];
+
     const startWeekCover = (dates[0].getTime() - startDate.getTime()) / (7 * 86400000);
     const endWeekCover = 1 - (dates[dates.length - 1].getTime() - endDate.getTime()) / (7 * 86400000);
 
     const totalWeekCover = startWeekCover + dates.length - 2 + endWeekCover;
-    const factors = [
+    return [
         startWeekCover / totalWeekCover,
         ...Array.from({length: dates.length - 2}, () => 1 / totalWeekCover),
         endWeekCover / totalWeekCover
     ];
-
-    const prevAssets = prev.flatMap(x => x.assets.map(y => ({...y, version: x.version})));
-    const currentAssets = current.flatMap(x => x.assets.map(y => ({...y, version: x.version})));
-
-
-    // Create weekly downloads array for each day between releases
-    let weeklyDownloads: { date: string, version: string, asset: string, downloads: number }[][] = Array.from({length: dates.length}, () => []);
-
-    for (const asset of currentAssets) {
-        const prevAsset = prevAssets.find(x => x.name === asset.name && x.version === asset.version);
-        let previousDownloadCount = prevAsset ? prevAsset.download_count : 0;
-
-        const assetDownloads = asset.download_count - previousDownloadCount;
-        const distributedValues = distributeValueEqually(assetDownloads, factors);
-
-        for (let i = 0; i < dates.length; i++) {
-            weeklyDownloads[i].push({
-                date: dateToString(dates[i]),
-                version: asset.version,
-                asset: asset.name,
-                downloads: distributedValues[i]
-            });
-        }
-    }
-
-    const flattenedWeeklyDownloads = weeklyDownloads.flat();
-    return flattenedWeeklyDownloads.filter(x => x.downloads > 0);
 }
 
-
-
 export async function testWeeklyDownloads() {
-    const previousFullDataFile = Bun.file("releases-prev-data.json");
-    const previousReleaseData = JSON.parse(await previousFullDataFile.text()) as ReleaseEntry[];
+    const previousFullDataFile = Bun.file("releases-prev-data.csv");
+    const previousReleaseData = fromCSV(await previousFullDataFile.text())
+        .select("version", "asset", "downloads")
 
-    const currentFullDataFile = Bun.file("releases-full-data.json");
-    const currentReleaseData = JSON.parse(await currentFullDataFile.text()) as ReleaseEntry[];
+    const currentFullDataFile = Bun.file("releases-full-data.csv");
+    const currentReleaseData = fromCSV(await currentFullDataFile.text())
+        .select("version", "asset", "downloads")
 
     const endDate = new Date();
     const previousDate = new Date(endDate.getTime() - 0 * 86400000);
 
-    const weeklyDownloads = await computeWeeklyDownloads(previousReleaseData, currentReleaseData, previousDate, endDate);
+    const incrementalData = computeWeeklyDownloads(previousReleaseData, currentReleaseData, previousDate, endDate);
+
     const weeklyDownloadsFile = Bun.file(RELEASE_WEEKLY_DATA_PATH);
-    let weeklyDownloadsText = await weeklyDownloadsFile.text();
+    const weeklyDownloadsTable = fromCSV(await weeklyDownloadsFile.text(), {parse: {date: String}});
+    const combinedWeeklyDownloadsTable = combineWeeklyDownloads(weeklyDownloadsTable, incrementalData);
 
-    weeklyDownloadsText = combineWeeklyDownloads(weeklyDownloadsText, weeklyDownloads);
-
-    await Bun.write(weeklyDownloadsFile, weeklyDownloadsText);
+    await Bun.write(Bun.file("res.csv"), combinedWeeklyDownloadsTable.toCSV());
+    await Bun.write(Bun.file("incr.csv"), incrementalData.toCSV());
 }
-
-
-
-function combineWeeklyDownloads(prev: string, curr: { date: string, version: string, asset: string, downloads: number }[]) {
-    let splitWeeklyDownloads = prev.split("\n");
-    if (splitWeeklyDownloads[0] === "date,version,asset,downloads")
-        splitWeeklyDownloads = splitWeeklyDownloads.slice(1);
-    if (splitWeeklyDownloads[splitWeeklyDownloads.length - 1] === "")
-        splitWeeklyDownloads = splitWeeklyDownloads.slice(0, -1);
-
-    const previousWeeklyDownloads: Map<string, number> = new Map(
-        splitWeeklyDownloads
-            .map(x => {
-                const [date, version, asset, downloads] = x.split(",");
-                return [`${date},${version},${asset}`, parseInt(downloads)];
-            })
-    );
-
-    for (const download of curr) {
-        const key = `${download.date},${download.version},${download.asset}`;
-        if (previousWeeklyDownloads.has(key)) {
-            previousWeeklyDownloads.set(key, previousWeeklyDownloads.get(key)! + download.downloads);
-        } else {
-            previousWeeklyDownloads.set(key, download.downloads);
-        }
-    }
-
-
-
-    // Generate csv text by just adding downloads to key
-    return "date,version,asset,downloads\n" +
-        Array.from(previousWeeklyDownloads.entries())
-            .map(([key, downloads]) => `${key},${downloads}`)
-            .join("\n");
-}
-
 
 export async function buildReleaseStats() {
     const releaseData = await fetchReleaseStats();
+    // const releaseData = fromCSV(await Bun.file(RELEASE_FULL_DATA_PATH).text());
 
     const releaseFullDataFile = Bun.file(RELEASE_FULL_DATA_PATH);
+    const releaseWeeklyDataFile = Bun.file(RELEASE_WEEKLY_DATA_PATH);
 
     const lastModifiedDate = new Date(releaseFullDataFile.lastModified);
-    const previousReleaseData = JSON.parse(await releaseFullDataFile.text()) as ReleaseEntry[];
-    const endDate = new Date();
+    const currentDate = new Date();
 
-    let weeklyDownloads = await computeWeeklyDownloads(previousReleaseData, releaseData, lastModifiedDate, endDate);
+    let weeklyData: ColumnTable;
+    try {
+        weeklyData = fromCSV(await releaseWeeklyDataFile.text(), {parse: {date: String}});
+    } catch (e) {
+        // If the CSV file is empty or doesn't exist, start from an empty table
+        weeklyData = table([["date", []], ["version", []], ["asset", []], ["downloads", []]]);
+    }
 
-    const weeklyDownloadsFile = Bun.file(RELEASE_WEEKLY_DATA_PATH);
-    const weeklyDownloadsText = combineWeeklyDownloads(await weeklyDownloadsFile.text(), weeklyDownloads);
+    let previousReleaseData: ColumnTable;
+    try {
+        previousReleaseData = fromCSV(await releaseFullDataFile.text());
+    } catch (e) {
+        // If no previous data is given, start from an empty table
+        previousReleaseData = table([["version", []], ["date", []], ["asset", []], ["downloads", []], ["size", []]]);
+    }
 
-    await Bun.write(weeklyDownloadsFile, weeklyDownloadsText);
+    const incrementalData = computeWeeklyDownloads(previousReleaseData, releaseData, lastModifiedDate, currentDate);
+    const combinedWeeklyDownloadsTable = combineWeeklyDownloads(weeklyData, incrementalData);
 
-    await Bun.write(releaseFullDataFile, JSON.stringify(releaseData, null, 4));
+    await Bun.write(releaseWeeklyDataFile, combinedWeeklyDownloadsTable.toCSV());
+    await Bun.write(releaseFullDataFile, releaseData.toCSV());
 }
 
 await buildReleaseStats();
