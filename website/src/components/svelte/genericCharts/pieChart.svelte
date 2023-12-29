@@ -1,9 +1,5 @@
 <script lang="ts">
 	import Chart from 'chart.js/auto';
-	import ChartDataLabels from 'chartjs-plugin-datalabels';
-
-	Chart.register(ChartDataLabels);
-
 	import { onDestroy, onMount } from 'svelte';
 	import { ThemeObserver } from '../svelteUtils.ts';
 
