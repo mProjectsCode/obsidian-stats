@@ -46,7 +46,7 @@
 							beginAtZero: true,
 						},
 					},
-					aspectRatio: 3 / 2,
+					aspectRatio: 1,
 				},
 			});
 		});
@@ -68,7 +68,7 @@
 <style>
 	.chart-wrapper {
 		width: 100%;
-		aspect-ratio: 3/2;
+		aspect-ratio: 1;
 		position: relative;
 	}
 </style>

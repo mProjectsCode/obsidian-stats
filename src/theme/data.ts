@@ -1,190 +1,99 @@
 import { type ThemeDataInterface } from './theme.ts';
 import { type PerMonthDataPoint } from '../types.ts';
+import { filterRemoved, getAddedDataForMonth, getRemovedDataForMonth, isRemoved, iterateDataMonthly } from '../utils.ts';
 
-export function getRetiredThemes(themes: ThemeDataInterface[]): ThemeDataInterface[] {
-	return themes.filter(theme => theme.removedCommit !== undefined).sort((a, b) => a.id.localeCompare(b.id));
+export function getThemeRemovedList(themes: ThemeDataInterface[]): ThemeDataInterface[] {
+	return filterRemoved(themes).sort((a, b) => a.id.localeCompare(b.id));
 }
 
-export function getRecentRetiredThemes(themes: ThemeDataInterface[]): ThemeDataInterface[] {
-	return themes
-		.filter(theme => theme.removedCommit !== undefined)
+export function getThemeRemovedRecentList(themes: ThemeDataInterface[]): ThemeDataInterface[] {
+	return filterRemoved(themes)
 		.sort((a, b) => new Date(b.removedCommit!.date).valueOf() - new Date(a.removedCommit!.date).valueOf())
 		.slice(0, 15);
 }
 
-export function getPercentageOfRetiredThemesByReleaseMonth(themes: ThemeDataInterface[]): PerMonthDataPoint[] {
-	const data: PerMonthDataPoint[] = [];
+export function getThemePercentageRemovedByReleaseMonth(themes: ThemeDataInterface[]): PerMonthDataPoint[] {
+	return iterateDataMonthly<PerMonthDataPoint>(themes, (d, year, month) => {
+		const releasedThemes = getAddedDataForMonth(themes, year, month);
+		const retiredThemes = filterRemoved(releasedThemes);
 
-	const firstReleaseDate = new Date(themes[0].addedCommit.date);
-	const lastReleaseDate = new Date(themes[themes.length - 1].addedCommit.date);
-
-	for (let d = firstReleaseDate; d <= lastReleaseDate; d.setMonth(d.getMonth() + 1)) {
-		const year = d.getFullYear().toString();
-		const month = (d.getMonth() + 1).toString().padStart(2, '0');
-
-		const releasedThemes = themes.filter(theme => {
-			const releaseDate = new Date(theme.addedCommit.date);
-			return releaseDate.getFullYear() === d.getFullYear() && releaseDate.getMonth() === d.getMonth();
-		});
-
-		const retiredThemes = releasedThemes.filter(plugin => plugin.removedCommit !== undefined);
-
-		const percentage = (retiredThemes.length / releasedThemes.length) * 100;
-
-		data.push({
+		return {
 			year: year,
 			month: month,
-			value: percentage,
-		});
-	}
-
-	return data;
+			value: (retiredThemes.length / releasedThemes.length) * 100,
+		};
+	});
 }
 
-export function getNewThemeReleasesPerMonth(themes: ThemeDataInterface[]): PerMonthDataPoint[] {
-	const data: PerMonthDataPoint[] = [];
+export function getThemeCountAddedMonthly(themes: ThemeDataInterface[]): PerMonthDataPoint[] {
+	return iterateDataMonthly<PerMonthDataPoint>(themes, (d, year, month) => {
+		const releasedThemes = getAddedDataForMonth(themes, year, month);
 
-	const firstReleaseDate = new Date(themes[0].addedCommit.date);
-	const lastReleaseDate = new Date(themes[themes.length - 1].addedCommit.date);
-
-	for (let d = firstReleaseDate; d <= lastReleaseDate; d.setMonth(d.getMonth() + 1)) {
-		const year = d.getFullYear().toString();
-		const month = (d.getMonth() + 1).toString().padStart(2, '0');
-
-		const releasedThemes = themes.filter(theme => {
-			const releaseDate = new Date(theme.addedCommit.date);
-			return releaseDate.getFullYear() === d.getFullYear() && releaseDate.getMonth() === d.getMonth();
-		});
-
-		data.push({
+		return {
 			year: year,
 			month: month,
 			value: releasedThemes.length,
-		});
-	}
-
-	return data;
+		};
+	});
 }
 
-export function getThemeCountPerMonth(themes: ThemeDataInterface[]): PerMonthDataPoint[] {
-	const data: PerMonthDataPoint[] = [];
+export function getThemeCountMonthly(themes: ThemeDataInterface[]): PerMonthDataPoint[] {
+	let total = 0;
 
-	const firstReleaseDate = new Date(themes[0].addedCommit.date);
-	const lastReleaseDate = new Date(themes[themes.length - 1].addedCommit.date);
+	return iterateDataMonthly<PerMonthDataPoint>(themes, (d, year, month) => {
+		const releasedThemes = getAddedDataForMonth(themes, year, month);
 
-	let totalThemes = 0;
+		total += releasedThemes.length;
 
-	for (let d = firstReleaseDate; d <= lastReleaseDate; d.setMonth(d.getMonth() + 1)) {
-		const year = d.getFullYear().toString();
-		const month = (d.getMonth() + 1).toString().padStart(2, '0');
-
-		const releasedThemes = themes.filter(theme => {
-			const releaseDate = new Date(theme.addedCommit.date);
-			return releaseDate.getFullYear() === d.getFullYear() && releaseDate.getMonth() === d.getMonth();
-		});
-
-		totalThemes += releasedThemes.length;
-
-		data.push({
+		return {
 			year: year,
 			month: month,
-			value: totalThemes,
-		});
-	}
-
-	return data;
+			value: total,
+		};
+	});
 }
 
-export function getThemeCountPerMonthWoRetiredThemes(themes: ThemeDataInterface[]): PerMonthDataPoint[] {
-	const data: PerMonthDataPoint[] = [];
+export function getThemeCountWoRetiredMonthly(themes: ThemeDataInterface[]): PerMonthDataPoint[] {
+	let total = 0;
 
-	const firstReleaseDate = new Date(themes[0].addedCommit.date);
-	const lastReleaseDate = new Date(themes[themes.length - 1].addedCommit.date);
+	return iterateDataMonthly<PerMonthDataPoint>(themes, (d, year, month) => {
+		const releasedThemes = getAddedDataForMonth(themes, year, month);
+		const retiredThemes = getRemovedDataForMonth(themes, year, month);
 
-	let totalThemes = 0;
+		total += releasedThemes.length - retiredThemes.length;
 
-	for (let d = firstReleaseDate; d <= lastReleaseDate; d.setMonth(d.getMonth() + 1)) {
-		const year = d.getFullYear().toString();
-		const month = (d.getMonth() + 1).toString().padStart(2, '0');
-
-		const releasedThemes = themes.filter(theme => {
-			const releaseDate = new Date(theme.addedCommit.date);
-			return releaseDate.getFullYear() === d.getFullYear() && releaseDate.getMonth() === d.getMonth();
-		});
-
-		const retiredThemes = themes
-			.filter(theme => theme.removedCommit !== undefined)
-			.filter(theme => {
-				const removedDate = new Date(theme.removedCommit!.date);
-				return removedDate.getFullYear() === d.getFullYear() && removedDate.getMonth() === d.getMonth();
-			});
-
-		totalThemes += releasedThemes.length - retiredThemes.length;
-
-		data.push({
+		return {
 			year: year,
 			month: month,
-			value: totalThemes,
-		});
-	}
-
-	return data;
+			value: total,
+		};
+	});
 }
 
-export function getRetiredThemeCountPerMonth(themes: ThemeDataInterface[]): PerMonthDataPoint[] {
-	const data: PerMonthDataPoint[] = [];
+export function getThemeCountRemovedMonthly(themes: ThemeDataInterface[]): PerMonthDataPoint[] {
+	let total = 0;
 
-	const firstReleaseDate = new Date(themes[0].addedCommit.date);
-	const lastReleaseDate = new Date(themes[themes.length - 1].addedCommit.date);
+	return iterateDataMonthly<PerMonthDataPoint>(themes, (d, year, month) => {
+		const retiredThemes = getRemovedDataForMonth(themes, year, month);
 
-	let totalRetiredThemes = 0;
+		total += retiredThemes.length;
 
-	for (let d = firstReleaseDate; d <= lastReleaseDate; d.setMonth(d.getMonth() + 1)) {
-		const year = d.getFullYear().toString();
-		const month = (d.getMonth() + 1).toString().padStart(2, '0');
-
-		const retiredThemes = themes
-			.filter(theme => theme.removedCommit !== undefined)
-			.filter(theme => {
-				const removedDate = new Date(theme.removedCommit!.date);
-				return removedDate.getFullYear() === d.getFullYear() && removedDate.getMonth() === d.getMonth();
-			});
-
-		totalRetiredThemes += retiredThemes.length;
-
-		data.push({
+		return {
 			year: year,
 			month: month,
-			value: totalRetiredThemes,
-		});
-	}
-
-	return data;
+			value: total,
+		};
+	});
 }
 
-export function getRetiredThemesPerMonth(themes: ThemeDataInterface[]): PerMonthDataPoint[] {
-	const data: PerMonthDataPoint[] = [];
+export function getThemeCountRemovedChangeMonthly(themes: ThemeDataInterface[]): PerMonthDataPoint[] {
+	return iterateDataMonthly<PerMonthDataPoint>(themes, (d, year, month) => {
+		const retiredThemes = getRemovedDataForMonth(themes, year, month);
 
-	const firstReleaseDate = new Date(themes[0].addedCommit.date);
-	const lastReleaseDate = new Date(themes[themes.length - 1].addedCommit.date);
-
-	for (let d = firstReleaseDate; d <= lastReleaseDate; d.setMonth(d.getMonth() + 1)) {
-		const year = d.getFullYear().toString();
-		const month = (d.getMonth() + 1).toString().padStart(2, '0');
-
-		const retiredThemes = themes
-			.filter(theme => theme.removedCommit !== undefined)
-			.filter(theme => {
-				const removedDate = new Date(theme.removedCommit!.date);
-				return removedDate.getFullYear() === d.getFullYear() && removedDate.getMonth() === d.getMonth();
-			});
-
-		data.push({
+		return {
 			year: year,
 			month: month,
 			value: retiredThemes.length,
-		});
-	}
-
-	return data;
+		};
+	});
 }

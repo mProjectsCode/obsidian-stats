@@ -1,14 +1,14 @@
 <script lang="ts">
-	import type { PluginDataInterface } from '../../../../src/plugin/data.ts';
-	import PluginLink from './pluginLink.svelte';
-	import GithubLink from './githubLink.svelte';
-	import Commit from './commit.svelte';
+	import type { PluginDataInterface } from '../../../../../src/plugin/data.ts';
+	import PluginLink from '../helpers/pluginLink.svelte';
+	import GithubLink from '../helpers/githubLink.svelte';
+	import Commit from '../helpers/commit.svelte';
 	import { onMount } from 'svelte';
-	import { utcStringToString } from '../../../../src/utils.ts';
+	import { utcStringToString } from '../../../../../src/utils.ts';
 
 	export let data: PluginDataInterface[] = [];
 
-	const idSort = (x: PluginDataInterface) => x.id;
+	const idSort = (x: PluginDataInterface) => x.id.toLowerCase();
 	const nameSort = (x: PluginDataInterface) => x.currentEntry.name.toLowerCase();
 	const authorSort = (x: PluginDataInterface) => x.currentEntry.author.toLowerCase();
 	const repoSort = (x: PluginDataInterface) => x.currentEntry.repo;

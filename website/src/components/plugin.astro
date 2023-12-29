@@ -4,11 +4,11 @@ import GithubLink from './githubLink.astro';
 import Commit from './commit.astro';
 import Aside from './aside.astro';
 import PluginDownloadChart from './svelte/pluginDownloadChart.svelte';
-import { getDownloadDataPoints } from '../../../src/plugin/data';
+import { getPluginDownloadsWeekly } from '../../../src/plugin/data';
 import { PluginDataInterface } from '../../../src/plugin/plugin';
 
 const { plugin } = Astro.props as { plugin: PluginDataInterface };
-const pluginDownloadData = getDownloadDataPoints([plugin]);
+const pluginDownloadData = getPluginDownloadsWeekly([plugin]);
 ---
 
 {

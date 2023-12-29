@@ -3,13 +3,23 @@ title: About
 description: An intro to Obsidian Stats.
 ---
 
+import AutofillSearch from '../../../components/AutofillSearch.astro';
+
+<AutofillSearch></AutofillSearch>
+
 All the stats in on this website were extracted from the public [Obsidian Releases](https://github.com/obsidianmd/obsidian-releases) GitHub repo.
-My script that extracts the data uses git submodules to extract the data from the git history of the repo.
+The script uses git submodules to extract the data from the git history of the [Obsidian Releases](https://github.com/obsidianmd/obsidian-releases) repo.
+
+:::tip
+You can search for stats on a specific plugin or theme using the <a href="" id="open-search">search bar</a>.
+:::
 
 ## Plugins
 
-The sidebar on the left has a category `Plugins` that contains a file for each plugin, named after the plugin id.
 The sidebar category `Plugin Stats` contains some pages for different stats for all plugins.
+
+A table with all plugins can be found on the [Plugin Overview](/obsidian-stats/pluginstats/) page.
+There each plugin links to a page with more detailed stats for that plugin.
 
 ### Known Data Errors
 
@@ -19,8 +29,11 @@ This should be especially prominent for plugins that have been removed and readd
 
 ## Themes
 
-There is only a `Themes` sidebar category that contains a file for each theme, named after the theme.
 The sidebar category `Theme Stats` contains some pages for different stats for all themes.
+
+As for plugins, all themes can be found on the [Theme Overview](/obsidian-stats/themestats/) page.
+There each theme links to a page with more detailed stats for that theme.
+
 There are no download stats for themes, as there exists no data in the repo for that.
 
 ## Disclaimer

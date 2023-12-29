@@ -1,0 +1,9 @@
+---
+import ThemeDataFile from '../../../../theme-data.json' assert { type: 'json' };
+import { getThemePercentageRemovedByReleaseMonth } from '../../../../src/theme/data';
+import DataPerMonthChart from '../svelte/genericCharts/dataPerMonthChart.svelte';
+
+const dataPoints = getThemePercentageRemovedByReleaseMonth(ThemeDataFile);
+---
+
+<DataPerMonthChart dataPoints={dataPoints} max={100} title="Percentage of Retired Themes by Release Month" client:only="svelte" />

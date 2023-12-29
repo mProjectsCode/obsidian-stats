@@ -1,4 +1,5 @@
-import { type Commit } from './types.ts';
+import { type Commit, PerMonthDataPoint } from './types.ts';
+import { reduce } from 'itertools-ts';
 
 export class UserError extends Error {}
 
@@ -119,4 +120,121 @@ export function distributeValueEqually(value: number, factors: number[]) {
 	}
 
 	return rounded;
+}
+
+export interface AbstractDataInterface {
+	id: string;
+	addedCommit: Commit;
+	removedCommit?: Commit;
+}
+
+/**
+ * Returns true if the data has been removed (has a removed commit).
+ *
+ * @param data
+ */
+export function isRemoved(data: AbstractDataInterface): boolean {
+	return data.removedCommit !== undefined;
+}
+
+export function filterRemoved<T extends AbstractDataInterface>(data: T[]): T[] {
+	return data.filter(x => isRemoved(x));
+}
+
+export function iterateDataMonthly<T>(data: AbstractDataInterface[], fn: (d: Date, year: string, month: string) => T): T[] {
+	const retData: T[] = [];
+
+	const startDate = findEarliestData(data);
+	const endDate = findLatestData(data);
+
+	for (let d = startDate; d <= endDate; d.setMonth(d.getMonth() + 1)) {
+		const year = d.getFullYear().toString();
+		const month = (d.getMonth() + 1).toString().padStart(2, '0');
+
+		retData.push(fn(d, year, month));
+	}
+
+	return retData;
+}
+
+export function iterateWeekly<T>(startDate: Date, endDate: Date, fn: (d: Date, date: string) => T): T[] {
+	const retData: T[] = [];
+
+	// advance the end date by one day, otherwise the last week will be missing sometimes
+	endDate.setDate(endDate.getDate() + (7 - endDate.getDay()) + 1);
+	startDate.setDate(startDate.getDate() + (7 - startDate.getDay()));
+
+	for (let d = startDate; d <= endDate; d.setDate(d.getDate() + 7)) {
+		const date = dateToString(d);
+
+		retData.push(fn(d, date));
+	}
+
+	return retData;
+}
+
+export function findEarliestData(data: AbstractDataInterface[]): Date {
+	const minAddedDate = reduce.toMin(data, d => d.addedCommit.date)?.addedCommit.date;
+	const minRemovedDate = reduce.toMin(
+		data.filter(x => x.removedCommit),
+		d => d.removedCommit!.date,
+	)?.addedCommit.date;
+
+	if (minAddedDate === undefined && minRemovedDate === undefined) {
+		throw new Error('No data found');
+	}
+
+	if (minAddedDate === undefined) {
+		return new Date(minRemovedDate!);
+	}
+
+	if (minRemovedDate === undefined) {
+		return new Date(minAddedDate);
+	}
+
+	if (minAddedDate < minRemovedDate) {
+		return new Date(minAddedDate);
+	} else {
+		return new Date(minRemovedDate);
+	}
+}
+
+export function findLatestData(data: AbstractDataInterface[]): Date {
+	const maxAddedDate = reduce.toMax(data, d => d.addedCommit.date)?.addedCommit.date;
+	const maxRemovedDate = reduce.toMax(
+		data.filter(x => isRemoved(x)),
+		d => d.removedCommit!.date,
+	)?.addedCommit.date;
+
+	if (maxAddedDate === undefined && maxRemovedDate === undefined) {
+		throw new Error('No data found');
+	}
+
+	if (maxAddedDate === undefined) {
+		return new Date(maxRemovedDate!);
+	}
+
+	if (maxRemovedDate === undefined) {
+		return new Date(maxAddedDate);
+	}
+
+	if (maxAddedDate > maxRemovedDate) {
+		return new Date(maxAddedDate);
+	} else {
+		return new Date(maxRemovedDate);
+	}
+}
+
+export function getAddedDataForMonth<T extends AbstractDataInterface>(data: T[], year: string, month: string): T[] {
+	return data.filter(x => {
+		const addedDate = x.addedCommit.date.split('-');
+		return addedDate[0] === year && addedDate[1] === month;
+	});
+}
+
+export function getRemovedDataForMonth<T extends AbstractDataInterface>(data: T[], year: string, month: string): T[] {
+	return filterRemoved(data).filter(x => {
+		const removedDate = x.removedCommit!.date.split('-');
+		return removedDate[0] === year && removedDate[1] === month;
+	});
 }

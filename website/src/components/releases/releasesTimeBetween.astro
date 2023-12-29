@@ -3,7 +3,7 @@ import { readFileSync } from 'fs';
 import { escape, fromCSV, op } from 'arquero';
 import { getMajorVersions } from '../../../../src/release/data';
 
-import BarChart from '../svelte/barChart.svelte';
+import BarChart from '../svelte/genericCharts/barChart.svelte';
 
 const ReleaseData = fromCSV(readFileSync('../releases-full-data.csv', 'utf8'));
 const ReleaseTimeData = ReleaseData.select('date', 'version').dedupe();

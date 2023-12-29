@@ -1,10 +1,10 @@
 ---
 import PluginDataFile from '../../../../plugin-data.json' assert { type: 'json' };
-import { getRetiredPlugins } from '../../../../src/plugin/data';
+import { getPluginRemovedList } from '../../../../src/plugin/data';
 import PluginLink from '../pluginLink.astro';
 import Commit from '../commit.astro';
 
-const retiredPlugins = getRetiredPlugins(PluginDataFile);
+const retiredPlugins = getPluginRemovedList(PluginDataFile);
 ---
 
 <table>

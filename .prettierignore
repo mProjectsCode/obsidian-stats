@@ -13,3 +13,4 @@ releases-full-data.csv
 releases-full-data.json
 releases-weekly-data.csv
 
+*.mdx

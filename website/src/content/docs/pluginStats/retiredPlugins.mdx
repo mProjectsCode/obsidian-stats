@@ -3,21 +3,21 @@ title: Retired Plugins
 description: Stats of retired Obsidian plugins.
 ---
 
-import PluginsRetiredAll from '../../../components/plugins/pluginsRetiredAll.astro';
-import PluginsRetiredRecent from '../../../components/plugins/pluginsRetiredRecent.astro';
-import PluginsRetiredPercentageByReleaseMonth from '../../../components/plugins/pluginsRetiredPercentageByReleaseMonth.astro';
-import PluginsRetiredCount from '../../../components/plugins/pluginsRetiredCount.astro';
-import PluginsRetiredPerMonth from '../../../components/plugins/pluginsRetiredPerMonth.astro';
+import PluginsRemovedList from '../../../components/plugins/pluginsRemovedList.astro';
+import PluginsRemovedRecentList from '../../../components/plugins/pluginsRemovedRecentList.astro';
+import PluginsRemovedPercentageByReleaseMonth from '../../../components/plugins/pluginsRemovedPercentageByReleaseMonth.astro';
+import PluginsRemovedMonthly from '../../../components/plugins/pluginsRemovedMonthly.astro';
+import PluginsRemovedChangeMonthly from '../../../components/plugins/pluginsRemovedChangeMonthly.astro';
 
 ## Number of Retired Plugins
 
 This chart shows the total number of plugins that have been removed from the community list.
 
-<PluginsRetiredCount />
+<PluginsRemovedMonthly />
 
 The following chart shows the number of newly retired plugins each month.
 
-<PluginsRetiredPerMonth />
+<PluginsRemovedChangeMonthly />
 
 ## Percentage of Retired Plugins by Release Month
 
@@ -25,16 +25,16 @@ The following chart shows the percentage of plugins that have been removed from 
 
 20% means that 20% of the plugins that were released in that month have been removed from the community list.
 
-<PluginsRetiredPercentageByReleaseMonth />
+<PluginsRemovedPercentageByReleaseMonth />
 
 ## Recently Retired Plugins
 
 This list shows the last 15 plugins that were removed from the community plugin list.
 
-<PluginsRetiredRecent />
+<PluginsRemovedRecentList />
 
 ## List of all Retired Plugins
 
 This list shows all plugins that have been removed from the community plugin list, sorted alphabetically.
 
-<PluginsRetiredAll />
+<PluginsRemovedList />

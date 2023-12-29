@@ -1,8 +1,8 @@
 <script lang="ts">
 	import Chart from 'chart.js/auto';
 	import { onDestroy, onMount } from 'svelte';
-	import { ThemeObserver } from './svelteUtils.ts';
-	import { ALL_OS } from '../../../../src/release/release.ts';
+	import { ThemeObserver } from '../svelteUtils.ts';
+	import { ALL_OS } from '../../../../../src/release/release.ts';
 
 	export let dataPoints: { label: string; data: number[] }[];
 	export let labels: string[];

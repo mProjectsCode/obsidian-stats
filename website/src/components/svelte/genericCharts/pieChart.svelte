@@ -5,7 +5,7 @@
 	Chart.register(ChartDataLabels);
 
 	import { onDestroy, onMount } from 'svelte';
-	import { ThemeObserver } from './svelteUtils.ts';
+	import { ThemeObserver } from '../svelteUtils.ts';
 
 	let downloadChartEl: HTMLCanvasElement;
 
@@ -86,6 +86,7 @@
 							},
 						},
 					},
+					aspectRatio: 1,
 				},
 			});
 		});
@@ -105,7 +106,7 @@
 <style>
 	.chart-wrapper {
 		width: 100%;
-		aspect-ratio: 3/2;
+		aspect-ratio: 1;
 		position: relative;
 	}
 </style>

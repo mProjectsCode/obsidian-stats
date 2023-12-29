@@ -3,21 +3,21 @@ title: Retired Themes
 description: Stats of retired Obsidian themes.
 ---
 
-import ThemesRetiredAll from '../../../components/themes/themesRetiredAll.astro';
-import ThemesRetiredRecent from '../../../components/themes/themesRetiredRecent.astro';
-import ThemesRetiredPercentageByReleaseMonth from '../../../components/themes/themesRetiredPercentageByReleaseMonth.astro';
-import ThemesRetiredCount from '../../../components/themes/themesRetiredCount.astro';
-import ThemesRetiredPerMonth from '../../../components/themes/themesRetiredPerMonth.astro';
+import ThemesRemovedList from '../../../components/themes/themesRemovedList.astro';
+import ThemesRemovedRecentList from '../../../components/themes/themesRemovedRecentList.astro';
+import ThemesRemovedPercentageByReleaseMonth from '../../../components/themes/themesRemovedPercentageByReleaseMonth.astro';
+import ThemesRemovedMonthly from '../../../components/themes/themesRemovedMonthly.astro';
+import ThemesRemovedChangeMonthly from '../../../components/themes/themesRemovedChangeMonthly.astro';
 
 ## Number of Retired Themes
 
 This chart shows the total number of themes that have been removed from the community list.
 
-<ThemesRetiredCount />
+<ThemesRemovedMonthly />
 
 The following chart shows the number of newly retired themes each month.
 
-<ThemesRetiredPerMonth />
+<ThemesRemovedChangeMonthly />
 
 ## Percentage of Retired Themes by Release Month
 
@@ -25,16 +25,16 @@ The following chart shows the percentage of themes that have been removed from t
 
 20% means that 20% of the themes that were released in that month have been removed from the community list.
 
-<ThemesRetiredPercentageByReleaseMonth />
+<ThemesRemovedPercentageByReleaseMonth />
 
 ## Recently Retired Themes
 
 This list shows the last 15 themes that were removed from the community theme list.
 
-<ThemesRetiredRecent />
+<ThemesRemovedRecentList />
 
 ## List of all Retired Plugins
 
 This list shows all themes that have been removed from the community theme list, sorted alphabetically.
 
-<ThemesRetiredAll />
+<ThemesRemovedList />

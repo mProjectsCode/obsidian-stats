@@ -1,8 +1,8 @@
 <script lang="ts">
 	import Chart from 'chart.js/auto';
 	import { onDestroy, onMount } from 'svelte';
-	import { type PerMonthDataPoint } from '../../../../src/types.ts';
-	import { ThemeObserver } from './svelteUtils.ts';
+	import { type PerMonthDataPoint } from '../../../../../src/types.ts';
+	import { ThemeObserver } from '../svelteUtils.ts';
 
 	export let dataPoints: PerMonthDataPoint[];
 	export let title: string;
@@ -41,7 +41,7 @@
 							max: max,
 						},
 					},
-					aspectRatio: 3 / 2,
+					aspectRatio: 1,
 				},
 			});
 		});
@@ -61,7 +61,7 @@
 <style>
 	.chart-wrapper {
 		width: 100%;
-		aspect-ratio: 3/2;
+		aspect-ratio: 1;
 		position: relative;
 	}
 </style>

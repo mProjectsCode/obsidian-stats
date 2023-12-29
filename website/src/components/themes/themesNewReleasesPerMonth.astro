@@ -1,9 +1,0 @@
----
-import ThemeDataFile from '../../../../theme-data.json' assert { type: 'json' };
-import { getNewThemeReleasesPerMonth } from '../../../../src/theme/data';
-import DataPerMonthChart from '../svelte/dataPerMonthChart.svelte';
-
-const dataPoints = getNewThemeReleasesPerMonth(ThemeDataFile);
----
-
-<DataPerMonthChart dataPoints={dataPoints} title="New Theme Releases per Month" client:only="svelte" />

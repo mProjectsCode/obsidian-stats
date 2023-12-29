@@ -3,7 +3,7 @@ import { readFileSync } from 'fs';
 import { escape, fromCSV, op } from 'arquero';
 import { determineAssetOS } from '../../../../src/release/data';
 
-import StackedBarChart from '../svelte/stackedBarChart.svelte';
+import StackedBarChart from '../svelte/genericCharts/stackedBarChart.svelte';
 
 const ReleaseData = fromCSV(readFileSync('../releases-weekly-data.csv', 'utf8'), { parse: { date: String } });
 

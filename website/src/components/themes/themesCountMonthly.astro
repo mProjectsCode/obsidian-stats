@@ -1,11 +1,11 @@
 ---
 import PluginDataFile from '../../../../theme-data.json' assert { type: 'json' };
-import { getThemeCountPerMonth, getThemeCountPerMonthWoRetiredThemes, getRetiredThemeCountPerMonth } from '../../../../src/theme/data';
-import DataPerMonthChart from '../svelte/dataPerMonthChart.svelte';
+import { getThemeCountMonthly, getThemeCountWoRetiredMonthly, getThemeCountRemovedMonthly } from '../../../../src/theme/data';
+import DataPerMonthChart from '../svelte/genericCharts/dataPerMonthChart.svelte';
 
-const dataPoints = getThemeCountPerMonth(PluginDataFile);
-const dataPoints2 = getThemeCountPerMonthWoRetiredThemes(PluginDataFile);
-const dataPoints3 = getRetiredThemeCountPerMonth(PluginDataFile);
+const dataPoints = getThemeCountMonthly(PluginDataFile);
+const dataPoints2 = getThemeCountWoRetiredMonthly(PluginDataFile);
+const dataPoints3 = getThemeCountRemovedMonthly(PluginDataFile);
 ---
 
 <DataPerMonthChart dataPoints={dataPoints} title="Total Theme Count" type="line" client:only="svelte" />

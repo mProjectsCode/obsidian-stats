@@ -4,7 +4,7 @@ import { determineAssetType, determineAssetOS, determineAssetIS, determineAssetA
 import { readFileSync } from 'fs';
 import { escape, fromCSV, op, desc } from 'arquero';
 
-import PieChart from '../svelte/pieChart.svelte';
+import PieChart from '../svelte/genericCharts/pieChart.svelte';
 
 let ReleaseData = fromCSV(readFileSync('../releases-full-data.csv', 'utf8'));
 
