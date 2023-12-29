@@ -2,9 +2,9 @@ import { GithubReleaseEntry } from './release.ts';
 import { RELEASE_FULL_DATA_PATH, RELEASE_STATS_URL, RELEASE_WEEKLY_DATA_PATH } from '../constants.ts';
 import { dateToString, distributeValueEqually, getNextMondays } from '../utils.ts';
 import { escape, from, fromCSV, op, table } from 'arquero';
-import { fixVersion } from './data.ts';
 import { Struct } from 'arquero/dist/types/op/op-api';
 import ColumnTable from 'arquero/dist/types/table/column-table';
+import {Version} from '../version.ts';
 
 async function fetchReleaseStats(): Promise<ColumnTable> {
 	const releases: GithubReleaseEntry[] = [];
@@ -35,7 +35,7 @@ async function fetchReleaseStats(): Promise<ColumnTable> {
 
 	const releaseData = releases.flatMap(x =>
 		x.assets.map(y => ({
-			version: fixVersion(x.tag_name),
+			version: Version.alphabetic(x.tag_name),
 			date: new Date(x.published_at),
 			asset: y.name,
 			downloads: y.download_count,

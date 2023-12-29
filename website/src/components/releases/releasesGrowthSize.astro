@@ -1,4 +1,5 @@
 ---
+import {Version} from '../../../../src/version';
 import { determineAssetType, determineAssetOS, determineAssetIS, determineAssetArchitecture } from '../../../../src/release/data';
 
 import { readFileSync } from 'fs';
@@ -19,6 +20,8 @@ const ReleaseDataGroupedWithFirstAssetAppearance = firstAssetAppearance
 	.join(ReleaseDataWithAssetType, 'assetType');
 
 const allVersions = ReleaseData.distinctArray('version');
+const allVersionsPretty = allVersions.map(x => Version.pretty(x));
+
 const normalisedAssetSize = ReleaseDataGroupedWithFirstAssetAppearance.derive({ normalisedSize: d => d.size / d.firstAssetSize })
 	.select('version', 'assetType', 'normalisedSize')
 	.imputeAll(['version', 'assetType'], ['normalisedSize'])
@@ -28,4 +31,4 @@ const normalisedAssetSize = ReleaseDataGroupedWithFirstAssetAppearance.derive({ 
 	.objects({ grouped: true });
 ---
 
-<StackedBarChart dataPoints={normalisedAssetSize} labels={allVersions} client:only="svelte" />
+<StackedBarChart dataPoints={normalisedAssetSize} labels={allVersionsPretty} client:only="svelte" />

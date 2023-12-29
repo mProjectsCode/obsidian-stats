@@ -1,5 +1,7 @@
 import semver from 'semver';
 import { Commit, DownloadHistory, EntryChange, VersionHistory } from '../types.ts';
+import {dateToString} from '../utils.ts';
+import {Version} from '../version.ts';
 
 export interface PluginListEntry {
 	id: string;
@@ -46,7 +48,7 @@ export class PluginDownloadStats {
 	}
 
 	getDateString(): string {
-		return `${this.date.getFullYear()}-${(this.date.getMonth() + 1).toString().padStart(2, '0')}-${this.date.getDate().toString().padStart(2, '0')}`;
+		return dateToString(this.date);
 	}
 }
 
@@ -153,7 +155,7 @@ export class PluginData {
 				continue;
 			}
 
-			if (!semver.valid(version)) {
+			if (!Version.valid(version)) {
 				continue;
 			}
 
@@ -168,6 +170,6 @@ export class PluginData {
 	}
 
 	sortVersionHistory() {
-		this.versionHistory.sort((a, b) => Bun.semver.order(a.version, b.version));
+		this.versionHistory.sort((a, b) => Version.lessThan(Version.fromString(a.version), Version.fromString(b.version)) ? -1 : 1);
 	}
 }

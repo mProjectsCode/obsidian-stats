@@ -3,11 +3,32 @@
 	import { onDestroy, onMount } from 'svelte';
 	import { ThemeObserver } from '../svelteUtils.ts';
 	import { ALL_OS } from '../../../../../src/release/release.ts';
+	import type {ChartDataset} from 'chart.js/dist/types';
 
 	export let dataPoints: number[];
+	export let dataPoints2: number[] | undefined;
 	export let labels: string[];
 	export let showDatalabels = false;
 	export let seriesName = '';
+	export let seriesName2 = '';
+
+	export let colors = [
+		'rgba(255, 99, 132, 1)', // Red
+		'rgba(54, 162, 235, 1)', // Blue
+		'rgba(255, 205, 86, 1)', // Yellow
+		'rgba(75, 192, 192, 1)', // Teal
+		'rgba(255, 159, 64, 1)', // Orange
+		'rgba(153, 102, 255, 1)', // Purple
+		'rgba(255, 77, 166, 1)', // Pink
+		'rgba(102, 204, 255, 1)', // Light Blue
+		'rgba(255, 128, 0, 1)', // Orange
+		'rgba(70, 191, 189, 1)', // Turquoise
+		'rgba(128, 133, 233, 1)', // Lavender
+		'rgba(177, 238, 147, 1)', // Lime Green
+		'rgba(255, 184, 77, 1)', // Mustard
+		'rgba(145, 232, 225, 1)', // Aqua
+		'rgba(236, 112, 99, 1)', // Salmon
+	];
 
 	let downloadChartEl: HTMLCanvasElement;
 
@@ -20,19 +41,32 @@
 			Chart.defaults.color = chartStyle.text;
 			Chart.defaults.borderColor = chartStyle.line;
 
-			console.log(labels, dataPoints);
+			let datasets: ChartDataset[] = [
+				{
+					label: seriesName,
+					data: dataPoints,
+					backgroundColor: chartStyle.accent,
+				},
+				(dataPoints2 !== undefined ? {
+					label: seriesName2,
+					data: dataPoints2,
+					backgroundColor: chartStyle.accent,
+				} : undefined),
+			].filter(x => x !== undefined);
+
+			if (datasets.length > 1) {
+				for (let i = 0; i < datasets.length; i++){
+					datasets[i].backgroundColor = colors[i % colors.length];
+				}
+			}
+
+			// console.log(labels, dataPoints);
 
 			return new Chart(downloadChartEl!, {
 				type: 'bar',
 				data: {
 					labels,
-					datasets: [
-						{
-							label: seriesName,
-							data: dataPoints,
-							backgroundColor: chartStyle.accent,
-						},
-					],
+					datasets: datasets,
 				},
 				options: {
 					scales: {
@@ -45,15 +79,6 @@
 							grid: {
 								color: chartStyle.line,
 							},
-							// Set ticks to weeks + days
-							// ticks: {
-							//     callback: (value: number) => {
-							//         const weeks = Math.floor(value / 7);
-							//         const days = value % 7;
-							//
-							//         return `${weeks}w ${days}d`;
-							//     },
-							// },
 						},
 					},
 					plugins: {
@@ -69,17 +94,6 @@
 								color: chartStyle.text,
 							},
 						},
-						// tooltip: {
-						//     callbacks: {
-						//         label: (context: any) => {
-						//             const days = Math.ceil(context.raw);
-						//             const weeks = Math.floor(days / 7);
-						//             const remainingDays = days % 7;
-						//
-						//             return `${weeks}w ${remainingDays}d`;
-						//         },
-						//     },
-						// },
 					},
 					aspectRatio: 1,
 				},

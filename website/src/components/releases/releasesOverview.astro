@@ -1,0 +1,36 @@
+---
+import { readFileSync } from 'fs';
+import { escape, fromCSV, op } from 'arquero';
+import {Version} from '../../../../src/version';
+import {utcStringToString} from '../../../../src/utils';
+
+const ReleaseData = fromCSV(readFileSync('../releases-full-data.csv', 'utf8'));
+const ReleaseTimeData = ReleaseData.select('date', 'version').dedupe();
+
+const patchesPerMinorVersion = ReleaseTimeData
+	.derive({ minorVersion: escape(d => d.version.split('.').slice(0, 2).join('.')) })
+	.groupby('minorVersion')
+	.rollup({ count: d => op.count(), firstPatch : d => op.min(d.version), firstDate: d => op.min(d.date) })
+	.objects();
+---
+
+<table>
+    <thead>
+    <tr>
+        <th>Minor Version</th>
+        <th>First Official Version</th>
+        <th>First Official Release Date</th>
+        <th>Number of Patches</th>
+    </tr>
+    </thead>
+    <tbody>
+	{patchesPerMinorVersion.map(({ minorVersion, firstPatch, firstDate, count }) =>
+            <tr>
+                <td>{Version.pretty(minorVersion)}</td>
+                <td>{Version.pretty(firstPatch)}</td>
+                <td>{utcStringToString(firstDate)}</td>
+                <td>{count}</td>
+            </tr>
+	)}
+    </tbody>
+</table>

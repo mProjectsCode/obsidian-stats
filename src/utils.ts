@@ -161,8 +161,8 @@ export function iterateWeekly<T>(startDate: Date, endDate: Date, fn: (d: Date, d
 	const retData: T[] = [];
 
 	// advance the end date by one day, otherwise the last week will be missing sometimes
-	endDate.setDate(endDate.getDate() + (7 - endDate.getDay()) + 1);
-	startDate.setDate(startDate.getDate() + (7 - startDate.getDay()));
+	endDate.setDate(endDate.getDate() + ((7 - endDate.getDay()) % 7) + 1);
+	startDate.setDate(startDate.getDate() + ((7 - startDate.getDay()) % 7));
 
 	for (let d = startDate; d <= endDate; d.setDate(d.getDate() + 7)) {
 		const date = dateToString(d);

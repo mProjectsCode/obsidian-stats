@@ -106,21 +106,6 @@ export function determineAssetArchitecture(assetName: string) {
 	else return '64bit';
 }
 
-export function fixVersion(version: string) {
-	const versionRegex = /\d+\.\d+\.\d+/;
-	const match = versionRegex.exec(version);
-	const matchStart = version.search(versionRegex);
-	const matchEnd = matchStart + match![0].length;
-	return (
-		version.slice(0, matchStart) +
-		match![0]
-			.split('.')
-			.map(x => x.padStart(2, '0'))
-			.join('.') +
-		version.slice(matchEnd)
-	);
-}
-
 export function getMajorVersions(versions: string[]) {
 	return [...new Set(versions.map(x => x.split('.').slice(0, 2).join('.')))].map(x => versions.find(y => y.startsWith(x))!);
 }

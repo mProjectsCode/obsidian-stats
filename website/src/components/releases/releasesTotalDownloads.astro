@@ -1,4 +1,5 @@
 ---
+import {Version} from '../../../../src/version';
 import { readFileSync } from 'fs';
 import { escape, fromCSV, op } from 'arquero';
 import { determineAssetOS } from '../../../../src/release/data';
@@ -9,6 +10,7 @@ const ReleaseData = fromCSV(readFileSync('../releases-full-data.csv', 'utf8'));
 const ReleaseDataOS = ReleaseData.derive({ os: escape(d => determineAssetOS(d.asset)) }).filter(d => d.os !== null);
 
 const allVersions = ReleaseDataOS.distinctArray('version');
+const allVersionsPretty = allVersions.map(x => Version.pretty(x));
 
 const ReleaseDataOSGrouped = ReleaseDataOS.groupby('version', 'os')
 	.rollup({ downloads: d => op.sum(d.downloads) })
@@ -26,5 +28,5 @@ const normalisedDownloadDataOSGrouped = ReleaseDataOSGrouped.normalizeBy('downlo
 	.objects({ grouped: true });
 ---
 
-<StackedBarChart dataPoints={downloadDataOSGrouped} labels={allVersions} client:only="svelte" />
-<StackedBarChart dataPoints={normalisedDownloadDataOSGrouped} labels={allVersions} isPercentual={true} client:only="svelte" />
+<StackedBarChart dataPoints={downloadDataOSGrouped} labels={allVersionsPretty} client:only="svelte" />
+<StackedBarChart dataPoints={normalisedDownloadDataOSGrouped} labels={allVersionsPretty} isPercentual={true} client:only="svelte" />
