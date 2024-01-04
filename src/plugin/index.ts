@@ -64,6 +64,7 @@ function buildPluginData(pluginLists: PluginList[]): PluginData[] {
 	const progress = new CliProgress.SingleBar({}, CliProgress.Presets.rect);
 	progress.start(pluginLists.length, 0);
 
+	progress.increment();
 	for (const entry of pluginLists[0].entries) {
 		pluginData.push(new PluginData(entry.id, pluginLists[0].commit, entry));
 	}

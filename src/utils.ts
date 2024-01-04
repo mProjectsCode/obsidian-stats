@@ -238,3 +238,13 @@ export function getRemovedDataForMonth<T extends AbstractDataInterface>(data: T[
 		return removedDate[0] === year && removedDate[1] === month;
 	});
 }
+
+export function uniqueConcat<T>(a: T[], b: T[]): T[] {
+	for (const x of b) {
+		if (!a.includes(x)) {
+			a.push(x);
+		}
+	}
+
+	return a;
+}

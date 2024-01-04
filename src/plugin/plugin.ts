@@ -1,6 +1,5 @@
-import semver from 'semver';
 import { Commit, DownloadHistory, EntryChange, VersionHistory } from '../types.ts';
-import {dateToString} from '../utils.ts';
+import {dateToString, uniqueConcat} from '../utils.ts';
 import {Version} from '../version.ts';
 
 export interface PluginListEntry {
@@ -98,8 +97,7 @@ export class PluginData {
 			}
 			return;
 		} else {
-			const keys = new Set(Object.keys(this.currentEntry));
-			Object.keys(newEntry).forEach(x => keys.add(x));
+			const keys = uniqueConcat(Object.keys(this.currentEntry), Object.keys(newEntry));
 
 			if (this.removedCommit !== undefined) {
 				// plugin was removed and added again
@@ -113,7 +111,7 @@ export class PluginData {
 				});
 			}
 
-			const changes = [...keys]
+			const changes = keys
 				.map(key => {
 					// @ts-expect-error TS7053
 					const oldValue = this.currentEntry[key];
@@ -136,7 +134,7 @@ export class PluginData {
 	}
 
 	updateDownloadHistory(pluginDownloadStats: PluginDownloadStats, date: string) {
-		const entry = Object.entries(pluginDownloadStats.entries).find(x => x[0] === this.id)?.[1];
+		const entry = pluginDownloadStats.entries[this.id];
 		if (entry === undefined) {
 			return;
 		}
@@ -145,7 +143,7 @@ export class PluginData {
 	}
 
 	updateVersionHistory(pluginDownloadStats: PluginDownloadStats) {
-		const entry = Object.entries(pluginDownloadStats.entries).find(x => x[0] === this.id)?.[1];
+		const entry = pluginDownloadStats.entries[this.id];
 		if (entry === undefined) {
 			return;
 		}

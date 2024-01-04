@@ -1,5 +1,6 @@
 import { Commit, EntryChange } from '../types.ts';
 import slug from 'slug';
+import {uniqueConcat} from '../utils.ts';
 
 export interface ThemeListEntry {
 	name: string;
@@ -84,8 +85,7 @@ export class ThemeData {
 			}
 			return;
 		} else {
-			const keys = new Set(Object.keys(this.currentEntry));
-			Object.keys(newEntry).forEach(x => keys.add(x));
+			const keys = uniqueConcat(Object.keys(this.currentEntry), Object.keys(newEntry));
 
 			if (this.removedCommit !== undefined) {
 				// plugin was removed and added again
@@ -99,7 +99,7 @@ export class ThemeData {
 				});
 			}
 
-			const changes = [...keys]
+			const changes = keys
 				.map(key => {
 					// @ts-expect-error TS7053
 					const oldValue = this.currentEntry[key];

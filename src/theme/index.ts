@@ -55,6 +55,7 @@ function buildThemeData(themeLists: ThemeList[]): ThemeData[] {
 	const progress = new CliProgress.SingleBar({}, CliProgress.Presets.rect);
 	progress.start(themeLists.length, 0);
 
+	progress.increment();
 	for (const entry of themeLists[0].entries) {
 		themeData.push(new ThemeData(entry.name, themeLists[0].commit, entry));
 	}
