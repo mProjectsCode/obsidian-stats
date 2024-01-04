@@ -13,7 +13,11 @@ function exec(c: string, cwd?: string): Subprocess<'ignore', 'pipe', 'inherit'> 
 
 export async function $(cmd: string, cwd?: string, verboseness: Verboseness = Verboseness.NORMAL): Promise<{ stdout: string; stderr: string; exit: number }> {
 	if (verboseness === Verboseness.NORMAL || verboseness === Verboseness.VERBOSE) {
-		console.log(`\n${CMD_FMT.Bright}running${CMD_FMT.Reset} - ${cmd}\n`);
+		if (cwd !== undefined) {
+			console.log(`\n${CMD_FMT.Bright}running${CMD_FMT.Reset} in ${cwd} - ${cmd}\n`);
+		} else {
+			console.log(`\n${CMD_FMT.Bright}running${CMD_FMT.Reset} - ${cmd}\n`);
+		}
 	}
 
 	const proc = exec(cmd, cwd);

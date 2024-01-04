@@ -16,12 +16,18 @@ import {
 } from '../constants.ts';
 
 async function getPluginListChanges(): Promise<Commit[]> {
+	console.log(`Looking for changes to "${OBSIDIAN_RELEASES_FULL_PATH}/${PLUGIN_LIST_PATH}"`);
+
 	const pluginListChanges = await $(
 		`git log --diff-filter=M --date-order --reverse --format="%ad %H" --date=iso-strict "${PLUGIN_LIST_PATH}"`,
 		OBSIDIAN_RELEASES_FULL_PATH,
 	);
 
-	return gitLogToCommits(pluginListChanges.stdout);
+	const commits = gitLogToCommits(pluginListChanges.stdout);
+
+	console.log(`Found ${commits.length} commits to "${PLUGIN_LIST_PATH}"`);
+
+	return commits;
 }
 
 async function getPluginLists(): Promise<PluginList[]> {
@@ -35,14 +41,18 @@ async function getPluginLists(): Promise<PluginList[]> {
 					const pluginListEntries = JSON.parse(pluginList.stdout);
 					return new PluginList(pluginListEntries, x);
 				} catch (e) {
-					console.log(`Error parsing plugin list at commit ${x.hash}`);
+					console.warn(`Error parsing plugin list at commit ${x.hash}`);
 					return undefined;
 				}
 			}),
 		)
 	).filter(x => x !== undefined) as PluginList[];
 
-	console.log(`Found ${pluginLists.length} version of "community-plugins.json"`);
+	console.log(`Found ${pluginLists.length} version of "${PLUGIN_LIST_PATH}"`);
+
+	if (pluginLists.length === 0) {
+		throw new Error(`No plugin lists found`);
+	}
 
 	return pluginLists;
 }
