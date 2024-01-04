@@ -10113,7 +10113,7 @@
         "currentEntry": {
             "name": "Buena Vista",
             "author": "oqipo",
-            "repo": "oqipoDev/Buena-Vista-Theme",
+            "repo": "oqipoDev/buena-vista-obsidian",
             "screenshot": "img/thumb.png",
             "modes": [
                 "dark",
@@ -10129,6 +10129,15 @@
                 },
                 "oldValue": "",
                 "newValue": ""
+            },
+            {
+                "property": "repo",
+                "commit": {
+                    "date": "2024-01-02T06:54:31-06:00",
+                    "hash": "b02c85ce3933e569d4d9e293dcc8d5b2a017bf39"
+                },
+                "oldValue": "oqipoDev/Buena-Vista-Theme",
+                "newValue": "oqipoDev/buena-vista-obsidian"
             }
         ]
     },
@@ -11818,6 +11827,123 @@
                 "commit": {
                     "date": "2023-12-11T23:56:55+01:00",
                     "hash": "1e084c738175e352fbc1b485a67c4d217288aec2"
+                },
+                "oldValue": "",
+                "newValue": ""
+            }
+        ]
+    },
+    {
+        "id": "carbon",
+        "name": "Carbon",
+        "addedCommit": {
+            "date": "2024-01-02T12:42:48+00:00",
+            "hash": "54f37ae5f589a870b03cd07ada9b5d4ba20ac9f4"
+        },
+        "initialEntry": {
+            "name": "Carbon",
+            "author": "V.H. Belvadi",
+            "repo": "vhbelvadi/obsidian-carbon",
+            "screenshot": "obsidian-screenshot-small.png",
+            "modes": [
+                "dark",
+                "light"
+            ]
+        },
+        "currentEntry": {
+            "name": "Carbon",
+            "author": "V.H. Belvadi",
+            "repo": "vhbelvadi/obsidian-carbon",
+            "screenshot": "obsidian-screenshot-small.png",
+            "modes": [
+                "dark",
+                "light"
+            ]
+        },
+        "changeHistory": [
+            {
+                "property": "Theme Added",
+                "commit": {
+                    "date": "2024-01-02T12:42:48+00:00",
+                    "hash": "54f37ae5f589a870b03cd07ada9b5d4ba20ac9f4"
+                },
+                "oldValue": "",
+                "newValue": ""
+            }
+        ]
+    },
+    {
+        "id": "phoenix",
+        "name": "Phoenix",
+        "addedCommit": {
+            "date": "2024-01-02T07:49:46-05:00",
+            "hash": "f12bbfa673d02162014823fcccb56a7c29d2a973"
+        },
+        "initialEntry": {
+            "name": "Phoenix",
+            "author": "RyzenFromFire",
+            "repo": "ryzenfromfire/obsidian-phoenix",
+            "screenshot": "thumbnail.png",
+            "modes": [
+                "dark",
+                "light"
+            ]
+        },
+        "currentEntry": {
+            "name": "Phoenix",
+            "author": "RyzenFromFire",
+            "repo": "ryzenfromfire/obsidian-phoenix",
+            "screenshot": "thumbnail.png",
+            "modes": [
+                "dark",
+                "light"
+            ]
+        },
+        "changeHistory": [
+            {
+                "property": "Theme Added",
+                "commit": {
+                    "date": "2024-01-02T07:49:46-05:00",
+                    "hash": "f12bbfa673d02162014823fcccb56a7c29d2a973"
+                },
+                "oldValue": "",
+                "newValue": ""
+            }
+        ]
+    },
+    {
+        "id": "garden-gnome-adwaita-gtk",
+        "name": "Garden Gnome (Adwaita, GTK)",
+        "addedCommit": {
+            "date": "2024-01-02T06:54:31-06:00",
+            "hash": "b02c85ce3933e569d4d9e293dcc8d5b2a017bf39"
+        },
+        "initialEntry": {
+            "name": "Garden Gnome (Adwaita, GTK)",
+            "author": "oqipo",
+            "repo": "oqipoDev/garden-gnome-obsidian",
+            "screenshot": "img/thumb.png",
+            "modes": [
+                "dark",
+                "light"
+            ]
+        },
+        "currentEntry": {
+            "name": "Garden Gnome (Adwaita, GTK)",
+            "author": "oqipo",
+            "repo": "oqipoDev/garden-gnome-obsidian",
+            "screenshot": "img/thumb.png",
+            "modes": [
+                "dark",
+                "light"
+            ]
+        },
+        "changeHistory": [
+            {
+                "property": "Theme Added",
+                "commit": {
+                    "date": "2024-01-02T06:54:31-06:00",
+                    "hash": "b02c85ce3933e569d4d9e293dcc8d5b2a017bf39"
                 },
                 "oldValue": "",
                 "newValue": ""
