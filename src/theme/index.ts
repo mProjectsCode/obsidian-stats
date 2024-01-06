@@ -111,5 +111,3 @@ export async function buildThemeStats() {
 		await Bun.write(outputFile, output);
 	}
 }
-
-await buildThemeStats();

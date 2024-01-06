@@ -160,5 +160,4 @@ export async function buildReleaseStats(): Promise<void> {
 	await Bun.write(releaseFullDataFile, releaseData.toCSV());
 }
 
-await buildReleaseStats();
 // await testWeeklyDownloads();

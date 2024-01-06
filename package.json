@@ -3,9 +3,10 @@
 	"module": "src/index.ts",
 	"type": "module",
 	"scripts": {
-		"fetch-plugin-data": "bun run src/plugin/index.ts",
-		"fetch-theme-data": "bun run src/theme/index.ts",
-		"fetch-release-data": "bun run src/release/index.ts",
+		"fetch-plugin-data": "bun run src/plugin/fetch-data.ts",
+		"fetch-theme-data": "bun run src/theme/fetch-data.ts",
+		"fetch-release-data": "bun run src/release/fetch-data.ts",
+		"fetch-data": "bun run src/fetch-data.ts",
 		"format": "prettier --write ."
 	},
 	"devDependencies": {

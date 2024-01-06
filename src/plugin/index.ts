@@ -206,5 +206,3 @@ export async function buildPluginStats() {
 		await Bun.write(outputFile, output);
 	}
 }
-
-await buildPluginStats();
