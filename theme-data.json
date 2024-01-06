@@ -1,6 +1,6 @@
 [
     {
-        "id": "atom-1",
+        "id": "atom",
         "name": "Atom",
         "addedCommit": {
             "date": "2020-11-24T03:03:41-05:00",
@@ -39,7 +39,7 @@
         ]
     },
     {
-        "id": "amethyst-1",
+        "id": "amethyst",
         "name": "Amethyst",
         "addedCommit": {
             "date": "2020-11-24T03:03:41-05:00",
@@ -87,7 +87,7 @@
         ]
     },
     {
-        "id": "obsidian-gruvbox-1",
+        "id": "obsidian-gruvbox",
         "name": "Obsidian gruvbox",
         "addedCommit": {
             "date": "2020-11-24T03:03:41-05:00",
@@ -126,7 +126,7 @@
         ]
     },
     {
-        "id": "obsidian-nord-1",
+        "id": "obsidian-nord",
         "name": "Obsidian Nord",
         "addedCommit": {
             "date": "2020-11-24T03:03:41-05:00",
@@ -182,7 +182,7 @@
         ]
     },
     {
-        "id": "clean-theme-1",
+        "id": "clean-theme",
         "name": "Clean theme",
         "addedCommit": {
             "date": "2020-11-24T03:03:41-05:00",
@@ -234,7 +234,7 @@
         ]
     },
     {
-        "id": "dracula-for-obsidian-1",
+        "id": "dracula-for-obsidian",
         "name": "Dracula for Obsidian",
         "addedCommit": {
             "date": "2020-11-24T03:03:41-05:00",
@@ -271,7 +271,7 @@
         ]
     },
     {
-        "id": "warmth-1",
+        "id": "warmth",
         "name": "Warmth",
         "addedCommit": {
             "date": "2020-11-24T03:03:41-05:00",
@@ -321,7 +321,7 @@
         ]
     },
     {
-        "id": "gastown-1",
+        "id": "gastown",
         "name": "Gastown",
         "addedCommit": {
             "date": "2020-11-24T03:03:41-05:00",
@@ -376,7 +376,7 @@
         ]
     },
     {
-        "id": "80s-neon-1",
+        "id": "80s-neon",
         "name": "80s Neon",
         "addedCommit": {
             "date": "2020-11-24T03:03:41-05:00",
@@ -415,7 +415,7 @@
         ]
     },
     {
-        "id": "base2tone-1",
+        "id": "base2tone",
         "name": "Base2Tone",
         "addedCommit": {
             "date": "2020-11-24T03:03:41-05:00",
@@ -452,7 +452,7 @@
         ]
     },
     {
-        "id": "notation-1",
+        "id": "notation",
         "name": "Notation",
         "addedCommit": {
             "date": "2020-11-24T03:03:41-05:00",
@@ -491,7 +491,7 @@
         ]
     },
     {
-        "id": "christmas-1",
+        "id": "christmas",
         "name": "Christmas",
         "addedCommit": {
             "date": "2020-11-24T03:03:41-05:00",
@@ -530,7 +530,7 @@
         ]
     },
     {
-        "id": "solarized-1",
+        "id": "solarized",
         "name": "Solarized",
         "addedCommit": {
             "date": "2020-11-24T03:03:41-05:00",
@@ -612,7 +612,7 @@
         ]
     },
     {
-        "id": "comfort-color-dark-1",
+        "id": "comfort-color-dark",
         "name": "Comfort color dark",
         "addedCommit": {
             "date": "2020-11-24T03:03:41-05:00",
@@ -649,7 +649,7 @@
         ]
     },
     {
-        "id": "ursa-1",
+        "id": "ursa",
         "name": "Ursa",
         "addedCommit": {
             "date": "2020-11-24T03:03:41-05:00",
@@ -688,7 +688,7 @@
         ]
     },
     {
-        "id": "cybertron-1",
+        "id": "cybertron",
         "name": "Cybertron",
         "addedCommit": {
             "date": "2020-11-24T03:03:41-05:00",
@@ -725,7 +725,7 @@
         ]
     },
     {
-        "id": "moonlight-1",
+        "id": "moonlight",
         "name": "Moonlight",
         "addedCommit": {
             "date": "2020-11-24T03:03:41-05:00",
@@ -764,7 +764,7 @@
         ]
     },
     {
-        "id": "red-graphite-1",
+        "id": "red-graphite",
         "name": "Red Graphite",
         "addedCommit": {
             "date": "2020-11-24T03:03:41-05:00",
@@ -828,7 +828,7 @@
         ]
     },
     {
-        "id": "subtlegold-1",
+        "id": "subtlegold",
         "name": "Subtlegold",
         "addedCommit": {
             "date": "2020-11-24T03:03:41-05:00",
@@ -867,7 +867,7 @@
         ]
     },
     {
-        "id": "obsidian-boom-1",
+        "id": "obsidian-boom",
         "name": "Obsidian Boom",
         "addedCommit": {
             "date": "2020-11-24T03:03:41-05:00",
@@ -904,7 +904,7 @@
         ]
     },
     {
-        "id": "hulk-1",
+        "id": "hulk",
         "name": "Hulk",
         "addedCommit": {
             "date": "2020-11-24T03:03:41-05:00",
@@ -941,7 +941,7 @@
         ]
     },
     {
-        "id": "pisum-1",
+        "id": "pisum",
         "name": "Pisum",
         "addedCommit": {
             "date": "2020-11-24T03:03:41-05:00",
@@ -978,7 +978,7 @@
         ]
     },
     {
-        "id": "traffic-lights-1",
+        "id": "traffic-lights",
         "name": "Traffic Lights",
         "addedCommit": {
             "date": "2020-11-24T03:03:41-05:00",
@@ -1026,7 +1026,7 @@
         ]
     },
     {
-        "id": "ars-magna-1",
+        "id": "ars-magna",
         "name": "Ars Magna",
         "addedCommit": {
             "date": "2020-11-24T03:03:41-05:00",
@@ -1074,7 +1074,7 @@
         ]
     },
     {
-        "id": "obsdn-dark-rmx-1",
+        "id": "obsdn-dark-rmx",
         "name": "Obsdn-Dark-Rmx",
         "addedCommit": {
             "date": "2020-11-24T03:03:41-05:00",
@@ -1122,7 +1122,7 @@
         ]
     },
     {
-        "id": "minimal-1",
+        "id": "minimal",
         "name": "Minimal",
         "addedCommit": {
             "date": "2020-11-24T03:03:41-05:00",
@@ -1177,7 +1177,7 @@
         ]
     },
     {
-        "id": "obsidiania-1",
+        "id": "obsidiania",
         "name": "obsidian_ia",
         "addedCommit": {
             "date": "2020-11-24T03:03:41-05:00",
@@ -1216,7 +1216,7 @@
         ]
     },
     {
-        "id": "charcoal-1",
+        "id": "charcoal",
         "name": "Charcoal",
         "addedCommit": {
             "date": "2020-11-24T03:03:41-05:00",
@@ -1253,7 +1253,7 @@
         ]
     },
     {
-        "id": "panic-mode-1",
+        "id": "panic-mode",
         "name": "Panic Mode",
         "addedCommit": {
             "date": "2020-11-24T03:03:41-05:00",
@@ -1290,7 +1290,7 @@
         ]
     },
     {
-        "id": "dark-graphite-1",
+        "id": "dark-graphite",
         "name": "Dark Graphite",
         "addedCommit": {
             "date": "2020-11-24T03:03:41-05:00",
@@ -1327,7 +1327,7 @@
         ]
     },
     {
-        "id": "ayu-1",
+        "id": "ayu",
         "name": "Ayu",
         "addedCommit": {
             "date": "2020-11-24T03:03:41-05:00",
@@ -1373,7 +1373,7 @@
         ]
     },
     {
-        "id": "ayu-mirage-1",
+        "id": "ayu-mirage",
         "name": "Ayu Mirage",
         "addedCommit": {
             "date": "2020-11-24T03:03:41-05:00",
@@ -1410,7 +1410,7 @@
         ]
     },
     {
-        "id": "gdct-1",
+        "id": "gdct",
         "name": "GDCT",
         "addedCommit": {
             "date": "2020-11-24T03:03:41-05:00",
@@ -1447,7 +1447,7 @@
         ]
     },
     {
-        "id": "gdct-dark-1",
+        "id": "gdct-dark",
         "name": "GDCT Dark",
         "addedCommit": {
             "date": "2020-11-24T03:03:41-05:00",
@@ -1484,7 +1484,7 @@
         ]
     },
     {
-        "id": "obuntu-1",
+        "id": "obuntu",
         "name": "Obuntu",
         "addedCommit": {
             "date": "2020-11-24T03:03:41-05:00",
@@ -1523,7 +1523,7 @@
         ]
     },
     {
-        "id": "ono-sendai-1",
+        "id": "ono-sendai",
         "name": "Ono Sendai",
         "addedCommit": {
             "date": "2020-11-24T03:03:41-05:00",
@@ -1562,7 +1562,7 @@
         ]
     },
     {
-        "id": "blue-topaz-1",
+        "id": "blue-topaz",
         "name": "Blue Topaz",
         "addedCommit": {
             "date": "2020-11-24T03:03:41-05:00",
@@ -1617,7 +1617,7 @@
         ]
     },
     {
-        "id": "reverie-1",
+        "id": "reverie",
         "name": "Reverie",
         "addedCommit": {
             "date": "2020-11-24T03:03:41-05:00",
@@ -1656,7 +1656,7 @@
         ]
     },
     {
-        "id": "dark-graphite-pie-1",
+        "id": "dark-graphite-pie",
         "name": "Dark Graphite Pie",
         "addedCommit": {
             "date": "2020-11-24T03:03:41-05:00",
@@ -1695,7 +1695,7 @@
         ]
     },
     {
-        "id": "obsidianite-1",
+        "id": "obsidianite",
         "name": "Obsidianite",
         "addedCommit": {
             "date": "2020-11-24T03:03:41-05:00",
@@ -1766,7 +1766,7 @@
         ]
     },
     {
-        "id": "gitsidian-1",
+        "id": "gitsidian",
         "name": "Gitsidian",
         "addedCommit": {
             "date": "2020-11-24T03:03:41-05:00",
@@ -1805,7 +1805,7 @@
         ]
     },
     {
-        "id": "clair-de-lune-1",
+        "id": "clair-de-lune",
         "name": "Clair de Lune",
         "addedCommit": {
             "date": "2020-11-24T03:03:41-05:00",
@@ -1855,7 +1855,7 @@
         ]
     },
     {
-        "id": "molecule-1",
+        "id": "molecule",
         "name": "Molecule",
         "addedCommit": {
             "date": "2020-11-24T03:03:41-05:00",
@@ -1892,7 +1892,7 @@
         ]
     },
     {
-        "id": "comfort-smooth-1",
+        "id": "comfort-smooth",
         "name": "Comfort Smooth",
         "addedCommit": {
             "date": "2020-11-24T03:03:41-05:00",
@@ -1929,7 +1929,7 @@
         ]
     },
     {
-        "id": "suddha-1",
+        "id": "suddha",
         "name": "Suddha",
         "addedCommit": {
             "date": "2020-12-05T20:44:13-05:00",
@@ -1968,7 +1968,7 @@
         ]
     },
     {
-        "id": "california-coast-1",
+        "id": "california-coast",
         "name": "California Coast",
         "addedCommit": {
             "date": "2020-12-22T15:21:49-08:00",
@@ -2067,7 +2067,7 @@
         ]
     },
     {
-        "id": "discordian-1",
+        "id": "discordian",
         "name": "Discordian",
         "addedCommit": {
             "date": "2020-12-30T18:05:40+01:00",
@@ -2124,7 +2124,7 @@
         ]
     },
     {
-        "id": "al-dente-1",
+        "id": "al-dente",
         "name": "Al Dente",
         "addedCommit": {
             "date": "2021-01-03T15:28:31-05:00",
@@ -2199,7 +2199,7 @@
         ]
     },
     {
-        "id": "wasp-1",
+        "id": "wasp",
         "name": "Wasp",
         "addedCommit": {
             "date": "2021-01-29T09:22:43-05:00",
@@ -2269,7 +2269,7 @@
         ]
     },
     {
-        "id": "big-sur-aesthetic-1",
+        "id": "big-sur-aesthetic",
         "name": "Big Sur Aesthetic",
         "addedCommit": {
             "date": "2021-02-04T13:31:39-07:00",
@@ -2352,7 +2352,7 @@
         ]
     },
     {
-        "id": "higlighter-1",
+        "id": "higlighter",
         "name": "Higlighter",
         "addedCommit": {
             "date": "2021-02-06T19:05:28-05:00",
@@ -2427,7 +2427,7 @@
         ]
     },
     {
-        "id": "its-theme-1",
+        "id": "its-theme",
         "name": "ITS Theme",
         "addedCommit": {
             "date": "2021-02-11T13:15:41-08:00",
@@ -2524,7 +2524,7 @@
         ]
     },
     {
-        "id": "spectrum-1",
+        "id": "spectrum",
         "name": "Spectrum",
         "addedCommit": {
             "date": "2021-02-18T19:21:40+01:00",
@@ -2611,7 +2611,7 @@
         ]
     },
     {
-        "id": "hipstersmoothie-1",
+        "id": "hipstersmoothie",
         "name": "Hipstersmoothie",
         "addedCommit": {
             "date": "2021-02-21T15:02:33-08:00",
@@ -2677,7 +2677,7 @@
         ]
     },
     {
-        "id": "vileplume-1",
+        "id": "vileplume",
         "name": "Vileplume",
         "addedCommit": {
             "date": "2021-03-18T19:46:09-07:00",
@@ -2743,7 +2743,7 @@
         ]
     },
     {
-        "id": "aurora-1",
+        "id": "aurora",
         "name": "Aurora",
         "addedCommit": {
             "date": "2021-04-21T12:17:45+08:00",
@@ -2798,7 +2798,7 @@
         ]
     },
     {
-        "id": "iceberg-1",
+        "id": "iceberg",
         "name": "Iceberg",
         "addedCommit": {
             "date": "2021-05-20T10:31:55+09:00",
@@ -2844,7 +2844,7 @@
         ]
     },
     {
-        "id": "night-owl-1",
+        "id": "night-owl",
         "name": "Night Owl",
         "addedCommit": {
             "date": "2021-05-28T01:00:54-04:00",
@@ -2890,7 +2890,7 @@
         ]
     },
     {
-        "id": "yin-and-yang-1",
+        "id": "yin-and-yang",
         "name": "Yin and Yang",
         "addedCommit": {
             "date": "2021-05-29T19:36:28-05:00",
@@ -2947,7 +2947,7 @@
         ]
     },
     {
-        "id": "golden-topaz-1",
+        "id": "golden-topaz",
         "name": "Golden Topaz",
         "addedCommit": {
             "date": "2021-05-29T21:04:43-04:00",
@@ -2986,7 +2986,7 @@
         ]
     },
     {
-        "id": "pink-topaz-1",
+        "id": "pink-topaz",
         "name": "Pink Topaz",
         "addedCommit": {
             "date": "2021-05-29T21:05:45-04:00",
@@ -3034,7 +3034,7 @@
         ]
     },
     {
-        "id": "palatinate-1",
+        "id": "palatinate",
         "name": "Palatinate",
         "addedCommit": {
             "date": "2021-06-07T15:36:27-04:00",
@@ -3088,7 +3088,7 @@
         ]
     },
     {
-        "id": "dark-moss-1",
+        "id": "dark-moss",
         "name": "Dark Moss",
         "addedCommit": {
             "date": "2021-06-11T18:48:28+03:00",
@@ -3150,7 +3150,7 @@
         ]
     },
     {
-        "id": "mammoth-1",
+        "id": "mammoth",
         "name": "Mammoth",
         "addedCommit": {
             "date": "2021-06-14T15:26:54-05:00",
@@ -3196,7 +3196,7 @@
         ]
     },
     {
-        "id": "cyber-glow-1",
+        "id": "cyber-glow",
         "name": "Cyber Glow",
         "addedCommit": {
             "date": "2021-07-06T05:57:51-04:00",
@@ -3252,7 +3252,7 @@
         ]
     },
     {
-        "id": "darkyan-1",
+        "id": "darkyan",
         "name": "Darkyan",
         "addedCommit": {
             "date": "2021-07-11T18:32:08+02:00",
@@ -3298,7 +3298,7 @@
         ]
     },
     {
-        "id": "rmaki-1",
+        "id": "rmaki",
         "name": "Rmaki",
         "addedCommit": {
             "date": "2021-07-15T13:07:47+10:00",
@@ -3344,7 +3344,7 @@
         ]
     },
     {
-        "id": "everforest-1",
+        "id": "everforest",
         "name": "Everforest",
         "addedCommit": {
             "date": "2021-07-15T14:38:23-04:00",
@@ -3392,7 +3392,7 @@
         ]
     },
     {
-        "id": "illusion-1",
+        "id": "illusion",
         "name": "Illusion",
         "addedCommit": {
             "date": "2021-07-15T22:09:01+03:00",
@@ -3444,7 +3444,7 @@
         ]
     },
     {
-        "id": "horizon-1",
+        "id": "horizon",
         "name": "Horizon",
         "addedCommit": {
             "date": "2021-07-18T23:12:06-05:00",
@@ -3503,7 +3503,7 @@
         ]
     },
     {
-        "id": "tokyo-night-1",
+        "id": "tokyo-night",
         "name": "Tokyo Night",
         "addedCommit": {
             "date": "2021-07-20T09:11:37+03:00",
@@ -3604,7 +3604,7 @@
         ]
     },
     {
-        "id": "deep-work-1",
+        "id": "deep-work",
         "name": "Deep Work",
         "addedCommit": {
             "date": "2021-07-28T22:02:34+02:00",
@@ -3674,7 +3674,7 @@
         ]
     },
     {
-        "id": "blackbird-1",
+        "id": "blackbird",
         "name": "Blackbird",
         "addedCommit": {
             "date": "2021-07-30T06:46:40+03:00",
@@ -3711,7 +3711,7 @@
         ]
     },
     {
-        "id": "golden-coffee-1",
+        "id": "golden-coffee",
         "name": "Golden Coffee",
         "addedCommit": {
             "date": "2021-08-05T21:54:51+02:00",
@@ -3765,7 +3765,7 @@
         ]
     },
     {
-        "id": "behave-dark-1",
+        "id": "behave-dark",
         "name": "Behave dark",
         "addedCommit": {
             "date": "2021-08-12T05:27:16+02:00",
@@ -3811,7 +3811,7 @@
         ]
     },
     {
-        "id": "obsidian-windows-98-edition-1",
+        "id": "obsidian-windows-98-edition",
         "name": "Obsidian Windows 98 Edition",
         "addedCommit": {
             "date": "2021-08-20T20:50:57+01:00",
@@ -3868,7 +3868,7 @@
         ]
     },
     {
-        "id": "lizardmen-zettelkasten-1",
+        "id": "lizardmen-zettelkasten",
         "name": "Lizardmen Zettelkasten",
         "addedCommit": {
             "date": "2021-08-24T09:19:25-07:00",
@@ -3923,7 +3923,7 @@
         ]
     },
     {
-        "id": "cidreira-coast-1",
+        "id": "cidreira-coast",
         "name": "Cidreira Coast",
         "addedCommit": {
             "date": "2021-08-24T15:00:38-03:00",
@@ -3991,7 +3991,7 @@
         ]
     },
     {
-        "id": "shimmering-focus-1",
+        "id": "shimmering-focus",
         "name": "Shimmering Focus",
         "addedCommit": {
             "date": "2021-08-31T06:58:02+02:00",
@@ -4073,7 +4073,7 @@
         ]
     },
     {
-        "id": "firefly-1",
+        "id": "firefly",
         "name": "Firefly",
         "addedCommit": {
             "date": "2021-09-11T00:00:48+02:00",
@@ -4119,7 +4119,7 @@
         ]
     },
     {
-        "id": "deep-1",
+        "id": "deep",
         "name": "Deep",
         "addedCommit": {
             "date": "2021-09-18T12:09:55-04:00",
@@ -4165,7 +4165,7 @@
         ]
     },
     {
-        "id": "purple-owl-1",
+        "id": "purple-owl",
         "name": "Purple Owl",
         "addedCommit": {
             "date": "2021-10-11T23:29:11-04:00",
@@ -4211,7 +4211,7 @@
         ]
     },
     {
-        "id": "emerald-1",
+        "id": "emerald",
         "name": "Emerald",
         "addedCommit": {
             "date": "2021-10-13T00:22:29+05:30",
@@ -4257,7 +4257,7 @@
         ]
     },
     {
-        "id": "sodalite-1",
+        "id": "sodalite",
         "name": "Sodalite",
         "addedCommit": {
             "date": "2021-10-14T06:34:03+02:00",
@@ -4294,7 +4294,7 @@
         ]
     },
     {
-        "id": "agora-1",
+        "id": "agora",
         "name": "Agora",
         "addedCommit": {
             "date": "2021-10-15T18:59:47+01:00",
@@ -4342,7 +4342,7 @@
         ]
     },
     {
-        "id": "faded-1",
+        "id": "faded",
         "name": "Faded",
         "addedCommit": {
             "date": "2021-10-15T13:05:44-05:00",
@@ -4388,7 +4388,7 @@
         ]
     },
     {
-        "id": "creature-1",
+        "id": "creature",
         "name": "Creature",
         "addedCommit": {
             "date": "2021-10-16T04:41:51+02:00",
@@ -4441,7 +4441,7 @@
         ]
     },
     {
-        "id": "sanctum-1",
+        "id": "sanctum",
         "name": "Sanctum",
         "addedCommit": {
             "date": "2021-10-18T21:04:21+00:00",
@@ -4505,7 +4505,7 @@
         ]
     },
     {
-        "id": "slytherin-1",
+        "id": "slytherin",
         "name": "Slytherin",
         "addedCommit": {
             "date": "2021-10-21T04:17:45-03:00",
@@ -4551,7 +4551,7 @@
         ]
     },
     {
-        "id": "cardstock-1",
+        "id": "cardstock",
         "name": "Cardstock",
         "addedCommit": {
             "date": "2021-10-25T00:18:55-04:00",
@@ -4632,7 +4632,7 @@
         ]
     },
     {
-        "id": "pine-forest-berry-1",
+        "id": "pine-forest-berry",
         "name": "Pine Forest Berry",
         "addedCommit": {
             "date": "2021-10-25T19:15:08+02:00",
@@ -4680,7 +4680,7 @@
         ]
     },
     {
-        "id": "rose-pine-moon-1",
+        "id": "rose-pine-moon",
         "name": "Rosé Pine Moon",
         "addedCommit": {
             "date": "2021-10-25T13:17:21-04:00",
@@ -4726,7 +4726,7 @@
         ]
     },
     {
-        "id": "ruby-1",
+        "id": "ruby",
         "name": "Ruby",
         "addedCommit": {
             "date": "2021-10-27T23:27:42+05:30",
@@ -4772,7 +4772,7 @@
         ]
     },
     {
-        "id": "golden-book-1",
+        "id": "golden-book",
         "name": "Golden Book",
         "addedCommit": {
             "date": "2021-10-28T19:14:17+02:00",
@@ -4824,7 +4824,7 @@
         ]
     },
     {
-        "id": "prism-1",
+        "id": "prism",
         "name": "Prism",
         "addedCommit": {
             "date": "2021-10-28T18:22:58+01:00",
@@ -4888,7 +4888,7 @@
         ]
     },
     {
-        "id": "carnelian-1",
+        "id": "carnelian",
         "name": "Carnelian",
         "addedCommit": {
             "date": "2021-10-31T01:11:42+05:30",
@@ -4943,7 +4943,7 @@
         ]
     },
     {
-        "id": "obsidian-you-1",
+        "id": "obsidian-you",
         "name": "Obsidian You",
         "addedCommit": {
             "date": "2021-10-30T21:43:47+02:00",
@@ -5013,7 +5013,7 @@
         ]
     },
     {
-        "id": "ebullientworks-1",
+        "id": "ebullientworks",
         "name": "Ebullientworks",
         "addedCommit": {
             "date": "2021-10-30T15:45:31-04:00",
@@ -5061,7 +5061,7 @@
         ]
     },
     {
-        "id": "friendly-1",
+        "id": "friendly",
         "name": "Friendly",
         "addedCommit": {
             "date": "2021-10-30T16:46:56-03:00",
@@ -5120,7 +5120,7 @@
         ]
     },
     {
-        "id": "purple-aurora-1",
+        "id": "purple-aurora",
         "name": "Purple Aurora",
         "addedCommit": {
             "date": "2021-11-01T03:43:26+01:00",
@@ -5166,7 +5166,7 @@
         ]
     },
     {
-        "id": "primary-1",
+        "id": "primary",
         "name": "Primary",
         "addedCommit": {
             "date": "2021-11-01T10:46:29+08:00",
@@ -5223,7 +5223,7 @@
         ]
     },
     {
-        "id": "terminal-1",
+        "id": "terminal",
         "name": "Terminal",
         "addedCommit": {
             "date": "2021-11-01T10:49:03+08:00",
@@ -5269,7 +5269,7 @@
         ]
     },
     {
-        "id": "bubble-space-1",
+        "id": "bubble-space",
         "name": "Bubble Space",
         "addedCommit": {
             "date": "2021-11-05T02:41:12+08:00",
@@ -5326,7 +5326,7 @@
         ]
     },
     {
-        "id": "things-1",
+        "id": "things",
         "name": "Things",
         "addedCommit": {
             "date": "2021-11-04T12:08:44-07:00",
@@ -5374,7 +5374,7 @@
         ]
     },
     {
-        "id": "wyrd-1",
+        "id": "wyrd",
         "name": "Wyrd",
         "addedCommit": {
             "date": "2021-11-04T14:12:17-05:00",
@@ -5413,7 +5413,7 @@
         ]
     },
     {
-        "id": "typomagical-1",
+        "id": "typomagical",
         "name": "Typomagical",
         "addedCommit": {
             "date": "2021-11-14T11:27:53-08:00",
@@ -5483,7 +5483,7 @@
         ]
     },
     {
-        "id": "typewriter-1",
+        "id": "typewriter",
         "name": "Typewriter",
         "addedCommit": {
             "date": "2021-11-20T14:23:53+08:00",
@@ -5547,7 +5547,7 @@
         ]
     },
     {
-        "id": "wilcoxone-1",
+        "id": "wilcoxone",
         "name": "WilcoxOne",
         "addedCommit": {
             "date": "2021-12-07T05:03:39+00:00",
@@ -5593,7 +5593,7 @@
         ]
     },
     {
-        "id": "alchemy-1",
+        "id": "alchemy",
         "name": "Alchemy",
         "addedCommit": {
             "date": "2021-12-08T12:44:15+01:00",
@@ -5647,7 +5647,7 @@
         ]
     },
     {
-        "id": "harmonic-1",
+        "id": "harmonic",
         "name": "Harmonic",
         "addedCommit": {
             "date": "2021-12-08T20:23:20+01:00",
@@ -5704,7 +5704,7 @@
         ]
     },
     {
-        "id": "dracula-official-1",
+        "id": "dracula-official",
         "name": "Dracula Official",
         "addedCommit": {
             "date": "2021-12-15T03:10:58-03:00",
@@ -5775,7 +5775,7 @@
         ]
     },
     {
-        "id": "nebula-1",
+        "id": "nebula",
         "name": "Nebula",
         "addedCommit": {
             "date": "2021-12-21T01:50:13+08:00",
@@ -5837,7 +5837,7 @@
         ]
     },
     {
-        "id": "obsidian-nord-enhanced-1",
+        "id": "obsidian-nord-enhanced",
         "name": "Obsidian Nord Enhanced",
         "addedCommit": {
             "date": "2021-12-28T03:04:52-05:00",
@@ -5887,7 +5887,7 @@
         ]
     },
     {
-        "id": "dracula-slim-1",
+        "id": "dracula-slim",
         "name": "Dracula Slim",
         "addedCommit": {
             "date": "2022-01-02T19:23:28+00:00",
@@ -5933,7 +5933,7 @@
         ]
     },
     {
-        "id": "sandstorm-1",
+        "id": "sandstorm",
         "name": "Sandstorm",
         "addedCommit": {
             "date": "2022-01-19T20:01:40+03:00",
@@ -5981,7 +5981,7 @@
         ]
     },
     {
-        "id": "lyt-mode-1",
+        "id": "lyt-mode",
         "name": "LYT Mode",
         "addedCommit": {
             "date": "2022-01-19T09:03:38-08:00",
@@ -6027,7 +6027,7 @@
         ]
     },
     {
-        "id": "carpe-noctem-1",
+        "id": "carpe-noctem",
         "name": "Carpe Noctem",
         "addedCommit": {
             "date": "2022-01-25T12:25:26-06:00",
@@ -6082,7 +6082,7 @@
         ]
     },
     {
-        "id": "vintage-theme-1",
+        "id": "vintage-theme",
         "name": "Vintage Theme",
         "addedCommit": {
             "date": "2022-01-27T12:27:57-05:00",
@@ -6139,7 +6139,7 @@
         ]
     },
     {
-        "id": "catppuccin-1",
+        "id": "catppuccin",
         "name": "Catppuccin",
         "addedCommit": {
             "date": "2022-02-05T10:51:01-07:00",
@@ -6220,7 +6220,7 @@
         ]
     },
     {
-        "id": "theme-that-shall-not-be-named-1",
+        "id": "theme-that-shall-not-be-named",
         "name": "Theme-That-Shall-Not-Be-Named",
         "addedCommit": {
             "date": "2022-02-05T14:01:15-05:00",
@@ -6266,7 +6266,7 @@
         ]
     },
     {
-        "id": "sparkling-wisdom-1",
+        "id": "sparkling-wisdom",
         "name": "Sparkling Wisdom",
         "addedCommit": {
             "date": "2022-02-13T01:25:57+05:30",
@@ -6323,7 +6323,7 @@
         ]
     },
     {
-        "id": "willemstad-1",
+        "id": "willemstad",
         "name": "Willemstad",
         "addedCommit": {
             "date": "2022-02-12T19:59:43+00:00",
@@ -6396,7 +6396,7 @@
         ]
     },
     {
-        "id": "royal-velvet-1",
+        "id": "royal-velvet",
         "name": "Royal Velvet",
         "addedCommit": {
             "date": "2022-02-21T02:14:15+00:00",
@@ -6452,7 +6452,7 @@
         ]
     },
     {
-        "id": "aqua-1",
+        "id": "aqua",
         "name": "Aqua",
         "addedCommit": {
             "date": "2022-03-21T23:38:51+05:30",
@@ -6498,7 +6498,7 @@
         ]
     },
     {
-        "id": "lyt-dracula-1",
+        "id": "lyt-dracula",
         "name": "LYT Dracula",
         "addedCommit": {
             "date": "2022-04-05T01:47:29+01:00",
@@ -6550,7 +6550,7 @@
         ]
     },
     {
-        "id": "dracula-lyt-1",
+        "id": "dracula-lyt",
         "name": "Dracula + LYT",
         "addedCommit": {
             "date": "2022-04-05T15:23:59+01:00",
@@ -6596,7 +6596,7 @@
         ]
     },
     {
-        "id": "mado-11-1",
+        "id": "mado-11",
         "name": "Mado 11",
         "addedCommit": {
             "date": "2022-04-21T22:29:51+08:00",
@@ -6653,7 +6653,7 @@
         ]
     },
     {
-        "id": "everblush-1",
+        "id": "everblush",
         "name": "Everblush",
         "addedCommit": {
             "date": "2022-04-26T06:33:45+05:30",
@@ -6708,7 +6708,7 @@
         ]
     },
     {
-        "id": "absolutegruv-1",
+        "id": "absolutegruv",
         "name": "AbsoluteGruv",
         "addedCommit": {
             "date": "2022-04-27T00:45:06+05:30",
@@ -6754,7 +6754,7 @@
         ]
     },
     {
-        "id": "violet-evening-1",
+        "id": "violet-evening",
         "name": "Violet Evening",
         "addedCommit": {
             "date": "2022-05-01T15:21:51-05:00",
@@ -6800,7 +6800,7 @@
         ]
     },
     {
-        "id": "zenburn-1",
+        "id": "zenburn",
         "name": "Zenburn",
         "addedCommit": {
             "date": "2022-05-05T08:46:43-07:00",
@@ -6846,7 +6846,7 @@
         ]
     },
     {
-        "id": "modern-dark-1",
+        "id": "modern-dark",
         "name": "Modern Dark",
         "addedCommit": {
             "date": "2022-05-13T02:57:31+02:00",
@@ -6901,7 +6901,7 @@
         ]
     },
     {
-        "id": "wiselight-1",
+        "id": "wiselight",
         "name": "WiseLight",
         "addedCommit": {
             "date": "2022-05-30T01:29:50+05:30",
@@ -6947,7 +6947,7 @@
         ]
     },
     {
-        "id": "red-solitude-1",
+        "id": "red-solitude",
         "name": "Red Solitude",
         "addedCommit": {
             "date": "2022-06-07T17:37:37+02:00",
@@ -7022,7 +7022,7 @@
         ]
     },
     {
-        "id": "viridian-1",
+        "id": "viridian",
         "name": "Viridian",
         "addedCommit": {
             "date": "2022-06-30T20:34:14+01:00",
@@ -7079,7 +7079,7 @@
         ]
     },
     {
-        "id": "kanagawa-1",
+        "id": "kanagawa",
         "name": "Kanagawa",
         "addedCommit": {
             "date": "2022-07-05T08:05:39+02:00",
@@ -7125,7 +7125,7 @@
         ]
     },
     {
-        "id": "encore-1",
+        "id": "encore",
         "name": "Encore",
         "addedCommit": {
             "date": "2022-07-14T05:47:08+10:00",
@@ -7182,7 +7182,7 @@
         ]
     },
     {
-        "id": "ukiyo-1",
+        "id": "ukiyo",
         "name": "Ukiyo",
         "addedCommit": {
             "date": "2022-08-01T04:57:35+02:00",
@@ -7230,7 +7230,7 @@
         ]
     },
     {
-        "id": "mado-miniflow-1",
+        "id": "mado-miniflow",
         "name": "Mado Miniflow",
         "addedCommit": {
             "date": "2022-08-01T16:15:42+08:00",
@@ -7287,7 +7287,7 @@
         ]
     },
     {
-        "id": "silence-1",
+        "id": "silence",
         "name": "Silence",
         "addedCommit": {
             "date": "2022-09-03T00:31:14+10:00",
@@ -7337,7 +7337,7 @@
         ]
     },
     {
-        "id": "dayspring-1",
+        "id": "dayspring",
         "name": "Dayspring",
         "addedCommit": {
             "date": "2022-10-17T15:39:39-04:00",
@@ -7374,7 +7374,7 @@
         ]
     },
     {
-        "id": "anuppuccin-1",
+        "id": "anuppuccin",
         "name": "AnuPpuccin",
         "addedCommit": {
             "date": "2022-10-19T19:15:52+05:30",
@@ -7431,7 +7431,7 @@
         ]
     },
     {
-        "id": "fusion-1",
+        "id": "fusion",
         "name": "Fusion",
         "addedCommit": {
             "date": "2022-10-20T04:24:53+03:00",
@@ -7470,7 +7470,7 @@
         ]
     },
     {
-        "id": "ultra-lobster-1",
+        "id": "ultra-lobster",
         "name": "Ultra Lobster",
         "addedCommit": {
             "date": "2022-10-21T20:38:45-07:00",
@@ -7518,7 +7518,7 @@
         ]
     },
     {
-        "id": "github-theme-1",
+        "id": "github-theme",
         "name": "GitHub theme",
         "addedCommit": {
             "date": "2022-10-24T22:05:58+08:00",
@@ -7578,7 +7578,7 @@
         ]
     },
     {
-        "id": "doctorfree-1",
+        "id": "doctorfree",
         "name": "Doctorfree",
         "addedCommit": {
             "date": "2022-11-08T09:08:20-08:00",
@@ -7624,7 +7624,7 @@
         ]
     },
     {
-        "id": "synthwave-1",
+        "id": "synthwave",
         "name": "SynthWave",
         "addedCommit": {
             "date": "2022-11-09T03:29:45+01:00",
@@ -7661,7 +7661,7 @@
         ]
     },
     {
-        "id": "oldsidian-purple-1",
+        "id": "oldsidian-purple",
         "name": "Oldsidian Purple",
         "addedCommit": {
             "date": "2022-11-09T03:35:47+01:00",
@@ -7707,7 +7707,7 @@
         ]
     },
     {
-        "id": "deeper-work-1",
+        "id": "deeper-work",
         "name": "deeper work",
         "addedCommit": {
             "date": "2022-11-09T16:19:39+11:00",
@@ -7744,7 +7744,7 @@
         ]
     },
     {
-        "id": "micro-mike-1",
+        "id": "micro-mike",
         "name": "Micro Mike",
         "addedCommit": {
             "date": "2022-11-09T08:31:43-07:00",
@@ -7781,7 +7781,7 @@
         ]
     },
     {
-        "id": "aura-1",
+        "id": "aura",
         "name": "Aura",
         "addedCommit": {
             "date": "2022-11-09T22:51:35+05:30",
@@ -7837,7 +7837,7 @@
         ]
     },
     {
-        "id": "ion-1",
+        "id": "ion",
         "name": "ion",
         "addedCommit": {
             "date": "2022-11-11T03:14:04+02:00",
@@ -7874,7 +7874,7 @@
         ]
     },
     {
-        "id": "listive-1",
+        "id": "listive",
         "name": "Listive",
         "addedCommit": {
             "date": "2022-11-14T13:49:18+08:00",
@@ -7913,7 +7913,7 @@
         ]
     },
     {
-        "id": "material-ocean-1",
+        "id": "material-ocean",
         "name": "Material Ocean",
         "addedCommit": {
             "date": "2022-11-25T07:26:40+11:00",
@@ -7950,7 +7950,7 @@
         ]
     },
     {
-        "id": "wy-console-1",
+        "id": "wy-console",
         "name": "WY Console",
         "addedCommit": {
             "date": "2022-11-25T02:20:22+00:00",
@@ -7998,7 +7998,7 @@
         ]
     },
     {
-        "id": "adwaita-1",
+        "id": "adwaita",
         "name": "Adwaita",
         "addedCommit": {
             "date": "2022-11-25T03:35:27+01:00",
@@ -8037,7 +8037,7 @@
         ]
     },
     {
-        "id": "apatheia-1",
+        "id": "apatheia",
         "name": "Apatheia",
         "addedCommit": {
             "date": "2022-12-08T02:38:10+01:00",
@@ -8083,7 +8083,7 @@
         ]
     },
     {
-        "id": "origami-1",
+        "id": "origami",
         "name": "Origami",
         "addedCommit": {
             "date": "2022-12-07T17:42:15-08:00",
@@ -8131,7 +8131,7 @@
         ]
     },
     {
-        "id": "border-1",
+        "id": "border",
         "name": "Border",
         "addedCommit": {
             "date": "2022-12-08T09:46:13+08:00",
@@ -8179,7 +8179,7 @@
         ]
     },
     {
-        "id": "typora-vue-1",
+        "id": "typora-vue",
         "name": "Typora-Vue",
         "addedCommit": {
             "date": "2022-12-12T03:28:31+08:00",
@@ -8235,7 +8235,7 @@
         ]
     },
     {
-        "id": "abecedarium-1",
+        "id": "abecedarium",
         "name": "Abecedarium",
         "addedCommit": {
             "date": "2023-01-03T13:05:14-05:00",
@@ -8283,7 +8283,7 @@
         ]
     },
     {
-        "id": "light-bright-1",
+        "id": "light-bright",
         "name": "Light & Bright",
         "addedCommit": {
             "date": "2023-01-03T12:09:06-06:00",
@@ -8331,7 +8331,7 @@
         ]
     },
     {
-        "id": "wikipedia-1",
+        "id": "wikipedia",
         "name": "Wikipedia",
         "addedCommit": {
             "date": "2023-01-03T12:10:21-06:00",
@@ -8387,7 +8387,7 @@
         ]
     },
     {
-        "id": "material-gruvbox-1",
+        "id": "material-gruvbox",
         "name": "Material Gruvbox",
         "addedCommit": {
             "date": "2023-01-03T19:12:40+01:00",
@@ -8435,7 +8435,7 @@
         ]
     },
     {
-        "id": "wombat-1",
+        "id": "wombat",
         "name": "Wombat",
         "addedCommit": {
             "date": "2023-01-03T19:16:51+01:00",
@@ -8481,7 +8481,7 @@
         ]
     },
     {
-        "id": "vibrant-1",
+        "id": "vibrant",
         "name": "Vibrant",
         "addedCommit": {
             "date": "2023-01-03T21:30:18+03:00",
@@ -8527,7 +8527,7 @@
         ]
     },
     {
-        "id": "atomus-1",
+        "id": "atomus",
         "name": "Atomus",
         "addedCommit": {
             "date": "2023-01-03T15:37:26-03:00",
@@ -8573,7 +8573,7 @@
         ]
     },
     {
-        "id": "shiba-uni-1",
+        "id": "shiba-uni",
         "name": "Shiba Uni",
         "addedCommit": {
             "date": "2023-01-03T21:29:35-05:00",
@@ -8625,7 +8625,7 @@
         ]
     },
     {
-        "id": "shiba-inu-1",
+        "id": "shiba-inu",
         "name": "Shiba Inu",
         "addedCommit": {
             "date": "2023-01-12T14:35:44-05:00",
@@ -8664,7 +8664,7 @@
         ]
     },
     {
-        "id": "chime-1",
+        "id": "chime",
         "name": "🔔 Chime",
         "addedCommit": {
             "date": "2023-01-13T19:29:31-06:00",
@@ -8703,7 +8703,7 @@
         ]
     },
     {
-        "id": "abyssal-1",
+        "id": "abyssal",
         "name": "Abyssal",
         "addedCommit": {
             "date": "2023-01-16T04:28:55+01:00",
@@ -8742,7 +8742,7 @@
         ]
     },
     {
-        "id": "jotter-1",
+        "id": "jotter",
         "name": "Jotter",
         "addedCommit": {
             "date": "2023-01-16T04:30:42+01:00",
@@ -8781,7 +8781,7 @@
         ]
     },
     {
-        "id": "pln-1",
+        "id": "pln",
         "name": "PLN",
         "addedCommit": {
             "date": "2023-01-18T15:58:57-05:00",
@@ -8829,7 +8829,7 @@
         ]
     },
     {
-        "id": "dracula-gemini-1",
+        "id": "dracula-gemini",
         "name": "Dracula Gemini",
         "addedCommit": {
             "date": "2023-01-19T02:25:48+01:00",
@@ -8914,7 +8914,7 @@
         ]
     },
     {
-        "id": "dawn-1",
+        "id": "dawn",
         "name": "Dawn",
         "addedCommit": {
             "date": "2023-01-31T03:05:12+09:00",
@@ -8953,7 +8953,7 @@
         ]
     },
     {
-        "id": "cybertron-shifted-1",
+        "id": "cybertron-shifted",
         "name": "Cybertron Shifted",
         "addedCommit": {
             "date": "2023-01-30T21:41:11+01:00",
@@ -8999,7 +8999,7 @@
         ]
     },
     {
-        "id": "revin-1",
+        "id": "revin",
         "name": "Revin",
         "addedCommit": {
             "date": "2023-01-31T22:38:32+01:00",
@@ -9049,7 +9049,7 @@
         ]
     },
     {
-        "id": "rezin-1",
+        "id": "rezin",
         "name": "Rezin",
         "addedCommit": {
             "date": "2023-01-31T23:37:45+01:00",
@@ -9086,7 +9086,7 @@
         ]
     },
     {
-        "id": "material-flat-1",
+        "id": "material-flat",
         "name": "Material Flat",
         "addedCommit": {
             "date": "2023-02-07T03:12:33-05:00",
@@ -9134,7 +9134,7 @@
         ]
     },
     {
-        "id": "nightingale-1",
+        "id": "nightingale",
         "name": "Nightingale",
         "addedCommit": {
             "date": "2023-02-08T11:24:45+08:00",
@@ -9171,7 +9171,7 @@
         ]
     },
     {
-        "id": "solitude-1",
+        "id": "solitude",
         "name": "Solitude",
         "addedCommit": {
             "date": "2023-02-14T17:48:47+01:00",
@@ -9208,7 +9208,7 @@
         ]
     },
     {
-        "id": "dekurai-1",
+        "id": "dekurai",
         "name": "Dekurai",
         "addedCommit": {
             "date": "2023-02-14T19:54:31+03:00",
@@ -9245,7 +9245,7 @@
         ]
     },
     {
-        "id": "polka-1",
+        "id": "polka",
         "name": "Polka",
         "addedCommit": {
             "date": "2023-02-15T02:47:34+00:00",
@@ -9293,7 +9293,7 @@
         ]
     },
     {
-        "id": "tomorrow-night-bright-1",
+        "id": "tomorrow-night-bright",
         "name": "Tomorrow Night Bright",
         "addedCommit": {
             "date": "2023-02-18T04:47:27+08:00",
@@ -9330,7 +9330,7 @@
         ]
     },
     {
-        "id": "lemons-theme-1",
+        "id": "lemons-theme",
         "name": "Lemons Theme",
         "addedCommit": {
             "date": "2023-02-17T22:31:03+01:00",
@@ -9367,7 +9367,7 @@
         ]
     },
     {
-        "id": "maple-1",
+        "id": "maple",
         "name": "Maple",
         "addedCommit": {
             "date": "2023-02-22T04:46:54+08:00",
@@ -9415,7 +9415,7 @@
         ]
     },
     {
-        "id": "big-bold-1",
+        "id": "big-bold",
         "name": "Big & Bold",
         "addedCommit": {
             "date": "2023-02-21T14:48:47-06:00",
@@ -9454,7 +9454,7 @@
         ]
     },
     {
-        "id": "obsidianotion-1",
+        "id": "obsidianotion",
         "name": "Obsidianotion",
         "addedCommit": {
             "date": "2023-02-27T23:19:04-03:00",
@@ -9493,7 +9493,7 @@
         ]
     },
     {
-        "id": "elegance-1",
+        "id": "elegance",
         "name": "Elegance",
         "addedCommit": {
             "date": "2023-02-28T22:34:31+01:00",
@@ -9532,7 +9532,7 @@
         ]
     },
     {
-        "id": "ia-writer-1",
+        "id": "ia-writer",
         "name": "iA Writer",
         "addedCommit": {
             "date": "2023-03-09T22:16:30+01:00",
@@ -9580,7 +9580,7 @@
         ]
     },
     {
-        "id": "notation-2-1",
+        "id": "notation-2",
         "name": "Notation 2",
         "addedCommit": {
             "date": "2023-03-09T15:18:42-06:00",
@@ -9619,7 +9619,7 @@
         ]
     },
     {
-        "id": "dune-1",
+        "id": "dune",
         "name": "Dune",
         "addedCommit": {
             "date": "2023-03-09T22:20:51+01:00",
@@ -9658,7 +9658,7 @@
         ]
     },
     {
-        "id": "everforest-enchanted-1",
+        "id": "everforest-enchanted",
         "name": "Everforest Enchanted",
         "addedCommit": {
             "date": "2023-03-20T23:36:38-07:00",
@@ -9697,7 +9697,7 @@
         ]
     },
     {
-        "id": "sanguine-1",
+        "id": "sanguine",
         "name": "Sanguine",
         "addedCommit": {
             "date": "2023-03-21T11:47:13+00:00",
@@ -9734,7 +9734,7 @@
         ]
     },
     {
-        "id": "sqdth-one-1",
+        "id": "sqdth-one",
         "name": "sQdth One",
         "addedCommit": {
             "date": "2023-03-22T03:26:26-04:00",
@@ -9786,7 +9786,7 @@
         ]
     },
     {
-        "id": "sqdthone-1",
+        "id": "sqdthone",
         "name": "sQdthOne",
         "addedCommit": {
             "date": "2023-03-22T13:03:06+01:00",
@@ -9825,7 +9825,7 @@
         ]
     },
     {
-        "id": "githubdhc-1",
+        "id": "githubdhc",
         "name": "GitHubDHC",
         "addedCommit": {
             "date": "2023-03-28T02:07:26-07:00",
@@ -9862,7 +9862,7 @@
         ]
     },
     {
-        "id": "proper-dark-1",
+        "id": "proper-dark",
         "name": "Proper Dark",
         "addedCommit": {
             "date": "2023-03-28T17:41:54+02:00",
@@ -9901,7 +9901,7 @@
         ]
     },
     {
-        "id": "sparkling-night-1",
+        "id": "sparkling-night",
         "name": "Sparkling Night",
         "addedCommit": {
             "date": "2023-03-31T10:31:49+02:00",
@@ -9940,7 +9940,7 @@
         ]
     },
     {
-        "id": "serenity-1",
+        "id": "serenity",
         "name": "Serenity",
         "addedCommit": {
             "date": "2023-04-12T12:12:00-05:00",
@@ -9979,7 +9979,7 @@
         ]
     },
     {
-        "id": "oliviers-theme-1",
+        "id": "oliviers-theme",
         "name": "Olivier’s Theme",
         "addedCommit": {
             "date": "2023-04-17T12:20:18+02:00",
@@ -10018,7 +10018,7 @@
         ]
     },
     {
-        "id": "synthwave-84-1",
+        "id": "synthwave-84",
         "name": "Synthwave '84",
         "addedCommit": {
             "date": "2023-04-17T06:30:28-04:00",
@@ -10055,7 +10055,7 @@
         ]
     },
     {
-        "id": "ib-writer-1",
+        "id": "ib-writer",
         "name": "iB Writer",
         "addedCommit": {
             "date": "2023-05-02T23:51:31+08:00",
@@ -10094,7 +10094,7 @@
         ]
     },
     {
-        "id": "buena-vista-1",
+        "id": "buena-vista",
         "name": "Buena Vista",
         "addedCommit": {
             "date": "2023-05-10T01:22:40-06:00",
@@ -10142,7 +10142,7 @@
         ]
     },
     {
-        "id": "simplicity-1",
+        "id": "simplicity",
         "name": "Simplicity",
         "addedCommit": {
             "date": "2023-05-19T12:01:18-04:00",
@@ -10181,7 +10181,7 @@
         ]
     },
     {
-        "id": "magicuser-1",
+        "id": "magicuser",
         "name": "MagicUser",
         "addedCommit": {
             "date": "2023-05-22T08:44:41-03:00",
@@ -10220,7 +10220,7 @@
         ]
     },
     {
-        "id": "protocolblue-1",
+        "id": "protocolblue",
         "name": "ProtocolBlue",
         "addedCommit": {
             "date": "2023-05-22T07:47:12-04:00",
@@ -10257,7 +10257,7 @@
         ]
     },
     {
-        "id": "yue-1",
+        "id": "yue",
         "name": "Yue",
         "addedCommit": {
             "date": "2023-05-22T19:47:22+03:30",
@@ -10296,7 +10296,7 @@
         ]
     },
     {
-        "id": "brutalism-1",
+        "id": "brutalism",
         "name": "Brutalism",
         "addedCommit": {
             "date": "2023-05-23T03:24:11-06:00",
@@ -10335,7 +10335,7 @@
         ]
     },
     {
-        "id": "tokyo-night-storm-1",
+        "id": "tokyo-night-storm",
         "name": "Tokyo Night Storm",
         "addedCommit": {
             "date": "2023-05-30T17:31:46+01:00",
@@ -10372,7 +10372,7 @@
         ]
     },
     {
-        "id": "strict-1",
+        "id": "strict",
         "name": "Strict",
         "addedCommit": {
             "date": "2023-06-01T16:04:22+03:00",
@@ -10409,7 +10409,7 @@
         ]
     },
     {
-        "id": "neuborder-1",
+        "id": "neuborder",
         "name": "NeuBorder",
         "addedCommit": {
             "date": "2023-06-02T05:37:39-04:00",
@@ -10446,7 +10446,7 @@
         ]
     },
     {
-        "id": "bolt-1",
+        "id": "bolt",
         "name": "Bolt",
         "addedCommit": {
             "date": "2023-06-06T02:31:23-05:00",
@@ -10485,7 +10485,7 @@
         ]
     },
     {
-        "id": "oozy-1",
+        "id": "oozy",
         "name": "Oozy",
         "addedCommit": {
             "date": "2023-06-13T20:22:41+01:00",
@@ -10540,7 +10540,7 @@
         ]
     },
     {
-        "id": "origin-1",
+        "id": "origin",
         "name": "Origin",
         "addedCommit": {
             "date": "2023-06-14T05:31:21-05:00",
@@ -10579,7 +10579,7 @@
         ]
     },
     {
-        "id": "covert-1",
+        "id": "covert",
         "name": "Covert",
         "addedCommit": {
             "date": "2023-06-22T02:35:48-04:00",
@@ -10616,7 +10616,7 @@
         ]
     },
     {
-        "id": "dracula-plus-1",
+        "id": "dracula-plus",
         "name": "Dracula Plus",
         "addedCommit": {
             "date": "2023-06-22T12:08:14+05:30",
@@ -10653,7 +10653,7 @@
         ]
     },
     {
-        "id": "salem-1",
+        "id": "salem",
         "name": "SALEM",
         "addedCommit": {
             "date": "2023-06-22T10:18:26+03:00",
@@ -10692,7 +10692,7 @@
         ]
     },
     {
-        "id": "gummy-1",
+        "id": "gummy",
         "name": "gummy",
         "addedCommit": {
             "date": "2023-06-27T11:29:22-07:00",
@@ -10731,7 +10731,7 @@
         ]
     },
     {
-        "id": "feather-1",
+        "id": "feather",
         "name": "Feather",
         "addedCommit": {
             "date": "2023-07-07T20:28:46+05:30",
@@ -10770,7 +10770,7 @@
         ]
     },
     {
-        "id": "comfort-dark-1",
+        "id": "comfort-dark",
         "name": "Comfort Dark",
         "addedCommit": {
             "date": "2023-07-11T15:08:29+08:00",
@@ -10807,7 +10807,7 @@
         ]
     },
     {
-        "id": "minimal-resources-1",
+        "id": "minimal-resources",
         "name": "Minimal-Resources",
         "addedCommit": {
             "date": "2023-07-13T06:14:55-04:00",
@@ -10844,7 +10844,7 @@
         ]
     },
     {
-        "id": "simple-1",
+        "id": "simple",
         "name": "Simple",
         "addedCommit": {
             "date": "2023-07-21T03:52:33-03:00",
@@ -10883,7 +10883,7 @@
         ]
     },
     {
-        "id": "comfort-1",
+        "id": "comfort",
         "name": "Comfort",
         "addedCommit": {
             "date": "2023-08-02T19:11:44+08:00",
@@ -10920,7 +10920,7 @@
         ]
     },
     {
-        "id": "notswift-1",
+        "id": "notswift",
         "name": "NotSwift",
         "addedCommit": {
             "date": "2023-08-02T23:14:56+12:00",
@@ -10959,7 +10959,7 @@
         ]
     },
     {
-        "id": "neo-1",
+        "id": "neo",
         "name": "Neo",
         "addedCommit": {
             "date": "2023-08-11T18:44:27+01:00",
@@ -10998,7 +10998,7 @@
         ]
     },
     {
-        "id": "vanilla-amoled-1",
+        "id": "vanilla-amoled",
         "name": "Vanilla AMOLED",
         "addedCommit": {
             "date": "2023-08-15T10:16:50+02:00",
@@ -11035,7 +11035,7 @@
         ]
     },
     {
-        "id": "qlean-1",
+        "id": "qlean",
         "name": "Qlean",
         "addedCommit": {
             "date": "2023-08-15T16:38:43+08:00",
@@ -11074,7 +11074,7 @@
         ]
     },
     {
-        "id": "aura-dark-1",
+        "id": "aura-dark",
         "name": "Aura Dark",
         "addedCommit": {
             "date": "2023-08-15T15:50:13+01:00",
@@ -11111,7 +11111,7 @@
         ]
     },
     {
-        "id": "venom-1",
+        "id": "venom",
         "name": "Venom",
         "addedCommit": {
             "date": "2023-08-31T20:17:58+09:00",
@@ -11148,7 +11148,7 @@
         ]
     },
     {
-        "id": "serika-1",
+        "id": "serika",
         "name": "Serika",
         "addedCommit": {
             "date": "2023-08-31T21:20:43+10:00",
@@ -11187,7 +11187,7 @@
         ]
     },
     {
-        "id": "autotape-1",
+        "id": "autotape",
         "name": "Autotape",
         "addedCommit": {
             "date": "2023-09-25T08:43:08+02:00",
@@ -11226,7 +11226,7 @@
         ]
     },
     {
-        "id": "latex-1",
+        "id": "latex",
         "name": "LaTeX",
         "addedCommit": {
             "date": "2023-10-02T05:56:56-06:00",
@@ -11265,7 +11265,7 @@
         ]
     },
     {
-        "id": "halcyon-1",
+        "id": "halcyon",
         "name": "halcyon",
         "addedCommit": {
             "date": "2023-10-02T13:58:28+02:00",
@@ -11302,7 +11302,7 @@
         ]
     },
     {
-        "id": "monochroyou-1",
+        "id": "monochroyou",
         "name": "monochroYOU",
         "addedCommit": {
             "date": "2023-10-06T13:52:04-03:00",
@@ -11341,7 +11341,7 @@
         ]
     },
     {
-        "id": "flexoki-1",
+        "id": "flexoki",
         "name": "Flexoki",
         "addedCommit": {
             "date": "2023-10-09T05:07:20-07:00",
@@ -11380,7 +11380,7 @@
         ]
     },
     {
-        "id": "green-nightmare-1",
+        "id": "green-nightmare",
         "name": "Green Nightmare",
         "addedCommit": {
             "date": "2023-10-20T07:21:35-04:00",
@@ -11417,7 +11417,7 @@
         ]
     },
     {
-        "id": "transient-1",
+        "id": "transient",
         "name": "Transient",
         "addedCommit": {
             "date": "2023-10-20T15:26:07+04:00",
@@ -11454,7 +11454,7 @@
         ]
     },
     {
-        "id": "kakano-1",
+        "id": "kakano",
         "name": "Kakano",
         "addedCommit": {
             "date": "2023-11-02T08:46:42+13:00",
@@ -11493,7 +11493,7 @@
         ]
     },
     {
-        "id": "evilred-1",
+        "id": "evilred",
         "name": "EvilRed",
         "addedCommit": {
             "date": "2023-11-06T18:21:22+05:30",
@@ -11530,7 +11530,7 @@
         ]
     },
     {
-        "id": "prussian-blue-1",
+        "id": "prussian-blue",
         "name": "Prussian Blue",
         "addedCommit": {
             "date": "2023-11-15T19:48:37+08:00",
@@ -11567,7 +11567,7 @@
         ]
     },
     {
-        "id": "zario-1",
+        "id": "zario",
         "name": "Zario",
         "addedCommit": {
             "date": "2023-11-22T10:11:53-05:00",
@@ -11606,7 +11606,7 @@
         ]
     },
     {
-        "id": "perso-1",
+        "id": "perso",
         "name": "Perso",
         "addedCommit": {
             "date": "2023-11-22T16:56:39+01:00",
@@ -11643,7 +11643,7 @@
         ]
     },
     {
-        "id": "heboric-1",
+        "id": "heboric",
         "name": "Heboric",
         "addedCommit": {
             "date": "2023-11-30T12:47:14+00:00",
@@ -11682,7 +11682,7 @@
         ]
     },
     {
-        "id": "vicious-1",
+        "id": "vicious",
         "name": "Vicious",
         "addedCommit": {
             "date": "2023-11-30T15:53:59+03:00",
@@ -11721,7 +11721,7 @@
         ]
     },
     {
-        "id": "spring-1",
+        "id": "spring",
         "name": "Spring",
         "addedCommit": {
             "date": "2023-11-30T15:51:42-03:00",
@@ -11760,7 +11760,7 @@
         ]
     },
     {
-        "id": "celestial-night-1",
+        "id": "celestial-night",
         "name": "Celestial Night",
         "addedCommit": {
             "date": "2023-12-11T14:05:54-06:00",
@@ -11797,7 +11797,7 @@
         ]
     },
     {
-        "id": "rose-pine-1",
+        "id": "rose-pine",
         "name": "Rosé Pine",
         "addedCommit": {
             "date": "2023-12-11T23:56:55+01:00",
@@ -11834,7 +11834,7 @@
         ]
     },
     {
-        "id": "carbon-1",
+        "id": "carbon",
         "name": "Carbon",
         "addedCommit": {
             "date": "2024-01-02T12:42:48+00:00",
@@ -11873,7 +11873,7 @@
         ]
     },
     {
-        "id": "phoenix-1",
+        "id": "phoenix",
         "name": "Phoenix",
         "addedCommit": {
             "date": "2024-01-02T07:49:46-05:00",
@@ -11912,7 +11912,7 @@
         ]
     },
     {
-        "id": "garden-gnome-adwaita-gtk-1",
+        "id": "garden-gnome-adwaita-gtk",
         "name": "Garden Gnome (Adwaita, GTK)",
         "addedCommit": {
             "date": "2024-01-02T06:54:31-06:00",
