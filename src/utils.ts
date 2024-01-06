@@ -157,12 +157,21 @@ export function iterateDataMonthly<T>(data: AbstractDataInterface[], fn: (d: Dat
 	return retData;
 }
 
+export function advanceDateToNextSunday(date: Date): void {
+	date.setDate(date.getDate() + ((7 - date.getDay()) % 7));
+}
+
+export function advanceDateByOneDay(date: Date): void {
+	date.setDate(date.getDate() + 1);
+}
+
 export function iterateWeekly<T>(startDate: Date, endDate: Date, fn: (d: Date, date: string) => T): T[] {
 	const retData: T[] = [];
 
 	// advance the end date by one day, otherwise the last week will be missing sometimes
-	endDate.setDate(endDate.getDate() + ((7 - endDate.getDay()) % 7) + 1);
-	startDate.setDate(startDate.getDate() + ((7 - startDate.getDay()) % 7));
+	advanceDateToNextSunday(endDate);
+	advanceDateByOneDay(endDate);
+	advanceDateToNextSunday(startDate);
 
 	for (let d = startDate; d <= endDate; d.setDate(d.getDate() + 7)) {
 		const date = dateToString(d);

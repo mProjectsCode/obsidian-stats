@@ -1,6 +1,6 @@
 import { Commit, EntryChange } from '../types.ts';
 import slug from 'slug';
-import {uniqueConcat} from '../utils.ts';
+import { uniqueConcat } from '../utils.ts';
 
 export interface ThemeListEntry {
 	name: string;

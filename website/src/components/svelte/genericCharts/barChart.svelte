@@ -3,7 +3,7 @@
 	import { onDestroy, onMount } from 'svelte';
 	import { ThemeObserver } from '../svelteUtils.ts';
 	import { ALL_OS } from '../../../../../src/release/release.ts';
-	import type {ChartDataset} from 'chart.js/dist/types';
+	import type { ChartDataset } from 'chart.js/dist/types';
 
 	export let dataPoints: number[];
 	export let dataPoints2: number[] | undefined;
@@ -47,15 +47,17 @@
 					data: dataPoints,
 					backgroundColor: chartStyle.accent,
 				},
-				(dataPoints2 !== undefined ? {
-					label: seriesName2,
-					data: dataPoints2,
-					backgroundColor: chartStyle.accent,
-				} : undefined),
+				dataPoints2 !== undefined
+					? {
+							label: seriesName2,
+							data: dataPoints2,
+							backgroundColor: chartStyle.accent,
+						}
+					: undefined,
 			].filter(x => x !== undefined);
 
 			if (datasets.length > 1) {
-				for (let i = 0; i < datasets.length; i++){
+				for (let i = 0; i < datasets.length; i++) {
 					datasets[i].backgroundColor = colors[i % colors.length];
 				}
 			}

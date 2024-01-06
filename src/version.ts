@@ -45,7 +45,9 @@ export class Version {
 
 	public static alphabetic(version: string): string {
 		const v = Version.fromString(version);
-		return `${v.major.toString().padStart(2, '0')}.${v.minor.toString().padStart(2, '0')}.${v.patch.toString().padStart(2, '0')}${v.prerelease === undefined ? '' : `-${v.prerelease}`}`;
+		return `${v.major.toString().padStart(2, '0')}.${v.minor.toString().padStart(2, '0')}.${v.patch.toString().padStart(2, '0')}${
+			v.prerelease === undefined ? '' : `-${v.prerelease}`
+		}`;
 	}
 
 	public static lessThan(a: Version, b: Version): boolean {
