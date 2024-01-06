@@ -6,6 +6,7 @@
 		"fetch-plugin-data": "bun run src/plugin/index.ts",
 		"fetch-theme-data": "bun run src/theme/index.ts",
 		"fetch-release-data": "bun run src/release/index.ts",
+		"fetch-data": "bun run src/fetch-data.ts",
 		"format": "prettier --write ."
 	},
 	"devDependencies": {
