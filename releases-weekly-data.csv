@@ -326,7 +326,7 @@ date,version,asset,downloads
 2024-01-08,01.01.15,obsidian-1.1.15-arm64.tar.gz,1
 2024-01-08,01.01.15,obsidian-1.1.15.asar.gz,1
 2024-01-08,01.01.15,obsidian-1.1.15.tar.gz,1
-2024-01-08,01.01.15,obsidian_1.1.15_amd64.deb,58
+2024-01-08,01.01.15,obsidian_1.1.15_amd64.deb,59
 2024-01-08,01.01.15,obsidian_1.1.15_amd64.snap,1
 2024-01-08,01.01.16,Obsidian-1.1.16-arm64.AppImage,4
 2024-01-08,01.01.16,Obsidian-1.1.16-universal.dmg,7
@@ -390,7 +390,7 @@ date,version,asset,downloads
 2024-01-08,01.03.07,Obsidian.1.3.7-32.exe,2
 2024-01-08,01.03.07,Obsidian.1.3.7-allusers.exe,1
 2024-01-08,01.03.07,Obsidian.1.3.7-arm64.exe,7
-2024-01-08,01.03.07,Obsidian.1.3.7.exe,28
+2024-01-08,01.03.07,Obsidian.1.3.7.exe,29
 2024-01-08,01.03.07,obsidian-1.3.7.asar.gz,4
 2024-01-08,01.03.07,obsidian-1.3.7.tar.gz,2
 2024-01-08,01.03.07,obsidian_1.3.7_amd64.deb,12
@@ -442,7 +442,7 @@ date,version,asset,downloads
 2024-01-08,01.04.14,obsidian_1.4.14_amd64.deb,5
 2024-01-08,01.04.16,Obsidian-1.4.14-universal.dmg,26
 2024-01-08,01.04.16,Obsidian-1.4.16-arm64.AppImage,18
-2024-01-08,01.04.16,Obsidian-1.4.16-universal.dmg,327
+2024-01-08,01.04.16,Obsidian-1.4.16-universal.dmg,328
 2024-01-08,01.04.16,Obsidian-1.4.16.AppImage,48
 2024-01-08,01.04.16,Obsidian.1.4.16-32.exe,23
 2024-01-08,01.04.16,Obsidian.1.4.16-allusers.exe,75
@@ -456,12 +456,12 @@ date,version,asset,downloads
 2024-01-08,01.05.03,Obsidian-1.5.3-arm64.AppImage,628
 2024-01-08,01.05.03,Obsidian-1.5.3-universal.dmg,41626
 2024-01-08,01.05.03,Obsidian-1.5.3.AppImage,8871
-2024-01-08,01.05.03,Obsidian.1.5.3-32.exe,798
+2024-01-08,01.05.03,Obsidian.1.5.3-32.exe,799
 2024-01-08,01.05.03,Obsidian.1.5.3-allusers.exe,265
 2024-01-08,01.05.03,Obsidian.1.5.3-arm64.exe,698
 2024-01-08,01.05.03,Obsidian.1.5.3.exe,81121
 2024-01-08,01.05.03,obsidian-1.5.3-arm64.tar.gz,158
 2024-01-08,01.05.03,obsidian-1.5.3.asar.gz,67626
-2024-01-08,01.05.03,obsidian-1.5.3.tar.gz,820
+2024-01-08,01.05.03,obsidian-1.5.3.tar.gz,822
 2024-01-08,01.05.03,obsidian_1.5.3_amd64.deb,7842
 2024-01-08,01.05.03,obsidian_1.5.3_amd64.snap,1317
