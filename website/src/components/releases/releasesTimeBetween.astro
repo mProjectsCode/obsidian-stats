@@ -4,7 +4,7 @@ import { escape, fromCSV, op } from 'arquero';
 import { getMajorVersions } from '../../../../src/release/data';
 
 import BarChart from '../svelte/genericCharts/barChart.svelte';
-import {Version} from '../../../../src/version';
+import { Version } from '../../../../src/version';
 
 const ReleaseData = fromCSV(readFileSync('../releases-full-data.csv', 'utf8'));
 const ReleaseTimeData = ReleaseData.select('date', 'version').dedupe();
@@ -28,21 +28,21 @@ const activeDaysForMinorVersions: number[] = ReleaseTimeData.filter(escape(d => 
 	.rollup({ timeBetween: d => op.array_agg(d.timeBetween) })
 	.objects()[0].timeBetween;
 
-const releaseCycleLength: number[] = ReleaseTimeData
-	.derive({ minorVersion: escape(d => d.version.split('.').slice(0, 2).join('.')) })
+const releaseCycleLength: number[] = ReleaseTimeData.derive({ minorVersion: escape(d => d.version.split('.').slice(0, 2).join('.')) })
 	.groupby('minorVersion')
-	.rollup({ timeBetween: d =>  op.timestamp(op.max(d.date)) - op.timestamp(op.min(d.date)) })
+	.rollup({ timeBetween: d => op.timestamp(op.max(d.date)) - op.timestamp(op.min(d.date)) })
 	.derive({ timeBetween: d => op.round(d.timeBetween / 24 / 60 / 60 / 1000) })
 	// .rollup({ timeBetween: d =>  op.max('date') })
-	.objects().map(x => x.timeBetween);
-
+	.objects()
+	.map(x => x.timeBetween);
 ---
 
 <BarChart dataPoints={activeDaysForAllVersions} labels={allVersionsPretty} seriesName="Days a patch release was the latest release" client:only="svelte" />
 <BarChart
-        labels={majorVersionsPretty}
-        dataPoints={activeDaysForMinorVersions}
-		seriesName="Days a minor release was the latest release"
-        dataPoints2={releaseCycleLength}
-        seriesName2="Days until last patch"
-		client:only="svelte" />
+	labels={majorVersionsPretty}
+	dataPoints={activeDaysForMinorVersions}
+	seriesName="Days a minor release was the latest release"
+	dataPoints2={releaseCycleLength}
+	seriesName2="Days until last patch"
+	client:only="svelte"
+/>

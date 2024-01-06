@@ -1,6 +1,6 @@
 import { Commit, DownloadHistory, EntryChange, VersionHistory } from '../types.ts';
-import {dateToString, uniqueConcat} from '../utils.ts';
-import {Version} from '../version.ts';
+import { dateToString, uniqueConcat } from '../utils.ts';
+import { Version } from '../version.ts';
 
 export interface PluginListEntry {
 	id: string;
@@ -168,6 +168,6 @@ export class PluginData {
 	}
 
 	sortVersionHistory() {
-		this.versionHistory.sort((a, b) => Version.lessThan(Version.fromString(a.version), Version.fromString(b.version)) ? -1 : 1);
+		this.versionHistory.sort((a, b) => (Version.lessThan(Version.fromString(a.version), Version.fromString(b.version)) ? -1 : 1));
 	}
 }

@@ -1,0 +1,115 @@
+---
+import { advanceDateToNextSunday, dateToString } from '../../../../../src/utils';
+import { PluginDataInterface } from '../../../../../src/plugin/plugin';
+import PluginDataFile from '../../../../../plugin-data.json' assert { type: 'json' };
+import { getPluginDownloadsWeekly } from '../../../../../src/plugin/data';
+import PluginLink from '../../pluginLink.astro';
+import MultiLineBarChart from '../../svelte/genericCharts/multiLineBarChart.svelte';
+
+const { year, releaseYear } = Astro.props as {
+	year: number | undefined;
+	releaseYear: number | undefined;
+};
+
+function filterDataByReleaseYear(data: PluginDataInterface[]): PluginDataInterface[] {
+	return data.filter(data => new Date(data.addedCommit.date).getFullYear() === releaseYear);
+}
+
+const dataFile: PluginDataInterface[] = releaseYear ? filterDataByReleaseYear(PluginDataFile) : PluginDataFile;
+
+let startDateString = '';
+let endDateString = '';
+
+let startDate = undefined;
+let endDate = undefined;
+
+if (year !== undefined) {
+	startDate = new Date(`01-01-${year}`);
+	endDate = new Date(`01-01-${year + 1}`);
+
+	advanceDateToNextSunday(startDate);
+	advanceDateToNextSunday(endDate);
+
+	startDateString = dateToString(startDate);
+	endDateString = dateToString(endDate);
+}
+
+let downloadData = dataFile.map(x => {
+	let downloads = getPluginDownloadsWeekly([x]);
+	let totalDownloads = 0;
+
+	if (year !== undefined && startDate !== undefined && endDate !== undefined) {
+		downloads = downloads.filter(x => {
+			const date = new Date(x.date);
+			return date >= startDate && date < endDate;
+		});
+		const firstData = downloads.find(x => x.downloads !== undefined);
+		const lastData = downloads.findLast(x => x.downloads !== undefined);
+
+		totalDownloads = (lastData?.downloads ?? 0) - (firstData?.downloads ?? 0);
+	} else {
+		const lastData = downloads.findLast(x => x.downloads !== undefined);
+
+		totalDownloads = lastData?.downloads ?? 0;
+	}
+
+	return {
+		data: x,
+		downloads: downloads,
+		totalDownloads: totalDownloads,
+	};
+});
+
+downloadData.sort((a, b) => {
+	return b.totalDownloads - a.totalDownloads;
+});
+
+let downloadDataTop = downloadData.slice(0, 10);
+
+let chartLabelSet = new Set<string>();
+
+for (const data of downloadDataTop) {
+	for (const download of data.downloads) {
+		chartLabelSet.add(download.date);
+	}
+}
+
+let chartLabels = [...chartLabelSet];
+chartLabels.sort();
+
+let chartData = downloadDataTop.map(x => {
+	let data = new Array(chartLabels.length).fill(undefined);
+
+	for (const download of x.downloads) {
+		const index = chartLabels.indexOf(download.date);
+		data[index] = download.downloads;
+	}
+
+	return data;
+});
+---
+
+<table>
+	<thead>
+		<tr>
+			<th>Plugin Id</th>
+			<th>Plugin Name</th>
+			<th>Downloads</th>
+		</tr>
+	</thead>
+	<tbody>
+		{
+			downloadDataTop.map(x => (
+				<tr>
+					<td>
+						<PluginLink id={x.data.id} />
+					</td>
+					<td>{x.data.currentEntry.name}</td>
+					<td>{x.totalDownloads}</td>
+				</tr>
+			))
+		}
+	</tbody>
+</table>
+
+<MultiLineBarChart dataPoints={chartData} labels={chartLabels} setLabels={downloadDataTop.map(x => x.data.id)} type="line" client:only="svelte" />

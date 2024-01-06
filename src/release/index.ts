@@ -4,7 +4,7 @@ import { dateToString, distributeValueEqually, getNextMondays } from '../utils.t
 import { escape, from, fromCSV, op, table } from 'arquero';
 import { Struct } from 'arquero/dist/types/op/op-api';
 import ColumnTable from 'arquero/dist/types/table/column-table';
-import {Version} from '../version.ts';
+import { Version } from '../version.ts';
 
 async function fetchReleaseStats(): Promise<ColumnTable> {
 	const releases: GithubReleaseEntry[] = [];
