@@ -4,7 +4,6 @@
 	import GithubLink from '../helpers/githubLink.svelte';
 	import Commit from '../helpers/commit.svelte';
 	import { onMount } from 'svelte';
-	import { utcStringToString } from '../../../../../src/utils.ts';
 
 	export let data: PluginDataInterface[] = [];
 
@@ -12,8 +11,8 @@
 	const nameSort = (x: PluginDataInterface) => x.currentEntry.name.toLowerCase();
 	const authorSort = (x: PluginDataInterface) => x.currentEntry.author.toLowerCase();
 	const repoSort = (x: PluginDataInterface) => x.currentEntry.repo;
-	const addedSort = (x: PluginDataInterface) => utcStringToString(x.addedCommit.date);
-	const removedSort = (x: PluginDataInterface) => (x.removedCommit?.date ? utcStringToString(x.removedCommit.date) : '');
+	const addedSort = (x: PluginDataInterface) => x.addedCommit.date;
+	const removedSort = (x: PluginDataInterface) => (x.removedCommit?.date ? x.removedCommit.date : '');
 
 	let sortByAccessor: (x: PluginDataInterface) => unknown = idSort;
 

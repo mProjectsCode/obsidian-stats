@@ -1,10 +1,11 @@
 import { GithubReleaseEntry } from './release.ts';
 import { RELEASE_FULL_DATA_PATH, RELEASE_STATS_URL, RELEASE_WEEKLY_DATA_PATH } from '../constants.ts';
-import { dateToString, distributeValueEqually, getNextMondays } from '../utils.ts';
+import { distributeValueEqually, getNextMondays } from '../utils.ts';
 import { escape, from, fromCSV, op, table } from 'arquero';
 import { Struct } from 'arquero/dist/types/op/op-api';
 import ColumnTable from 'arquero/dist/types/table/column-table';
 import { Version } from '../version.ts';
+import { CDate } from '../date.ts';
 
 async function fetchReleaseStats(): Promise<ColumnTable> {
 	const releases: GithubReleaseEntry[] = [];
@@ -60,7 +61,7 @@ function computeWeeklyDownloads(previousData: ColumnTable, currentData: ColumnTa
 
 	const weeklyDates = getNextMondays(previousDate, endDate);
 	const weeklyWeights = weeklyFactors(weeklyDates, previousDate, endDate);
-	const stringDates = weeklyDates.map(x => dateToString(x));
+	const stringDates = weeklyDates.map(x => CDate.fromDate(x).toString());
 
 	return (
 		incrementalData

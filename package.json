@@ -1,5 +1,5 @@
 {
-	"name": ".",
+	"name": "obsidian-stats",
 	"module": "src/index.ts",
 	"type": "module",
 	"scripts": {
@@ -10,7 +10,7 @@
 		"format": "prettier --write ."
 	},
 	"devDependencies": {
-		"bun-types": "latest"
+		"@types/bun": "latest"
 	},
 	"peerDependencies": {
 		"typescript": "^5.0.0"

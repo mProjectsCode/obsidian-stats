@@ -36,7 +36,7 @@
 	onMount(() => {
 		themeObserver = new ThemeObserver();
 
-		console.log('dataPoints', dataPoints);
+		// console.log('dataPoints', dataPoints);
 
 		const dataSets = dataPoints.map((points, i) => ({
 			label: setLabels[i],
@@ -45,7 +45,7 @@
 			borderColor: colors[i % colors.length],
 		}));
 
-		console.log('dataSets', dataSets);
+		// console.log('dataSets', dataSets);
 
 		themeObserver.addChart(chartStyle => {
 			Chart.defaults.color = chartStyle.text;

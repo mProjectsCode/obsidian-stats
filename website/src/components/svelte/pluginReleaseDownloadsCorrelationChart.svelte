@@ -2,9 +2,9 @@
 	import Chart from 'chart.js/auto';
 	import { onDestroy, onMount } from 'svelte';
 	import { type DownloadReleaseCorrelationDataPoint } from '../../../../src/types.ts';
-	import { dateToString } from '../../../../src/utils.ts';
 
 	import { ThemeObserver } from './svelteUtils.ts';
+	import { CDate } from '../../../../src/date.ts';
 
 	export let dataPoints: DownloadReleaseCorrelationDataPoint[];
 
@@ -91,10 +91,7 @@
 								autoSkip: false,
 								includeBounds: false,
 								callback: value => {
-									const date = new Date(value);
-									const dateString = dateToString(date);
-
-									return dateString.substring(0, dateString.length - 3);
+									return CDate.fromDate(new Date(value)).toMonthString();
 								},
 							},
 						},
@@ -104,7 +101,7 @@
 						tooltip: {
 							callbacks: {
 								label: item => {
-									return `${item.raw.label} (${item.raw.x}, ${dateToString(new Date(item.raw.y))})`;
+									return `${item.raw.label} (${item.raw.x}, ${CDate.fromDate(new Date(item.raw.y))})`;
 								},
 							},
 						},

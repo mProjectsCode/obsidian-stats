@@ -1,5 +1,5 @@
 import { Commit, DownloadHistory, EntryChange, VersionHistory } from '../types.ts';
-import { dateToString, uniqueConcat, utcStringToString } from '../utils.ts';
+import { uniqueConcat } from '../utils.ts';
 import { Version } from '../version.ts';
 
 export interface PluginListEntry {
@@ -38,16 +38,14 @@ export interface PluginDataInterface {
 export class PluginDownloadStats {
 	entries: Record<string, PluginDownloadStatsEntry>;
 	commit: Commit;
-	dateString: string;
 
 	constructor(entries: Record<string, PluginDownloadStatsEntry>, commit: Commit) {
 		this.entries = entries;
 		this.commit = commit;
-		this.dateString = utcStringToString(commit.date);
 	}
 
 	getDateString(): string {
-		return this.dateString;
+		return this.commit.date;
 	}
 }
 

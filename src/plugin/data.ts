@@ -1,7 +1,8 @@
 import { type PluginDataInterface } from './plugin.ts';
 import { type DownloadDataPoint, type DownloadReleaseCorrelationDataPoint, type PerMonthDataPoint } from '../types.ts';
-import { dateToString, filterRemoved, getAddedDataForMonth, getRemovedDataForMonth, iterateDataMonthly, iterateWeekly } from '../utils.ts';
+import { filterRemoved, getAddedDataForMonth, getRemovedDataForMonth, iterateDataMonthly } from '../utils.ts';
 import { reduce } from 'itertools-ts';
+import { CDate } from '../date.ts';
 
 export function getPluginDownloadsWeekly(plugins: PluginDataInterface[]): DownloadDataPoint[] {
 	const data: DownloadDataPoint[] = [];
@@ -13,23 +14,16 @@ export function getPluginDownloadsWeekly(plugins: PluginDataInterface[]): Downlo
 		const startDateString = reduce.toMin(downloadHistoryData, d => d[0])![0];
 		const endDateString = reduce.toMax(downloadHistoryData, d => d[0])![0];
 
-		const startDate = new Date(startDateString);
-		const endDate = new Date(endDateString);
-
-		let lastDownloadCount: number | undefined = 0;
+		const startDate = CDate.fromString(startDateString);
+		const endDate = CDate.fromString(endDateString);
 
 		data.push(
-			...(iterateWeekly<DownloadDataPoint | undefined>(startDate, endDate, (d, date) => {
-				const downloadCount: number | undefined = downloadHistoryData.find(d => d[0] === date)?.[1];
-				// calculate growth
-				let growth: number | undefined = undefined;
-				if (downloadCount !== undefined && lastDownloadCount !== undefined) {
-					growth = downloadCount - lastDownloadCount;
-				}
-				// update last download count
-				lastDownloadCount = downloadCount;
+			...(CDate.iterateWeekly<DownloadDataPoint | undefined>(startDate, endDate, date => {
+				const dateString = date.toString();
 
-				const existingData = data.find(x => x.date === date);
+				const downloadCount: number | undefined = downloadHistoryData.find(d => d[0] === dateString)?.[1];
+
+				const existingData = data.find(x => x.date === dateString);
 
 				if (existingData !== undefined) {
 					// update existing data
@@ -41,27 +35,30 @@ export function getPluginDownloadsWeekly(plugins: PluginDataInterface[]): Downlo
 						}
 					}
 
-					if (growth !== undefined) {
-						if (existingData.growth === undefined) {
-							existingData.growth = growth;
-						} else {
-							existingData.growth += growth;
-						}
-					}
-
 					return undefined;
 				} else {
 					return {
-						date: date,
+						date: dateString,
 						downloads: downloadCount,
-						growth: growth,
+						growth: 0,
 					};
 				}
 			}).filter(x => x !== undefined) as DownloadDataPoint[]),
 		);
 	}
 
-	return data.sort((a, b) => a.date.localeCompare(b.date));
+	data.sort((a, b) => a.date.localeCompare(b.date));
+
+	for (let i = 1; i < data.length; i++) {
+		const currentDownloads = data[i].downloads;
+		const previousDownloads = data[i - 1].downloads;
+
+		if (currentDownloads === undefined || previousDownloads === undefined) continue;
+
+		data[i].growth = currentDownloads - previousDownloads;
+	}
+
+	return data;
 }
 
 export function getDownloadReleaseCorrelationDataPoints(plugins: PluginDataInterface[]): DownloadReleaseCorrelationDataPoint[] {
@@ -70,17 +67,14 @@ export function getDownloadReleaseCorrelationDataPoints(plugins: PluginDataInter
 	for (const plugin of plugins) {
 		const downloadKeys = Object.keys(plugin.downloadHistory);
 
-		const downloads = plugin.downloadHistory[downloadKeys[downloadKeys.length - 1]];
-		const initialReleaseDate = new Date(plugin.addedCommit.date).valueOf();
-		const initialReleaseDateString = dateToString(new Date(plugin.addedCommit.date));
-		const releases = plugin.versionHistory.length;
+		const addedDate = CDate.fromString(plugin.addedCommit.date);
 
 		data.push({
 			id: plugin.id,
-			downloads: downloads,
-			releases: releases,
-			initialReleaseDate: initialReleaseDate,
-			initialReleaseDateString: initialReleaseDateString,
+			downloads: plugin.downloadHistory[downloadKeys[downloadKeys.length - 1]],
+			releases: plugin.versionHistory.length,
+			initialReleaseDate: addedDate.toUTC(),
+			initialReleaseDateString: addedDate.toString(),
 		});
 	}
 
@@ -93,7 +87,7 @@ export function getPluginRemovedList(plugins: PluginDataInterface[]): PluginData
 
 export function getPluginRemovedRecentList(plugins: PluginDataInterface[]): PluginDataInterface[] {
 	return filterRemoved(plugins)
-		.sort((a, b) => new Date(b.removedCommit!.date).valueOf() - new Date(a.removedCommit!.date).valueOf())
+		.sort((a, b) => b.removedCommit!.date.localeCompare(a.removedCommit!.date))
 		.slice(0, 15);
 }
 
@@ -106,7 +100,7 @@ export function getPluginPercentageRemovedByReleaseMonth(plugins: PluginDataInte
 			year: year,
 			month: month,
 			value: (retiredPlugins.length / releasedPlugins.length) * 100,
-		};
+		} satisfies PerMonthDataPoint;
 	});
 }
 

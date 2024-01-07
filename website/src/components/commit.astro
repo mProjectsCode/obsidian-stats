@@ -1,11 +1,8 @@
 ---
 import { type Commit } from '../../../src/types';
-import { dateToString } from '../../../src/utils';
 
 const { commit } = Astro.props as { commit: Commit };
 const url = 'https://github.com/obsidianmd/obsidian-releases/commit/' + commit.hash;
-const date = new Date(commit.date);
-const dateStr = dateToString(date);
 ---
 
-<a href={url} target="_blank">{dateStr}</a>
+<a href={url} target="_blank">{commit.date}</a>

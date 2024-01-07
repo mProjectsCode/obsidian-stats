@@ -4,15 +4,14 @@
 	import Commit from '../helpers/commit.svelte';
 	import { onMount } from 'svelte';
 	import type { ThemeDataInterface } from '../../../../../src/theme/data.ts';
-	import { utcStringToString } from '../../../../../src/utils.ts';
 
 	export let data: ThemeDataInterface[] = [];
 
 	const nameSort = (x: ThemeDataInterface) => x.name.toLowerCase();
 	const authorSort = (x: ThemeDataInterface) => x.currentEntry.author.toLowerCase();
 	const repoSort = (x: ThemeDataInterface) => x.currentEntry.repo;
-	const addedSort = (x: ThemeDataInterface) => utcStringToString(x.addedCommit.date);
-	const removedSort = (x: ThemeDataInterface) => (x.removedCommit?.date ? utcStringToString(x.removedCommit.date) : '');
+	const addedSort = (x: ThemeDataInterface) => x.addedCommit.date;
+	const removedSort = (x: ThemeDataInterface) => (x.removedCommit?.date ? x.removedCommit.date : '');
 
 	let sortByAccessor: (x: ThemeDataInterface) => unknown = nameSort;
 

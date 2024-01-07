@@ -2,7 +2,7 @@
 import { readFileSync } from 'fs';
 import { escape, fromCSV, op } from 'arquero';
 import { Version } from '../../../../src/version';
-import { utcStringToString } from '../../../../src/utils';
+import { prettyDateString } from '../../../../src/utils';
 
 const ReleaseData = fromCSV(readFileSync('../releases-full-data.csv', 'utf8'));
 const ReleaseTimeData = ReleaseData.select('date', 'version').dedupe();
@@ -28,7 +28,7 @@ const patchesPerMinorVersion = ReleaseTimeData.derive({ minorVersion: escape(d =
 				<tr>
 					<td>{Version.pretty(minorVersion)}</td>
 					<td>{Version.pretty(firstPatch)}</td>
-					<td>{utcStringToString(firstDate)}</td>
+					<td>{prettyDateString(firstDate)}</td>
 					<td>{count}</td>
 				</tr>
 			))

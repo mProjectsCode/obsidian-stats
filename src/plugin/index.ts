@@ -1,7 +1,7 @@
 import { $, Verboseness } from '../shellUtils.ts';
 import { PluginData, PluginDownloadStats, PluginList } from './plugin.ts';
 import CliProgress from 'cli-progress';
-import { dateToString, dateDiffInDays, gitLogToCommits } from '../utils.ts';
+import { gitLogToCommits } from '../utils.ts';
 import { Commit } from '../types.ts';
 
 import {
@@ -14,6 +14,7 @@ import {
 	PLUGIN_TEMPLATE_REPLACEMENT_STRING_JSON,
 	PLUGIN_TEMPLATE_OUTPUT_PATH,
 } from '../constants.ts';
+import { CDate } from '../date.ts';
 
 async function getPluginListChanges(): Promise<Commit[]> {
 	console.log(`Looking for changes to "${OBSIDIAN_RELEASES_FULL_PATH}/${PLUGIN_LIST_PATH}"`);
@@ -108,32 +109,33 @@ function updateWeeklyDownloadStats(pluginData: PluginData[], pluginDownloadStats
 		downloadStatsMap.set(pluginDownload.getDateString(), pluginDownload);
 	}
 
-	const startDate = new Date('2020-01-01');
-	const endDate = new Date();
+	const startDate = CDate.fromString('2020-01-01');
+	const endDate = CDate.fromNow();
 
-	startDate.setDate(startDate.getDate() + (7 - startDate.getDay()));
+	startDate.advanceToNextSunday();
+
+	const dateDiff = CDate.dateDiffInDays(startDate, endDate);
 
 	const progress = new CliProgress.SingleBar({}, CliProgress.Presets.rect);
-	progress.start(Math.ceil(dateDiffInDays(startDate, endDate) / 7), 0);
+	progress.start(Math.ceil(dateDiff / 7) + 1, 0);
 
-	for (let d = startDate; d <= endDate; d.setDate(d.getDate() + 7)) {
-		const date = dateToString(d);
+	CDate.iterateWeekly(startDate, endDate, date => {
 		progress.increment();
+		const dateString = date.toString();
 
 		for (const pluginDataEntry of pluginData) {
 			for (let j = 0; j < 6; j++) {
-				const currentDate = new Date(d);
-				currentDate.setDate(currentDate.getDate() + j);
-				const currentDateString = dateToString(currentDate);
+				const currentDate = CDate.clone(date);
+				currentDate.advanceByDays(j);
 
-				const pluginDownload = downloadStatsMap.get(currentDateString);
+				const pluginDownload = downloadStatsMap.get(currentDate.toString());
 
-				if (pluginDownload !== undefined && pluginDataEntry.updateDownloadHistory(pluginDownload, date)) {
+				if (pluginDownload !== undefined && pluginDataEntry.updateDownloadHistory(pluginDownload, dateString)) {
 					break;
 				}
 			}
 		}
-	}
+	});
 
 	progress.stop();
 }

@@ -1,40 +1,22 @@
 import { type Commit, PerMonthDataPoint } from './types.ts';
 import { reduce } from 'itertools-ts';
+import { CDate } from './date.ts';
 
-export class UserError extends Error {}
-
-export function dateToString(date: Date): string {
-	return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
-}
-
-export function utcStringToString(date: string): string {
-	return dateToString(new Date(date));
-}
-
-export function stringToBase64(str: string): string {
-	return Buffer.from(str).toString('base64');
-}
-
-export function base64ToString(str: string): string {
-	return Buffer.from(str, 'base64').toString();
-}
-
-export function dateDiffInDays(a: Date, b: Date): number {
-	const _MS_PER_DAY = 1000 * 60 * 60 * 24;
-	// Discard the time and time-zone information.
-	const utc1 = Date.UTC(a.getFullYear(), a.getMonth(), a.getDate());
-	const utc2 = Date.UTC(b.getFullYear(), b.getMonth(), b.getDate());
-
-	return Math.floor((utc2 - utc1) / _MS_PER_DAY);
+export function prettyDateString(date: string): string {
+	return CDate.fromDate(new Date(date)).toString();
 }
 
 export function gitLogToCommits(log: string): Commit[] {
 	return log
 		.split('\n')
 		.filter(x => x.trim() !== '')
-		.map(x => x.replaceAll('"', ''))
-		.map(x => x.split(' '))
-		.map(x => ({ date: x[0], hash: x[1] }));
+		.map(x => {
+			let y = x.replaceAll('"', '').split(' ');
+			return {
+				date: y[0].split('T')[0],
+				hash: y[1],
+			} satisfies Commit;
+		});
 }
 
 /**
@@ -147,42 +129,17 @@ export function iterateDataMonthly<T>(data: AbstractDataInterface[], fn: (d: Dat
 	const startDate = findEarliestData(data);
 	const endDate = findLatestData(data);
 
-	for (let d = startDate; d <= endDate; d.setMonth(d.getMonth() + 1)) {
-		const year = d.getFullYear().toString();
-		const month = (d.getMonth() + 1).toString().padStart(2, '0');
+	CDate.iterateMonthly(startDate, endDate, date => {
+		const year = date.year.toString();
+		const month = date.month.toString().padStart(2, '0');
 
-		retData.push(fn(d, year, month));
-	}
-
-	return retData;
-}
-
-export function advanceDateToNextSunday(date: Date): void {
-	date.setDate(date.getDate() + ((7 - date.getDay()) % 7));
-}
-
-export function advanceDateByOneDay(date: Date): void {
-	date.setDate(date.getDate() + 1);
-}
-
-export function iterateWeekly<T>(startDate: Date, endDate: Date, fn: (d: Date, date: string) => T): T[] {
-	const retData: T[] = [];
-
-	// advance the end date by one day, otherwise the last week will be missing sometimes
-	advanceDateToNextSunday(endDate);
-	advanceDateByOneDay(endDate);
-	advanceDateToNextSunday(startDate);
-
-	for (let d = startDate; d <= endDate; d.setDate(d.getDate() + 7)) {
-		const date = dateToString(d);
-
-		retData.push(fn(d, date));
-	}
+		retData.push(fn(date.toDate(), year, month));
+	});
 
 	return retData;
 }
 
-export function findEarliestData(data: AbstractDataInterface[]): Date {
+export function findEarliestData(data: AbstractDataInterface[]): CDate {
 	const minAddedDate = reduce.toMin(data, d => d.addedCommit.date)?.addedCommit.date;
 	const minRemovedDate = reduce.toMin(
 		data.filter(x => x.removedCommit),
@@ -194,21 +151,21 @@ export function findEarliestData(data: AbstractDataInterface[]): Date {
 	}
 
 	if (minAddedDate === undefined) {
-		return new Date(minRemovedDate!);
+		return CDate.fromString(minRemovedDate!);
 	}
 
 	if (minRemovedDate === undefined) {
-		return new Date(minAddedDate);
+		return CDate.fromString(minAddedDate);
 	}
 
 	if (minAddedDate < minRemovedDate) {
-		return new Date(minAddedDate);
+		return CDate.fromString(minAddedDate);
 	} else {
-		return new Date(minRemovedDate);
+		return CDate.fromString(minRemovedDate);
 	}
 }
 
-export function findLatestData(data: AbstractDataInterface[]): Date {
+export function findLatestData(data: AbstractDataInterface[]): CDate {
 	const maxAddedDate = reduce.toMax(data, d => d.addedCommit.date)?.addedCommit.date;
 	const maxRemovedDate = reduce.toMax(
 		data.filter(x => isRemoved(x)),
@@ -220,32 +177,26 @@ export function findLatestData(data: AbstractDataInterface[]): Date {
 	}
 
 	if (maxAddedDate === undefined) {
-		return new Date(maxRemovedDate!);
+		return CDate.fromString(maxRemovedDate!);
 	}
 
 	if (maxRemovedDate === undefined) {
-		return new Date(maxAddedDate);
+		return CDate.fromString(maxAddedDate);
 	}
 
 	if (maxAddedDate > maxRemovedDate) {
-		return new Date(maxAddedDate);
+		return CDate.fromString(maxAddedDate);
 	} else {
-		return new Date(maxRemovedDate);
+		return CDate.fromString(maxRemovedDate);
 	}
 }
 
 export function getAddedDataForMonth<T extends AbstractDataInterface>(data: T[], year: string, month: string): T[] {
-	return data.filter(x => {
-		const addedDate = x.addedCommit.date.split('-');
-		return addedDate[0] === year && addedDate[1] === month;
-	});
+	return data.filter(x => x.addedCommit.date.startsWith(`${year}-${month}`));
 }
 
 export function getRemovedDataForMonth<T extends AbstractDataInterface>(data: T[], year: string, month: string): T[] {
-	return filterRemoved(data).filter(x => {
-		const removedDate = x.removedCommit!.date.split('-');
-		return removedDate[0] === year && removedDate[1] === month;
-	});
+	return filterRemoved(data).filter(x => x.removedCommit!.date.startsWith(`${year}-${month}`));
 }
 
 export function uniqueConcat<T>(a: T[], b: T[]): T[] {
