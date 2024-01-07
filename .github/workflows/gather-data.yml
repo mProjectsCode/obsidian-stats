@@ -31,5 +31,5 @@ jobs:
           git add theme-data.json
           git add website/src/content/docs/plugins/
           git add website/src/content/docs/themes/
-          git commit -m "Update data" || true
+          git commit -m "[auto] Update data" || true
           git push
