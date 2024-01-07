@@ -1,25 +1,46 @@
-import { buildPluginStats } from "./plugin";
-import { buildThemeStats } from "./theme";
-import { buildReleaseStats } from "./release";
+import { buildPluginStats } from './plugin';
+import { buildThemeStats } from './theme';
+import { buildReleaseStats } from './release';
+import { $ } from './shellUtils.ts';
 
 export async function buildStats() {
-    try {
-        await buildPluginStats();
-    } catch (e) {
-        console.error(e);
-    }
+	await $('git submodule update --remote');
 
-    try {
-        await buildThemeStats();
-    } catch (e) {
-        console.error(e);
-    }
+	console.log('');
+	console.log('=================');
+	console.log('   PLUGIN DATA   ');
+	console.log('=================');
+	console.log('');
 
-    try {
-        await buildReleaseStats();
-    } catch (e) {
-        console.error(e);
-    }
+	try {
+		await buildPluginStats();
+	} catch (e) {
+		console.error(e);
+	}
+
+	console.log('');
+	console.log('================');
+	console.log('   THEME DATA   ');
+	console.log('================');
+	console.log('');
+
+	try {
+		await buildThemeStats();
+	} catch (e) {
+		console.error(e);
+	}
+
+	console.log('');
+	console.log('==================');
+	console.log('   RELEASE DATA   ');
+	console.log('==================');
+	console.log('');
+
+	try {
+		await buildReleaseStats();
+	} catch (e) {
+		console.error(e);
+	}
 }
 
 await buildStats();

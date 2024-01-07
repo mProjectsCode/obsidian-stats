@@ -1,3 +1,3 @@
-import { buildPluginStats } from "./index.ts";
+import { buildPluginStats } from './index.ts';
 
 await buildPluginStats();

@@ -67,7 +67,7 @@ async function getPluginDownloadChanges(): Promise<Commit[]> {
 }
 
 function buildPluginData(pluginLists: PluginList[]): PluginData[] {
-	let pluginData: PluginData[] = [];
+	let pluginDataMap: Map<string, PluginData> = new Map();
 
 	console.log(`Building plugin data`);
 
@@ -76,7 +76,7 @@ function buildPluginData(pluginLists: PluginList[]): PluginData[] {
 
 	progress.increment();
 	for (const entry of pluginLists[0].entries) {
-		pluginData.push(new PluginData(entry.id, pluginLists[0].commit, entry));
+		pluginDataMap.set(entry.id, new PluginData(entry.id, pluginLists[0].commit, entry));
 	}
 
 	for (let i = 1; i < pluginLists.length; i++) {
@@ -84,24 +84,29 @@ function buildPluginData(pluginLists: PluginList[]): PluginData[] {
 
 		const pluginList = pluginLists[i];
 
-		for (const plugin of pluginData) {
+		for (const plugin of pluginDataMap.values()) {
 			plugin.findChanges(pluginList);
 		}
 
 		for (const entry of pluginList.entries) {
-			if (pluginData.find(x => x.id === entry.id) === undefined) {
-				pluginData.push(new PluginData(entry.id, pluginList.commit, entry));
+			if (!pluginDataMap.has(entry.id)) {
+				pluginDataMap.set(entry.id, new PluginData(entry.id, pluginList.commit, entry));
 			}
 		}
 	}
 
 	progress.stop();
 
-	return pluginData;
+	return [...pluginDataMap.values()];
 }
 
 function updateWeeklyDownloadStats(pluginData: PluginData[], pluginDownloadStats: PluginDownloadStats[]) {
 	console.log(`Updating weekly download stats`);
+
+	const downloadStatsMap = new Map<string, PluginDownloadStats>();
+	for (const pluginDownload of pluginDownloadStats) {
+		downloadStatsMap.set(pluginDownload.getDateString(), pluginDownload);
+	}
 
 	const startDate = new Date('2020-01-01');
 	const endDate = new Date();
@@ -115,41 +120,37 @@ function updateWeeklyDownloadStats(pluginData: PluginData[], pluginDownloadStats
 		const date = dateToString(d);
 		progress.increment();
 
-		let pluginDownload;
-
-		for (let j = 0; j < 6; j++) {
-			const currentDate = new Date(d);
-			currentDate.setDate(currentDate.getDate() + j);
-			const currentDateString = dateToString(currentDate);
-
-			pluginDownload = pluginDownloadStats.find(x => dateToString(x.date) === currentDateString);
-			if (pluginDownload !== undefined) break;
-		}
-
-		if (pluginDownload === undefined) {
-			// console.log(`No plugin download stats found for ${date}`);
-			continue;
-		}
-
 		for (const pluginDataEntry of pluginData) {
-			pluginDataEntry.updateDownloadHistory(pluginDownload, date);
+			for (let j = 0; j < 6; j++) {
+				const currentDate = new Date(d);
+				currentDate.setDate(currentDate.getDate() + j);
+				const currentDateString = dateToString(currentDate);
+
+				const pluginDownload = downloadStatsMap.get(currentDateString);
+
+				if (pluginDownload !== undefined && pluginDataEntry.updateDownloadHistory(pluginDownload, date)) {
+					break;
+				}
+			}
 		}
 	}
 
 	progress.stop();
 }
 
-function updateVersionHistory(pluginData: PluginData[], pluginDownloadStats: PluginDownloadStats[]) {
+function updateVersionHistory(pluginData: PluginData[], pluginDownloadStats: PluginDownloadStats[]): void {
 	console.log(`Updating version history`);
 
 	const progress = new CliProgress.SingleBar({}, CliProgress.Presets.rect);
 	progress.start(pluginDownloadStats.length, 0);
+
 	for (const pluginDownload of pluginDownloadStats) {
 		progress.increment();
 		for (const pluginDataEntry of pluginData) {
 			pluginDataEntry.updateVersionHistory(pluginDownload);
 		}
 	}
+
 	progress.stop();
 
 	console.log(`Sorting Versions`);
@@ -181,7 +182,7 @@ async function getPluginDownloadStats(): Promise<PluginDownloadStats[]> {
 	return pluginDownloadStats;
 }
 
-export async function buildPluginStats() {
+export async function buildPluginStats(): Promise<void> {
 	const pluginLists = await getPluginLists();
 	let pluginData = buildPluginData(pluginLists);
 
