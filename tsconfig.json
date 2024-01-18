@@ -18,5 +18,5 @@
 			"bun-types" // add Bun global
 		]
 	},
-	"include": ["src/**/*"]
+	"include": ["src/**/*", "tests/**/*"],
 }
