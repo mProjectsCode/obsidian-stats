@@ -22,7 +22,7 @@ export async function $(cmd: string, cwd?: string, verboseness: Verboseness = Ve
 
 	const proc = exec(cmd, cwd);
 	const stdout = await new Response(proc.stdout).text();
-	const stderr = await new Response(proc.stdout).text();
+	const stderr = await new Response(proc.stderr).text();
 
 	if (verboseness === Verboseness.VERBOSE) {
 		if (stdout !== '') {
