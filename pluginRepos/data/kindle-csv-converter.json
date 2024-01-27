@@ -1,0 +1,1 @@
+{"id":"kindle-csv-converter","hasPackageJson":true,"dependencies":["lodash"],"devDependencies":["@types/node","builtin-modules","esbuild","obsidian","tslib","typescript"],"installedTestingFrameworks":[],"hasTestFiles":false,"fileCounts":{"npmrc":1,"ts":5,"json":4,"css":1,"mjs":2,"gitignore":1,"png":4,"jpg":2,"md":1}}

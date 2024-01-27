@@ -208,3 +208,7 @@ export function uniqueConcat<T>(a: T[], b: T[]): T[] {
 
 	return a;
 }
+
+export function arrayIntersect<T>(a: T[], b: T[]): T[] {
+	return a.filter(x => b.includes(x));
+}

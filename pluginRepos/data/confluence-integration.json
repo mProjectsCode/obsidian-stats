@@ -1,0 +1,1 @@
+{"id":"confluence-integration","hasPackageJson":true,"dependencies":["confluence.js","mime-types","react","react-dom","@markdown-confluence/lib","@markdown-confluence/mermaid-electron-renderer"],"devDependencies":["@types/mime-types","@types/react-dom","obsidian"],"installedTestingFrameworks":[],"hasTestFiles":false,"fileCounts":{"md":2,"json":3,"mjs":1,"tsx":2,"ts":5,"png":3}}

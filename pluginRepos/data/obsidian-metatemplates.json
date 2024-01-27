@@ -1,0 +1,1 @@
+{"id":"obsidian-metatemplates","hasPackageJson":true,"packageManager":"npm","dependencies":[],"devDependencies":["@rollup/plugin-commonjs","@rollup/plugin-node-resolve","@rollup/plugin-typescript","rollup-plugin-copy","tslib","typescript"],"installedTestingFrameworks":[],"hasTestFiles":false,"fileCounts":{"png":2,"ts":3,"js":2,"json":5,"css":1,"gitignore":1,"md":1}}

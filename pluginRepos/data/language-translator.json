@@ -1,0 +1,1 @@
+{"id":"language-translator","hasPackageJson":true,"dependencies":[],"devDependencies":["@types/node","esbuild","obsidian","tslib","typescript"],"installedTestingFrameworks":[],"hasTestFiles":false,"fileCounts":{"json":4,"css":1,"md":4,"editorconfig":1,"ts":12,"jpg":1,"png":2,"gitignore":1}}

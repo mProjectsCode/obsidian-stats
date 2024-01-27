@@ -1,0 +1,1 @@
+{"id":"file-tree-generator","hasPackageJson":true,"dependencies":["ignore"],"devDependencies":["@bluzzi/eslint-config","@electron/remote","@types/node","eslint","obsidian","tsconfig-paths","tsup","typescript"],"installedTestingFrameworks":[],"hasTestFiles":false,"fileCounts":{"json":4,"css":1,"ts":24,"yml":1,"gitignore":1,"md":1,"png":4}}

@@ -1,0 +1,1 @@
+{"id":"note-folder-autorename","hasPackageJson":true,"packageManager":"yarn","dependencies":[],"devDependencies":["obsidian","obsidian-rollup-presets","rollup","typescript"],"installedTestingFrameworks":[],"hasTestFiles":false,"fileCounts":{"js":7,"zip":329,"json":7,"tsc":1,"tsserver":1,"yml":3,"cjs":1,"gitignore":1,"lock":1,"md":1}}

@@ -1,0 +1,1 @@
+{"id":"obsidian-habit-tracker","hasPackageJson":true,"dependencies":[],"devDependencies":["@rollup/plugin-commonjs","@rollup/plugin-node-resolve","@rollup/plugin-typescript","@types/node","obsidian","rollup","tslib","typescript"],"installedTestingFrameworks":[],"hasTestFiles":false,"fileCounts":{"js":2,"ts":2,"json":4,"css":1,"editorconfig":1,"gitignore":1,"png":1,"md":1}}

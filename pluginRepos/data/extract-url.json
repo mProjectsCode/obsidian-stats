@@ -1,0 +1,1 @@
+{"id":"extract-url","hasPackageJson":true,"packageManager":"yarn","dependencies":["hasbin"],"devDependencies":["esbuild"],"installedTestingFrameworks":[],"hasTestFiles":false,"fileCounts":{"js":2,"toml":1,"lock":2,"json":2,"rs":11,"gitignore":1,"png":1,"gif":1,"md":1}}

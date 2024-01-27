@@ -1,0 +1,1 @@
+{"id":"find-unlinked-files","hasPackageJson":true,"dependencies":[],"devDependencies":["@types/node","obsidian","esbuild","tslib","typescript","standard-version"],"installedTestingFrameworks":[],"hasTestFiles":false,"fileCounts":{"md":2,"json":3,"mjs":1,"yml":1,"ts":4,"gitignore":1}}

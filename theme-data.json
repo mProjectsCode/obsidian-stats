@@ -2850,6 +2850,10 @@
             "date": "2021-05-28",
             "hash": "722c6680c00ae530a2327b2b73b16c7992b57f0f"
         },
+        "removedCommit": {
+            "date": "2024-01-25",
+            "hash": "3cc20666b3d06a34fd392f4ec7bb36bc6763ca89"
+        },
         "initialEntry": {
             "name": "Night Owl",
             "author": "Ben Hong",
@@ -2886,6 +2890,15 @@
                     "hash": "177f1d940bd94b7ba7eb65a96670465638be7782"
                 },
                 "oldValue": "main"
+            },
+            {
+                "property": "Theme Removed",
+                "commit": {
+                    "date": "2024-01-25",
+                    "hash": "3cc20666b3d06a34fd392f4ec7bb36bc6763ca89"
+                },
+                "oldValue": "",
+                "newValue": ""
             }
         ]
     },
@@ -4125,6 +4138,10 @@
             "date": "2021-09-18",
             "hash": "08fccecf747557c932b9ed38f7600125e4cda967"
         },
+        "removedCommit": {
+            "date": "2024-01-26",
+            "hash": "270d7fa7c569a072ca401966719a52013c0635a9"
+        },
         "initialEntry": {
             "name": "Deep",
             "author": "cybeerboy",
@@ -4161,6 +4178,15 @@
                     "hash": "177f1d940bd94b7ba7eb65a96670465638be7782"
                 },
                 "oldValue": "main"
+            },
+            {
+                "property": "Theme Removed",
+                "commit": {
+                    "date": "2024-01-26",
+                    "hash": "270d7fa7c569a072ca401966719a52013c0635a9"
+                },
+                "oldValue": "",
+                "newValue": ""
             }
         ]
     },
@@ -7584,6 +7610,10 @@
             "date": "2022-11-08",
             "hash": "b531db0bed0eb36da5909980c103e22d64ef5373"
         },
+        "removedCommit": {
+            "date": "2024-01-25",
+            "hash": "3cc20666b3d06a34fd392f4ec7bb36bc6763ca89"
+        },
         "initialEntry": {
             "name": "Doctorfree",
             "author": "Ronald Record",
@@ -7620,6 +7650,15 @@
                     "hash": "e52dcea1ba983821900784b0c0d97b5916b049fb"
                 },
                 "oldValue": "main"
+            },
+            {
+                "property": "Theme Removed",
+                "commit": {
+                    "date": "2024-01-25",
+                    "hash": "3cc20666b3d06a34fd392f4ec7bb36bc6763ca89"
+                },
+                "oldValue": "",
+                "newValue": ""
             }
         ]
     },
@@ -11944,6 +11983,236 @@
                 "commit": {
                     "date": "2024-01-02",
                     "hash": "b02c85ce3933e569d4d9e293dcc8d5b2a017bf39"
+                },
+                "oldValue": "",
+                "newValue": ""
+            }
+        ]
+    },
+    {
+        "id": "monokai",
+        "name": "Monokai",
+        "addedCommit": {
+            "date": "2024-01-25",
+            "hash": "a160b6126b19e441a14273969b80299e59c2a72f"
+        },
+        "initialEntry": {
+            "name": "Monokai",
+            "author": "bitSchleuder",
+            "repo": "bitSchleuder/obsidian-monokai-theme",
+            "screenshot": "assets/monokai-obsidian-theme-thumbnail.png",
+            "modes": [
+                "dark",
+                "light"
+            ]
+        },
+        "currentEntry": {
+            "name": "Monokai",
+            "author": "bitSchleuder",
+            "repo": "bitSchleuder/obsidian-monokai-theme",
+            "screenshot": "assets/monokai-obsidian-theme-thumbnail.png",
+            "modes": [
+                "dark",
+                "light"
+            ]
+        },
+        "changeHistory": [
+            {
+                "property": "Theme Added",
+                "commit": {
+                    "date": "2024-01-25",
+                    "hash": "a160b6126b19e441a14273969b80299e59c2a72f"
+                },
+                "oldValue": "",
+                "newValue": ""
+            }
+        ]
+    },
+    {
+        "id": "ethereon",
+        "name": "Ethereon",
+        "addedCommit": {
+            "date": "2024-01-25",
+            "hash": "acb6ea7de2bb61e15ba97f8ddf6049c742590912"
+        },
+        "initialEntry": {
+            "name": "Ethereon",
+            "author": "rohit04saluja",
+            "repo": "ethereontheme/obsidian",
+            "screenshot": "screenshots/dark.png",
+            "modes": [
+                "dark",
+                "light"
+            ]
+        },
+        "currentEntry": {
+            "name": "Ethereon",
+            "author": "rohit04saluja",
+            "repo": "ethereontheme/obsidian",
+            "screenshot": "screenshots/dark.png",
+            "modes": [
+                "dark",
+                "light"
+            ]
+        },
+        "changeHistory": [
+            {
+                "property": "Theme Added",
+                "commit": {
+                    "date": "2024-01-25",
+                    "hash": "acb6ea7de2bb61e15ba97f8ddf6049c742590912"
+                },
+                "oldValue": "",
+                "newValue": ""
+            }
+        ]
+    },
+    {
+        "id": "tomorrow",
+        "name": "Tomorrow",
+        "addedCommit": {
+            "date": "2024-01-25",
+            "hash": "71c3f3586e08d82720ff31f753ac13c53a16629e"
+        },
+        "initialEntry": {
+            "name": "Tomorrow",
+            "author": "deudz",
+            "repo": "deudz/obsidian-tomorrow-theme",
+            "screenshot": "res/thumb.png",
+            "modes": [
+                "dark"
+            ]
+        },
+        "currentEntry": {
+            "name": "Tomorrow",
+            "author": "deudz",
+            "repo": "deudz/obsidian-tomorrow-theme",
+            "screenshot": "res/thumb.png",
+            "modes": [
+                "dark"
+            ]
+        },
+        "changeHistory": [
+            {
+                "property": "Theme Added",
+                "commit": {
+                    "date": "2024-01-25",
+                    "hash": "71c3f3586e08d82720ff31f753ac13c53a16629e"
+                },
+                "oldValue": "",
+                "newValue": ""
+            }
+        ]
+    },
+    {
+        "id": "nightfox",
+        "name": "Nightfox",
+        "addedCommit": {
+            "date": "2024-01-25",
+            "hash": "96fef62e17cee08d739fd74e11cb7e4e5e62ff0e"
+        },
+        "initialEntry": {
+            "name": "Nightfox",
+            "author": "mbromell",
+            "repo": "mbromell/obsidian-nightfox",
+            "screenshot": "thumbnail.png",
+            "modes": [
+                "dark",
+                "light"
+            ]
+        },
+        "currentEntry": {
+            "name": "Nightfox",
+            "author": "mbromell",
+            "repo": "mbromell/obsidian-nightfox",
+            "screenshot": "thumbnail.png",
+            "modes": [
+                "dark",
+                "light"
+            ]
+        },
+        "changeHistory": [
+            {
+                "property": "Theme Added",
+                "commit": {
+                    "date": "2024-01-25",
+                    "hash": "96fef62e17cee08d739fd74e11cb7e4e5e62ff0e"
+                },
+                "oldValue": "",
+                "newValue": ""
+            }
+        ]
+    },
+    {
+        "id": "novadust",
+        "name": "Novadust",
+        "addedCommit": {
+            "date": "2024-01-25",
+            "hash": "0fc3e34380ac97dc43b2fff61611f95649fb9156"
+        },
+        "initialEntry": {
+            "name": "Novadust",
+            "author": "marta.stl",
+            "repo": "mmartamg/novadust-obsidian",
+            "screenshot": "novadust-img.png",
+            "modes": [
+                "dark"
+            ]
+        },
+        "currentEntry": {
+            "name": "Novadust",
+            "author": "marta.stl",
+            "repo": "mmartamg/novadust-obsidian",
+            "screenshot": "novadust-img.png",
+            "modes": [
+                "dark"
+            ]
+        },
+        "changeHistory": [
+            {
+                "property": "Theme Added",
+                "commit": {
+                    "date": "2024-01-25",
+                    "hash": "0fc3e34380ac97dc43b2fff61611f95649fb9156"
+                },
+                "oldValue": "",
+                "newValue": ""
+            }
+        ]
+    },
+    {
+        "id": "pure",
+        "name": "Pure",
+        "addedCommit": {
+            "date": "2024-01-25",
+            "hash": "51a25e4b2c55ee4521403b850d1288caa5f64f5c"
+        },
+        "initialEntry": {
+            "name": "Pure",
+            "author": "Lychi",
+            "repo": "lychileng/Obsidian-Theme-Pure",
+            "screenshot": "screenshots/mac_512.jpg",
+            "modes": [
+                "dark",
+                "light"
+            ]
+        },
+        "currentEntry": {
+            "name": "Pure",
+            "author": "Lychi",
+            "repo": "lychileng/Obsidian-Theme-Pure",
+            "screenshot": "screenshots/mac_512.jpg",
+            "modes": [
+                "dark",
+                "light"
+            ]
+        },
+        "changeHistory": [
+            {
+                "property": "Theme Added",
+                "commit": {
+                    "date": "2024-01-25",
+                    "hash": "51a25e4b2c55ee4521403b850d1288caa5f64f5c"
                 },
                 "oldValue": "",
                 "newValue": ""

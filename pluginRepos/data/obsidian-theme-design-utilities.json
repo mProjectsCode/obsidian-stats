@@ -1,0 +1,1 @@
+{"id":"obsidian-theme-design-utilities","hasPackageJson":true,"dependencies":[],"devDependencies":["@types/node","builtin-modules","esbuild","obsidian","tslib","typescript"],"installedTestingFrameworks":[],"hasTestFiles":false,"fileCounts":{"png":3,"gif":1,"ts":1,"json":5,"css":1,"mjs":1,"Makefile":1,"yml":2,"md":7,"editorconfig":1,"gitignore":1,"sh":1,"pdf":1}}

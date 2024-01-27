@@ -1,0 +1,1 @@
+{"id":"fantasy-name","hasPackageJson":true,"packageManager":"npm","dependencies":[],"devDependencies":["@types/node","builtin-modules","esbuild","obsidian","tslib","typescript"],"installedTestingFrameworks":[],"hasTestFiles":false,"fileCounts":{"json":4,"mjs":1,"gif":1,"gitignore":1,"md":1,"ts":1}}

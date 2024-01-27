@@ -1,0 +1,1 @@
+{"id":"tor2e-statblocks","hasPackageJson":true,"dependencies":[],"devDependencies":["@types/node","@typescript-eslint/eslint-plugin","@typescript-eslint/parser","builtin-modules","debug","esbuild","obsidian","tslib","typescript"],"installedTestingFrameworks":[],"hasTestFiles":false,"fileCounts":{"eslintrc":1,"eslintignore":1,"ts":2,"json":4,"css":1,"mjs":1,"gitignore":1,"md":1}}

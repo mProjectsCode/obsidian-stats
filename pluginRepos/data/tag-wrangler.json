@@ -1,0 +1,1 @@
+{"id":"tag-wrangler","hasPackageJson":true,"packageManager":"pnpm","dependencies":[],"devDependencies":["monkey-around","obsidian","@ophidian/build","@ophidian/core","yaml"],"installedTestingFrameworks":[],"hasTestFiles":false,"fileCounts":{"json":4,"yml":1,"js":5,"gitignore":1,"png":1,"yaml":1,"mjs":1,"md":1}}

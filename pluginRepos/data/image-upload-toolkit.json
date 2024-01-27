@@ -1,0 +1,1 @@
+{"id":"image-upload-toolkit","hasPackageJson":true,"dependencies":["ali-oss","proxy-agent"],"devDependencies":["@types/node","obsidian","obsidian-plugin-cli","typescript"],"installedTestingFrameworks":[],"hasTestFiles":false,"fileCounts":{"json":3,"ts":13,"yml":1,"css":1,"gitignore":1,"md":1}}

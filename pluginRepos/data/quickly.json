@@ -1,0 +1,1 @@
+{"id":"quickly","hasPackageJson":true,"packageManager":"yarn","dependencies":[],"devDependencies":["@types/codemirror","@types/jest","jest","obsidian","typescript"],"installedTestingFrameworks":["jest"],"hasTestFiles":true,"fileCounts":{"js":2,"ts":2,"json":4,"css":1,"md":2,"png":1,"gitignore":1,"lock":1}}

@@ -1,0 +1,1 @@
+{"id":"pane-relief","hasPackageJson":true,"packageManager":"pnpm","dependencies":[],"devDependencies":["@ophidian/build","@ophidian/core","monkey-around","obsidian"],"installedTestingFrameworks":[],"hasTestFiles":false,"fileCounts":{"json":6,"yml":1,"ts":7,"scss":1,"gitignore":1,"yaml":1,"mjs":1,"md":1}}

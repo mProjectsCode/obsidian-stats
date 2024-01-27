@@ -1,0 +1,1 @@
+{"id":"fuzzy-chinese-pinyin","hasPackageJson":true,"dependencies":[],"devDependencies":["builtin-modules","obsidian","obsidian-plugin-cli","templater","typescript"],"installedTestingFrameworks":[],"hasTestFiles":false,"fileCounts":{"prettierrc":1,"json":3,"css":1,"ts":16,"jpg":1,"yml":1,"editorconfig":1,"gitignore":1,"md":1}}

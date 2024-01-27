@@ -1,0 +1,1 @@
+{"id":"hamsterbase","hasPackageJson":true,"dependencies":["@hamsterbase/sdk","@types/node","chokidar","ejs","esbuild","minimist","obsidian"],"devDependencies":[],"installedTestingFrameworks":[],"hasTestFiles":false,"fileCounts":{"prettierrc":1,"json":2,"png":1,"js":3,"yml":1,"ts":4,"gitignore":1,"md":1}}

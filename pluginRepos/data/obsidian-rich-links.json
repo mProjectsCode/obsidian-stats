@@ -1,0 +1,1 @@
+{"id":"obsidian-rich-links","hasPackageJson":true,"dependencies":[],"devDependencies":["@rollup/plugin-commonjs","@rollup/plugin-node-resolve","@rollup/plugin-typescript","@types/node","obsidian","rollup","tslib","typescript"],"installedTestingFrameworks":[],"hasTestFiles":false,"fileCounts":{"js":1,"ts":1,"json":4,"css":1,"gitignore":1,"md":1}}

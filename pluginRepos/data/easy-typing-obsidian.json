@@ -1,0 +1,1 @@
+{"id":"easy-typing-obsidian","hasPackageJson":true,"dependencies":[],"devDependencies":["@codemirror/language","@types/node","@typescript-eslint/eslint-plugin","@typescript-eslint/parser","builtin-modules","esbuild","obsidian","tslib","typescript"],"installedTestingFrameworks":[],"hasTestFiles":false,"fileCounts":{"npmrc":1,"md":4,"json":4,"mjs":2,"ts":4,"gitignore":1,"png":1}}

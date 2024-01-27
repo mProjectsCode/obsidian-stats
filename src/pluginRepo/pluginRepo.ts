@@ -2,6 +2,8 @@ import {PLUGIN_DATA_PATH} from '../constants.ts';
 import {PluginDataInterface} from '../plugin/plugin.ts';
 import fs from 'node:fs/promises';
 import {$} from '../shellUtils.ts';
+import {arrayIntersect, uniqueConcat} from '../utils.ts';
+import {PluginRepoData} from './types.ts';
 
 export async function clonePluginRepos() {
 	const pluginData = await Bun.file(PLUGIN_DATA_PATH).json() as PluginDataInterface[];
@@ -37,8 +39,23 @@ export async function clonePluginRepos() {
 	}
 }
 
+async function getPackageManager(path: string): Promise<string | undefined> {
+	if (await fs.exists(`${path}/yarn.lock`)) {
+		return 'yarn';
+	} else if (await fs.exists(`${path}/pnpm-lock.yaml`)) {
+		return 'pnpm';
+	} else if (await fs.exists(`${path}/bun.lockb`)) {
+		return 'bun';
+	} else if (await fs.exists(`${path}/package-lock.json`)) {
+		return 'npm';
+	}
+	return undefined;
+}
+
 export async function collectRepoData() {
 	const pluginData = await Bun.file(PLUGIN_DATA_PATH).json() as PluginDataInterface[];
+
+	let allDependencies: string[] = [];
 
 	for (const plugin of pluginData) {
 		if (plugin.removedCommit) {
@@ -51,15 +68,24 @@ export async function collectRepoData() {
 			continue;
 		}
 
+		const data: PluginRepoData = {
+			id: plugin.id,
+			hasPackageJson: false,
+			packageManager: undefined,
+			dependencies: [],
+			devDependencies: [],
+			installedTestingFrameworks: [],
+			hasTestFiles: false,
+			fileCounts: {},
+		}
+
 		const files = await listFiles(repoPath);
 
 		const excludedExtensions = ["LICENSE"]
-		let fileCounts: Record<string, number> = {};
-		let hasTestFiles = false;
 
 		for (const file of files) {
-			if (file.endsWith('.test.ts') || file.endsWith('.test.js')) {
-				hasTestFiles = true;
+			if (file.endsWith('.test.ts') || file.endsWith('.test.js') || file.endsWith('.spec.ts') || file.endsWith('.spec.js')) {
+				data.hasTestFiles = true;
 			}
 
 			const extension = file.split('/').at(-1)?.split('.').at(-1);
@@ -67,15 +93,44 @@ export async function collectRepoData() {
 				continue;
 			}
 
-			if (!fileCounts[extension]) {
-				fileCounts[extension] = 0;
+			if (!data.fileCounts[extension]) {
+				data.fileCounts[extension] = 0;
 			}
 
-			fileCounts[extension]++;
+			data.fileCounts[extension]++;
 		}
 
-		console.log(plugin.id, files, fileCounts, hasTestFiles);
+		data.hasPackageJson = await fs.exists(`${repoPath}/package.json`);
+
+		if (data.hasPackageJson) {
+			const packageJson = await Bun.file(`${repoPath}/package.json`).json();
+
+			data.packageManager = await getPackageManager(repoPath);
+			const dependencies: Record<string, string> = packageJson.dependencies ?? {};
+			const devDependencies: Record<string, string> = packageJson.devDependencies ?? {};
+			data.dependencies = Object.keys(dependencies);
+			data.devDependencies = Object.keys(devDependencies);
+			const allDependencyNames = uniqueConcat([...data.dependencies], data.devDependencies);
+
+			allDependencies = uniqueConcat(allDependencies, allDependencyNames);
+
+			const testFrameworks: string[] = [
+				"jest",
+				"mocha",
+				"vitest",
+				"@types/bun",
+			]
+
+			data.installedTestingFrameworks = arrayIntersect(testFrameworks, allDependencyNames);
+		}
+
+		console.log(data);
+
+		const writeFile = Bun.file(`pluginRepos/data/${plugin.id}.json`);
+		await Bun.write(writeFile, JSON.stringify(data))
 	}
+
+	console.log(allDependencies);
 }
 
 async function listFiles(dir: string, pathDir: string = ''): Promise<string[]> {

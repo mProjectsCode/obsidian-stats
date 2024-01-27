@@ -1,0 +1,1 @@
+{"id":"scroll-speed","hasPackageJson":true,"dependencies":[],"devDependencies":["@types/node","esbuild","obsidian","prettier","tslib","typescript"],"installedTestingFrameworks":[],"hasTestFiles":false,"fileCounts":{"ts":1,"json":4,"yml":1,"png":1,"gitignore":1,"md":1}}
