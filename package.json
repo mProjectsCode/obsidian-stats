@@ -3,10 +3,12 @@
 	"module": "src/index.ts",
 	"type": "module",
 	"scripts": {
-		"fetch-plugin-data": "bun run src/plugin/fetch-data.ts",
-		"fetch-theme-data": "bun run src/theme/fetch-data.ts",
-		"fetch-release-data": "bun run src/release/fetch-data.ts",
-		"fetch-data": "bun run src/fetch-data.ts",
+		"fetch-plugin-data": "bun run src/plugin/fetchData.ts",
+		"fetch-theme-data": "bun run src/theme/fetchData.ts",
+		"fetch-release-data": "bun run src/release/fetchData.ts",
+		"fetch-data": "bun run src/fetchData.ts",
+		"clone-plugin-repos": "bun run src/pluginRepo/cloneRepos.ts",
+		"collect-plugin-repo-data": "bun run src/pluginRepo/collectData.ts",
 		"format": "prettier --write ."
 	},
 	"devDependencies": {

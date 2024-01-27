@@ -9,13 +9,48 @@ import { PluginDataInterface } from '../../../src/plugin/plugin';
 
 const { plugin } = Astro.props as { plugin: PluginDataInterface };
 const pluginDownloadData = getPluginDownloadsWeekly([plugin]);
+
+const latestReleaseDateString = plugin.versionHistory.at(-1).initialReleaseDate;
+const latestReleaseDate = new Date(latestReleaseDateString);
+
+const outdatedDangerThreshold = new Date();
+outdatedDangerThreshold.setFullYear(outdatedDangerThreshold.getFullYear() - 1)
+const outdatedDanger = latestReleaseDate < outdatedDangerThreshold && !plugin.removedCommit;
+
+const outdatedWarningThreshold = new Date();
+outdatedWarningThreshold.setDate(outdatedWarningThreshold.getDate() - 120)
+const outdatedWarning = latestReleaseDate < outdatedWarningThreshold && !outdatedDanger && !plugin.removedCommit;
+
+
+
 ---
 
 {
 	plugin.removedCommit && (
-		<Aside variant="caution" title="Plugin has been Removed">
+		<Aside variant="danger" title="Plugin has been Removed">
 			<p>
 				This plugin has been removed from the community list on <Commit commit={plugin.removedCommit} /> and can no longer be installed.
+			</p>
+		</Aside>
+	)
+}
+
+{
+	outdatedWarning && (
+		<Aside variant="caution" title="Inactivity Warning">
+			<p>
+				The latest version of this plugin was released on the {latestReleaseDateString} and is thus more than 120 days old.
+			</p>
+		</Aside>
+	)
+}
+
+{
+	outdatedDanger && (
+		<Aside variant="danger" title="Inactivity Danger">
+			<p>
+				The latest version of this plugin was released on the {latestReleaseDateString} and is thus more than a year old.
+				There is a high chance that this plugin is no longer maintained.
 			</p>
 		</Aside>
 	)
@@ -43,6 +78,10 @@ const pluginDownloadData = getPluginDownloadsWeekly([plugin]);
 			<td>GitHub Repo</td>
 			<td><GithubLink repo={plugin.currentEntry.repo} /></td>
 		</tr>
+        <tr>
+            <td>ObsidianAddict Link</td>
+            <td><a href={"https://obsidianaddict.com/plugin/" + plugin.id + "/"} target="_blank">Visit on ObsidianAddict</a></td>
+        </tr>
 		<tr>
 			<td>Official Release Date</td>
 			<td><Commit commit={plugin.addedCommit} /></td>
