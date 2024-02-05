@@ -9,6 +9,7 @@
     "fetch-data": "bun run src/fetchData.ts",
     "clone-plugin-repos": "bun run src/pluginRepo/cloneRepos.ts",
     "collect-plugin-repo-data": "bun run src/pluginRepo/collectData.ts",
+    "all-the-data": "bun run fetch-data && bun run clone-plugin-repos && bun run collect-plugin-repo-data",
     "format": "prettier --write ."
   },
   "devDependencies": {
