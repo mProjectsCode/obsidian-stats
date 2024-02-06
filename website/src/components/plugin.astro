@@ -12,7 +12,7 @@ import {PluginRepoData} from '../../../src/pluginRepo/types';
 const { plugin } = Astro.props as { plugin: PluginDataInterface };
 const pluginDownloadData = getPluginDownloadsWeekly([plugin]);
 
-const latestReleaseDateString = plugin.versionHistory.at(-1).initialReleaseDate;
+const latestReleaseDateString = plugin.versionHistory.at(-1)?.initialReleaseDate ?? plugin.addedCommit.date;
 const latestReleaseDate = new Date(latestReleaseDateString);
 
 const outdatedDangerThreshold = new Date();
@@ -31,12 +31,8 @@ try {
 	const url = new URL(`../../../pluginRepos/data/${plugin.id}.json`, import.meta.url);
 	repoData = JSON.parse(await fs.readFile(url, 'utf-8'));
 } catch (e) {
-	console.warn(e);
+	console.log('failed to load repo data');
 }
-
-console.log(repoData);
-
-
 ---
 
 {
