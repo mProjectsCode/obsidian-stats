@@ -12201,7 +12201,7 @@
             "name": "Pure",
             "author": "Lychi",
             "repo": "lychileng/Obsidian-Theme-Pure",
-            "screenshot": "screenshots/mac_512.jpg",
+            "screenshot": "screenshots/cover.png",
             "modes": [
                 "dark",
                 "light"
@@ -12216,6 +12216,15 @@
                 },
                 "oldValue": "",
                 "newValue": ""
+            },
+            {
+                "property": "screenshot",
+                "commit": {
+                    "date": "2024-02-07",
+                    "hash": "06c8ab14d17ad8015ef041a5ea13514f99000745"
+                },
+                "oldValue": "screenshots/mac_512.jpg",
+                "newValue": "screenshots/cover.png"
             }
         ]
     },
@@ -12402,6 +12411,92 @@
                 "commit": {
                     "date": "2024-01-31",
                     "hash": "dd6194867ddee0577e9e5d6f7f357b86070c4002"
+                },
+                "oldValue": "",
+                "newValue": ""
+            }
+        ]
+    },
+    {
+        "id": "improved-potato",
+        "name": "Improved Potato",
+        "addedCommit": {
+            "date": "2024-02-06",
+            "hash": "2b7f6d182d66ec1e197e093ab481061d357403b3"
+        },
+        "initialEntry": {
+            "name": "Improved Potato",
+            "author": "Dominik Meurer",
+            "repo": "DMeurer/improved-potato",
+            "screenshot": "images/image2.png",
+            "modes": [
+                "dark"
+            ]
+        },
+        "currentEntry": {
+            "name": "Improved Potato",
+            "author": "Dominik Meurer",
+            "repo": "DMeurer/improved-potato",
+            "screenshot": "images/image2.png",
+            "modes": [
+                "dark",
+                "light"
+            ]
+        },
+        "changeHistory": [
+            {
+                "property": "Theme Added",
+                "commit": {
+                    "date": "2024-02-06",
+                    "hash": "2b7f6d182d66ec1e197e093ab481061d357403b3"
+                },
+                "oldValue": "",
+                "newValue": ""
+            },
+            {
+                "property": "modes",
+                "commit": {
+                    "date": "2024-02-07",
+                    "hash": "9b45bee95873954c29f052d412fc04ab1792274c"
+                },
+                "oldValue": "dark",
+                "newValue": "dark, light"
+            }
+        ]
+    },
+    {
+        "id": "neovim",
+        "name": "Neovim",
+        "addedCommit": {
+            "date": "2024-02-06",
+            "hash": "24c2752f37de51190e214d0b35300fa98317d78a"
+        },
+        "initialEntry": {
+            "name": "Neovim",
+            "author": "slavamak",
+            "repo": "slavamak/obsidian-neovim",
+            "screenshot": "screenshot.png",
+            "modes": [
+                "dark",
+                "light"
+            ]
+        },
+        "currentEntry": {
+            "name": "Neovim",
+            "author": "slavamak",
+            "repo": "slavamak/obsidian-neovim",
+            "screenshot": "screenshot.png",
+            "modes": [
+                "dark",
+                "light"
+            ]
+        },
+        "changeHistory": [
+            {
+                "property": "Theme Added",
+                "commit": {
+                    "date": "2024-02-06",
+                    "hash": "24c2752f37de51190e214d0b35300fa98317d78a"
                 },
                 "oldValue": "",
                 "newValue": ""
