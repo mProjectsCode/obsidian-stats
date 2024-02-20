@@ -1,1 +1,1 @@
-{"id":"prompt","hasPackageJson":false,"dependencies":[],"devDependencies":[],"installedTestingFrameworks":[],"hasTestFiles":false,"fileCounts":{"md":2,"gif":1,"ts":6,"js":1,"json":4,"css":1,"gitignore":1}}
+{"id":"prompt","usesTypescript":true,"hasPackageJson":false,"dependencies":[],"devDependencies":[],"installedTestingFrameworks":[],"installedBundlers":[],"hasTestFiles":false,"fileCounts":{"md":2,"gif":1,"ts":6,"js":1,"json":4,"css":1,"gitignore":1}}

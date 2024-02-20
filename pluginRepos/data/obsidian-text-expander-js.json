@@ -1,1 +1,1 @@
-{"id":"obsidian-text-expander-js","hasPackageJson":false,"dependencies":[],"devDependencies":[],"installedTestingFrameworks":[],"hasTestFiles":false,"fileCounts":{"md":3,"css":1,"png":8,"gif":1,"svg":1,"ts":26,"json":4,"mjs":1,"txt":1,"gitignore":1}}
+{"id":"obsidian-text-expander-js","usesTypescript":true,"hasPackageJson":false,"dependencies":[],"devDependencies":[],"installedTestingFrameworks":[],"installedBundlers":[],"hasTestFiles":false,"fileCounts":{"md":3,"css":1,"png":8,"gif":1,"svg":1,"ts":26,"json":4,"mjs":1,"txt":1,"gitignore":1}}

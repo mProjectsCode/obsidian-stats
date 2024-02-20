@@ -70,11 +70,13 @@ export async function collectRepoData() {
 
 		const data: PluginRepoData = {
 			id: plugin.id,
+			usesTypescript: true,
 			hasPackageJson: false,
 			packageManager: undefined,
 			dependencies: [],
 			devDependencies: [],
 			installedTestingFrameworks: [],
+			installedBundlers: [],
 			hasTestFiles: false,
 			fileCounts: {},
 		}
@@ -100,6 +102,10 @@ export async function collectRepoData() {
 			data.fileCounts[extension]++;
 		}
 
+		if (!data.fileCounts['ts'] && !data.fileCounts['tsx']) {
+			data.usesTypescript = false;
+		}
+
 		data.hasPackageJson = await fs.exists(`${repoPath}/package.json`);
 
 		if (data.hasPackageJson) {
@@ -119,9 +125,19 @@ export async function collectRepoData() {
 				"mocha",
 				"vitest",
 				"@types/bun",
-			]
+			];
 
 			data.installedTestingFrameworks = arrayIntersect(testFrameworks, allDependencyNames);
+
+			const bundlers: string[] = [
+				"esbuild",
+				"rollup",
+				"webpack",
+				"vite",
+				"turbo",
+			];
+
+			data.installedBundlers = arrayIntersect(bundlers, allDependencyNames);
 		}
 
 		console.log(data);
@@ -129,8 +145,6 @@ export async function collectRepoData() {
 		const writeFile = Bun.file(`pluginRepos/data/${plugin.id}.json`);
 		await Bun.write(writeFile, JSON.stringify(data))
 	}
-
-	console.log(allDependencies);
 }
 
 async function listFiles(dir: string, pathDir: string = ''): Promise<string[]> {

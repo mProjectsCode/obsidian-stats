@@ -159,6 +159,14 @@ try {
 				<td>Package Manager</td>
 				<td>{repoData.packageManager ?? 'Unknown (no lock file found)'}</td>
 			</tr>
+            <tr>
+                <td>Uses Typescript</td>
+				<td>{repoData.usesTypescript ? "true" : <>No <code>.ts</code> or <code>.tsx</code> files found</>}</td>
+            </tr>
+            <tr>
+                <td>Installed Bundlers</td>
+                <td>{repoData.hasPackageJson ? (repoData.installedBundlers.length === 0 ? "none" : repoData.installedBundlers.join(', ')) : <>No <code>package.json</code> found</>}</td>
+            </tr>
 			<tr>
 				<td>Installed Testing Frameworks</td>
 				<td>{repoData.hasPackageJson ? (repoData.installedTestingFrameworks.length === 0 ? "none" : repoData.installedTestingFrameworks.join(', ')) : <>No <code>package.json</code> found</>}</td>

@@ -1,1 +1,1 @@
-{"id":"ozanshare-publish","hasPackageJson":false,"dependencies":[],"devDependencies":[],"installedTestingFrameworks":[],"hasTestFiles":false,"fileCounts":{"json":2,"png":16,"md":1}}
+{"id":"ozanshare-publish","usesTypescript":false,"hasPackageJson":false,"dependencies":[],"devDependencies":[],"installedTestingFrameworks":[],"installedBundlers":[],"hasTestFiles":false,"fileCounts":{"json":2,"png":16,"md":1}}

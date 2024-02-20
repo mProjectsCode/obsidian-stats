@@ -1,1 +1,1 @@
-{"id":"quicknote","hasPackageJson":false,"dependencies":[],"devDependencies":[],"installedTestingFrameworks":[],"hasTestFiles":false,"fileCounts":{"js":1,"json":1,"md":1}}
+{"id":"quicknote","usesTypescript":false,"hasPackageJson":false,"dependencies":[],"devDependencies":[],"installedTestingFrameworks":[],"installedBundlers":[],"hasTestFiles":false,"fileCounts":{"js":1,"json":1,"md":1}}
