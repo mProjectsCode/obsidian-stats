@@ -53,6 +53,8 @@ async function getPackageManager(path: string): Promise<string | undefined> {
 }
 
 export async function collectRepoData() {
+	await fs.rm('pluginRepos/data', {recursive: true, force: true});
+
 	const pluginData = await Bun.file(PLUGIN_DATA_PATH).json() as PluginDataInterface[];
 
 	let allDependencies: string[] = [];
