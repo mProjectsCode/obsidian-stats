@@ -12539,5 +12539,42 @@
                 "newValue": ""
             }
         ]
+    },
+    {
+        "id": "mono-black-monochrome-charcoal",
+        "name": "mono black (monochrome, charcoal)",
+        "addedCommit": {
+            "date": "2024-02-28",
+            "hash": "f84b71bd9f3b2f95bd26f9ff716c8ad3fe694eb3"
+        },
+        "initialEntry": {
+            "name": "mono black (monochrome, charcoal)",
+            "author": "ZeChArtiahSaher",
+            "repo": "ZeChArtiahSaher/obsidian-mono-black",
+            "screenshot": "img/screen-1.png",
+            "modes": [
+                "dark"
+            ]
+        },
+        "currentEntry": {
+            "name": "mono black (monochrome, charcoal)",
+            "author": "ZeChArtiahSaher",
+            "repo": "ZeChArtiahSaher/obsidian-mono-black",
+            "screenshot": "img/screen-1.png",
+            "modes": [
+                "dark"
+            ]
+        },
+        "changeHistory": [
+            {
+                "property": "Theme Added",
+                "commit": {
+                    "date": "2024-02-28",
+                    "hash": "f84b71bd9f3b2f95bd26f9ff716c8ad3fe694eb3"
+                },
+                "oldValue": "",
+                "newValue": ""
+            }
+        ]
     }
 ]
