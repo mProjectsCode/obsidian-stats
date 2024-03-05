@@ -1,15 +1,15 @@
-import {PLUGIN_DATA_PATH} from '../constants.ts';
-import {PluginDataInterface} from '../plugin/plugin.ts';
+import { PLUGIN_DATA_PATH } from '../constants.ts';
+import { PluginDataInterface } from '../plugin/plugin.ts';
 import fs from 'node:fs/promises';
-import {$} from '../shellUtils.ts';
-import {arrayIntersect, uniqueConcat} from '../utils.ts';
-import {PluginRepoData} from './types.ts';
+import { $ } from '../shellUtils.ts';
+import { arrayIntersect, uniqueConcat } from '../utils.ts';
+import { PluginRepoData } from './types.ts';
 
 export async function clonePluginRepos() {
-	const pluginData = await Bun.file(PLUGIN_DATA_PATH).json() as PluginDataInterface[];
+	const pluginData = (await Bun.file(PLUGIN_DATA_PATH).json()) as PluginDataInterface[];
 
-	await fs.rm('pluginRepos/repos', {recursive: true, force: true});
-	await fs.mkdir('pluginRepos/repos', {recursive: true});
+	await fs.rm('pluginRepos/repos', { recursive: true, force: true });
+	await fs.mkdir('pluginRepos/repos', { recursive: true });
 
 	const skippedPlugins = [];
 	const failedPlugins = [];
@@ -31,7 +31,6 @@ export async function clonePluginRepos() {
 	console.log('Skipped plugins:');
 	for (const plugin of skippedPlugins) {
 		console.log(plugin);
-
 	}
 	console.log('Failed plugins:');
 	for (const plugin of failedPlugins) {
@@ -53,9 +52,9 @@ async function getPackageManager(path: string): Promise<string | undefined> {
 }
 
 export async function collectRepoData() {
-	await fs.rm('pluginRepos/data', {recursive: true, force: true});
+	await fs.rm('pluginRepos/data', { recursive: true, force: true });
 
-	const pluginData = await Bun.file(PLUGIN_DATA_PATH).json() as PluginDataInterface[];
+	const pluginData = (await Bun.file(PLUGIN_DATA_PATH).json()) as PluginDataInterface[];
 
 	let allDependencies: string[] = [];
 
@@ -65,7 +64,7 @@ export async function collectRepoData() {
 		}
 
 		const repoPath = `pluginRepos/repos/${plugin.id}`;
-		if (!await fs.exists(repoPath)) {
+		if (!(await fs.exists(repoPath))) {
 			console.log(`Repo for plugin ${plugin.id} does not exist`);
 			continue;
 		}
@@ -80,12 +79,13 @@ export async function collectRepoData() {
 			installedTestingFrameworks: [],
 			installedBundlers: [],
 			hasTestFiles: false,
+			hasBetaManifest: false,
 			fileCounts: {},
-		}
+		};
 
 		const files = await listFiles(repoPath);
 
-		const excludedExtensions = ["LICENSE"]
+		const excludedExtensions = ['LICENSE'];
 
 		for (const file of files) {
 			if (file.endsWith('.test.ts') || file.endsWith('.test.js') || file.endsWith('.spec.ts') || file.endsWith('.spec.js')) {
@@ -108,6 +108,8 @@ export async function collectRepoData() {
 			data.usesTypescript = false;
 		}
 
+		data.hasBetaManifest = await fs.exists(`${repoPath}/manifest-beta.json`);
+
 		data.hasPackageJson = await fs.exists(`${repoPath}/package.json`);
 
 		if (data.hasPackageJson) {
@@ -122,22 +124,11 @@ export async function collectRepoData() {
 
 			allDependencies = uniqueConcat(allDependencies, allDependencyNames);
 
-			const testFrameworks: string[] = [
-				"jest",
-				"mocha",
-				"vitest",
-				"@types/bun",
-			];
+			const testFrameworks: string[] = ['jest', 'mocha', 'vitest', '@types/bun'];
 
 			data.installedTestingFrameworks = arrayIntersect(testFrameworks, allDependencyNames);
 
-			const bundlers: string[] = [
-				"esbuild",
-				"rollup",
-				"webpack",
-				"vite",
-				"turbo",
-			];
+			const bundlers: string[] = ['esbuild', 'rollup', 'webpack', 'vite', 'turbo'];
 
 			data.installedBundlers = arrayIntersect(bundlers, allDependencyNames);
 		}
@@ -145,26 +136,28 @@ export async function collectRepoData() {
 		console.log(data);
 
 		const writeFile = Bun.file(`pluginRepos/data/${plugin.id}.json`);
-		await Bun.write(writeFile, JSON.stringify(data))
+		await Bun.write(writeFile, JSON.stringify(data));
 	}
 }
 
 async function listFiles(dir: string, pathDir: string = ''): Promise<string[]> {
 	const files = await fs.readdir(dir, { withFileTypes: true });
 
-	const filteredFiles = await Promise.all(files.map(async (file) => {
-		const niceName = pathDir ? `${pathDir}/${file.name}` : file.name;
+	const filteredFiles = await Promise.all(
+		files.map(async file => {
+			const niceName = pathDir ? `${pathDir}/${file.name}` : file.name;
 
-		if (file.isDirectory()) {
-			if (file.name === '.git') {
-				return [];
+			if (file.isDirectory()) {
+				if (file.name === '.git') {
+					return [];
+				}
+
+				return await listFiles(`${dir}/${file.name}`, niceName);
+			} else {
+				return [niceName];
 			}
-
-			return await listFiles(`${dir}/${file.name}`, niceName);
-		} else {
-			return [niceName];
-		}
-	}));
+		}),
+	);
 
 	return filteredFiles.flat();
 }

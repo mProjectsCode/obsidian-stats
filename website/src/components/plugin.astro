@@ -7,7 +7,7 @@ import PluginDownloadChart from './svelte/pluginDownloadChart.svelte';
 import { getPluginDownloadsWeekly } from '../../../src/plugin/data';
 import { PluginDataInterface } from '../../../src/plugin/plugin';
 import fs from 'node:fs/promises';
-import {PluginRepoData} from '../../../src/pluginRepo/types';
+import { PluginRepoData } from '../../../src/pluginRepo/types';
 
 const { plugin } = Astro.props as { plugin: PluginDataInterface };
 const pluginDownloadData = getPluginDownloadsWeekly([plugin]);
@@ -16,11 +16,11 @@ const latestReleaseDateString = plugin.versionHistory.at(-1)?.initialReleaseDate
 const latestReleaseDate = new Date(latestReleaseDateString);
 
 const outdatedDangerThreshold = new Date();
-outdatedDangerThreshold.setFullYear(outdatedDangerThreshold.getFullYear() - 1)
+outdatedDangerThreshold.setFullYear(outdatedDangerThreshold.getFullYear() - 1);
 const outdatedDanger = latestReleaseDate < outdatedDangerThreshold && !plugin.removedCommit;
 
 const outdatedWarningThreshold = new Date();
-outdatedWarningThreshold.setDate(outdatedWarningThreshold.getDate() - 120)
+outdatedWarningThreshold.setDate(outdatedWarningThreshold.getDate() - 120);
 const outdatedWarning = latestReleaseDate < outdatedWarningThreshold && !outdatedDanger && !plugin.removedCommit;
 
 const obsidianHubLink = `https://publish.obsidian.md/hub/02+-+Community+Expansions/02.05+All+Community+Expansions/Plugins/${plugin.id}`;
@@ -48,9 +48,7 @@ try {
 {
 	outdatedWarning && (
 		<Aside variant="caution" title="Inactivity Warning">
-			<p>
-				The latest version of this plugin was released on the {latestReleaseDateString} and is thus more than 120 days old.
-			</p>
+			<p>The latest version of this plugin was released on the {latestReleaseDateString} and is thus more than 120 days old.</p>
 		</Aside>
 	)
 }
@@ -59,8 +57,8 @@ try {
 	outdatedDanger && (
 		<Aside variant="danger" title="Inactivity Danger">
 			<p>
-				The latest version of this plugin was released on the {latestReleaseDateString} and is thus more than a year old.
-				There is a high chance that this plugin is no longer maintained.
+				The latest version of this plugin was released on the {latestReleaseDateString} and is thus more than a year old. There is a high chance that this
+				plugin is no longer maintained.
 			</p>
 		</Aside>
 	)
@@ -88,13 +86,17 @@ try {
 			<td>Official Release Date</td>
 			<td><Commit commit={plugin.addedCommit} /></td>
 		</tr>
+		<tr>
+			<td>Last update</td>
+			<td>{latestReleaseDateString}</td>
+		</tr>
 	</tbody>
 </table>
 
 <h3>View this Plugin on Other Sites</h3>
 
 <table>
-    <tbody>
+	<tbody>
 		<tr>
 			<td>GitHub Repo</td>
 			<td><GithubLink repo={plugin.currentEntry.repo} /></td>
@@ -107,18 +109,14 @@ try {
 			<td>Obsidian Hub Link</td>
 			<td><a href={obsidianHubLink} target="_blank">View on the Obsidian Hub</a></td>
 		</tr>
-    </tbody>
+	</tbody>
 </table>
 
-<p>
-    Links for removed plugins might not work.
-</p>
+<p>Links for removed plugins might not work.</p>
 
 <h3>Data Changes</h3>
 
-<p>
-	This is a list of changes made to the plugin entry in the community list.
-</p>
+<p>This is a list of changes made to the plugin entry in the community list.</p>
 
 <table>
 	<thead>
@@ -147,56 +145,122 @@ try {
 
 <h2>Repo Data</h2>
 
-{repoData ?
-<>
-    <p>
-        This data is extracted from the plugin's GitHub repository. This data might not be updated as frequently as the other data on this page.
-    </p>
+{
+	repoData ? (
+		<>
+			<p>This data is extracted from the plugin's GitHub repository. This data might not be updated as frequently as the other data on this page.</p>
 
-    <table>
-        <tbody>
-			<tr>
-				<td>Package Manager</td>
-				<td>{repoData.packageManager ?? 'Unknown (no lock file found)'}</td>
-			</tr>
-            <tr>
-                <td>Uses Typescript</td>
-				<td>{repoData.usesTypescript ? "true" : <>No <code>.ts</code> or <code>.tsx</code> files found</>}</td>
-            </tr>
-            <tr>
-                <td>Installed Bundlers</td>
-                <td>{repoData.hasPackageJson ? (repoData.installedBundlers.length === 0 ? "none" : repoData.installedBundlers.join(', ')) : <>No <code>package.json</code> found</>}</td>
-            </tr>
-			<tr>
-				<td>Installed Testing Frameworks</td>
-				<td>{repoData.hasPackageJson ? (repoData.installedTestingFrameworks.length === 0 ? "none" : repoData.installedTestingFrameworks.join(', ')) : <>No <code>package.json</code> found</>}</td>
-			</tr>
-			<tr>
-				<td>Has Test Files</td>
-				<td>{repoData.hasPackageJson ? (repoData.hasTestFiles ? "true" : "false") : <>No <code>package.json</code> found</>}</td>
-			</tr>
-			<tr>
-				<td>Dependencies</td>
-				<td>{repoData.hasPackageJson ? repoData.dependencies.sort().join(', ') : <>No <code>package.json</code> found</>}</td>
-			</tr>
-			<tr>
-				<td>Dev Dependencies</td>
-				<td>{repoData.hasPackageJson ? repoData.devDependencies.sort().join(', ') : <>No <code>package.json</code> found</>}</td>
-			</tr>
-        </tbody>
-    </table>
+			<table>
+				<tbody>
+					<tr>
+						<td>Package Manager</td>
+						<td>{repoData.packageManager ?? 'Unknown (no lock file found)'}</td>
+					</tr>
+					<tr>
+						<td>Uses Typescript</td>
+						<td>
+							{repoData.usesTypescript ? (
+								'true'
+							) : (
+								<>
+									No <code>.ts</code> or <code>.tsx</code> files found
+								</>
+							)}
+						</td>
+					</tr>
+					<tr>
+						<td>Installed Bundlers</td>
+						<td>
+							{repoData.hasPackageJson ? (
+								repoData.installedBundlers.length === 0 ? (
+									'none'
+								) : (
+									repoData.installedBundlers.join(', ')
+								)
+							) : (
+								<>
+									No <code>package.json</code> found
+								</>
+							)}
+						</td>
+					</tr>
+					<tr>
+						<td>Installed Testing Frameworks</td>
+						<td>
+							{repoData.hasPackageJson ? (
+								repoData.installedTestingFrameworks.length === 0 ? (
+									'none'
+								) : (
+									repoData.installedTestingFrameworks.join(', ')
+								)
+							) : (
+								<>
+									No <code>package.json</code> found
+								</>
+							)}
+						</td>
+					</tr>
+					<tr>
+						<td>Has Test Files</td>
+						<td>
+							{repoData.hasPackageJson ? (
+								repoData.hasTestFiles ? (
+									'true'
+								) : (
+									'false'
+								)
+							) : (
+								<>
+									No <code>package.json</code> found
+								</>
+							)}
+						</td>
+					</tr>
+					<tr>
+						<td>Uses BRAT beta releases</td>
+						<td>{repoData.hasBetaManifest ? 'true' : 'false'}</td>
+					</tr>
+					<tr>
+						<td>Dependencies</td>
+						<td>
+							{repoData.hasPackageJson ? (
+								repoData.dependencies.sort().join(', ')
+							) : (
+								<>
+									No <code>package.json</code> found
+								</>
+							)}
+						</td>
+					</tr>
+					<tr>
+						<td>Dev Dependencies</td>
+						<td>
+							{repoData.hasPackageJson ? (
+								repoData.devDependencies.sort().join(', ')
+							) : (
+								<>
+									No <code>package.json</code> found
+								</>
+							)}
+						</td>
+					</tr>
+				</tbody>
+			</table>
 
-    <p>
-        <i>Has Test Files</i> looks for files ending in <code>.test.js</code>, <code>.test.ts</code>, <code>.spec.js</code> or <code>.spec.ts</code>.
-    </p>
-    <p>
-        <i>Installed Testing Frameworks</i> looks at installed dependencies. This does not mean that a plugin is actually using the testing framework.
-    </p>
-    <p>
-        <i>Dependencies</i> and <i>Dev Dependencies</i> only list the direct dependencies of the plugin.
-    </p>
-
-</> : <p>No data available.</p>}
+			<p>
+				<i>Has Test Files</i> looks for files ending in <code>.test.js</code>, <code>.test.ts</code>, <code>.spec.js</code> or <code>.spec.ts</code>.
+			</p>
+			<p>
+				<i>Installed Testing Frameworks</i> looks at installed dependencies. This does not mean that a plugin is actually using the testing framework.
+			</p>
+			<p>
+				<i>Dependencies</i> and <i>Dev Dependencies</i> only list the direct dependencies of the plugin.
+			</p>
+		</>
+	) : (
+		<p>No data available.</p>
+	)
+}
 
 <h2>Downloads</h2>
 
@@ -222,5 +286,3 @@ try {
 		}
 	</tbody>
 </table>
-
-

@@ -3,6 +3,7 @@ website/src/content/docs/themes/*
 
 node_modules/
 obsidian-releases/
+pluginRepos/
 
 LICENSE
 

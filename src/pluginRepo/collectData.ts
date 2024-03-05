@@ -1,3 +1,3 @@
-import {collectRepoData} from './pluginRepo.ts';
+import { collectRepoData } from './pluginRepo.ts';
 
 await collectRepoData();

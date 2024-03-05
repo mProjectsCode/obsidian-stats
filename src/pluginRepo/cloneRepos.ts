@@ -1,3 +1,3 @@
-import {clonePluginRepos} from './pluginRepo.ts';
+import { clonePluginRepos } from './pluginRepo.ts';
 
 await clonePluginRepos();
