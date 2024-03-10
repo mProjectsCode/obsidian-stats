@@ -1861,6 +1861,10 @@
             "date": "2020-11-24",
             "hash": "1633756ea63351eaf300d54d43cc1a6e27bdc147"
         },
+        "removedCommit": {
+            "date": "2024-03-04",
+            "hash": "98085aa0c5e34cf4faa455acf84440dfccc400b9"
+        },
         "initialEntry": {
             "name": "Molecule",
             "author": "Manas Sadasivuni",
@@ -1885,6 +1889,15 @@
                 "commit": {
                     "date": "2020-11-24",
                     "hash": "1633756ea63351eaf300d54d43cc1a6e27bdc147"
+                },
+                "oldValue": "",
+                "newValue": ""
+            },
+            {
+                "property": "Theme Removed",
+                "commit": {
+                    "date": "2024-03-04",
+                    "hash": "98085aa0c5e34cf4faa455acf84440dfccc400b9"
                 },
                 "oldValue": "",
                 "newValue": ""
@@ -2683,6 +2696,10 @@
             "date": "2021-03-18",
             "hash": "fee5ed91f22aad28aae366d08308d50cbeeb851b"
         },
+        "removedCommit": {
+            "date": "2024-03-04",
+            "hash": "98085aa0c5e34cf4faa455acf84440dfccc400b9"
+        },
         "initialEntry": {
             "name": "Vileplume",
             "author": "Hung-Su Nguyen",
@@ -2739,6 +2756,15 @@
                     "hash": "177f1d940bd94b7ba7eb65a96670465638be7782"
                 },
                 "oldValue": "main"
+            },
+            {
+                "property": "Theme Removed",
+                "commit": {
+                    "date": "2024-03-04",
+                    "hash": "98085aa0c5e34cf4faa455acf84440dfccc400b9"
+                },
+                "oldValue": "",
+                "newValue": ""
             }
         ]
     },
@@ -4326,6 +4352,10 @@
             "date": "2021-10-15",
             "hash": "eea3823d5f492c630ad603a18661f8f101cd7aad"
         },
+        "removedCommit": {
+            "date": "2024-03-04",
+            "hash": "98085aa0c5e34cf4faa455acf84440dfccc400b9"
+        },
         "initialEntry": {
             "name": "Agora",
             "author": "Seraaron",
@@ -4364,6 +4394,15 @@
                     "hash": "177f1d940bd94b7ba7eb65a96670465638be7782"
                 },
                 "oldValue": "main"
+            },
+            {
+                "property": "Theme Removed",
+                "commit": {
+                    "date": "2024-03-04",
+                    "hash": "98085aa0c5e34cf4faa455acf84440dfccc400b9"
+                },
+                "oldValue": "",
+                "newValue": ""
             }
         ]
     },
@@ -4537,6 +4576,10 @@
             "date": "2021-10-21",
             "hash": "85e39b01237d5d44643b5fc442f56442ba6eb6e4"
         },
+        "removedCommit": {
+            "date": "2024-03-04",
+            "hash": "98085aa0c5e34cf4faa455acf84440dfccc400b9"
+        },
         "initialEntry": {
             "name": "Slytherin",
             "author": "Zarkov",
@@ -4573,6 +4616,15 @@
                     "hash": "177f1d940bd94b7ba7eb65a96670465638be7782"
                 },
                 "oldValue": "main"
+            },
+            {
+                "property": "Theme Removed",
+                "commit": {
+                    "date": "2024-03-04",
+                    "hash": "98085aa0c5e34cf4faa455acf84440dfccc400b9"
+                },
+                "oldValue": "",
+                "newValue": ""
             }
         ]
     },
@@ -8128,6 +8180,10 @@
             "date": "2022-12-07",
             "hash": "e3639196d92ddc44827b1f506a8fcccc14656af0"
         },
+        "removedCommit": {
+            "date": "2024-03-04",
+            "hash": "98085aa0c5e34cf4faa455acf84440dfccc400b9"
+        },
         "initialEntry": {
             "name": "Origami",
             "author": "kneecaps",
@@ -8166,6 +8222,15 @@
                     "hash": "e52dcea1ba983821900784b0c0d97b5916b049fb"
                 },
                 "oldValue": "main"
+            },
+            {
+                "property": "Theme Removed",
+                "commit": {
+                    "date": "2024-03-04",
+                    "hash": "98085aa0c5e34cf4faa455acf84440dfccc400b9"
+                },
+                "oldValue": "",
+                "newValue": ""
             }
         ]
     },
@@ -8376,6 +8441,10 @@
             "date": "2023-01-03",
             "hash": "4179f5fc04c7b37fc5fad7f72400332a50a5bda6"
         },
+        "removedCommit": {
+            "date": "2024-03-04",
+            "hash": "98085aa0c5e34cf4faa455acf84440dfccc400b9"
+        },
         "initialEntry": {
             "name": "Wikipedia",
             "author": "Ha'ani Whitlock",
@@ -8422,6 +8491,15 @@
                     "hash": "e52dcea1ba983821900784b0c0d97b5916b049fb"
                 },
                 "oldValue": "main"
+            },
+            {
+                "property": "Theme Removed",
+                "commit": {
+                    "date": "2024-03-04",
+                    "hash": "98085aa0c5e34cf4faa455acf84440dfccc400b9"
+                },
+                "oldValue": "",
+                "newValue": ""
             }
         ]
     },
@@ -9985,6 +10063,10 @@
             "date": "2023-04-12",
             "hash": "52a7bcb6fe5aec69c28e2869805559fe76577680"
         },
+        "removedCommit": {
+            "date": "2024-03-04",
+            "hash": "98085aa0c5e34cf4faa455acf84440dfccc400b9"
+        },
         "initialEntry": {
             "name": "Serenity",
             "author": "Ha'ani Whitlock",
@@ -10011,6 +10093,15 @@
                 "commit": {
                     "date": "2023-04-12",
                     "hash": "52a7bcb6fe5aec69c28e2869805559fe76577680"
+                },
+                "oldValue": "",
+                "newValue": ""
+            },
+            {
+                "property": "Theme Removed",
+                "commit": {
+                    "date": "2024-03-04",
+                    "hash": "98085aa0c5e34cf4faa455acf84440dfccc400b9"
                 },
                 "oldValue": "",
                 "newValue": ""
@@ -10737,6 +10828,10 @@
             "date": "2023-06-27",
             "hash": "1e5ac4256794f7a47bf98ba93e149b788f090e23"
         },
+        "removedCommit": {
+            "date": "2024-03-04",
+            "hash": "98085aa0c5e34cf4faa455acf84440dfccc400b9"
+        },
         "initialEntry": {
             "name": "gummy",
             "author": "kneecaps",
@@ -10763,6 +10858,15 @@
                 "commit": {
                     "date": "2023-06-27",
                     "hash": "1e5ac4256794f7a47bf98ba93e149b788f090e23"
+                },
+                "oldValue": "",
+                "newValue": ""
+            },
+            {
+                "property": "Theme Removed",
+                "commit": {
+                    "date": "2024-03-04",
+                    "hash": "98085aa0c5e34cf4faa455acf84440dfccc400b9"
                 },
                 "oldValue": "",
                 "newValue": ""
@@ -12571,6 +12675,84 @@
                 "commit": {
                     "date": "2024-02-28",
                     "hash": "f84b71bd9f3b2f95bd26f9ff716c8ad3fe694eb3"
+                },
+                "oldValue": "",
+                "newValue": ""
+            }
+        ]
+    },
+    {
+        "id": "toms-theme",
+        "name": "Tom's Theme",
+        "addedCommit": {
+            "date": "2024-03-04",
+            "hash": "9d2ce07d9f226665ef6a03f816b7089a51cead47"
+        },
+        "initialEntry": {
+            "name": "Tom's Theme",
+            "author": "Tom Kay",
+            "repo": "tomkaygames/Tom-s-Theme",
+            "screenshot": "screenshot.png",
+            "modes": [
+                "dark",
+                "light"
+            ]
+        },
+        "currentEntry": {
+            "name": "Tom's Theme",
+            "author": "Tom Kay",
+            "repo": "tomkaygames/Tom-s-Theme",
+            "screenshot": "screenshot.png",
+            "modes": [
+                "dark",
+                "light"
+            ]
+        },
+        "changeHistory": [
+            {
+                "property": "Theme Added",
+                "commit": {
+                    "date": "2024-03-04",
+                    "hash": "9d2ce07d9f226665ef6a03f816b7089a51cead47"
+                },
+                "oldValue": "",
+                "newValue": ""
+            }
+        ]
+    },
+    {
+        "id": "soloing",
+        "name": "Soloing",
+        "addedCommit": {
+            "date": "2024-03-08",
+            "hash": "27ea10baac6579576e69090e8909d0f298ca1478"
+        },
+        "initialEntry": {
+            "name": "Soloing",
+            "author": "Isax785",
+            "repo": "isax785/obsidian-soloing",
+            "screenshot": "img/soloing_small.png",
+            "modes": [
+                "dark",
+                "light"
+            ]
+        },
+        "currentEntry": {
+            "name": "Soloing",
+            "author": "Isax785",
+            "repo": "isax785/obsidian-soloing",
+            "screenshot": "img/soloing_small.png",
+            "modes": [
+                "dark",
+                "light"
+            ]
+        },
+        "changeHistory": [
+            {
+                "property": "Theme Added",
+                "commit": {
+                    "date": "2024-03-08",
+                    "hash": "27ea10baac6579576e69090e8909d0f298ca1478"
                 },
                 "oldValue": "",
                 "newValue": ""
