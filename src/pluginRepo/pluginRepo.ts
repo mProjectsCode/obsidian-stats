@@ -1,9 +1,10 @@
 import { PLUGIN_DATA_PATH } from '../constants.ts';
 import { PluginDataInterface } from '../plugin/plugin.ts';
 import fs from 'node:fs/promises';
-import { $ } from '../shellUtils.ts';
+import {$, Verboseness} from '../shellUtils.ts';
 import { arrayIntersect, uniqueConcat } from '../utils.ts';
 import { PluginRepoData } from './types.ts';
+import CliProgress from 'cli-progress';
 
 export async function clonePluginRepos() {
 	const pluginData = (await Bun.file(PLUGIN_DATA_PATH).json()) as PluginDataInterface[];
@@ -14,17 +15,27 @@ export async function clonePluginRepos() {
 	const skippedPlugins = [];
 	const failedPlugins = [];
 
+	console.log('Starting Cloning Repos');
+
+	const progress = new CliProgress.SingleBar({}, CliProgress.Presets.rect);
+	progress.start(pluginData.length, 0);
+
 	for (const plugin of pluginData) {
 		if (plugin.removedCommit) {
 			skippedPlugins.push(plugin.id);
 			continue;
 		}
 
-		const cloneRes = await $(`git clone https://github.com/${plugin.currentEntry.repo}.git pluginRepos/repos/${plugin.id} --depth 1`);
-		if (cloneRes.stderr) {
+		const res = await $(`git clone https://github.com/${plugin.currentEntry.repo}.git pluginRepos/repos/${plugin.id} --depth 1`, undefined, Verboseness.QUITET)
+
+		progress.increment();
+
+		if (res.stderr) {
 			failedPlugins.push(plugin.id);
 		}
 	}
+
+	progress.stop();
 
 	console.log('Finished cloning repos');
 
