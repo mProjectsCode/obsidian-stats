@@ -212,3 +212,7 @@ export function uniqueConcat<T>(a: T[], b: T[]): T[] {
 export function arrayIntersect<T>(a: T[], b: T[]): T[] {
 	return a.filter(x => b.includes(x));
 }
+
+export function encodeName(name: string): string {
+	return JSON.stringify(name).slice(1, -1);
+}

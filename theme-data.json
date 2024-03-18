@@ -12797,5 +12797,42 @@
                 "newValue": ""
             }
         ]
+    },
+    {
+        "id": "focus",
+        "name": "Focus",
+        "addedCommit": {
+            "date": "2024-03-18",
+            "hash": "2e6692840a0652cd76301c756ca9d2274161a87f"
+        },
+        "initialEntry": {
+            "name": "Focus",
+            "author": "Moritz Jung",
+            "repo": "mProjectsCode/obsidian-focus-theme",
+            "screenshot": "FocusThemeImage.png",
+            "modes": [
+                "dark"
+            ]
+        },
+        "currentEntry": {
+            "name": "Focus",
+            "author": "Moritz Jung",
+            "repo": "mProjectsCode/obsidian-focus-theme",
+            "screenshot": "FocusThemeImage.png",
+            "modes": [
+                "dark"
+            ]
+        },
+        "changeHistory": [
+            {
+                "property": "Theme Added",
+                "commit": {
+                    "date": "2024-03-18",
+                    "hash": "2e6692840a0652cd76301c756ca9d2274161a87f"
+                },
+                "oldValue": "",
+                "newValue": ""
+            }
+        ]
     }
 ]

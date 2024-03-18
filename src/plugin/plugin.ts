@@ -58,6 +58,7 @@ export class PluginData {
 	changeHistory: EntryChange[];
 	downloadHistory: DownloadHistory;
 	versionHistory: VersionHistory[];
+	#versionHistoryMap: Map<string, VersionHistory>;
 
 	constructor(id: string, addedCommit: Commit, initialEntry: PluginListEntry) {
 		this.id = id;
@@ -74,6 +75,8 @@ export class PluginData {
 		];
 		this.versionHistory = [];
 		this.downloadHistory = {};
+
+		this.#versionHistoryMap = new Map();
 	}
 
 	addChange(change: EntryChange) {
@@ -156,9 +159,8 @@ export class PluginData {
 				continue;
 			}
 
-			const versionHistory = this.versionHistory.find(x => x.version === version);
-			if (versionHistory === undefined) {
-				this.versionHistory.push({
+			if (!this.#versionHistoryMap.has(version)) {
+				this.#versionHistoryMap.set(version, {
 					version: version,
 					initialReleaseDate: pluginDownloadStats.getDateString(),
 				});
@@ -167,6 +169,7 @@ export class PluginData {
 	}
 
 	sortVersionHistory() {
+		this.versionHistory = Array.from(this.#versionHistoryMap.values());
 		this.versionHistory.sort((a, b) => (Version.lessThan(Version.fromString(a.version), Version.fromString(b.version)) ? -1 : 1));
 	}
 }

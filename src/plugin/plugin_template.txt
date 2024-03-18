@@ -1,6 +1,6 @@
 ---
-title: PLUGIN_ID
-description: Page for the PLUGIN_ID plugin.
+title: "PLUGIN_NAME"
+description: "Page for the PLUGIN_NAME plugin."
 ---
 
 import Plugin from '../../../components/plugin.astro';

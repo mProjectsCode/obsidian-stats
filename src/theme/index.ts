@@ -3,7 +3,7 @@ import { Commit } from '../types.ts';
 import { ThemeData, ThemeList } from './theme.ts';
 import CliProgress from 'cli-progress';
 
-import { gitLogToCommits } from '../utils.ts';
+import {encodeName, gitLogToCommits} from '../utils.ts';
 
 import {
 	THEME_LIST_PATH,
@@ -13,7 +13,7 @@ import {
 	THEME_TEMPLATE_REPLACEMENT_STRING,
 	THEME_TEMPLATE_REPLACEMENT_STRING_JSON,
 	THEME_TEMPLATE_OUTPUT_PATH,
-	PLUGIN_LIST_PATH,
+	PLUGIN_LIST_PATH, THEME_TEMPLATE_REPLACEMENT_STRING_NAME,
 } from '../constants.ts';
 
 async function getThemeListChanges(): Promise<Commit[]> {
@@ -106,6 +106,7 @@ export async function buildThemeStats() {
 
 	for (const theme of themeData) {
 		let output = template.replaceAll(THEME_TEMPLATE_REPLACEMENT_STRING, theme.name);
+		output = output.replaceAll(THEME_TEMPLATE_REPLACEMENT_STRING_NAME, encodeName(theme.currentEntry.name));
 		output = output.replaceAll(THEME_TEMPLATE_REPLACEMENT_STRING_JSON, JSON.stringify(theme));
 		const outputFile = Bun.file(`${THEME_TEMPLATE_OUTPUT_PATH}/${theme.id}.mdx`);
 		await Bun.write(outputFile, output);

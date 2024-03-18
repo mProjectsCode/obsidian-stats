@@ -15,10 +15,12 @@ export const OBSIDIAN_RELEASES_FULL_PATH = `${process.cwd()}/${OBSIDIAN_RELEASES
 
 export const PLUGIN_TEMPLATE_FILE_PATH = 'src/plugin/plugin_template.txt';
 export const PLUGIN_TEMPLATE_REPLACEMENT_STRING = 'PLUGIN_ID';
+export const PLUGIN_TEMPLATE_REPLACEMENT_STRING_NAME = 'PLUGIN_NAME';
 export const PLUGIN_TEMPLATE_REPLACEMENT_STRING_JSON = 'PLUGIN_JSON';
 export const PLUGIN_TEMPLATE_OUTPUT_PATH = 'website/src/content/docs/plugins';
 
 export const THEME_TEMPLATE_FILE_PATH = 'src/theme/theme_template.txt';
 export const THEME_TEMPLATE_REPLACEMENT_STRING = 'THEME_ID';
+export const THEME_TEMPLATE_REPLACEMENT_STRING_NAME = 'THEME_NAME';
 export const THEME_TEMPLATE_REPLACEMENT_STRING_JSON = 'THEME_JSON';
 export const THEME_TEMPLATE_OUTPUT_PATH = 'website/src/content/docs/themes';

@@ -1,7 +1,7 @@
 import { PLUGIN_DATA_PATH } from '../constants.ts';
 import { PluginDataInterface } from '../plugin/plugin.ts';
 import fs from 'node:fs/promises';
-import {$, Verboseness} from '../shellUtils.ts';
+import { $, Verboseness } from '../shellUtils.ts';
 import { arrayIntersect, uniqueConcat } from '../utils.ts';
 import { PluginRepoData } from './types.ts';
 import CliProgress from 'cli-progress';
@@ -26,7 +26,7 @@ export async function clonePluginRepos() {
 			continue;
 		}
 
-		const res = await $(`git clone https://github.com/${plugin.currentEntry.repo}.git pluginRepos/repos/${plugin.id} --depth 1`, undefined, Verboseness.QUITET)
+		const res = await $(`git clone https://github.com/${plugin.currentEntry.repo}.git pluginRepos/repos/${plugin.id} --depth 1`, undefined, Verboseness.QUITET);
 
 		progress.increment();
 
