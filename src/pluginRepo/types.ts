@@ -10,4 +10,5 @@ export interface PluginRepoData {
 	hasTestFiles: boolean;
 	hasBetaManifest: boolean;
 	fileCounts: Record<string, number>;
+	license: string | undefined;
 }

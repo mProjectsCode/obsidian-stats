@@ -92,6 +92,7 @@ export async function collectRepoData() {
 			hasTestFiles: false,
 			hasBetaManifest: false,
 			fileCounts: {},
+			license: undefined,
 		};
 
 		const files = await listFiles(repoPath);
@@ -142,9 +143,9 @@ export async function collectRepoData() {
 			const bundlers: string[] = ['esbuild', 'rollup', 'webpack', 'vite', 'turbo'];
 
 			data.installedBundlers = arrayIntersect(bundlers, allDependencyNames);
-		}
 
-		console.log(data);
+			data.license = packageJson.license;
+		}
 
 		const writeFile = Bun.file(`pluginRepos/data/${plugin.id}.json`);
 		await Bun.write(writeFile, JSON.stringify(data));

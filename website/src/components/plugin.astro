@@ -153,6 +153,10 @@ try {
 			<table>
 				<tbody>
 					<tr>
+						<td>License (from <code>package.json</code>)</td>
+						<td>{repoData.license ?? 'No license found'}</td>
+					</tr>
+					<tr>
 						<td>Package Manager</td>
 						<td>{repoData.packageManager ?? 'Unknown (no lock file found)'}</td>
 					</tr>
