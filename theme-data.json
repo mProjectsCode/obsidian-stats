@@ -12873,5 +12873,118 @@
                 "newValue": ""
             }
         ]
+    },
+    {
+        "id": "moonstone",
+        "name": "Moonstone",
+        "addedCommit": {
+            "date": "2024-03-26",
+            "hash": "a023bc23822b82fa304d43de8279b55afad49994"
+        },
+        "initialEntry": {
+            "name": "Moonstone",
+            "author": "Erin Skidds",
+            "repo": "dudethatserin/moonstone",
+            "screenshot": "screenshot.png",
+            "modes": [
+                "dark"
+            ]
+        },
+        "currentEntry": {
+            "name": "Moonstone",
+            "author": "Erin Skidds",
+            "repo": "dudethatserin/moonstone",
+            "screenshot": "screenshot.png",
+            "modes": [
+                "dark"
+            ]
+        },
+        "changeHistory": [
+            {
+                "property": "Theme Added",
+                "commit": {
+                    "date": "2024-03-26",
+                    "hash": "a023bc23822b82fa304d43de8279b55afad49994"
+                },
+                "oldValue": "",
+                "newValue": ""
+            }
+        ]
+    },
+    {
+        "id": "tiniri",
+        "name": "Tiniri",
+        "addedCommit": {
+            "date": "2024-03-26",
+            "hash": "6de031199ca3ae18bbafdf88074114d08c9c78e3"
+        },
+        "initialEntry": {
+            "name": "Tiniri",
+            "author": "Vlad.studio",
+            "repo": "vladstudio/tiniri-obsidian",
+            "screenshot": "screenshot.png",
+            "modes": [
+                "dark",
+                "light"
+            ]
+        },
+        "currentEntry": {
+            "name": "Tiniri",
+            "author": "Vlad.studio",
+            "repo": "vladstudio/tiniri-obsidian",
+            "screenshot": "screenshot.png",
+            "modes": [
+                "dark",
+                "light"
+            ]
+        },
+        "changeHistory": [
+            {
+                "property": "Theme Added",
+                "commit": {
+                    "date": "2024-03-26",
+                    "hash": "6de031199ca3ae18bbafdf88074114d08c9c78e3"
+                },
+                "oldValue": "",
+                "newValue": ""
+            }
+        ]
+    },
+    {
+        "id": "kurokula",
+        "name": "Kurokula",
+        "addedCommit": {
+            "date": "2024-03-26",
+            "hash": "b95ca5b103f1a1de66cdf21fcde1d17e02150a5b"
+        },
+        "initialEntry": {
+            "name": "Kurokula",
+            "author": "indyandie",
+            "repo": "Indyandie/kurokula-obsidian-theme",
+            "screenshot": "dark.png",
+            "modes": [
+                "dark"
+            ]
+        },
+        "currentEntry": {
+            "name": "Kurokula",
+            "author": "indyandie",
+            "repo": "Indyandie/kurokula-obsidian-theme",
+            "screenshot": "dark.png",
+            "modes": [
+                "dark"
+            ]
+        },
+        "changeHistory": [
+            {
+                "property": "Theme Added",
+                "commit": {
+                    "date": "2024-03-26",
+                    "hash": "b95ca5b103f1a1de66cdf21fcde1d17e02150a5b"
+                },
+                "oldValue": "",
+                "newValue": ""
+            }
+        ]
     }
 ]
