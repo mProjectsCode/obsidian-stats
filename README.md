@@ -1,15 +1,13 @@
-# .
+# Obsidian Stats
 
-To install dependencies:
+A stats website for the Obsidian Eco-System.
 
-```bash
-bun install
-```
+https://www.moritzjung.dev/obsidian-stats/
 
-To run:
+## Credits
 
-```bash
-bun run index.ts
-```
+I want to thank the following people:
 
-This project was created using `bun init` in bun v1.0.17. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.
+- Fevol for his work on parsing Obsidian release data
+- joethei for answering all my questions about plugin and theme releases
+- The Astro team for their work on Astro and Starlight
