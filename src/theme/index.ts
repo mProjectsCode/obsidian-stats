@@ -3,7 +3,7 @@ import { Commit } from '../types.ts';
 import { ThemeData, ThemeList } from './theme.ts';
 import CliProgress from 'cli-progress';
 
-import {encodeName, gitLogToCommits} from '../utils.ts';
+import { encodeName, gitLogToCommits } from '../utils.ts';
 
 import {
 	THEME_LIST_PATH,
@@ -13,7 +13,8 @@ import {
 	THEME_TEMPLATE_REPLACEMENT_STRING,
 	THEME_TEMPLATE_REPLACEMENT_STRING_JSON,
 	THEME_TEMPLATE_OUTPUT_PATH,
-	PLUGIN_LIST_PATH, THEME_TEMPLATE_REPLACEMENT_STRING_NAME,
+	PLUGIN_LIST_PATH,
+	THEME_TEMPLATE_REPLACEMENT_STRING_NAME,
 } from '../constants.ts';
 
 async function getThemeListChanges(): Promise<Commit[]> {

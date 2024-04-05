@@ -1,7 +1,7 @@
 import { $, Verboseness } from '../shellUtils.ts';
 import { PluginData, PluginDownloadStats, PluginList } from './plugin.ts';
 import CliProgress from 'cli-progress';
-import {encodeName, gitLogToCommits} from '../utils.ts';
+import { encodeName, gitLogToCommits } from '../utils.ts';
 import { Commit } from '../types.ts';
 
 import {
@@ -12,7 +12,8 @@ import {
 	PLUGIN_TEMPLATE_FILE_PATH,
 	PLUGIN_TEMPLATE_REPLACEMENT_STRING,
 	PLUGIN_TEMPLATE_REPLACEMENT_STRING_JSON,
-	PLUGIN_TEMPLATE_OUTPUT_PATH, PLUGIN_TEMPLATE_REPLACEMENT_STRING_NAME,
+	PLUGIN_TEMPLATE_OUTPUT_PATH,
+	PLUGIN_TEMPLATE_REPLACEMENT_STRING_NAME,
 } from '../constants.ts';
 import { CDate } from '../date.ts';
 

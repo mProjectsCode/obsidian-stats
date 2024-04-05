@@ -216,3 +216,17 @@ export function arrayIntersect<T>(a: T[], b: T[]): T[] {
 export function encodeName(name: string): string {
 	return JSON.stringify(name).slice(1, -1);
 }
+
+export function groupBy<T, K extends keyof any>(list: T[], getKey: (item: T) => K): Record<K, T[]> {
+	return list.reduce<Record<K, T[]>>(
+		(previous, currentItem) => {
+			const group = getKey(currentItem);
+			if (!previous[group]) {
+				previous[group] = [];
+			}
+			previous[group].push(currentItem);
+			return previous;
+		},
+		{} as Record<K, T[]>,
+	);
+}

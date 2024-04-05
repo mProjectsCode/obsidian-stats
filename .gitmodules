@@ -1,3 +1,6 @@
 [submodule "obsidian-releases"]
 	path = obsidian-releases
 	url = https://github.com/obsidianmd/obsidian-releases
+[submodule "choosealicense.com"]
+	path = choosealicense.com
+	url = https://github.com/github/choosealicense.com

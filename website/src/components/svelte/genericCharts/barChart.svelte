@@ -11,6 +11,8 @@
 	export let showDatalabels = false;
 	export let seriesName = '';
 	export let seriesName2 = '';
+	export let aspectRatio = 1;
+	export let logScale = false;
 
 	export let colors = [
 		'rgba(255, 99, 132, 1)', // Red
@@ -78,6 +80,8 @@
 							},
 						},
 						y: {
+							min: logScale ? 1 : 0,
+							type: logScale ? 'logarithmic' : 'linear',
 							grid: {
 								color: chartStyle.line,
 							},
@@ -97,7 +101,7 @@
 							},
 						},
 					},
-					aspectRatio: 1,
+					aspectRatio: aspectRatio,
 				},
 			});
 		});
@@ -110,14 +114,14 @@
 	});
 </script>
 
-<div class="chart-wrapper">
+<div class="chart-wrapper" style="--aspect-ratio: {aspectRatio}">
 	<canvas bind:this={downloadChartEl} id="release-download-chart"></canvas>
 </div>
 
 <style>
 	.chart-wrapper {
 		width: 100%;
-		aspect-ratio: 1;
+		aspect-ratio: var(--aspect-ratio);
 		position: relative;
 	}
 </style>

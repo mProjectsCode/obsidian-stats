@@ -49,14 +49,16 @@ export async function clonePluginRepos() {
 	}
 }
 
-async function getPackageManager(path: string): Promise<string | undefined> {
-	if (await fs.exists(`${path}/yarn.lock`)) {
+async function getPackageManager(files: string[]): Promise<string | undefined> {
+	if (files.includes(`yarn.lock`)) {
 		return 'yarn';
-	} else if (await fs.exists(`${path}/pnpm-lock.yaml`)) {
+	} else if (files.includes(`pnpm-lock.yaml`)) {
 		return 'pnpm';
-	} else if (await fs.exists(`${path}/bun.lockb`)) {
+	} else if (files.includes(`bun.lockb`)) {
 		return 'bun';
-	} else if (await fs.exists(`${path}/package-lock.json`)) {
+	} else if (files.includes(`deno.lock`)) {
+		return 'deno';
+	} else if (files.includes(`package-lock.json`)) {
 		return 'npm';
 	}
 	return undefined;
@@ -127,7 +129,7 @@ export async function collectRepoData() {
 		if (data.hasPackageJson) {
 			const packageJson = await Bun.file(`${repoPath}/package.json`).json();
 
-			data.packageManager = await getPackageManager(repoPath);
+			data.packageManager = await getPackageManager(files);
 			const dependencies: Record<string, string> = packageJson.dependencies ?? {};
 			const devDependencies: Record<string, string> = packageJson.devDependencies ?? {};
 			data.dependencies = Object.keys(dependencies);

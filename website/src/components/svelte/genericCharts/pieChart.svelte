@@ -27,6 +27,7 @@
 	];
 	export let isPercentual = false;
 	export let showDatalabels = false;
+	export let calculatePrecentages = false;
 
 	onMount(() => {
 		themeObserver = new ThemeObserver();
@@ -76,6 +77,11 @@
 									if (isPercentual) {
 										return `${context.label}: ${((100 * context.parsed) as number).toFixed(2)}%`;
 									} else {
+										if (calculatePrecentages) {
+											const total = dataPoints.reduce((acc, { value }) => acc + value, 0);
+											const percent = ((context.parsed * 100) as number) / total;
+											return `${context.label}: ${context.parsed} (${percent.toFixed(2)}%)`;
+										}
 										return `${context.label}: ${context.parsed}`;
 									}
 								},

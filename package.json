@@ -13,7 +13,8 @@
 		"format": "prettier --write ."
 	},
 	"devDependencies": {
-		"@types/bun": "latest"
+		"@types/bun": "latest",
+		"yaml": "^2.4.1"
 	},
 	"peerDependencies": {
 		"typescript": "^5.0.0"
