@@ -238,6 +238,7 @@ const hasBetaManifestChartInfo = Object.entries(hasBetaManifestInfo)
 	isPercentual={false}
 	aspectRatio={2}
 	logScale={false}
+	seriesName="Number of Plugins"
 	client:only="svelte"
 />
 
@@ -253,7 +254,15 @@ const hasBetaManifestChartInfo = Object.entries(hasBetaManifestInfo)
 
 <p>A number of plugins impose the following conditions.</p>
 
-<BarChart dataPoints={Object.values(licenseConditions)} labels={conditionsLabels} isPercentual={false} aspectRatio={2} logScale={false} client:only="svelte" />
+<BarChart
+	dataPoints={Object.values(licenseConditions)}
+	labels={conditionsLabels}
+	isPercentual={false}
+	aspectRatio={2}
+	logScale={false}
+	seriesName="Number of Plugins"
+	client:only="svelte"
+/>
 
 {
 	licenses.descriptions.conditions.map(x => (
@@ -267,7 +276,15 @@ const hasBetaManifestChartInfo = Object.entries(hasBetaManifestInfo)
 
 <p>A number of plugins impose the following limitations.</p>
 
-<BarChart dataPoints={Object.values(licenseLimitations)} labels={limitaionsLabels} isPercentual={false} aspectRatio={2} logScale={false} client:only="svelte" />
+<BarChart
+	dataPoints={Object.values(licenseLimitations)}
+	labels={limitaionsLabels}
+	isPercentual={false}
+	aspectRatio={2}
+	logScale={false}
+	seriesName="Number of Plugins"
+	client:only="svelte"
+/>
 
 {
 	licenses.descriptions.limitations.map(x => (
