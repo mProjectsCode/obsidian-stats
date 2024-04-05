@@ -8,6 +8,7 @@ import { getPluginDownloadsWeekly } from '../../../src/plugin/data';
 import { PluginDataInterface } from '../../../src/plugin/plugin';
 import fs from 'node:fs/promises';
 import { PluginRepoData } from '../../../src/pluginRepo/types';
+import { BASE_PATH } from '../utils/base';
 
 const { plugin } = Astro.props as { plugin: PluginDataInterface };
 const pluginDownloadData = getPluginDownloadsWeekly([plugin]);
@@ -28,7 +29,7 @@ const obsidianAddictLink = `https://obsidianaddict.com/plugin/${plugin.id}/`;
 
 let repoData: PluginRepoData | undefined = undefined;
 try {
-	const url = new URL(`../../../pluginRepos/data/${plugin.id}.json`, import.meta.url);
+	const url = new URL(`../../../pluginRepos/data/${plugin.id}.json`, BASE_PATH);
 	repoData = JSON.parse(await fs.readFile(url, 'utf-8'));
 } catch (e) {
 	console.log('failed to load repo data');

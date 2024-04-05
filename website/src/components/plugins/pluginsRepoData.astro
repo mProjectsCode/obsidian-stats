@@ -5,8 +5,11 @@ import BarChart from '../svelte/genericCharts/barChart.svelte';
 import fs from 'node:fs/promises';
 import { groupBy } from '../../../../src/utils';
 import { Licenses } from '../../../../src/license';
+import { BASE_PATH } from '../../utils/base';
 
-const url = new URL(`../../../../pluginRepos/data`, import.meta.url);
+// console.log(import.meta.url);
+
+const url = new URL(`../../../pluginRepos/data`, BASE_PATH);
 const repoDataFiles = await fs.readdir(url);
 const repoData: PluginRepoData[] = await Promise.all(
 	repoDataFiles.map(async file => {
@@ -100,7 +103,7 @@ const licensePermissions: Record<string, number> = {};
 const licenseConditions: Record<string, number> = {};
 const licenseLimitations: Record<string, number> = {};
 
-const licenses: Licenses = JSON.parse(await fs.readFile(new URL(`../../../../licenses.json`, import.meta.url), 'utf-8'));
+const licenses: Licenses = JSON.parse(await fs.readFile(new URL(`../../../licenses.json`, BASE_PATH), 'utf-8'));
 
 for (const permission of licenses.permissions) {
 	licensePermissions[permission] = 0;
