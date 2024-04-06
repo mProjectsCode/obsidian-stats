@@ -5,15 +5,13 @@ import BarChart from '../svelte/genericCharts/barChart.svelte';
 import fs from 'node:fs/promises';
 import { groupBy } from '../../../../src/utils';
 import { Licenses } from '../../../../src/license';
-import { BASE_PATH } from '../../utils/base';
+import {BASE_PATH, projectRelativeUrl} from '../../utils/base';
 
-// console.log(import.meta.url);
-
-const url = new URL(`../../../pluginRepos/data`, BASE_PATH);
+const url = projectRelativeUrl('../pluginRepos/data/');
 const repoDataFiles = await fs.readdir(url);
 const repoData: PluginRepoData[] = await Promise.all(
 	repoDataFiles.map(async file => {
-		const content = await fs.readFile(new URL(`${url}/${file}`), 'utf-8');
+		const content = await fs.readFile(new URL(`./${file}`, url), 'utf-8');
 		return JSON.parse(content);
 	}),
 );
@@ -103,7 +101,7 @@ const licensePermissions: Record<string, number> = {};
 const licenseConditions: Record<string, number> = {};
 const licenseLimitations: Record<string, number> = {};
 
-const licenses: Licenses = JSON.parse(await fs.readFile(new URL(`../../../licenses.json`, BASE_PATH), 'utf-8'));
+const licenses: Licenses = JSON.parse(await fs.readFile(projectRelativeUrl('../licenses.json'), 'utf-8'));
 
 for (const permission of licenses.permissions) {
 	licensePermissions[permission] = 0;

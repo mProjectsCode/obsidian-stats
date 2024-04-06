@@ -1,4 +1,5 @@
 ---
+import {projectRelativeUrl} from "../utils/base";
 // import PluginDataFile from '../../../plugin-data.json' assert { type: 'json' };
 import GithubLink from './githubLink.astro';
 import Commit from './commit.astro';
@@ -29,7 +30,7 @@ const obsidianAddictLink = `https://obsidianaddict.com/plugin/${plugin.id}/`;
 
 let repoData: PluginRepoData | undefined = undefined;
 try {
-	const url = new URL(`../../../pluginRepos/data/${plugin.id}.json`, BASE_PATH);
+	const url = projectRelativeUrl(`../pluginRepos/data/${plugin.id}.json`);
 	repoData = JSON.parse(await fs.readFile(url, 'utf-8'));
 } catch (e) {
 	console.log('failed to load repo data');
