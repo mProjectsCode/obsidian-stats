@@ -12994,10 +12994,6 @@
             "date": "2024-03-27",
             "hash": "a55490f48f9d13be9c3e04b2d576a49d162215e3"
         },
-        "removedCommit": {
-            "date": "2024-03-28",
-            "hash": "c32a335a951f51598d4e040bc50b8b93dd0adee1"
-        },
         "initialEntry": {
             "name": "Eldritch",
             "author": "Eldritch",
@@ -13034,6 +13030,15 @@
                 },
                 "oldValue": "",
                 "newValue": ""
+            },
+            {
+                "property": "Theme Readded",
+                "commit": {
+                    "date": "2024-03-29",
+                    "hash": "84b312658e56b2ab7f01c120f4758ab71439ae7b"
+                },
+                "oldValue": "",
+                "newValue": ""
             }
         ]
     },
@@ -13043,10 +13048,6 @@
         "addedCommit": {
             "date": "2024-03-28",
             "hash": "c32a335a951f51598d4e040bc50b8b93dd0adee1"
-        },
-        "removedCommit": {
-            "date": "2024-03-28",
-            "hash": "9278950f2f366f548f1f72aa371beb4d91365456"
         },
         "initialEntry": {
             "name": "Apex",
@@ -13083,6 +13084,15 @@
                 "commit": {
                     "date": "2024-03-28",
                     "hash": "9278950f2f366f548f1f72aa371beb4d91365456"
+                },
+                "oldValue": "",
+                "newValue": ""
+            },
+            {
+                "property": "Theme Readded",
+                "commit": {
+                    "date": "2024-04-04",
+                    "hash": "aab517b6566a1c33947b63f124a69bd66ee0cc58"
                 },
                 "oldValue": "",
                 "newValue": ""
@@ -13123,6 +13133,63 @@
                 },
                 "oldValue": "",
                 "newValue": ""
+            }
+        ]
+    },
+    {
+        "id": "soothe",
+        "name": "Soothe",
+        "addedCommit": {
+            "date": "2024-03-29",
+            "hash": "84b312658e56b2ab7f01c120f4758ab71439ae7b"
+        },
+        "initialEntry": {
+            "name": "Soothe",
+            "author": "AwesomeDog",
+            "repo": "AwesomeDog/obsidian-soothe",
+            "screenshot": "dark.png",
+            "modes": [
+                "dark",
+                "light"
+            ],
+            "publish": true
+        },
+        "currentEntry": {
+            "name": "Soothe",
+            "author": "AwesomeDog",
+            "repo": "AwesomeDog/obsidian-soothe",
+            "screenshot": "preview.png",
+            "modes": [
+                "dark",
+                "light"
+            ]
+        },
+        "changeHistory": [
+            {
+                "property": "Theme Added",
+                "commit": {
+                    "date": "2024-03-29",
+                    "hash": "84b312658e56b2ab7f01c120f4758ab71439ae7b"
+                },
+                "oldValue": "",
+                "newValue": ""
+            },
+            {
+                "property": "screenshot",
+                "commit": {
+                    "date": "2024-03-29",
+                    "hash": "ec5f56db14ba8908d2c086c2b09db4b31740ff11"
+                },
+                "oldValue": "dark.png",
+                "newValue": "preview.png"
+            },
+            {
+                "property": "publish",
+                "commit": {
+                    "date": "2024-03-29",
+                    "hash": "ec5f56db14ba8908d2c086c2b09db4b31740ff11"
+                },
+                "oldValue": true
             }
         ]
     }
