@@ -2,9 +2,13 @@
 import GithubLink from './githubLink.astro';
 import Commit from './commit.astro';
 import Aside from './aside.astro';
-import { ThemeDataInterface } from '../../../src/theme';
+import { ThemeDataInterface } from '../../../src/theme/theme';
 
 const { theme } = Astro.props as { theme: ThemeDataInterface };
+
+// does not work, as this does not exist for themes
+// const obsidianLink = `obsidian://show-theme?name=${theme.id}`;
+const obsidianHubLink = `https://publish.obsidian.md/hub/02+-+Community+Expansions/02.05+All+Community+Expansions/Themes/${theme.id}`;
 ---
 
 {
@@ -32,17 +36,36 @@ const { theme } = Astro.props as { theme: ThemeDataInterface };
 			<td>{theme.currentEntry.modes.join(', ')}</td>
 		</tr>
 		<tr>
-			<td>GitHub Repo</td>
-			<td><GithubLink repo={theme.currentEntry.repo} /></td>
-		</tr>
-		<tr>
 			<td>Official Release Date</td>
 			<td><Commit commit={theme.addedCommit} /></td>
 		</tr>
 	</tbody>
 </table>
 
-<h2>Changes</h2>
+<h3>View this Theme on Other Sites</h3>
+
+<table>
+	<tbody>
+	<tr>
+		<td>GitHub Repo</td>
+		<td><GithubLink repo={theme.currentEntry.repo} /></td>
+	</tr>
+	<!--<tr>-->
+	<!--	<td>Obsidian Link</td>-->
+	<!--	<td><a href={obsidianLink}>View in Obsidian</a></td>-->
+	<!--</tr>-->
+	<tr>
+		<td>Obsidian Hub Link</td>
+		<td><a href={obsidianHubLink} target="_blank">View on the Obsidian Hub</a></td>
+	</tr>
+	</tbody>
+</table>
+
+<p>Links for removed themes might not work.</p>
+
+<h2>Data Changes</h2>
+
+<p>This is a list of changes made to the theme entry in the community list.</p>
 
 <table>
 	<thead>

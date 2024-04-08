@@ -1,6 +1,5 @@
 ---
 import {projectRelativeUrl} from "../utils/base";
-// import PluginDataFile from '../../../plugin-data.json' assert { type: 'json' };
 import GithubLink from './githubLink.astro';
 import Commit from './commit.astro';
 import Aside from './aside.astro';
@@ -9,7 +8,6 @@ import { getPluginDownloadsWeekly } from '../../../src/plugin/data';
 import { PluginDataInterface } from '../../../src/plugin/plugin';
 import fs from 'node:fs/promises';
 import { PluginRepoData } from '../../../src/pluginRepo/types';
-import { BASE_PATH } from '../utils/base';
 
 const { plugin } = Astro.props as { plugin: PluginDataInterface };
 const pluginDownloadData = getPluginDownloadsWeekly([plugin]);
@@ -25,6 +23,7 @@ const outdatedWarningThreshold = new Date();
 outdatedWarningThreshold.setDate(outdatedWarningThreshold.getDate() - 120);
 const outdatedWarning = latestReleaseDate < outdatedWarningThreshold && !outdatedDanger && !plugin.removedCommit;
 
+const obsidianLink = `obsidian://show-plugin?id=${plugin.id}`;
 const obsidianHubLink = `https://publish.obsidian.md/hub/02+-+Community+Expansions/02.05+All+Community+Expansions/Plugins/${plugin.id}`;
 const obsidianAddictLink = `https://obsidianaddict.com/plugin/${plugin.id}/`;
 
@@ -102,6 +101,10 @@ try {
 		<tr>
 			<td>GitHub Repo</td>
 			<td><GithubLink repo={plugin.currentEntry.repo} /></td>
+		</tr>
+		<tr>
+			<td>Obsidian Link</td>
+			<td><a href={obsidianLink}>View in Obsidian</a></td>
 		</tr>
 		<tr>
 			<td>ObsidianAddict Link</td>
