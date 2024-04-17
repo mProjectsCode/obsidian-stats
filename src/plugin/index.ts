@@ -194,6 +194,7 @@ export async function buildPluginStats(): Promise<void> {
 	updateVersionHistory(pluginData, pluginDownloadStats);
 
 	pluginData = pluginData.filter(x => x !== undefined);
+	pluginData = pluginData.filter(x => x.addedCommit.date !== x.removedCommit?.date);
 
 	console.log(`Processed all plugins, writing to ${PLUGIN_DATA_PATH}`);
 
