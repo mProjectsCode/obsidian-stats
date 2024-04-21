@@ -13327,5 +13327,44 @@
                 "newValue": ""
             }
         ]
+    },
+    {
+        "id": "penumbra",
+        "name": "Penumbra",
+        "addedCommit": {
+            "date": "2024-04-17",
+            "hash": "f918eb3d2a04e7904fdc2c8c019fb94db5d58b60"
+        },
+        "initialEntry": {
+            "name": "Penumbra",
+            "author": "Josef Bisits",
+            "repo": "jbisits/penumbra-obsidian-theme",
+            "screenshot": "screenshot_light.png",
+            "modes": [
+                "dark",
+                "light"
+            ]
+        },
+        "currentEntry": {
+            "name": "Penumbra",
+            "author": "Josef Bisits",
+            "repo": "jbisits/penumbra-obsidian-theme",
+            "screenshot": "screenshot_light.png",
+            "modes": [
+                "dark",
+                "light"
+            ]
+        },
+        "changeHistory": [
+            {
+                "property": "Theme Added",
+                "commit": {
+                    "date": "2024-04-17",
+                    "hash": "f918eb3d2a04e7904fdc2c8c019fb94db5d58b60"
+                },
+                "oldValue": "",
+                "newValue": ""
+            }
+        ]
     }
 ]
