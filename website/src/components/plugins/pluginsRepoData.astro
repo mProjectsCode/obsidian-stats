@@ -3,9 +3,9 @@ import { PluginRepoData } from '../../../../src/pluginRepo/types';
 import PieChart from '../svelte/genericCharts/pieChart.svelte';
 import BarChart from '../svelte/genericCharts/barChart.svelte';
 import fs from 'node:fs/promises';
-import {arrayIntersect, groupBy, multiGroupBy} from '../../../../src/utils';
+import { arrayIntersect, groupBy, multiGroupBy } from '../../../../src/utils';
 import { Licenses } from '../../../../src/license';
-import {BASE_PATH, projectRelativeUrl} from '../../utils/base';
+import { BASE_PATH, projectRelativeUrl } from '../../utils/base';
 
 const url = projectRelativeUrl('../pluginRepos/data/');
 const repoDataFiles = await fs.readdir(url);
@@ -239,7 +239,7 @@ const installedToolingFrameworksChartInfo = Object.entries(installedToolingFrame
 	.sort((a, b) => b.value - a.value);
 
 const mostUsedDepsInfo = multiGroupBy(repoData, x => {
-	return [...x.dependencies, ...x.devDependencies]
+	return [...x.dependencies, ...x.devDependencies];
 });
 
 const mostUsedDepsChartInfo = Object.entries(mostUsedDepsInfo)
@@ -436,9 +436,7 @@ const hasBetaManifestChartInfo = Object.entries(hasBetaManifestInfo)
 
 <h4>Developer Tooling Usage</h4>
 
-<p>
-	The distribution of developer tooling used in plugins.
-</p>
+<p>The distribution of developer tooling used in plugins.</p>
 
 <!--<PieChart dataPoints={installedBundlersChartInfo} isPercentual={false} calculatePrecentages={true} client:only="svelte" />-->
 <BarChart
@@ -454,7 +452,9 @@ const hasBetaManifestChartInfo = Object.entries(hasBetaManifestInfo)
 <h4>Testing Framework Usage</h4>
 
 <p>
-	The distribution of testing frameworks used in plugins. The testing frameworks usage is determined by the presence of dependencies in the plugins <code>package.json</code>.
+	The distribution of testing frameworks used in plugins. The testing frameworks usage is determined by the presence of dependencies in the plugins <code
+		>package.json</code
+	>.
 </p>
 
 <!--<PieChart dataPoints={installedTestingFrameworksChartInfo} isPercentual={false} calculatePrecentages={true} client:only="svelte" />-->
@@ -469,13 +469,15 @@ const hasBetaManifestChartInfo = Object.entries(hasBetaManifestInfo)
 />
 
 <p>
-	{noTestingFrameworkCount} ({(noTestingFrameworkCount * 100 / totalPluginCount).toFixed(2)}%) plugins use no testing framework.
+	{noTestingFrameworkCount} ({((noTestingFrameworkCount * 100) / totalPluginCount).toFixed(2)}%) plugins use no testing framework.
 </p>
 
 <h4>Frontend Framework Usage</h4>
 
 <p>
-	The distribution of frontend frameworks used in plugins. The frontend frameworks usage is determined by the presence of dependencies in the plugins <code>package.json</code>.
+	The distribution of frontend frameworks used in plugins. The frontend frameworks usage is determined by the presence of dependencies in the plugins <code
+		>package.json</code
+	>.
 </p>
 
 <!--<PieChart dataPoints={installedTestingFrameworksChartInfo} isPercentual={false} calculatePrecentages={true} client:only="svelte" />-->
@@ -490,43 +492,30 @@ const hasBetaManifestChartInfo = Object.entries(hasBetaManifestInfo)
 />
 
 <p>
-	{noFrontendFrameworkCount} ({(noFrontendFrameworkCount * 100 / totalPluginCount).toFixed(2)}%) plugins use no frontend framework.
+	{noFrontendFrameworkCount} ({((noFrontendFrameworkCount * 100) / totalPluginCount).toFixed(2)}%) plugins use no frontend framework.
 </p>
 
 <h4>Most Used Dependencies</h4>
 
-<p>
-	This table shows direct dependencies of all plugins, sorted by how many plugins use them.
-	Dependencies with less than 10 usages are not shown.
-</p>
+<p>This table shows direct dependencies of all plugins, sorted by how many plugins use them. Dependencies with less than 10 usages are not shown.</p>
 
 <table>
 	<thead>
 		<tr>
-			<th>
-				Name
-			</th>
-			<th>
-				Usage Count
-			</th>
-			<th>
-				Usage Percentage
-			</th>
+			<th> Name</th>
+			<th> Usage Count</th>
+			<th> Usage Percentage</th>
 		</tr>
 	</thead>
 	<tbody>
-		{limitedMostUsedDepsChartInfo.map(x =>
-			<tr>
-				<td>
-					{x.label}
-				</td>
-				<td>
-					{x.value}
-				</td>
-				<td>
-					{(x.value * 100 / totalPluginCount).toFixed(2)}%
-				</td>
-			</tr>
-		)}
+		{
+			limitedMostUsedDepsChartInfo.map(x => (
+				<tr>
+					<td>{x.label}</td>
+					<td>{x.value}</td>
+					<td>{((x.value * 100) / totalPluginCount).toFixed(2)}%</td>
+				</tr>
+			))
+		}
 	</tbody>
 </table>

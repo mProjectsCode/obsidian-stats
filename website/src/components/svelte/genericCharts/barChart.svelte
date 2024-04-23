@@ -108,7 +108,7 @@
 									const value = context.parsed.y;
 
 									if (calculatePrecentages) {
-										const percent = value * 100 / percent100;
+										const percent = (value * 100) / percent100;
 										return `${value} (${percent.toFixed(2)}%)`;
 									}
 									return `${value}`;
