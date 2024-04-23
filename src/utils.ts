@@ -230,3 +230,20 @@ export function groupBy<T, K extends keyof any>(list: T[], getKey: (item: T) => 
 		{} as Record<K, T[]>,
 	);
 }
+
+export function multiGroupBy<T, K extends keyof any>(list: T[], getKey: (item: T) => K[]): Record<K, T[]> {
+	return list.reduce<Record<K, T[]>>(
+		(previous, currentItem) => {
+			const group = getKey(currentItem);
+			for (const subGroup of group) {
+				if (!previous[subGroup]) {
+					previous[subGroup] = [];
+				}
+				previous[subGroup].push(currentItem);
+			}
+
+			return previous;
+		},
+		{} as Record<K, T[]>,
+	);
+}

@@ -199,7 +199,7 @@ export async function buildPluginStats(): Promise<void> {
 	console.log(`Processed all plugins, writing to ${PLUGIN_DATA_PATH}`);
 
 	const pluginDataFile = Bun.file(PLUGIN_DATA_PATH);
-	await Bun.write(pluginDataFile, JSON.stringify(pluginData, null, 4));
+	await Bun.write(pluginDataFile, JSON.stringify(pluginData, null, '\t'));
 
 	const templateFile = Bun.file(PLUGIN_TEMPLATE_FILE_PATH);
 	const template = await templateFile.text();

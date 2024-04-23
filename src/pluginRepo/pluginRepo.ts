@@ -138,9 +138,19 @@ export async function collectRepoData() {
 
 			allDependencies = uniqueConcat(allDependencies, allDependencyNames);
 
-			const testFrameworks: string[] = ['jest', 'mocha', 'vitest', '@types/bun'];
+			const testFrameworks: string[] = ['jest', 'mocha', 'vitest', '@types/bun', 'bun-types'];
 
-			data.installedTestingFrameworks = arrayIntersect(testFrameworks, allDependencyNames);
+			const installedTestingFrameworks = new Set(arrayIntersect(testFrameworks, allDependencyNames));
+			if (installedTestingFrameworks.has('bun-types')) {
+				installedTestingFrameworks.delete('bun-types');
+				installedTestingFrameworks.add('bun:test');
+			}
+			if (installedTestingFrameworks.has('@types/bun')) {
+				installedTestingFrameworks.delete('@types/bun');
+				installedTestingFrameworks.add('bun:test');
+			}
+
+			data.installedTestingFrameworks = Array.from(installedTestingFrameworks);
 
 			const bundlers: string[] = ['esbuild', 'rollup', 'webpack', 'vite', 'turbo'];
 

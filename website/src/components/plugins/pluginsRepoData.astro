@@ -3,7 +3,7 @@ import { PluginRepoData } from '../../../../src/pluginRepo/types';
 import PieChart from '../svelte/genericCharts/pieChart.svelte';
 import BarChart from '../svelte/genericCharts/barChart.svelte';
 import fs from 'node:fs/promises';
-import { groupBy } from '../../../../src/utils';
+import {arrayIntersect, groupBy, multiGroupBy} from '../../../../src/utils';
 import { Licenses } from '../../../../src/license';
 import {BASE_PATH, projectRelativeUrl} from '../../utils/base';
 
@@ -15,6 +15,7 @@ const repoData: PluginRepoData[] = await Promise.all(
 		return JSON.parse(content);
 	}),
 );
+const totalPluginCount = repoData.length;
 
 const licenceInfo = groupBy(repoData, x => {
 	if (x.license === null || x.license === undefined || x.license === '') {
@@ -86,7 +87,7 @@ const licenceChartSmallInfo = Object.entries(licenceInfo)
 		if (key === 'undefined') {
 			return undefined;
 		}
-		if (value.length < 100) {
+		if (value.length < 50) {
 			return {
 				label: key,
 				value: value.length,
@@ -149,24 +150,18 @@ const packageManagerChartInfo = Object.entries(packageManagerInfo)
 	})
 	.sort((a, b) => b.value - a.value);
 
-const usesTsInfo = groupBy(repoData, x => x.usesTypescript.toString());
-const usesTsChartInfo = Object.entries(usesTsInfo)
-	.map(([key, value]) => {
-		return {
-			label: key,
-			value: value.length,
-		};
-	})
-	.sort((a, b) => b.value - a.value);
+// const usesTsInfo = groupBy(repoData, x => x.usesTypescript.toString());
+// const usesTsChartInfo = Object.entries(usesTsInfo)
+// 	.map(([key, value]) => {
+// 		return {
+// 			label: key,
+// 			value: value.length,
+// 		};
+// 	})
+// 	.sort((a, b) => a.label.length - b.label.length);
 
-const installedBundlersInfo = groupBy(repoData, x => {
-	if (x.installedBundlers.length === 0) {
-		return 'No or Unknown Bundler';
-	} else if (x.installedBundlers.length === 1) {
-		return x.installedBundlers[0];
-	} else {
-		return 'Multiple Bundlers';
-	}
+const installedBundlersInfo = multiGroupBy(repoData, x => {
+	return x.installedBundlers;
 });
 const installedBundlersChartInfo = Object.entries(installedBundlersInfo)
 	.map(([key, value]) => {
@@ -177,15 +172,10 @@ const installedBundlersChartInfo = Object.entries(installedBundlersInfo)
 	})
 	.sort((a, b) => b.value - a.value);
 
-const installedTestingFrameworksInfo = groupBy(repoData, x => {
-	if (x.installedTestingFrameworks.length === 0) {
-		return 'No or Unknown Testing Framework';
-	} else if (x.installedTestingFrameworks.length === 1) {
-		return x.installedTestingFrameworks[0];
-	} else {
-		return 'Multiple Testing Frameworks';
-	}
+const installedTestingFrameworksInfo = multiGroupBy(repoData, x => {
+	return x.installedTestingFrameworks;
 });
+
 const installedTestingFrameworksChartInfo = Object.entries(installedTestingFrameworksInfo)
 	.map(([key, value]) => {
 		return {
@@ -194,6 +184,74 @@ const installedTestingFrameworksChartInfo = Object.entries(installedTestingFrame
 		};
 	})
 	.sort((a, b) => b.value - a.value);
+const noTestingFrameworkCount = repoData.filter(x => x.installedTestingFrameworks.length === 0).length;
+
+const frontendFrameworks = ['react', 'preact', 'svelte', 'vue', '@angular/core', 'solid-js'];
+const installedFrontendFrameworksInfo = multiGroupBy(repoData, x => {
+	return arrayIntersect([...x.dependencies, ...x.devDependencies], frontendFrameworks);
+});
+
+const installedFrontendFrameworksChartInfo = Object.entries(installedFrontendFrameworksInfo)
+	.map(([key, value]) => {
+		return {
+			label: key,
+			value: value.length,
+		};
+	})
+	.sort((a, b) => b.value - a.value);
+
+const noFrontendFrameworkCount = repoData.filter(x => arrayIntersect([...x.dependencies, ...x.devDependencies], frontendFrameworks).length === 0).length;
+
+const installedToolingFrameworksInfo = multiGroupBy(repoData, x => {
+	const allDeps = [...x.dependencies, ...x.devDependencies];
+	const result = new Set<string>();
+
+	if (allDeps.some(x => x.includes('eslint'))) {
+		result.add('eslint');
+	}
+
+	if (allDeps.some(x => x.includes('prettier'))) {
+		result.add('prettier');
+	}
+
+	if (allDeps.some(x => x.includes('@biomejs'))) {
+		result.add('biome');
+	}
+
+	if (allDeps.some(x => x.includes('dprint'))) {
+		result.add('dprint');
+	}
+
+	if (x.usesTypescript) {
+		result.add('typescript');
+	}
+
+	return Array.from(result);
+});
+
+const installedToolingFrameworksChartInfo = Object.entries(installedToolingFrameworksInfo)
+	.map(([key, value]) => {
+		return {
+			label: key,
+			value: value.length,
+		};
+	})
+	.sort((a, b) => b.value - a.value);
+
+const mostUsedDepsInfo = multiGroupBy(repoData, x => {
+	return [...x.dependencies, ...x.devDependencies]
+});
+
+const mostUsedDepsChartInfo = Object.entries(mostUsedDepsInfo)
+	.map(([key, value]) => {
+		return {
+			label: key,
+			value: value.length,
+		};
+	})
+	.sort((a, b) => b.value - a.value);
+
+const limitedMostUsedDepsChartInfo = mostUsedDepsChartInfo.filter(x => x.value >= 10);
 
 const hasBetaManifestInfo = groupBy(repoData, x => x.hasBetaManifest.toString());
 const hasBetaManifestChartInfo = Object.entries(hasBetaManifestInfo)
@@ -203,7 +261,7 @@ const hasBetaManifestChartInfo = Object.entries(hasBetaManifestInfo)
 			value: value.length,
 		};
 	})
-	.sort((a, b) => b.value - a.value);
+	.sort((a, b) => a.label.length - b.label.length);
 ---
 
 <h3>License Usage</h3>
@@ -216,11 +274,29 @@ const hasBetaManifestChartInfo = Object.entries(hasBetaManifestInfo)
 	> files.
 </p>
 
-<PieChart dataPoints={licenceChartInfo} isPercentual={false} calculatePrecentages={true} client:only="svelte" />
+<!--<PieChart dataPoints={licenceChartInfo} isPercentual={false} calculatePrecentages={true} client:only="svelte" />-->
+<BarChart
+	dataPoints={licenceChartInfo.map(x => x.value)}
+	labels={licenceChartInfo.map(x => x.label)}
+	logScale={false}
+	seriesName="Number of Plugins"
+	calculatePrecentages={true}
+	percent100={totalPluginCount}
+	client:only="svelte"
+/>
 
-<p>Licenses with more than 100 plugins and unknown licenses are not shown in the chart below.</p>
+<p>Licenses with more than 50 plugins and unknown licenses are not shown in the chart below.</p>
 
-<PieChart dataPoints={licenceChartSmallInfo} isPercentual={false} client:only="svelte" />
+<!--<PieChart dataPoints={licenceChartSmallInfo} isPercentual={false} client:only="svelte" />-->
+<BarChart
+	dataPoints={licenceChartSmallInfo.map(x => x.value)}
+	labels={licenceChartSmallInfo.map(x => x.label)}
+	logScale={false}
+	seriesName="Number of Plugins"
+	calculatePrecentages={true}
+	percent100={totalPluginCount}
+	client:only="svelte"
+/>
 
 <h3>License Terms</h3>
 
@@ -292,36 +368,165 @@ const hasBetaManifestChartInfo = Object.entries(hasBetaManifestInfo)
 	))
 }
 
-<h3>Typescript Usage</h3>
+<!--<h3>Typescript Usage</h3>-->
 
-<p>The number of plugins that use Typescript.</p>
+<!--<p>The number of plugins that use Typescript.</p>-->
 
-<PieChart dataPoints={usesTsChartInfo} isPercentual={false} calculatePrecentages={true} client:only="svelte" />
-
-<h3>Package Managers Used</h3>
-
-<p>The distribution of package managers used in plugins. The package manager is determined by the presence of a lockfile in the plugin repository.</p>
-
-<PieChart dataPoints={packageManagerChartInfo} isPercentual={false} calculatePrecentages={true} client:only="svelte" />
-
-<h3>Code Bundler Usage</h3>
-
-<p>
-	The distribution of code bundlers used in plugins. The bundler is determined by the presence of dependencies in the plugins <code>package.json</code>.
-</p>
-
-<PieChart dataPoints={installedBundlersChartInfo} isPercentual={false} calculatePrecentages={true} client:only="svelte" />
-
-<h3>Testing Framework Usage</h3>
-
-<p>
-	The distribution of testing frameworks used in plugins. The bundler is determined by the presence of dependencies in the plugins <code>package.json</code>.
-</p>
-
-<PieChart dataPoints={installedTestingFrameworksChartInfo} isPercentual={false} calculatePrecentages={true} client:only="svelte" />
+<!--<PieChart dataPoints={usesTsChartInfo} isPercentual={false} calculatePrecentages={true} client:only="svelte" />-->
+<!--<BarChart-->
+<!--	dataPoints={usesTsChartInfo.map(x => x.value)}-->
+<!--	labels={usesTsChartInfo.map(x => x.label)}-->
+<!--	logScale={false}-->
+<!--	aspectRatio={2}-->
+<!--	seriesName="Number of Plugins"-->
+<!--	calculatePrecentages={true}-->
+<!--	percent100={totalPluginCount}-->
+<!--	client:only="svelte"-->
+<!--/>-->
 
 <h3>BRAT Beta Manifest Usage</h3>
 
 <p>The percentage of plugins that have a BRAT beta manifest.</p>
 
-<PieChart dataPoints={hasBetaManifestChartInfo} isPercentual={false} calculatePrecentages={true} client:only="svelte" />
+<!--<PieChart dataPoints={hasBetaManifestChartInfo} isPercentual={false} calculatePrecentages={true} client:only="svelte" />-->
+<BarChart
+	dataPoints={hasBetaManifestChartInfo.map(x => x.value)}
+	labels={hasBetaManifestChartInfo.map(x => x.label)}
+	logScale={false}
+	aspectRatio={2}
+	seriesName="Number of Plugins"
+	calculatePrecentages={true}
+	percent100={totalPluginCount}
+	client:only="svelte"
+/>
+
+<h3>Dependencies</h3>
+
+<h4>Package Managers Used</h4>
+
+<p>The distribution of package managers used in plugins. The package manager is determined by the presence of a lockfile in the plugin repository.</p>
+
+<!--<PieChart dataPoints={packageManagerChartInfo} isPercentual={false} calculatePrecentages={true} client:only="svelte" />-->
+<BarChart
+	dataPoints={packageManagerChartInfo.map(x => x.value)}
+	labels={packageManagerChartInfo.map(x => x.label)}
+	logScale={false}
+	seriesName="Number of Plugins"
+	calculatePrecentages={true}
+	percent100={totalPluginCount}
+	client:only="svelte"
+/>
+
+<h4>Code Bundler Usage</h4>
+
+<p>
+	The distribution of code bundlers used in plugins. The bundler is determined by the presence of dependencies in the plugins <code>package.json</code>.
+</p>
+
+<!--<PieChart dataPoints={installedBundlersChartInfo} isPercentual={false} calculatePrecentages={true} client:only="svelte" />-->
+<BarChart
+	dataPoints={installedBundlersChartInfo.map(x => x.value)}
+	labels={installedBundlersChartInfo.map(x => x.label)}
+	logScale={false}
+	seriesName="Number of Plugins"
+	calculatePrecentages={true}
+	percent100={totalPluginCount}
+	client:only="svelte"
+/>
+
+<h4>Developer Tooling Usage</h4>
+
+<p>
+	The distribution of developer tooling used in plugins.
+</p>
+
+<!--<PieChart dataPoints={installedBundlersChartInfo} isPercentual={false} calculatePrecentages={true} client:only="svelte" />-->
+<BarChart
+	dataPoints={installedToolingFrameworksChartInfo.map(x => x.value)}
+	labels={installedToolingFrameworksChartInfo.map(x => x.label)}
+	logScale={false}
+	seriesName="Number of Plugins"
+	calculatePrecentages={true}
+	percent100={totalPluginCount}
+	client:only="svelte"
+/>
+
+<h4>Testing Framework Usage</h4>
+
+<p>
+	The distribution of testing frameworks used in plugins. The testing frameworks usage is determined by the presence of dependencies in the plugins <code>package.json</code>.
+</p>
+
+<!--<PieChart dataPoints={installedTestingFrameworksChartInfo} isPercentual={false} calculatePrecentages={true} client:only="svelte" />-->
+<BarChart
+	dataPoints={installedTestingFrameworksChartInfo.map(x => x.value)}
+	labels={installedTestingFrameworksChartInfo.map(x => x.label)}
+	logScale={false}
+	seriesName="Number of Plugins"
+	calculatePrecentages={true}
+	percent100={totalPluginCount}
+	client:only="svelte"
+/>
+
+<p>
+	{noTestingFrameworkCount} ({(noTestingFrameworkCount * 100 / totalPluginCount).toFixed(2)}%) plugins use no testing framework.
+</p>
+
+<h4>Frontend Framework Usage</h4>
+
+<p>
+	The distribution of frontend frameworks used in plugins. The frontend frameworks usage is determined by the presence of dependencies in the plugins <code>package.json</code>.
+</p>
+
+<!--<PieChart dataPoints={installedTestingFrameworksChartInfo} isPercentual={false} calculatePrecentages={true} client:only="svelte" />-->
+<BarChart
+	dataPoints={installedFrontendFrameworksChartInfo.map(x => x.value)}
+	labels={installedFrontendFrameworksChartInfo.map(x => x.label)}
+	logScale={false}
+	seriesName="Number of Plugins"
+	calculatePrecentages={true}
+	percent100={totalPluginCount}
+	client:only="svelte"
+/>
+
+<p>
+	{noFrontendFrameworkCount} ({(noFrontendFrameworkCount * 100 / totalPluginCount).toFixed(2)}%) plugins use no frontend framework.
+</p>
+
+<h4>Most Used Dependencies</h4>
+
+<p>
+	This table shows direct dependencies of all plugins, sorted by how many plugins use them.
+	Dependencies with less than 10 usages are not shown.
+</p>
+
+<table>
+	<thead>
+		<tr>
+			<th>
+				Name
+			</th>
+			<th>
+				Usage Count
+			</th>
+			<th>
+				Usage Percentage
+			</th>
+		</tr>
+	</thead>
+	<tbody>
+		{limitedMostUsedDepsChartInfo.map(x =>
+			<tr>
+				<td>
+					{x.label}
+				</td>
+				<td>
+					{x.value}
+				</td>
+				<td>
+					{(x.value * 100 / totalPluginCount).toFixed(2)}%
+				</td>
+			</tr>
+		)}
+	</tbody>
+</table>

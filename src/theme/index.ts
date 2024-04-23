@@ -100,7 +100,7 @@ export async function buildThemeStats() {
 	console.log(`Processed all themes writing to ${THEME_DATA_PATH}`);
 
 	const pluginDataFile = Bun.file(THEME_DATA_PATH);
-	await Bun.write(pluginDataFile, JSON.stringify(themeData, null, 4));
+	await Bun.write(pluginDataFile, JSON.stringify(themeData, null, '\t'));
 
 	const templateFile = Bun.file(THEME_TEMPLATE_FILE_PATH);
 	const template = await templateFile.text();

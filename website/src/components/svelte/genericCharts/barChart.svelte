@@ -13,6 +13,8 @@
 	export let seriesName2 = '';
 	export let aspectRatio = 1;
 	export let logScale = false;
+	export let calculatePrecentages = false;
+	export let percent100 = 1;
 
 	export let colors = [
 		'rgba(255, 99, 132, 1)', // Red
@@ -98,6 +100,19 @@
 						legend: {
 							labels: {
 								color: chartStyle.text,
+							},
+						},
+						tooltip: {
+							callbacks: {
+								label: context => {
+									const value = context.parsed.y;
+
+									if (calculatePrecentages) {
+										const percent = value * 100 / percent100;
+										return `${value} (${percent.toFixed(2)}%)`;
+									}
+									return `${value}`;
+								},
 							},
 						},
 					},
