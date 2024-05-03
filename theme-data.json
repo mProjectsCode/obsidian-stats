@@ -13403,5 +13403,83 @@
 				"newValue": ""
 			}
 		]
+	},
+	{
+		"id": "w95",
+		"name": "W95",
+		"addedCommit": {
+			"date": "2024-04-26",
+			"hash": "d55f2113827c12944166a1a8b86e87ae71ca7f89"
+		},
+		"initialEntry": {
+			"name": "W95",
+			"author": "phchnag",
+			"repo": "phchang/W95",
+			"screenshot": "w95.png",
+			"modes": [
+				"light",
+				"dark"
+			]
+		},
+		"currentEntry": {
+			"name": "W95",
+			"author": "phchnag",
+			"repo": "phchang/W95",
+			"screenshot": "w95.png",
+			"modes": [
+				"light",
+				"dark"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-04-26",
+					"hash": "d55f2113827c12944166a1a8b86e87ae71ca7f89"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "sanctum-reborn",
+		"name": "Sanctum reborn",
+		"addedCommit": {
+			"date": "2024-04-27",
+			"hash": "2341ab75ea6ec6964bca923ea8981c9d6e0c1847"
+		},
+		"initialEntry": {
+			"name": "Sanctum reborn",
+			"author": "Anto Keinänen",
+			"repo": "antoKeinanen/obsidian-sanctum-reborn",
+			"screenshot": "cover.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Sanctum reborn",
+			"author": "Anto Keinänen",
+			"repo": "antoKeinanen/obsidian-sanctum-reborn",
+			"screenshot": "cover.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-04-27",
+					"hash": "2341ab75ea6ec6964bca923ea8981c9d6e0c1847"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
 	}
 ]
