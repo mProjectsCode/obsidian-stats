@@ -13518,5 +13518,173 @@
 				"newValue": ""
 			}
 		]
+	},
+	{
+		"id": "midnight",
+		"name": "Midnight",
+		"addedCommit": {
+			"date": "2024-05-04",
+			"hash": "32c882e92aa0b4bfddffcf0326e7d85e92170c32"
+		},
+		"initialEntry": {
+			"name": "Midnight",
+			"author": "SemiCirkle",
+			"repo": "SemiCirkle/Midnight-obsidian-theme",
+			"screenshot": "pictures/theme-preview-512x288.png",
+			"modes": [
+				"dark"
+			]
+		},
+		"currentEntry": {
+			"name": "Midnight",
+			"author": "SemiCirkle",
+			"repo": "SemiCirkle/Midnight-obsidian-theme",
+			"screenshot": "pictures/theme-preview-512x288.png",
+			"modes": [
+				"dark"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-05-04",
+					"hash": "32c882e92aa0b4bfddffcf0326e7d85e92170c32"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "cobalt-peacock",
+		"name": "Cobalt Peacock",
+		"addedCommit": {
+			"date": "2024-05-05",
+			"hash": "c55f056d4b075c748408f3c682cb01f310a6db7d"
+		},
+		"initialEntry": {
+			"name": "Cobalt Peacock",
+			"author": "dpavaoman",
+			"repo": "dpavaoman/cobalt-peacock-obmd",
+			"screenshot": "screenshot.png",
+			"modes": [
+				"dark"
+			]
+		},
+		"currentEntry": {
+			"name": "Cobalt Peacock",
+			"author": "dpavaoman",
+			"repo": "dpavaoman/cobalt-peacock-obmd",
+			"screenshot": "screenshot.png",
+			"modes": [
+				"dark"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-05-05",
+					"hash": "c55f056d4b075c748408f3c682cb01f310a6db7d"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "lorens",
+		"name": "Lorens",
+		"addedCommit": {
+			"date": "2024-05-09",
+			"hash": "29f6693f3ace9c49750382d04d3e97ea9a34baf0"
+		},
+		"initialEntry": {
+			"name": "Lorens",
+			"author": "Lorens Osman",
+			"repo": "lorens-osman-dev/Lorens-Obsidian-Theme",
+			"screenshot": "cover.png",
+			"modes": [
+				"dark"
+			]
+		},
+		"currentEntry": {
+			"name": "Lorens",
+			"author": "Lorens Osman",
+			"repo": "lorens-osman-dev/Lorens-Obsidian-Theme",
+			"screenshot": "cover.png",
+			"modes": [
+				"dark"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-05-09",
+					"hash": "29f6693f3ace9c49750382d04d3e97ea9a34baf0"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "modes",
+				"commit": {
+					"date": "2024-05-10",
+					"hash": "189dea6094747953f8b030653131b88d96822ec2"
+				},
+				"oldValue": [
+					"dark"
+				]
+			},
+			{
+				"property": "modes",
+				"commit": {
+					"date": "2024-05-10",
+					"hash": "5fbf3be36f0d19dab3049b496b07e8837d46a07d"
+				},
+				"newValue": [
+					"dark"
+				]
+			}
+		]
+	},
+	{
+		"id": "rift",
+		"name": "Rift",
+		"addedCommit": {
+			"date": "2024-05-10",
+			"hash": "189dea6094747953f8b030653131b88d96822ec2"
+		},
+		"initialEntry": {
+			"name": "Rift",
+			"author": "Noah Boos",
+			"repo": "noahboos/Rift",
+			"screenshot": "showcase-temporaire.png",
+			"modes": [
+				"dark"
+			]
+		},
+		"currentEntry": {
+			"name": "Rift",
+			"author": "Noah Boos",
+			"repo": "noahboos/Rift",
+			"screenshot": "showcase-temporaire.png",
+			"modes": [
+				"dark"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-05-10",
+					"hash": "189dea6094747953f8b030653131b88d96822ec2"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
 	}
 ]
