@@ -9,6 +9,7 @@
 	export let dataPoints2: number[] | undefined;
 	export let labels: string[];
 	export let showDatalabels = false;
+	export let showXLabels = true;
 	export let seriesName = '';
 	export let seriesName2 = '';
 	export let aspectRatio = 1;
@@ -80,6 +81,9 @@
 							grid: {
 								display: false,
 							},
+							ticks: {
+								display: showXLabels,
+							}
 						},
 						y: {
 							min: logScale ? 1 : 0,

@@ -31,6 +31,7 @@ export interface PerMonthDataPoint {
 
 export interface DownloadReleaseCorrelationDataPoint {
 	id: string;
+	name: string;
 	downloads: number;
 	releases: number;
 	initialReleaseDate: number;

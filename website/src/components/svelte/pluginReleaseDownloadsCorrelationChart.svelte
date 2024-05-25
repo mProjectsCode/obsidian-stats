@@ -2,16 +2,19 @@
 	import Chart from 'chart.js/auto';
 	import { onDestroy, onMount } from 'svelte';
 	import { type DownloadReleaseCorrelationDataPoint } from '../../../../src/types.ts';
-
 	import { ThemeObserver } from './svelteUtils.ts';
 	import { CDate } from '../../../../src/date.ts';
+	import { SimpleLinearRegression } from 'ml-regression-simple-linear';
 
 	export let dataPoints: DownloadReleaseCorrelationDataPoint[];
 
 	let downloadChartEl: HTMLCanvasElement;
 	let downloadGrowthChartEl: HTMLCanvasElement;
+	let downloadNameChartEl: HTMLCanvasElement;
 
 	let themeObserver: ThemeObserver;
+
+	let nameSortedData = dataPoints.toSorted((a, b) => a.name.localeCompare(b.name));
 
 	onMount(() => {
 		themeObserver = new ThemeObserver();
@@ -59,6 +62,12 @@
 			});
 		});
 
+		// const now = Date.now();
+		// const growthRegression = regression.logarithmic(dataPoints.map((d) => [now - d.initialReleaseDate, d.downloads]));
+		//
+		// console.log(dataPoints);
+		// console.log(growthRegression);
+
 		themeObserver.addChart(chartStyle => {
 			Chart.defaults.color = chartStyle.text;
 			Chart.defaults.borderColor = chartStyle.line;
@@ -74,6 +83,12 @@
 							backgroundColor: chartStyle.accent,
 							borderColor: chartStyle.accent,
 						},
+						// {
+						// 	label: 'Initial Release Time vs. Downloads',
+						// 	data: growthRegression.points.map(d => ({ x: d[1], y: -(d[0] - now) })),
+						// 	backgroundColor: 'rgba(255, 99, 132, 1)',
+						// 	borderColor: 'rgba(255, 99, 132, 1)',
+						// },
 					],
 				},
 				options: {
@@ -110,6 +125,62 @@
 			});
 		});
 
+		nameSortedData.forEach((d, i) => d.downloads = d.downloads ?? 0);
+		const xData = nameSortedData.map((_, i) => i);
+		const yData = nameSortedData.map(d => d.downloads);
+		const nameRegression = new SimpleLinearRegression(xData, yData);
+		const nameRegressionScore = nameRegression.score(xData, yData);
+		
+		themeObserver.addChart(chartStyle => {
+			Chart.defaults.color = chartStyle.text;
+			Chart.defaults.borderColor = chartStyle.line;
+
+			return new Chart(downloadNameChartEl!, {
+				type: 'scatter',
+				data: {
+					labels: nameSortedData.map(d => d.name),
+					datasets: [
+						{
+							label: 'Plugins sorted by name vs. Downloads',
+							data: nameSortedData.map((d, i) => ({ x: i, y: d.downloads, label: d.name })),
+							backgroundColor: chartStyle.accent,
+							borderColor: chartStyle.accent,
+						},
+						{
+							label: `Regression Line (${nameRegressionScore.r2})`,
+							data: nameSortedData.map((_, i) => ({ x: i, y: nameRegression.predict(i), label: 'Regression' })),
+							backgroundColor: 'rgba(255, 99, 132, 1)',
+							borderColor: 'rgba(255, 99, 132, 1)',
+							type: 'line',
+						},
+					],
+				},
+				options: {
+					scales: {
+						x: {
+							type: 'linear',
+							position: 'bottom',
+							max: nameSortedData.length,
+						},
+						y: {
+							type: 'logarithmic',
+							position: 'left',
+						},
+					},
+					aspectRatio: 1,
+					plugins: {
+						tooltip: {
+							callbacks: {
+								label: item => {
+									return `${item.raw.label} (${item.raw.y})`;
+								},
+							},
+						},
+					},
+				},
+			});
+		});
+
 		themeObserver.initObserver();
 	});
 
@@ -124,6 +195,16 @@
 
 <div class="chart-wrapper">
 	<canvas bind:this={downloadGrowthChartEl} id="plugin-download-growth-chart"></canvas>
+</div>
+
+<p>
+	The chart below shows the correlation between the name of the plugin and the number of downloads.
+	The regression line is calculated using the Simple Linear Regression algorithm.
+	It is evident that there is a slight correlation between the placement of the plugin in the alphabet and the number of downloads.
+</p>
+
+<div class="chart-wrapper">
+	<canvas bind:this={downloadNameChartEl} id="plugin-download-name-chart"></canvas>
 </div>
 
 <style>

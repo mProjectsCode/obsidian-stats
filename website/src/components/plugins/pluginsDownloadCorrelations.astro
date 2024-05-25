@@ -2,8 +2,28 @@
 import { getDownloadReleaseCorrelationDataPoints } from '../../../../src/plugin/data';
 import PluginDataFile from '../../../../plugin-data.json' assert { type: 'json' };
 import PluginReleaseDownloadsCorrelationChart from '../svelte/pluginReleaseDownloadsCorrelationChart.svelte';
+import BarChart from '../svelte/genericCharts/barChart.svelte';
 
 const downloadReleaseCorrelationDataPoints = getDownloadReleaseCorrelationDataPoints(PluginDataFile);
+
+const sortedData = downloadReleaseCorrelationDataPoints
+	.toSorted((a, b) => a.downloads - b.downloads);
 ---
 
 <PluginReleaseDownloadsCorrelationChart dataPoints={downloadReleaseCorrelationDataPoints} client:only="svelte" />
+
+<p>
+	This chart shows the overal distribution of downlods, it is clear that the majority of plugins have a low number of downloads, whith a few plugins having a very high number of downloads.	
+</p>
+
+<div>
+	<BarChart
+		dataPoints={sortedData.map((x, i) => x.downloads)}
+		labels={sortedData.map(x => x.id)}
+		logScale={true}
+		seriesName="Download count distribution"
+		calculatePrecentages={false}
+		showXLabels={false}
+		client:only="svelte"
+	/>
+</div>

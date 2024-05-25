@@ -11,16 +11,19 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/check": "^0.6.0",
-    "@astrojs/starlight": "^0.22.2",
+    "@astrojs/check": "^0.7.0",
+    "@astrojs/starlight": "^0.23.1",
     "@astrojs/svelte": "^5.4.0",
-    "astro": "^4.8.1",
-    "chart.js": "^4.4.2",
+    "@types/regression": "^2.0.6",
+    "astro": "^4.9.1",
+    "chart.js": "^4.4.3",
     "chartjs-plugin-annotation": "^3.0.1",
     "chartjs-plugin-datalabels": "^2.2.0",
-    "sharp": "^0.33.3",
-    "svelte": "^4.2.12",
-    "typescript": "^5.4.4",
-    "zod": "^3.22.4"
+    "regression": "^2.0.1",
+    "sharp": "^0.33.4",
+    "svelte": "^4.2.17",
+    "typescript": "^5.4.5",
+    "zod": "^3.23.8",
+    "ml-regression-simple-linear": "3.0.1"
   }
 }

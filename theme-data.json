@@ -12881,6 +12881,10 @@
 			"date": "2024-03-26",
 			"hash": "a023bc23822b82fa304d43de8279b55afad49994"
 		},
+		"removedCommit": {
+			"date": "2024-05-24",
+			"hash": "6041728494859467d24201d9438689af1fe66ece"
+		},
 		"initialEntry": {
 			"name": "Moonstone",
 			"author": "Erin Skidds",
@@ -12905,6 +12909,15 @@
 				"commit": {
 					"date": "2024-03-26",
 					"hash": "a023bc23822b82fa304d43de8279b55afad49994"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2024-05-24",
+					"hash": "6041728494859467d24201d9438689af1fe66ece"
 				},
 				"oldValue": "",
 				"newValue": ""
@@ -13718,6 +13731,80 @@
 				"commit": {
 					"date": "2024-05-17",
 					"hash": "3b9894e7c06464db5d6538fa82d3ef8b32f2418f"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "space",
+		"name": "Space",
+		"addedCommit": {
+			"date": "2024-05-20",
+			"hash": "f292e36bd7116b618744f61982bd71ac1ad9c095"
+		},
+		"initialEntry": {
+			"name": "Space",
+			"author": "BHappen",
+			"repo": "bhappen/obsidian-space",
+			"screenshot": "obsidian-space.png",
+			"modes": [
+				"dark"
+			]
+		},
+		"currentEntry": {
+			"name": "Space",
+			"author": "BHappen",
+			"repo": "bhappen/obsidian-space",
+			"screenshot": "obsidian-space.png",
+			"modes": [
+				"dark"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-05-20",
+					"hash": "f292e36bd7116b618744f61982bd71ac1ad9c095"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "neon-synthwave",
+		"name": "Neon Synthwave",
+		"addedCommit": {
+			"date": "2024-05-21",
+			"hash": "e462efa48ef9d6ef4abd6cdeffe2f8d72d6bf30e"
+		},
+		"initialEntry": {
+			"name": "Neon Synthwave",
+			"author": "Grant Smith",
+			"repo": "grjsmith/Neon-Synthwave",
+			"screenshot": "screenshot.jpg",
+			"modes": [
+				"dark"
+			]
+		},
+		"currentEntry": {
+			"name": "Neon Synthwave",
+			"author": "Grant Smith",
+			"repo": "grjsmith/Neon-Synthwave",
+			"screenshot": "screenshot.jpg",
+			"modes": [
+				"dark"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-05-21",
+					"hash": "e462efa48ef9d6ef4abd6cdeffe2f8d72d6bf30e"
 				},
 				"oldValue": "",
 				"newValue": ""

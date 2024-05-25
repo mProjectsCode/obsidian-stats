@@ -71,6 +71,7 @@ export function getDownloadReleaseCorrelationDataPoints(plugins: PluginDataInter
 
 		data.push({
 			id: plugin.id,
+			name: plugin.currentEntry.name,
 			downloads: plugin.downloadHistory[downloadKeys[downloadKeys.length - 1]],
 			releases: plugin.versionHistory.length,
 			initialReleaseDate: addedDate.toUTC(),
