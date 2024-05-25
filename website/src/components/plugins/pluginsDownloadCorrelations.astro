@@ -7,7 +7,7 @@ import BarChart from '../svelte/genericCharts/barChart.svelte';
 const downloadReleaseCorrelationDataPoints = getDownloadReleaseCorrelationDataPoints(PluginDataFile);
 
 const sortedData = downloadReleaseCorrelationDataPoints
-	.toSorted((a, b) => a.downloads - b.downloads);
+	.slice().sort((a, b) => a.downloads - b.downloads);
 ---
 
 <PluginReleaseDownloadsCorrelationChart dataPoints={downloadReleaseCorrelationDataPoints} client:only="svelte" />
