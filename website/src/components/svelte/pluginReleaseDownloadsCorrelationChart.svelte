@@ -14,7 +14,7 @@
 
 	let themeObserver: ThemeObserver;
 
-	let nameSortedData = dataPoints.toSorted((a, b) => a.name.localeCompare(b.name));
+	let nameSortedData = dataPoints.slice().sort((a, b) => a.name.localeCompare(b.name));
 
 	onMount(() => {
 		themeObserver = new ThemeObserver();
