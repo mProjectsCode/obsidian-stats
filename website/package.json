@@ -12,10 +12,10 @@
   },
   "dependencies": {
     "@astrojs/check": "^0.7.0",
-    "@astrojs/starlight": "^0.23.1",
+    "@astrojs/starlight": "^0.23.2",
     "@astrojs/svelte": "^5.4.0",
     "@types/regression": "^2.0.6",
-    "astro": "^4.9.1",
+    "astro": "^4.9.2",
     "chart.js": "^4.4.3",
     "chartjs-plugin-annotation": "^3.0.1",
     "chartjs-plugin-datalabels": "^2.2.0",
