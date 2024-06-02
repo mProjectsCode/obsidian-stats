@@ -1,8 +1,8 @@
 import { type Commit, PerMonthDataPoint } from './types.ts';
 import { reduce } from 'itertools-ts';
 import { CDate } from './date.ts';
-import {PluginDataInterface} from "./plugin/plugin.ts";
-import {ThemeData, ThemeDataInterface} from "./theme/theme.ts";
+import { PluginDataInterface } from './plugin/plugin.ts';
+import { ThemeData, ThemeDataInterface } from './theme/theme.ts';
 import PluginDataFile from '../plugin-data.json' assert { type: 'json' };
 import ThemeDataFile from '../theme-data.json' assert { type: 'json' };
 

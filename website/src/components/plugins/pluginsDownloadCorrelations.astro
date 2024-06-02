@@ -4,35 +4,31 @@ import PluginDownloadsNameCorrelationChart from '../svelte/pluginDownloadsNameCo
 import PluginReleaseCountDownloadsCorrelationChart from '../svelte/pluginReleaseCountDownloadsCorrelationChart.svelte';
 import PluginReleaseTimeDownloadsCorrelationChart from '../svelte/pluginReleaseTimeDownloadsCorrelationChart.svelte';
 import BarChart from '../svelte/genericCharts/barChart.svelte';
-import {getPluginData} from "../../../../src/utils";
+import { getPluginData } from '../../../../src/utils';
 
 const downloadReleaseCorrelationDataPoints = getDownloadReleaseCorrelationDataPoints(getPluginData());
 
-const sortedData = downloadReleaseCorrelationDataPoints
-	.slice().sort((a, b) => a.downloads - b.downloads);
+const sortedData = downloadReleaseCorrelationDataPoints.slice().sort((a, b) => a.downloads - b.downloads);
 ---
 
 <p>
-	This figure shows the correlation between the number of downloads and the number of releases.
-    This shows that plugins with more downloads tend to have more releases.
+	This figure shows the correlation between the number of downloads and the number of releases. This shows that plugins with more downloads tend to have more
+	releases.
 </p>
 
 <div>
 	<PluginReleaseCountDownloadsCorrelationChart dataPoints={downloadReleaseCorrelationDataPoints} client:only="svelte" />
 </div>
 
-<p>
-    This figure shows the correlation between the number of downloads and the initial release time.
-</p>
+<p>This figure shows the correlation between the number of downloads and the initial release time.</p>
 
 <div>
 	<PluginReleaseTimeDownloadsCorrelationChart dataPoints={downloadReleaseCorrelationDataPoints} client:only="svelte" />
 </div>
 
 <p>
-    The chart below shows the correlation between the name of the plugin and the number of downloads.
-    The regression line is calculated using the Simple Linear Regression algorithm.
-    It is evident that there is a slight correlation between the placement of the plugin in the alphabet and the number of downloads.
+	The chart below shows the correlation between the name of the plugin and the number of downloads. The regression line is calculated using the Simple Linear
+	Regression algorithm. It is evident that there is a slight correlation between the placement of the plugin in the alphabet and the number of downloads.
 </p>
 
 <div>
@@ -40,7 +36,8 @@ const sortedData = downloadReleaseCorrelationDataPoints
 </div>
 
 <p>
-	This chart shows the overall distribution of downloads, it is clear that the majority of plugins have a low number of downloads, with a few plugins having a very high number of downloads.
+	This chart shows the overall distribution of downloads, it is clear that the majority of plugins have a low number of downloads, with a few plugins having a
+	very high number of downloads.
 </p>
 
 <div>

@@ -83,7 +83,7 @@
 							},
 							ticks: {
 								display: showXLabels,
-							}
+							},
 						},
 						y: {
 							min: logScale ? 1 : 0,

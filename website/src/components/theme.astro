@@ -13,13 +13,12 @@ const obsidianHubLink = `https://publish.obsidian.md/hub/02+-+Community+Expansio
 ---
 
 <StarlightPage
-        frontmatter={{ title: theme.currentEntry.name, description: `Page for the ${theme.currentEntry.name} theme.` }}
-        headings={[
-			{ depth: 3, text: 'View this Theme on Other Sites', slug: 'view-this-theme-on-other-sites' },
-			{ depth: 3, text: 'Data Changes', slug: 'data-changes' },
-		]}
+	frontmatter={{ title: theme.currentEntry.name, description: `Page for the ${theme.currentEntry.name} theme.` }}
+	headings={[
+		{ depth: 3, text: 'View this Theme on Other Sites', slug: 'view-this-theme-on-other-sites' },
+		{ depth: 3, text: 'Data Changes', slug: 'data-changes' },
+	]}
 >
-
 	{
 		theme.removedCommit && (
 			<Aside variant="danger" title="Theme has been Removed">
@@ -100,5 +99,4 @@ const obsidianHubLink = `https://publish.obsidian.md/hub/02+-+Community+Expansio
 			}
 		</tbody>
 	</table>
-
 </StarlightPage>

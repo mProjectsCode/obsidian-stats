@@ -38,14 +38,14 @@ try {
 ---
 
 <StarlightPage
-		frontmatter={{ title: plugin.currentEntry.name, description: `Page for the ${plugin.currentEntry.name} plugin.` }}
-		headings={[
-			{ depth: 3, text: 'View this Plugin on Other Sites', slug: 'view-this-plugin-on-other-sites' },
-			{ depth: 3, text: 'Data Changes', slug: 'data-changes' },
-			{ depth: 2, text: 'Repo Data', slug: 'repo-data' },
-			{ depth: 2, text: 'Downloads', slug: 'downloads' },
-			{ depth: 2, text: 'Version History', slug: 'version-history' },
-		]}
+	frontmatter={{ title: plugin.currentEntry.name, description: `Page for the ${plugin.currentEntry.name} plugin.` }}
+	headings={[
+		{ depth: 3, text: 'View this Plugin on Other Sites', slug: 'view-this-plugin-on-other-sites' },
+		{ depth: 3, text: 'Data Changes', slug: 'data-changes' },
+		{ depth: 2, text: 'Repo Data', slug: 'repo-data' },
+		{ depth: 2, text: 'Downloads', slug: 'downloads' },
+		{ depth: 2, text: 'Version History', slug: 'version-history' },
+	]}
 >
 	{
 		plugin.removedCommit && (
@@ -308,5 +308,4 @@ try {
 			}
 		</tbody>
 	</table>
-
 </StarlightPage>

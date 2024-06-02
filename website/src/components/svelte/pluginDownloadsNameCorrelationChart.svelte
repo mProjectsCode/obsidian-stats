@@ -17,12 +17,12 @@
 	onMount(() => {
 		themeObserver = new ThemeObserver();
 
-		nameSortedData.forEach((d, i) => d.downloads = d.downloads ?? 0);
+		nameSortedData.forEach((d, i) => (d.downloads = d.downloads ?? 0));
 		const xData = nameSortedData.map((_, i) => i);
 		const yData = nameSortedData.map(d => d.downloads);
 		const nameRegression = new SimpleLinearRegression(xData, yData);
 		const nameRegressionScore = nameRegression.score(xData, yData);
-		
+
 		themeObserver.addChart(chartStyle => {
 			Chart.defaults.color = chartStyle.text;
 			Chart.defaults.borderColor = chartStyle.line;
