@@ -1,6 +1,10 @@
 import { type Commit, PerMonthDataPoint } from './types.ts';
 import { reduce } from 'itertools-ts';
 import { CDate } from './date.ts';
+import {PluginDataInterface} from "./plugin/plugin.ts";
+import {ThemeData, ThemeDataInterface} from "./theme/theme.ts";
+import PluginDataFile from '../plugin-data.json' assert { type: 'json' };
+import ThemeDataFile from '../theme-data.json' assert { type: 'json' };
 
 export function prettyDateString(date: string): string {
 	return CDate.fromDate(new Date(date)).toString();
@@ -246,4 +250,12 @@ export function multiGroupBy<T, K extends keyof any>(list: T[], getKey: (item: T
 		},
 		{} as Record<K, T[]>,
 	);
+}
+
+export function getPluginData(): PluginDataInterface[] {
+	return PluginDataFile as PluginDataInterface[];
+}
+
+export function getThemeData(): ThemeDataInterface[] {
+	return ThemeDataFile as ThemeDataInterface[];
 }

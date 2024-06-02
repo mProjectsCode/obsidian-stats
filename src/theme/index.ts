@@ -102,14 +102,14 @@ export async function buildThemeStats() {
 	const pluginDataFile = Bun.file(THEME_DATA_PATH);
 	await Bun.write(pluginDataFile, JSON.stringify(themeData, null, '\t'));
 
-	const templateFile = Bun.file(THEME_TEMPLATE_FILE_PATH);
-	const template = await templateFile.text();
-
-	for (const theme of themeData) {
-		let output = template.replaceAll(THEME_TEMPLATE_REPLACEMENT_STRING, theme.name);
-		output = output.replaceAll(THEME_TEMPLATE_REPLACEMENT_STRING_NAME, encodeName(theme.currentEntry.name));
-		output = output.replaceAll(THEME_TEMPLATE_REPLACEMENT_STRING_JSON, JSON.stringify(theme));
-		const outputFile = Bun.file(`${THEME_TEMPLATE_OUTPUT_PATH}/${theme.id}.mdx`);
-		await Bun.write(outputFile, output);
-	}
+	// const templateFile = Bun.file(THEME_TEMPLATE_FILE_PATH);
+	// const template = await templateFile.text();
+	//
+	// for (const theme of themeData) {
+	// 	let output = template.replaceAll(THEME_TEMPLATE_REPLACEMENT_STRING, theme.name);
+	// 	output = output.replaceAll(THEME_TEMPLATE_REPLACEMENT_STRING_NAME, encodeName(theme.currentEntry.name));
+	// 	output = output.replaceAll(THEME_TEMPLATE_REPLACEMENT_STRING_JSON, JSON.stringify(theme));
+	// 	const outputFile = Bun.file(`${THEME_TEMPLATE_OUTPUT_PATH}/${theme.id}.mdx`);
+	// 	await Bun.write(outputFile, output);
+	// }
 }

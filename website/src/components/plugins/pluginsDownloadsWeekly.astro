@@ -1,9 +1,9 @@
 ---
 import { getPluginDownloadsWeekly } from '../../../../src/plugin/data';
-import PluginDataFile from '../../../../plugin-data.json' assert { type: 'json' };
 import PluginDownloadChart from '../svelte/pluginDownloadChart.svelte';
+import {getPluginData} from "../../../../src/utils";
 
-const downloadDataPoints = getPluginDownloadsWeekly(PluginDataFile);
+const downloadDataPoints = getPluginDownloadsWeekly(getPluginData());
 ---
 
 <PluginDownloadChart dataPoints={downloadDataPoints} client:only="svelte" />

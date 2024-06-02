@@ -1,8 +1,0 @@
----
-title: "PLUGIN_NAME"
-description: "Page for the PLUGIN_NAME plugin."
----
-
-import Plugin from '../../../components/plugin.astro';
-
-<Plugin plugin={(PLUGIN_JSON)}></Plugin>

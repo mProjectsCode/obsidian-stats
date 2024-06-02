@@ -1,8 +1,0 @@
----
-title: "THEME_NAME"
-description: "Page for the THEME_NAME theme."
----
-
-import Theme from '../../../components/theme.astro';
-
-<Theme theme={(THEME_JSON)}></Theme>

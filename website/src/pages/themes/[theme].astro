@@ -1,0 +1,22 @@
+---
+import Theme from "../../components/theme.astro";
+import {getThemeData} from "../../../../src/utils";
+
+export function getStaticPaths() {
+	const themeData = getThemeData();
+	return themeData.map((plugin) => {
+		return {
+			params: {
+				theme: plugin.id,
+			},
+			props: {
+				themeDatum: plugin,
+			}
+		};
+	});
+}
+
+const { themeDatum } = Astro.props;
+---
+
+<Theme theme={themeDatum}></Theme>

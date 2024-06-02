@@ -8,6 +8,7 @@ import { getPluginDownloadsWeekly } from '../../../src/plugin/data';
 import { PluginDataInterface } from '../../../src/plugin/plugin';
 import fs from 'node:fs/promises';
 import { PluginRepoData } from '../../../src/pluginRepo/types';
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
 
 const { plugin } = Astro.props as { plugin: PluginDataInterface };
 const pluginDownloadData = getPluginDownloadsWeekly([plugin]);
@@ -36,264 +37,276 @@ try {
 }
 ---
 
-{
-	plugin.removedCommit && (
-		<Aside variant="danger" title="Plugin has been Removed">
-			<p>
-				This plugin has been removed from the community list on <Commit commit={plugin.removedCommit} /> and can no longer be installed.
-			</p>
-		</Aside>
-	)
-}
+<StarlightPage
+		frontmatter={{ title: plugin.currentEntry.name, description: `Page for the ${plugin.currentEntry.name} plugin.` }}
+		headings={[
+			{ depth: 3, text: 'View this Plugin on Other Sites', slug: 'view-this-plugin-on-other-sites' },
+			{ depth: 3, text: 'Data Changes', slug: 'data-changes' },
+			{ depth: 2, text: 'Repo Data', slug: 'repo-data' },
+			{ depth: 2, text: 'Downloads', slug: 'downloads' },
+			{ depth: 2, text: 'Version History', slug: 'version-history' },
+		]}
+>
+	{
+		plugin.removedCommit && (
+			<Aside variant="danger" title="Plugin has been Removed">
+				<p>
+					This plugin has been removed from the community list on <Commit commit={plugin.removedCommit} /> and can no longer be installed.
+				</p>
+			</Aside>
+		)
+	}
 
-{
-	outdatedWarning && (
-		<Aside variant="caution" title="Inactivity Warning">
-			<p>The latest version of this plugin was released on the {latestReleaseDateString} and is thus more than 120 days old.</p>
-		</Aside>
-	)
-}
+	{
+		outdatedWarning && (
+			<Aside variant="caution" title="Inactivity Warning">
+				<p>The latest version of this plugin was released on the {latestReleaseDateString} and is thus more than 120 days old.</p>
+			</Aside>
+		)
+	}
 
-{
-	outdatedDanger && (
-		<Aside variant="danger" title="Inactivity Danger">
-			<p>
-				The latest version of this plugin was released on the {latestReleaseDateString} and is thus more than a year old. There is a high chance that this
-				plugin is no longer maintained.
-			</p>
-		</Aside>
-	)
-}
+	{
+		outdatedDanger && (
+			<Aside variant="danger" title="Inactivity Danger">
+				<p>
+					The latest version of this plugin was released on the {latestReleaseDateString} and is thus more than a year old. There is a high chance that this
+					plugin is no longer maintained.
+				</p>
+			</Aside>
+		)
+	}
 
-<table>
-	<tbody>
-		<tr>
-			<td>ID</td>
-			<td>{plugin.id}</td>
-		</tr>
-		<tr>
-			<td>Name</td>
-			<td>{plugin.currentEntry.name}</td>
-		</tr>
-		<tr>
-			<td>Author</td>
-			<td>{plugin.currentEntry.author}</td>
-		</tr>
-		<tr>
-			<td>Description</td>
-			<td>{plugin.currentEntry.description}</td>
-		</tr>
-		<tr>
-			<td>Official Release Date</td>
-			<td><Commit commit={plugin.addedCommit} /></td>
-		</tr>
-		<tr>
-			<td>Last update</td>
-			<td>{latestReleaseDateString}</td>
-		</tr>
-	</tbody>
-</table>
+	<table>
+		<tbody>
+			<tr>
+				<td>ID</td>
+				<td>{plugin.id}</td>
+			</tr>
+			<tr>
+				<td>Name</td>
+				<td>{plugin.currentEntry.name}</td>
+			</tr>
+			<tr>
+				<td>Author</td>
+				<td>{plugin.currentEntry.author}</td>
+			</tr>
+			<tr>
+				<td>Description</td>
+				<td>{plugin.currentEntry.description}</td>
+			</tr>
+			<tr>
+				<td>Official Release Date</td>
+				<td><Commit commit={plugin.addedCommit} /></td>
+			</tr>
+			<tr>
+				<td>Last update</td>
+				<td>{latestReleaseDateString}</td>
+			</tr>
+		</tbody>
+	</table>
 
-<h3>View this Plugin on Other Sites</h3>
+	<h3 id="view-this-plugin-on-other-sites">View this Plugin on Other Sites</h3>
 
-<table>
-	<tbody>
-		<tr>
-			<td>GitHub Repo</td>
-			<td><GithubLink repo={plugin.currentEntry.repo} /></td>
-		</tr>
-		<tr>
-			<td>Obsidian Link</td>
-			<td><a href={obsidianLink}>View in Obsidian</a></td>
-		</tr>
-		<tr>
-			<td>ObsidianAddict Link</td>
-			<td><a href={obsidianAddictLink} target="_blank">View on ObsidianAddict</a></td>
-		</tr>
-		<tr>
-			<td>Obsidian Hub Link</td>
-			<td><a href={obsidianHubLink} target="_blank">View on the Obsidian Hub</a></td>
-		</tr>
-	</tbody>
-</table>
+	<table>
+		<tbody>
+			<tr>
+				<td>GitHub Repo</td>
+				<td><GithubLink repo={plugin.currentEntry.repo} /></td>
+			</tr>
+			<tr>
+				<td>Obsidian Link</td>
+				<td><a href={obsidianLink}>View in Obsidian</a></td>
+			</tr>
+			<tr>
+				<td>ObsidianAddict Link</td>
+				<td><a href={obsidianAddictLink} target="_blank">View on ObsidianAddict</a></td>
+			</tr>
+			<tr>
+				<td>Obsidian Hub Link</td>
+				<td><a href={obsidianHubLink} target="_blank">View on the Obsidian Hub</a></td>
+			</tr>
+		</tbody>
+	</table>
 
-<p>Links for removed plugins might not work.</p>
+	<p>Links for removed plugins might not work.</p>
 
-<h3>Data Changes</h3>
+	<h3 id="data-changes">Data Changes</h3>
 
-<p>This is a list of changes made to the plugin entry in the community list.</p>
+	<p>This is a list of changes made to the plugin entry in the community list.</p>
 
-<table>
-	<thead>
-		<tr>
-			<th>Date</th>
-			<th>Changed Property</th>
-			<th>Old Value</th>
-			<th>New Value</th>
-		</tr>
-	</thead>
-	<tbody>
-		{
-			plugin.changeHistory.map(change => (
-				<tr>
-					<td>
-						<Commit commit={change.commit} />
-					</td>
-					<td>{change.property}</td>
-					<td>{change.oldValue}</td>
-					<td>{change.newValue}</td>
-				</tr>
-			))
-		}
-	</tbody>
-</table>
-
-<h2>Repo Data</h2>
-
-{
-	repoData ? (
-		<>
-			<p>This data is extracted from the plugin's GitHub repository. This data might not be updated as frequently as the other data on this page.</p>
-
-			<table>
-				<tbody>
+	<table>
+		<thead>
+			<tr>
+				<th>Date</th>
+				<th>Changed Property</th>
+				<th>Old Value</th>
+				<th>New Value</th>
+			</tr>
+		</thead>
+		<tbody>
+			{
+				plugin.changeHistory.map(change => (
 					<tr>
 						<td>
-							License (from <code>package.json</code>)
+							<Commit commit={change.commit} />
 						</td>
-						<td>{repoData.license ?? 'No license found'}</td>
+						<td>{change.property}</td>
+						<td>{change.oldValue}</td>
+						<td>{change.newValue}</td>
 					</tr>
-					<tr>
-						<td>Package Manager</td>
-						<td>{repoData.packageManager ?? 'Unknown (no lock file found)'}</td>
-					</tr>
-					<tr>
-						<td>Uses Typescript</td>
-						<td>
-							{repoData.usesTypescript ? (
-								'true'
-							) : (
-								<>
-									No <code>.ts</code> or <code>.tsx</code> files found
-								</>
-							)}
-						</td>
-					</tr>
-					<tr>
-						<td>Installed Bundlers</td>
-						<td>
-							{repoData.hasPackageJson ? (
-								repoData.installedBundlers.length === 0 ? (
-									'none'
-								) : (
-									repoData.installedBundlers.join(', ')
-								)
-							) : (
-								<>
-									No <code>package.json</code> found
-								</>
-							)}
-						</td>
-					</tr>
-					<tr>
-						<td>Installed Testing Frameworks</td>
-						<td>
-							{repoData.hasPackageJson ? (
-								repoData.installedTestingFrameworks.length === 0 ? (
-									'none'
-								) : (
-									repoData.installedTestingFrameworks.join(', ')
-								)
-							) : (
-								<>
-									No <code>package.json</code> found
-								</>
-							)}
-						</td>
-					</tr>
-					<tr>
-						<td>Has Test Files</td>
-						<td>
-							{repoData.hasPackageJson ? (
-								repoData.hasTestFiles ? (
+				))
+			}
+		</tbody>
+	</table>
+
+	<h2 id="repo-data">Repo Data</h2>
+
+	{
+		repoData ? (
+			<>
+				<p>This data is extracted from the plugin's GitHub repository. This data might not be updated as frequently as the other data on this page.</p>
+
+				<table>
+					<tbody>
+						<tr>
+							<td>
+								License (from <code>package.json</code>)
+							</td>
+							<td>{repoData.license ?? 'No license found'}</td>
+						</tr>
+						<tr>
+							<td>Package Manager</td>
+							<td>{repoData.packageManager ?? 'Unknown (no lock file found)'}</td>
+						</tr>
+						<tr>
+							<td>Uses Typescript</td>
+							<td>
+								{repoData.usesTypescript ? (
 									'true'
 								) : (
-									'false'
-								)
-							) : (
-								<>
-									No <code>package.json</code> found
-								</>
-							)}
-						</td>
-					</tr>
+									<>
+										No <code>.ts</code> or <code>.tsx</code> files found
+									</>
+								)}
+							</td>
+						</tr>
+						<tr>
+							<td>Installed Bundlers</td>
+							<td>
+								{repoData.hasPackageJson ? (
+									repoData.installedBundlers.length === 0 ? (
+										'none'
+									) : (
+										repoData.installedBundlers.join(', ')
+									)
+								) : (
+									<>
+										No <code>package.json</code> found
+									</>
+								)}
+							</td>
+						</tr>
+						<tr>
+							<td>Installed Testing Frameworks</td>
+							<td>
+								{repoData.hasPackageJson ? (
+									repoData.installedTestingFrameworks.length === 0 ? (
+										'none'
+									) : (
+										repoData.installedTestingFrameworks.join(', ')
+									)
+								) : (
+									<>
+										No <code>package.json</code> found
+									</>
+								)}
+							</td>
+						</tr>
+						<tr>
+							<td>Has Test Files</td>
+							<td>
+								{repoData.hasPackageJson ? (
+									repoData.hasTestFiles ? (
+										'true'
+									) : (
+										'false'
+									)
+								) : (
+									<>
+										No <code>package.json</code> found
+									</>
+								)}
+							</td>
+						</tr>
+						<tr>
+							<td>Uses BRAT beta releases</td>
+							<td>{repoData.hasBetaManifest ? 'true' : 'false'}</td>
+						</tr>
+						<tr>
+							<td>Dependencies</td>
+							<td>
+								{repoData.hasPackageJson ? (
+									repoData.dependencies.sort().join(', ')
+								) : (
+									<>
+										No <code>package.json</code> found
+									</>
+								)}
+							</td>
+						</tr>
+						<tr>
+							<td>Dev Dependencies</td>
+							<td>
+								{repoData.hasPackageJson ? (
+									repoData.devDependencies.sort().join(', ')
+								) : (
+									<>
+										No <code>package.json</code> found
+									</>
+								)}
+							</td>
+						</tr>
+					</tbody>
+				</table>
+
+				<p>
+					<i>Has Test Files</i> looks for files ending in <code>.test.js</code>, <code>.test.ts</code>, <code>.spec.js</code> or <code>.spec.ts</code>.
+				</p>
+				<p>
+					<i>Installed Testing Frameworks</i> looks at installed dependencies. This does not mean that a plugin is actually using the testing framework.
+				</p>
+				<p>
+					<i>Dependencies</i> and <i>Dev Dependencies</i> only list the direct dependencies of the plugin.
+				</p>
+			</>
+		) : (
+			<p>No data available.</p>
+		)
+	}
+
+	<h2 id="downloads">Downloads</h2>
+
+	<PluginDownloadChart dataPoints={pluginDownloadData} client:only="svelte" />
+
+	<h2 id="version-history">Version History</h2>
+
+	<table>
+		<thead>
+			<tr>
+				<th>Version</th>
+				<th>Release Date</th>
+			</tr>
+		</thead>
+		<tbody>
+			{
+				plugin.versionHistory.map(version => (
 					<tr>
-						<td>Uses BRAT beta releases</td>
-						<td>{repoData.hasBetaManifest ? 'true' : 'false'}</td>
+						<td>{version.version}</td>
+						<td>{version.initialReleaseDate}</td>
 					</tr>
-					<tr>
-						<td>Dependencies</td>
-						<td>
-							{repoData.hasPackageJson ? (
-								repoData.dependencies.sort().join(', ')
-							) : (
-								<>
-									No <code>package.json</code> found
-								</>
-							)}
-						</td>
-					</tr>
-					<tr>
-						<td>Dev Dependencies</td>
-						<td>
-							{repoData.hasPackageJson ? (
-								repoData.devDependencies.sort().join(', ')
-							) : (
-								<>
-									No <code>package.json</code> found
-								</>
-							)}
-						</td>
-					</tr>
-				</tbody>
-			</table>
+				))
+			}
+		</tbody>
+	</table>
 
-			<p>
-				<i>Has Test Files</i> looks for files ending in <code>.test.js</code>, <code>.test.ts</code>, <code>.spec.js</code> or <code>.spec.ts</code>.
-			</p>
-			<p>
-				<i>Installed Testing Frameworks</i> looks at installed dependencies. This does not mean that a plugin is actually using the testing framework.
-			</p>
-			<p>
-				<i>Dependencies</i> and <i>Dev Dependencies</i> only list the direct dependencies of the plugin.
-			</p>
-		</>
-	) : (
-		<p>No data available.</p>
-	)
-}
-
-<h2>Downloads</h2>
-
-<PluginDownloadChart dataPoints={pluginDownloadData} client:only="svelte" />
-
-<h2>Version History</h2>
-
-<table>
-	<thead>
-		<tr>
-			<th>Version</th>
-			<th>Release Date</th>
-		</tr>
-	</thead>
-	<tbody>
-		{
-			plugin.versionHistory.map(version => (
-				<tr>
-					<td>{version.version}</td>
-					<td>{version.initialReleaseDate}</td>
-				</tr>
-			))
-		}
-	</tbody>
-</table>
+</StarlightPage>
