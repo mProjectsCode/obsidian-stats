@@ -13858,5 +13858,44 @@
 				"newValue": "CyanVoxel/vauxhall-obsidian"
 			}
 		]
+	},
+	{
+		"id": "allium",
+		"name": "Allium",
+		"addedCommit": {
+			"date": "2024-06-03",
+			"hash": "e5865d48f34255d552ed2968a26dea666f18ce25"
+		},
+		"initialEntry": {
+			"name": "Allium",
+			"author": "Nullglyph",
+			"repo": "nulglyph/Allium",
+			"screenshot": "AlliumScreenshot.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Allium",
+			"author": "Nullglyph",
+			"repo": "nulglyph/Allium",
+			"screenshot": "AlliumScreenshot.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-06-03",
+					"hash": "e5865d48f34255d552ed2968a26dea666f18ce25"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
 	}
 ]
