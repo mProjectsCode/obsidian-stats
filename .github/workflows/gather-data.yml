@@ -29,7 +29,5 @@ jobs:
           git add releases-weekly-data.csv
           git add plugin-data.json
           git add theme-data.json
-          git add website/src/content/docs/plugins/
-          git add website/src/content/docs/themes/
           git commit -m "[auto] Update data" || true
           git push
