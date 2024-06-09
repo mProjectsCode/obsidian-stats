@@ -5,7 +5,6 @@
 	import { ThemeObserver } from './svelteUtils.ts';
 
 	export let dataPoints: DownloadDataPoint[];
-	export let dataPoints2: DownloadDataPoint[] = [];
 
 	let downloadChartEl: HTMLCanvasElement;
 	let downloadGrowthChartEl: HTMLCanvasElement;
@@ -27,13 +26,6 @@
 							type: 'line',
 							label: 'Downloads',
 							data: dataPoints.map(d => d.downloads),
-							borderColor: chartStyle.accent,
-							backgroundColor: chartStyle.accent,
-						},
-						{
-							type: 'line',
-							label: 'Downloads',
-							data: dataPoints2.map(d => d.downloads),
 							borderColor: chartStyle.accent,
 							backgroundColor: chartStyle.accent,
 						},
