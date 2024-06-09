@@ -1,0 +1,42 @@
+---
+import type { Props } from '@astrojs/starlight/props';
+import Default from '@astrojs/starlight/components/SocialIcons.astro';
+---
+
+<!-- Add custom social link with its SVG icon and a label. -->
+<a href="https://github.com/sponsors/mProjectsCode" rel="me" class="sl-flex">
+	<span class="sr-only">Support me</span>
+	<!--<svg-->
+	<!--        aria-hidden="true"-->
+	<!--        fill="currentColor"-->
+	<!--        height="16"-->
+	<!--        width="16"-->
+	<!--        viewBox="0 0 24 24"-->
+	<!--&gt;-->
+	<!--    <path-->
+	<!--            d="m10 17.55-1.77 1.72a2.47 2.47 0 0 1-3.5-3.5l4.54-4.55a2.46 2.46 0 0 1 3.39-.09l.12.1a1 1 0 0 0 1.4-1.43 2.75 2.75 0 0 0-.18-.21 4.46 4.46 0 0 0-6.09.22l-4.6 4.55a4.48 4.48 0 0 0 6.33 6.33L11.37 19A1 1 0 0 0 10 17.55ZM20.69 3.31a4.49 4.49 0 0 0-6.33 0L12.63 5A1 1 0 0 0 14 6.45l1.73-1.72a2.47 2.47 0 0 1 3.5 3.5l-4.54 4.55a2.46 2.46 0 0 1-3.39.09l-.12-.1a1 1 0 0 0-1.4 1.43 2.75 2.75 0 0 0 .23.21 4.47 4.47 0 0 0 6.09-.22l4.55-4.55a4.49 4.49 0 0 0 .04-6.33Z"-->
+	<!--    >-->
+	<!--    </path>-->
+	<!--</svg>-->
+	<svg aria-hidden="true" fill="currentColor" height="16" width="16" viewBox="0 0 512 512">
+		<!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+		<path
+			d="M47.6 300.4L228.3 469.1c7.5 7 17.4 10.9 27.7 10.9s20.2-3.9 27.7-10.9L464.4 300.4c30.4-28.3 47.6-68 47.6-109.5v-5.8c0-69.9-50.5-129.5-119.4-141C347 36.5 300.6 51.4 268 84L256 96 244 84c-32.6-32.6-79-47.5-124.6-39.9C50.5 55.6 0 115.2 0 185.1v5.8c0 41.5 17.2 81.2 47.6 109.5z"
+		></path>
+	</svg>
+</a>
+<!-- Render the default social links. -->
+<Default {...Astro.props}><slot /></Default>
+
+<!-- Add styles to mimic the default links appearance. -->
+<style>
+	a {
+		color: var(--sl-color-text-accent);
+		margin: -0.5em;
+		padding: 0.5em;
+	}
+
+	a:hover {
+		opacity: 0.66;
+	}
+</style>
