@@ -13897,5 +13897,159 @@
 				"newValue": ""
 			}
 		]
+	},
+	{
+		"id": "pale",
+		"name": "Pale - 淡",
+		"addedCommit": {
+			"date": "2024-06-04",
+			"hash": "a20982a4e0287c3ea76b764260b926c4a74e4fbc"
+		},
+		"initialEntry": {
+			"name": "Pale - 淡",
+			"author": "Elhary",
+			"repo": "Elhary/obsidian-Pale",
+			"screenshot": "screenshot.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Pale - 淡",
+			"author": "Elhary",
+			"repo": "Elhary/obsidian-Pale",
+			"screenshot": "screenshot.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-06-04",
+					"hash": "a20982a4e0287c3ea76b764260b926c4a74e4fbc"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "creme-brulee",
+		"name": "Creme brulee",
+		"addedCommit": {
+			"date": "2024-06-09",
+			"hash": "747f0bc9f1cd9ba1f28dad765b16d030e5370118"
+		},
+		"initialEntry": {
+			"name": "Creme brulee",
+			"author": "Anareaty",
+			"repo": "anareaty/creme-brulee-obsidian-theme",
+			"screenshot": "screenshot.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Creme brulee",
+			"author": "Anareaty",
+			"repo": "anareaty/creme-brulee-obsidian-theme",
+			"screenshot": "screenshot.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-06-09",
+					"hash": "747f0bc9f1cd9ba1f28dad765b16d030e5370118"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "dynamic-color",
+		"name": "Dynamic Color",
+		"addedCommit": {
+			"date": "2024-06-08",
+			"hash": "e3337d156f943894324633d332ce7b7b1cbbeeab"
+		},
+		"initialEntry": {
+			"name": "Dynamic Color",
+			"author": "Rody Davis",
+			"repo": "rodydavis/obsidian-dynamic-color",
+			"screenshot": "screenshots/light-purple.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Dynamic Color",
+			"author": "Rody Davis",
+			"repo": "rodydavis/obsidian-dynamic-color",
+			"screenshot": "screenshots/light-purple.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-06-08",
+					"hash": "e3337d156f943894324633d332ce7b7b1cbbeeab"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "dark-castle",
+		"name": "Dark Castle",
+		"addedCommit": {
+			"date": "2024-06-13",
+			"hash": "147bd7e9f7f65243876b3132e0a4510a18e46211"
+		},
+		"initialEntry": {
+			"name": "Dark Castle",
+			"author": "scottgriv",
+			"repo": "scottgriv/Dark-Castle-Obsidian",
+			"screenshot": "screenshot-small.png",
+			"modes": [
+				"dark"
+			]
+		},
+		"currentEntry": {
+			"name": "Dark Castle",
+			"author": "scottgriv",
+			"repo": "scottgriv/Dark-Castle-Obsidian",
+			"screenshot": "screenshot-small.png",
+			"modes": [
+				"dark"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-06-13",
+					"hash": "147bd7e9f7f65243876b3132e0a4510a18e46211"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
 	}
 ]
