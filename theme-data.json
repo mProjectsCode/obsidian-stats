@@ -14051,5 +14051,44 @@
 				"newValue": ""
 			}
 		]
+	},
+	{
+		"id": "retronotes",
+		"name": "RetroNotes",
+		"addedCommit": {
+			"date": "2024-06-13",
+			"hash": "3abf9363fecc574c9e6da1f47fcdd1f958bbfba4"
+		},
+		"initialEntry": {
+			"name": "RetroNotes",
+			"author": "Sr.Campelo",
+			"repo": "sr-campelo/retronotes",
+			"screenshot": "cover.jpg",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "RetroNotes",
+			"author": "Sr.Campelo",
+			"repo": "sr-campelo/retronotes",
+			"screenshot": "cover.jpg",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-06-13",
+					"hash": "3abf9363fecc574c9e6da1f47fcdd1f958bbfba4"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
 	}
 ]
