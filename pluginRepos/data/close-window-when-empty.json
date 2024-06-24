@@ -1,0 +1,1 @@
+{"id":"close-window-when-empty","usesTypescript":true,"hasPackageJson":true,"packageManager":"npm","dependencies":["@types/node","obsidian","typescript"],"devDependencies":[],"installedTestingFrameworks":[],"installedBundlers":[],"hasTestFiles":false,"hasBetaManifest":false,"fileCounts":{"json":4,"ts":1,"gitignore":1,"md":1},"license":"ISC"}
