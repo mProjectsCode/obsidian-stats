@@ -14090,5 +14090,419 @@
 				"newValue": ""
 			}
 		]
+	},
+	{
+		"id": "bossidian",
+		"name": "Bossidian",
+		"addedCommit": {
+			"date": "2024-06-18",
+			"hash": "af9f8b6f7ab9f7758c4a3477b95798dc339c774a"
+		},
+		"initialEntry": {
+			"name": "Bossidian",
+			"author": "BossElijah",
+			"repo": "BossElijah/bossidian",
+			"screenshot": "images/image-1.png",
+			"modes": [
+				"dark"
+			],
+			"branch": "master"
+		},
+		"currentEntry": {
+			"name": "Bossidian",
+			"author": "BossElijah",
+			"repo": "BossElijah/bossidian",
+			"screenshot": "images/image-1-small.png",
+			"modes": [
+				"dark"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-06-18",
+					"hash": "af9f8b6f7ab9f7758c4a3477b95798dc339c774a"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "branch",
+				"commit": {
+					"date": "2024-06-18",
+					"hash": "17d37cbd2b4ff9823283c0137ae61eb7f66762b7"
+				},
+				"oldValue": "master"
+			},
+			{
+				"property": "screenshot",
+				"commit": {
+					"date": "2024-06-18",
+					"hash": "2fa4f03654274559b8787831a8b2fe5ad4bf8470"
+				},
+				"oldValue": "images/image-1.png",
+				"newValue": "images/image-1-small.png"
+			}
+		]
+	},
+	{
+		"id": "aurora-twilight",
+		"name": "Aurora Twilight",
+		"addedCommit": {
+			"date": "2024-06-21",
+			"hash": "9caf200640a57cdb31865b2a62aa55923553462a"
+		},
+		"removedCommit": {
+			"date": "2024-06-21",
+			"hash": "6607823236658662eeb911fe9ea1dcf1f20d3cfd"
+		},
+		"initialEntry": {
+			"name": "Aurora Twilight",
+			"author": "Quintavalle Pietro",
+			"repo": "Quinta0/Aurora-Twilight",
+			"screenshot": "image.jpg",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Aurora Twilight",
+			"author": "Quintavalle Pietro",
+			"repo": "Quinta0/Aurora-Twilight",
+			"screenshot": "image.jpg",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-06-21",
+					"hash": "9caf200640a57cdb31865b2a62aa55923553462a"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2024-06-21",
+					"hash": "6607823236658662eeb911fe9ea1dcf1f20d3cfd"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "aurora-twilight-1",
+		"name": "Aurora-Twilight",
+		"addedCommit": {
+			"date": "2024-06-21",
+			"hash": "6607823236658662eeb911fe9ea1dcf1f20d3cfd"
+		},
+		"initialEntry": {
+			"name": "Aurora-Twilight",
+			"author": "Quintavalle Pietro",
+			"repo": "Quinta0/Aurora-Twilight",
+			"screenshot": "image.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Aurora-Twilight",
+			"author": "Quintavalle Pietro",
+			"repo": "Quinta0/Aurora-Twilight",
+			"screenshot": "image-small.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-06-21",
+					"hash": "6607823236658662eeb911fe9ea1dcf1f20d3cfd"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "screenshot",
+				"commit": {
+					"date": "2024-06-22",
+					"hash": "26d5f7383f316727dd6bbf57a97e8a62a06967e8"
+				},
+				"oldValue": "image.png",
+				"newValue": "image-small.png"
+			}
+		]
+	},
+	{
+		"id": "evergreen-shadow",
+		"name": "Evergreen-Shadow",
+		"addedCommit": {
+			"date": "2024-06-23",
+			"hash": "a071c4fcab10f9448b0eaf7ef2ce15937809fab0"
+		},
+		"initialEntry": {
+			"name": "Evergreen-Shadow",
+			"author": "Quinta0",
+			"repo": "Quinta0/Evergreen-Shadow",
+			"screenshot": "Evergreen-Shadow-small.png",
+			"modes": [
+				"dark"
+			]
+		},
+		"currentEntry": {
+			"name": "Evergreen-Shadow",
+			"author": "Quinta0",
+			"repo": "Quinta0/Evergreen-Shadow",
+			"screenshot": "Evergreen-Shadow-small.png",
+			"modes": [
+				"dark"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-06-23",
+					"hash": "a071c4fcab10f9448b0eaf7ef2ce15937809fab0"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "velvet-moon",
+		"name": "Velvet-Moon",
+		"addedCommit": {
+			"date": "2024-06-23",
+			"hash": "9ac4bdcf9c4d3e5117e48ff30164faa80210e473"
+		},
+		"initialEntry": {
+			"name": "Velvet-Moon",
+			"author": "Quinta0",
+			"repo": "Quinta0/Velvet-Moon",
+			"screenshot": "Velvet-Moon-small.png",
+			"modes": [
+				"dark"
+			]
+		},
+		"currentEntry": {
+			"name": "Velvet-Moon",
+			"author": "Quinta0",
+			"repo": "Quinta0/Velvet-Moon",
+			"screenshot": "Velvet-Moon-small.png",
+			"modes": [
+				"dark"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-06-23",
+					"hash": "9ac4bdcf9c4d3e5117e48ff30164faa80210e473"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "midnight-fjord",
+		"name": "Midnight-Fjord",
+		"addedCommit": {
+			"date": "2024-06-23",
+			"hash": "5abecaa6bafd6dd1fdde034dcbe6a111f5434f54"
+		},
+		"initialEntry": {
+			"name": "Midnight-Fjord",
+			"author": "Quinta0",
+			"repo": "Quinta0/Midnight-Fjord",
+			"screenshot": "Midnight-Fjord-small.png",
+			"modes": [
+				"dark"
+			]
+		},
+		"currentEntry": {
+			"name": "Midnight-Fjord",
+			"author": "Quinta0",
+			"repo": "Quinta0/Midnight-Fjord",
+			"screenshot": "Midnight-Fjord-small.png",
+			"modes": [
+				"dark"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-06-23",
+					"hash": "5abecaa6bafd6dd1fdde034dcbe6a111f5434f54"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "mint-breeze",
+		"name": "Mint-Breeze",
+		"addedCommit": {
+			"date": "2024-06-23",
+			"hash": "53bfbdc8c557d2f3772c1edc73aca718773dd2eb"
+		},
+		"initialEntry": {
+			"name": "Mint-Breeze",
+			"author": "Quinta0",
+			"repo": "Quinta0/Mint-Breeze",
+			"screenshot": "Mint-Breeze-small.png",
+			"modes": [
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Mint-Breeze",
+			"author": "Quinta0",
+			"repo": "Quinta0/Mint-Breeze",
+			"screenshot": "Mint-Breeze-small.png",
+			"modes": [
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-06-23",
+					"hash": "53bfbdc8c557d2f3772c1edc73aca718773dd2eb"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "lavender-mist",
+		"name": "Lavender-Mist",
+		"addedCommit": {
+			"date": "2024-06-23",
+			"hash": "81599cd56112056b590436be2ac59c69b429f777"
+		},
+		"initialEntry": {
+			"name": "Lavender-Mist",
+			"author": "Quinta0",
+			"repo": "Quinta0/Lavender-Mist",
+			"screenshot": "Lavender-Mist-small.png",
+			"modes": [
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Lavender-Mist",
+			"author": "Quinta0",
+			"repo": "Quinta0/Lavender-Mist",
+			"screenshot": "Lavender-Mist-small.png",
+			"modes": [
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-06-23",
+					"hash": "81599cd56112056b590436be2ac59c69b429f777"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "northern-sky",
+		"name": "Northern-Sky",
+		"addedCommit": {
+			"date": "2024-06-23",
+			"hash": "c099ac2fae09ba9e63b414eb1adcdcdc81180cda"
+		},
+		"initialEntry": {
+			"name": "Northern-Sky",
+			"author": "Quinta0",
+			"repo": "Quinta0/Northern-Sky",
+			"screenshot": "Northern-Sky-small.png",
+			"modes": [
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Northern-Sky",
+			"author": "Quinta0",
+			"repo": "Quinta0/Northern-Sky",
+			"screenshot": "Northern-Sky-small.png",
+			"modes": [
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-06-23",
+					"hash": "c099ac2fae09ba9e63b414eb1adcdcdc81180cda"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "seamless-view",
+		"name": "Seamless View",
+		"addedCommit": {
+			"date": "2024-06-24",
+			"hash": "cd37e9890800c62285e8883045b6c8e852ce7f20"
+		},
+		"initialEntry": {
+			"name": "Seamless View",
+			"author": "Gustavo Salgado",
+			"repo": "GustavoSZ124/Obsidian-Theme-Seamless-View",
+			"screenshot": "assets/Seamless View.png",
+			"modes": [
+				"dark"
+			]
+		},
+		"currentEntry": {
+			"name": "Seamless View",
+			"author": "Gustavo Salgado",
+			"repo": "GustavoSZ124/Obsidian-Theme-Seamless-View",
+			"screenshot": "assets/Seamless View.png",
+			"modes": [
+				"dark"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-06-24",
+					"hash": "cd37e9890800c62285e8883045b6c8e852ce7f20"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
 	}
 ]
