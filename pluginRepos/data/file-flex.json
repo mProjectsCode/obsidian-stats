@@ -1,0 +1,1 @@
+{"id":"file-flex","usesTypescript":false,"hasPackageJson":true,"packageManager":"npm","dependencies":[],"devDependencies":["obsidian"],"installedTestingFrameworks":[],"installedBundlers":[],"hasTestFiles":false,"hasBetaManifest":false,"fileCounts":{"js":1,"json":3,"yml":1,"gitignore":1,"md":1},"license":"MIT"}
