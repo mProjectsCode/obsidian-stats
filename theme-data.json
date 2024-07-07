@@ -5264,13 +5264,12 @@
 		"currentEntry": {
 			"name": "Primary",
 			"author": "Cecilia May",
-			"repo": "ceciliamay/obsidianmd-theme-primary",
-			"screenshot": "assets/primary-heroimg.png",
+			"repo": "primary-theme/obsidian",
+			"screenshot": "assets/obsidian-store-header.png",
 			"modes": [
 				"light",
 				"dark"
-			],
-			"legacy": true
+			]
 		},
 		"changeHistory": [
 			{
@@ -5297,6 +5296,32 @@
 					"hash": "177f1d940bd94b7ba7eb65a96670465638be7782"
 				},
 				"newValue": true
+			},
+			{
+				"property": "repo",
+				"commit": {
+					"date": "2024-06-24",
+					"hash": "17bbc89d2039e8a04f71b20ee0fdb71fff2e6757"
+				},
+				"oldValue": "ceciliamay/obsidianmd-theme-primary",
+				"newValue": "primary-theme/obsidian"
+			},
+			{
+				"property": "screenshot",
+				"commit": {
+					"date": "2024-06-24",
+					"hash": "17bbc89d2039e8a04f71b20ee0fdb71fff2e6757"
+				},
+				"oldValue": "assets/primary-heroimg.png",
+				"newValue": "assets/obsidian-store-header.png"
+			},
+			{
+				"property": "legacy",
+				"commit": {
+					"date": "2024-06-24",
+					"hash": "17bbc89d2039e8a04f71b20ee0fdb71fff2e6757"
+				},
+				"oldValue": true
 			}
 		]
 	},
