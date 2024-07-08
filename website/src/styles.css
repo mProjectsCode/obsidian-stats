@@ -1,0 +1,28 @@
+.muted {
+    color: var(--sl-color-gray-3);
+}
+
+/* headerless table fix */
+tbody:first-child tr:first-child td {
+    border-top: 1px solid var(--sl-color-gray-5);
+}
+
+table.full-width {
+    display: table;
+    width: 100%;
+}
+
+a.right-sidebar-link {
+	display: block;
+	font-size: var(--sl-text-xs);
+	text-decoration: none;
+	color: var(--sl-color-gray-3);
+	overflow-wrap: anywhere;
+
+    --pad-inline: 0.5rem;
+	display: block;
+	border-radius: 0.25rem;
+	padding-block: 0.25rem;
+	padding-inline: var(--pad-inline) var(--pad-inline);
+	line-height: 1.25;
+}

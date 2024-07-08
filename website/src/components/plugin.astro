@@ -5,10 +5,11 @@ import Commit from './commit.astro';
 import Aside from './aside.astro';
 import PluginDownloadChart from './svelte/pluginDownloadChart.svelte';
 import { getPluginDownloadsWeekly } from '../../../src/plugin/data';
-import { PluginDataInterface } from '../../../src/plugin/plugin';
+import type { PluginDataInterface } from '../../../src/plugin/plugin';
 import fs from 'node:fs/promises';
-import { PluginRepoData } from '../../../src/pluginRepo/types';
+import type { PluginRepoData } from '../../../src/pluginRepo/types';
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import { Icon } from '@astrojs/starlight/components';
 
 const { plugin } = Astro.props as { plugin: PluginDataInterface };
 const pluginDownloadData = getPluginDownloadsWeekly([plugin]);
@@ -35,14 +36,31 @@ try {
 } catch (e) {
 	console.log('failed to load repo data');
 }
+
+let mismatchedData: string[][] = [];
+if (repoData) {
+	const dataToCheck = [
+		[plugin.currentEntry.name, repoData.manifest.name, 'name'],
+		[plugin.currentEntry.author, repoData.manifest.author, 'author'],
+		[plugin.currentEntry.description, repoData.manifest.description, 'description'],
+	];
+
+	mismatchedData = dataToCheck.filter(x => x[0] !== x[1]);
+}
 ---
 
 <StarlightPage
-	frontmatter={{ title: plugin.currentEntry.name, description: `Page for the ${plugin.currentEntry.name} plugin.` }}
+	frontmatter={{ title: plugin.currentEntry.name, description: `Page for the ${plugin.currentEntry.name} plugin.`, links: [
+		repoData?.manifest?.helpUrl ? { text: "Plugin Docs", href: repoData.manifest.helpUrl } : undefined as unknown as { text: string, href: string },
+		{ text: "GitHub Repo", href: plugin.currentEntry.repo },
+		{ text: "View in Obsidian", href: obsidianLink },
+		{ text: "View on ObsidianAddict", href: obsidianAddictLink },
+		{ text: "View on the Obsidian Hub", href: obsidianHubLink },
+	].filter(Boolean) }}
 	headings={[
-		{ depth: 3, text: 'View this Plugin on Other Sites', slug: 'view-this-plugin-on-other-sites' },
-		{ depth: 3, text: 'Data Changes', slug: 'data-changes' },
-		{ depth: 2, text: 'Repo Data', slug: 'repo-data' },
+		{ depth: 2, text: 'Data', slug: 'data' },
+		{ depth: 3, text: 'Changes', slug: 'changes' },
+		{ depth: 3, text: 'Repository Data', slug: 'repository-data' },
 		{ depth: 2, text: 'Downloads', slug: 'downloads' },
 		{ depth: 2, text: 'Version History', slug: 'version-history' },
 	]}
@@ -76,24 +94,36 @@ try {
 		)
 	}
 
-	<table>
+	<p>{plugin.currentEntry.description}</p>
+
+	<h2 id="data">Data</h2>
+
+	<table class="full-width">
 		<tbody>
 			<tr>
 				<td>ID</td>
 				<td>{plugin.id}</td>
 			</tr>
 			<tr>
-				<td>Name</td>
-				<td>{plugin.currentEntry.name}</td>
-			</tr>
-			<tr>
 				<td>Author</td>
-				<td>{plugin.currentEntry.author}</td>
+				<td>{repoData?.manifest.authorUrl ? <a href={repoData?.manifest.authorUrl} target="_blank">{plugin.currentEntry.author}</a> : plugin.currentEntry.author}</td>
 			</tr>
-			<tr>
-				<td>Description</td>
-				<td>{plugin.currentEntry.description}</td>
-			</tr>
+			{
+				repoData?.manifest?.fundingUrl && (
+					<tr>
+						<td>Funding</td>
+						<td><a href={repoData.manifest.fundingUrl}>Support the Author!</a></td>
+					</tr>
+				)				
+			}
+			{
+				repoData && (
+					<tr>
+						<td>Minimum Obsidian Version</td>
+						<td>{repoData.manifest.minAppVersion}</td>
+					</tr>
+				)				
+			}
 			<tr>
 				<td>Official Release Date</td>
 				<td><Commit commit={plugin.addedCommit} /></td>
@@ -105,36 +135,39 @@ try {
 		</tbody>
 	</table>
 
-	<h3 id="view-this-plugin-on-other-sites">View this Plugin on Other Sites</h3>
+	{
+		mismatchedData.length > 0 && (
+			<Aside variant="caution" title="Mismatched Data">
+				<p>
+					The data in the community list does not match the data in the plugin's repository.
+				</p>
+				<table class="full-width">
+					<thead>
+						<tr>
+							<th>Property</th>
+							<th>Community List</th>
+							<th>Repository</th>
+						</tr>
+					</thead>
+					<tbody>
+						{
+							mismatchedData.map(x => (
+								<tr>
+									<td>{x[2]}</td>
+									<td>{x[0]}</td>
+									<td>{x[1]}</td>
+								</tr>
+							))
+						}
+					</tbody>
+				</table>
+			</Aside>
+		)
+	}
 
-	<table>
-		<tbody>
-			<tr>
-				<td>GitHub Repo</td>
-				<td><GithubLink repo={plugin.currentEntry.repo} /></td>
-			</tr>
-			<tr>
-				<td>Obsidian Link</td>
-				<td><a href={obsidianLink}>View in Obsidian</a></td>
-			</tr>
-			<tr>
-				<td>ObsidianAddict Link</td>
-				<td><a href={obsidianAddictLink} target="_blank">View on ObsidianAddict</a></td>
-			</tr>
-			<tr>
-				<td>Obsidian Hub Link</td>
-				<td><a href={obsidianHubLink} target="_blank">View on the Obsidian Hub</a></td>
-			</tr>
-		</tbody>
-	</table>
+	<h3 id="changes">Changes</h3>
 
-	<p>Links for removed plugins might not work.</p>
-
-	<h3 id="data-changes">Data Changes</h3>
-
-	<p>This is a list of changes made to the plugin entry in the community list.</p>
-
-	<table>
+	<table class="full-width">
 		<thead>
 			<tr>
 				<th>Date</th>
@@ -159,14 +192,12 @@ try {
 		</tbody>
 	</table>
 
-	<h2 id="repo-data">Repo Data</h2>
+	<h3 id="repository-data">Repository Data</h3>
 
 	{
 		repoData ? (
 			<>
-				<p>This data is extracted from the plugin's GitHub repository. This data might not be updated as frequently as the other data on this page.</p>
-
-				<table>
+				<table class="full-width">
 					<tbody>
 						<tr>
 							<td>
@@ -269,13 +300,13 @@ try {
 					</tbody>
 				</table>
 
-				<p>
+				<p class="muted">
 					<i>Has Test Files</i> looks for files ending in <code>.test.js</code>, <code>.test.ts</code>, <code>.spec.js</code> or <code>.spec.ts</code>.
 				</p>
-				<p>
+				<p class="muted">
 					<i>Installed Testing Frameworks</i> looks at installed dependencies. This does not mean that a plugin is actually using the testing framework.
 				</p>
-				<p>
+				<p class="muted">
 					<i>Dependencies</i> and <i>Dev Dependencies</i> only list the direct dependencies of the plugin.
 				</p>
 			</>
@@ -290,7 +321,7 @@ try {
 
 	<h2 id="version-history">Version History</h2>
 
-	<table>
+	<table class="full-width">
 		<thead>
 			<tr>
 				<th>Version</th>

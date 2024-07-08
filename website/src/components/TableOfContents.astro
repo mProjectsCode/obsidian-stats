@@ -1,7 +1,25 @@
 ---
 import Default from '@astrojs/starlight/components/TableOfContents.astro';
 import Sponsors from './Sponsors.astro';
+
+const {entry} = Astro.props;
 ---
 
 <Default {...Astro.props as any}><slot /></Default>
+{
+    entry.data.links && (
+        <section style="margin-top: 0.5rem">
+            <h2>External Links</h2>
+            <ul style="padding: 0; list-style: none;">
+                {entry.data.links.map((link: {text: string, href: string}) => (
+                    <li><a class="right-sidebar-link" href={link.href} target="_blank">
+                        <span>
+                            {link.text}
+                        </span>
+                    </a></li>
+                ))}
+            </ul>
+        </section>
+    )
+}
 <Sponsors />

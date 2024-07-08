@@ -3,7 +3,7 @@ import { PluginDataInterface } from '../plugin/plugin.ts';
 import fs from 'node:fs/promises';
 import { $, Verboseness } from '../shellUtils.ts';
 import { arrayIntersect, uniqueConcat } from '../utils.ts';
-import { PluginRepoData } from './types.ts';
+import { PluginManifest, PluginRepoData } from './types.ts';
 import CliProgress from 'cli-progress';
 
 export async function clonePluginRepos() {
@@ -82,6 +82,8 @@ export async function collectRepoData() {
 			continue;
 		}
 
+		const manifest = await Bun.file(`${repoPath}/manifest.json`).json() as PluginManifest;
+
 		const data: PluginRepoData = {
 			id: plugin.id,
 			usesTypescript: true,
@@ -95,6 +97,7 @@ export async function collectRepoData() {
 			hasBetaManifest: false,
 			fileCounts: {},
 			license: undefined,
+			manifest: manifest,
 		};
 
 		const files = await listFiles(repoPath);

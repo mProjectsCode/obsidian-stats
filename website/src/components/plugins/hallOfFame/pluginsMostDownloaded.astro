@@ -1,5 +1,5 @@
 ---
-import { PluginDataInterface } from '../../../../../src/plugin/plugin';
+import type { PluginDataInterface } from '../../../../../src/plugin/plugin';
 import PluginDataFile from '../../../../../plugin-data.json' assert { type: 'json' };
 import { getPluginDownloadsWeekly } from '../../../../../src/plugin/data';
 import PluginLink from '../../pluginLink.astro';
@@ -33,9 +33,6 @@ let downloadData = dataFile.map(x => {
 	let totalDownloads = 0;
 
 	if (year !== undefined && startDate !== undefined && endDate !== undefined) {
-		// for (const download of downloads) {
-		// 	console.log(download.date, startDate, endDate, CDate.fromString(download.date).inRange(startDate, endDate));
-		// }
 		downloads = downloads.filter(x => CDate.fromString(x.date).inRange(startDate, endDate));
 
 		const firstData = downloads.find(x => x.downloads !== undefined);
