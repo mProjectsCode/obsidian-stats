@@ -1,6 +1,7 @@
 {
 	"files.exclude": {
-		"**/docs/plugins": true,
-		"obsidian-releases": true
+		"obsidian-releases": true,
+		"choosealicense.com": true,
+		"pluginRepos": true
 	}
 }

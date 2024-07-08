@@ -43,9 +43,7 @@ export default defineConfig({
 					},
 				},
 			],
-			customCss: [
-				'./src/styles.css'
-			]
+			customCss: ['./src/styles.css'],
 		}),
 		svelte(),
 	],

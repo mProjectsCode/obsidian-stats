@@ -82,7 +82,7 @@ export async function collectRepoData() {
 			continue;
 		}
 
-		const manifest = await Bun.file(`${repoPath}/manifest.json`).json() as PluginManifest;
+		const manifest = (await Bun.file(`${repoPath}/manifest.json`).json()) as PluginManifest;
 
 		const data: PluginRepoData = {
 			id: plugin.id,
