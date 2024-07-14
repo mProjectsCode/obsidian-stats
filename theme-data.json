@@ -14515,7 +14515,8 @@
 			"repo": "GustavoSZ124/Obsidian-Theme-Seamless-View",
 			"screenshot": "assets/Seamless View.png",
 			"modes": [
-				"dark"
+				"dark",
+				"light"
 			]
 		},
 		"changeHistory": [
@@ -14524,6 +14525,324 @@
 				"commit": {
 					"date": "2024-06-24",
 					"hash": "cd37e9890800c62285e8883045b6c8e852ce7f20"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "modes",
+				"commit": {
+					"date": "2024-07-12",
+					"hash": "e7e88a3b644870a5a62594fe3ce58dd1c73896ae"
+				},
+				"oldValue": "dark",
+				"newValue": "dark, light"
+			}
+		]
+	},
+	{
+		"id": "gummy-revived",
+		"name": "Gummy-Revived",
+		"addedCommit": {
+			"date": "2024-06-27",
+			"hash": "0638c90a973a41aaaf31db067ba97b60b19fe5ad"
+		},
+		"initialEntry": {
+			"name": "Gummy-Revived",
+			"author": "WinnerWind",
+			"repo": "WinnerWind/gummy-revived",
+			"screenshot": "screenshot.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Gummy-Revived",
+			"author": "WinnerWind",
+			"repo": "WinnerWind/gummy-revived",
+			"screenshot": "screenshot.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-06-27",
+					"hash": "0638c90a973a41aaaf31db067ba97b60b19fe5ad"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "agate",
+		"name": "Agate",
+		"addedCommit": {
+			"date": "2024-07-04",
+			"hash": "8ab8ee14098322409743fbc1d2939ac61e8661c6"
+		},
+		"initialEntry": {
+			"name": "Agate",
+			"author": "solmi",
+			"repo": "solm0/Agate",
+			"screenshot": "agate_screenshot.png",
+			"modes": [
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Agate",
+			"author": "solmi",
+			"repo": "solm0/Agate",
+			"screenshot": "agate_screenshot.png",
+			"modes": [
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-07-04",
+					"hash": "8ab8ee14098322409743fbc1d2939ac61e8661c6"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "vanilla-theme-palettes",
+		"name": "Vanilla Theme Palettes",
+		"addedCommit": {
+			"date": "2024-07-07",
+			"hash": "d70957b0e3444b6f7992356a0b195026ee517a4f"
+		},
+		"removedCommit": {
+			"date": "2024-07-07",
+			"hash": "f06147f5f5bf52ec6ee1ca9ff0365d55dcad16d8"
+		},
+		"initialEntry": {
+			"name": "Vanilla Theme Palettes",
+			"author": "GnRlLeclerc",
+			"repo": "GnRlLeclerc/Vanilla-Theme-Palettes",
+			"screenshot": "vanilla theme palettes.png",
+			"modes": [
+				"light",
+				"dark"
+			]
+		},
+		"currentEntry": {
+			"name": "Vanilla Theme Palettes",
+			"author": "GnRlLeclerc",
+			"repo": "GnRlLeclerc/Vanilla-Theme-Palettes",
+			"screenshot": "vanilla theme palettes.png",
+			"modes": [
+				"light",
+				"dark"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-07-07",
+					"hash": "d70957b0e3444b6f7992356a0b195026ee517a4f"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2024-07-07",
+					"hash": "f06147f5f5bf52ec6ee1ca9ff0365d55dcad16d8"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "vanilla-palettes",
+		"name": "Vanilla Palettes",
+		"addedCommit": {
+			"date": "2024-07-07",
+			"hash": "f06147f5f5bf52ec6ee1ca9ff0365d55dcad16d8"
+		},
+		"initialEntry": {
+			"name": "Vanilla Palettes",
+			"author": "GnRlLeclerc",
+			"repo": "GnRlLeclerc/Vanilla-Theme-Palettes",
+			"screenshot": "thumbnail.png",
+			"modes": [
+				"light",
+				"dark"
+			]
+		},
+		"currentEntry": {
+			"name": "Vanilla Palettes",
+			"author": "GnRlLeclerc",
+			"repo": "GnRlLeclerc/Vanilla-Theme-Palettes",
+			"screenshot": "thumbnail.png",
+			"modes": [
+				"light",
+				"dark"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-07-07",
+					"hash": "f06147f5f5bf52ec6ee1ca9ff0365d55dcad16d8"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "dark-clarity",
+		"name": "Dark Clarity",
+		"addedCommit": {
+			"date": "2024-07-10",
+			"hash": "1e4dd448592a6f88fd9172b98398b28e67ce6169"
+		},
+		"initialEntry": {
+			"name": "Dark Clarity",
+			"author": "chenbihao",
+			"authorUrl": "https://github.com/chenbihao",
+			"version": "1.0.0",
+			"minAppVersion": "1.0.0",
+			"repo": "chenbihao/obsidian-theme-dark-clarity",
+			"screenshot": "screenshot.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Dark Clarity",
+			"author": "chenbihao",
+			"repo": "chenbihao/obsidian-theme-dark-clarity",
+			"screenshot": "screenshot.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-07-10",
+					"hash": "1e4dd448592a6f88fd9172b98398b28e67ce6169"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "authorUrl",
+				"commit": {
+					"date": "2024-07-10",
+					"hash": "4ba3b946a54c3f3708eb9c14bbc4b374229ebcc4"
+				},
+				"oldValue": "https://github.com/chenbihao"
+			},
+			{
+				"property": "version",
+				"commit": {
+					"date": "2024-07-10",
+					"hash": "4ba3b946a54c3f3708eb9c14bbc4b374229ebcc4"
+				},
+				"oldValue": "1.0.0"
+			},
+			{
+				"property": "minAppVersion",
+				"commit": {
+					"date": "2024-07-10",
+					"hash": "4ba3b946a54c3f3708eb9c14bbc4b374229ebcc4"
+				},
+				"oldValue": "1.0.0"
+			}
+		]
+	},
+	{
+		"id": "nier",
+		"name": "Nier",
+		"addedCommit": {
+			"date": "2024-07-08",
+			"hash": "aa5558d0469087d4fd64d0e20c06037bb0d6dfac"
+		},
+		"initialEntry": {
+			"name": "Nier",
+			"author": "exloseur3d",
+			"repo": "exloseur3d/nier-theme",
+			"screenshot": "preview_Nier_theme.png",
+			"modes": [
+				"dark"
+			]
+		},
+		"currentEntry": {
+			"name": "Nier",
+			"author": "exloseur3d",
+			"repo": "exloseur3d/nier-theme",
+			"screenshot": "preview_Nier_theme.png",
+			"modes": [
+				"dark"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-07-08",
+					"hash": "aa5558d0469087d4fd64d0e20c06037bb0d6dfac"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "darkember",
+		"name": "DarkEmber",
+		"addedCommit": {
+			"date": "2024-07-11",
+			"hash": "50df47ce59d53ad337122105d60f9b13237cf7a8"
+		},
+		"initialEntry": {
+			"name": "DarkEmber",
+			"author": "miz",
+			"repo": "miz-i/Obsidian-theme-DarkEmber",
+			"screenshot": "images/screenshot.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "DarkEmber",
+			"author": "miz",
+			"repo": "miz-i/Obsidian-theme-DarkEmber",
+			"screenshot": "images/screenshot.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-07-11",
+					"hash": "50df47ce59d53ad337122105d60f9b13237cf7a8"
 				},
 				"oldValue": "",
 				"newValue": ""
