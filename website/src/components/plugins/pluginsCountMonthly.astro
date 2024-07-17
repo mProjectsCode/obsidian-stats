@@ -1,11 +1,13 @@
 ---
-import PluginDataFile from '../../../../plugin-data.json' assert { type: 'json' };
 import PluginPerMonthChart from '../svelte/genericCharts/dataPerMonthChart.svelte';
 import { getPluginCountMonthly, getPluginCountWoRetiredMonthly, getPluginCountRemovedMonthly } from '../../../../src/plugin/data';
+import { getPluginData } from '../../../../src/utils';
 
-const dataPoints = getPluginCountMonthly(PluginDataFile);
-const dataPoints2 = getPluginCountWoRetiredMonthly(PluginDataFile);
-const dataPoints3 = getPluginCountRemovedMonthly(PluginDataFile);
+const pluginData = getPluginData();
+
+const dataPoints = getPluginCountMonthly(pluginData);
+const dataPoints2 = getPluginCountWoRetiredMonthly(pluginData);
+const dataPoints3 = getPluginCountRemovedMonthly(pluginData);
 ---
 
 <PluginPerMonthChart dataPoints={dataPoints} title="Total Plugin Count" type="line" client:only="svelte" />

@@ -1,80 +1,29 @@
 ---
-import { PluginRepoData } from '../../../../src/pluginRepo/types';
-import PieChart from '../svelte/genericCharts/pieChart.svelte';
+import type { PluginRepoData, PluginRepoDataNonNull } from '../../../../src/pluginRepo/types';
 import BarChart from '../svelte/genericCharts/barChart.svelte';
 import fs from 'node:fs/promises';
-import { arrayIntersect, groupBy, multiGroupBy } from '../../../../src/utils';
-import { Licenses } from '../../../../src/license';
-import { BASE_PATH, projectRelativeUrl } from '../../utils/base';
+import { arrayIntersect, getPluginData, groupBy, multiGroupBy } from '../../../../src/utils';
+import type { Licenses } from '../../../../src/license';
+import { projectRelativeUrl } from '../../utils/base';
 
 const url = projectRelativeUrl('../pluginRepos/data/');
 const repoDataFiles = await fs.readdir(url);
-const repoData: PluginRepoData[] = await Promise.all(
+
+const repoData = (await Promise.all(
 	repoDataFiles.map(async file => {
 		const content = await fs.readFile(new URL(`./${file}`, url), 'utf-8');
 		return JSON.parse(content);
 	}),
-);
-const totalPluginCount = repoData.length;
+)) as PluginRepoData[];
 
-const licenceInfo = groupBy(repoData, x => {
-	if (x.license === null || x.license === undefined || x.license === '') {
-		return 'undefined';
-	}
+const repoDataWithRepos = repoData.filter(x => x.repo !== undefined) as PluginRepoDataNonNull[];
 
-	const lowerCaseLicense = x.license.toLowerCase();
+const totalPluginCount = repoDataWithRepos.length;
 
-	if (lowerCaseLicense.includes('mit')) {
-		return 'MIT';
-	}
+const licenceInfo = groupBy(repoDataWithRepos, x => x.repo.license);
 
-	if (lowerCaseLicense.includes('see license')) {
-		return 'undefined';
-	}
-
-	if (lowerCaseLicense.includes('agpl') && lowerCaseLicense.includes('3')) {
-		return 'AGPL-3.0';
-	}
-
-	if (lowerCaseLicense.includes('gpl') && lowerCaseLicense.includes('3')) {
-		return 'GPL-3.0';
-	}
-
-	if (lowerCaseLicense.includes('gnu') && lowerCaseLicense.includes('3')) {
-		return 'GPL-3.0';
-	}
-
-	if (lowerCaseLicense.includes('agpl') && lowerCaseLicense.includes('2')) {
-		return 'AGPL-2.0';
-	}
-
-	if (lowerCaseLicense.includes('gpl') && lowerCaseLicense.includes('2')) {
-		return 'GPL-2.0';
-	}
-
-	if (lowerCaseLicense.includes('gnu') && lowerCaseLicense.includes('2')) {
-		return 'GPL-2.0';
-	}
-
-	if (lowerCaseLicense.includes('gnu') || lowerCaseLicense.includes('gpl')) {
-		return 'GPL-2.0';
-	}
-
-	if (lowerCaseLicense.includes('apache') && lowerCaseLicense.includes('2')) {
-		return 'Apache-2.0';
-	}
-
-	if (lowerCaseLicense.includes('apache')) {
-		return 'Apache-2.0';
-	}
-
-	return x.license;
-});
 const licenceChartInfo = Object.entries(licenceInfo)
 	.map(([key, value]) => {
-		if (key === 'undefined') {
-			key = 'Unknown License';
-		}
 		return {
 			label: key,
 			value: value.length,
@@ -84,10 +33,7 @@ const licenceChartInfo = Object.entries(licenceInfo)
 
 const licenceChartSmallInfo = Object.entries(licenceInfo)
 	.map(([key, value]) => {
-		if (key === 'undefined') {
-			return undefined;
-		}
-		if (value.length < 50) {
+		if (value.length < 100) {
 			return {
 				label: key,
 				value: value.length,
@@ -137,7 +83,7 @@ const permissionsLabels = Object.keys(licensePermissions).map(x => licenses.desc
 const conditionsLabels = Object.keys(licenseConditions).map(x => licenses.descriptions.conditions.find(y => y.tag === x)!.label);
 const limitaionsLabels = Object.keys(licenseLimitations).map(x => licenses.descriptions.limitations.find(y => y.tag === x)!.label);
 
-const packageManagerInfo = groupBy(repoData, x => x.packageManager);
+const packageManagerInfo = groupBy(repoDataWithRepos, x => x.repo.packageManager ?? 'undefined');
 const packageManagerChartInfo = Object.entries(packageManagerInfo)
 	.map(([key, value]) => {
 		if (key === 'undefined') {
@@ -150,18 +96,8 @@ const packageManagerChartInfo = Object.entries(packageManagerInfo)
 	})
 	.sort((a, b) => b.value - a.value);
 
-// const usesTsInfo = groupBy(repoData, x => x.usesTypescript.toString());
-// const usesTsChartInfo = Object.entries(usesTsInfo)
-// 	.map(([key, value]) => {
-// 		return {
-// 			label: key,
-// 			value: value.length,
-// 		};
-// 	})
-// 	.sort((a, b) => a.label.length - b.label.length);
-
-const installedBundlersInfo = multiGroupBy(repoData, x => {
-	return x.installedBundlers;
+const installedBundlersInfo = multiGroupBy(repoDataWithRepos, x => {
+	return x.repo.installedBundlers;
 });
 const installedBundlersChartInfo = Object.entries(installedBundlersInfo)
 	.map(([key, value]) => {
@@ -172,8 +108,8 @@ const installedBundlersChartInfo = Object.entries(installedBundlersInfo)
 	})
 	.sort((a, b) => b.value - a.value);
 
-const installedTestingFrameworksInfo = multiGroupBy(repoData, x => {
-	return x.installedTestingFrameworks;
+const installedTestingFrameworksInfo = multiGroupBy(repoDataWithRepos, x => {
+	return x.repo.installedTestingFrameworks;
 });
 
 const installedTestingFrameworksChartInfo = Object.entries(installedTestingFrameworksInfo)
@@ -184,11 +120,11 @@ const installedTestingFrameworksChartInfo = Object.entries(installedTestingFrame
 		};
 	})
 	.sort((a, b) => b.value - a.value);
-const noTestingFrameworkCount = repoData.filter(x => x.installedTestingFrameworks.length === 0).length;
+const noTestingFrameworkCount = repoDataWithRepos.filter(x => x.repo.installedTestingFrameworks.length === 0).length;
 
 const frontendFrameworks = ['react', 'preact', 'svelte', 'vue', '@angular/core', 'solid-js'];
-const installedFrontendFrameworksInfo = multiGroupBy(repoData, x => {
-	return arrayIntersect([...x.dependencies, ...x.devDependencies], frontendFrameworks);
+const installedFrontendFrameworksInfo = multiGroupBy(repoDataWithRepos, x => {
+	return arrayIntersect([...x.repo.dependencies, ...x.repo.devDependencies], frontendFrameworks);
 });
 
 const installedFrontendFrameworksChartInfo = Object.entries(installedFrontendFrameworksInfo)
@@ -200,10 +136,12 @@ const installedFrontendFrameworksChartInfo = Object.entries(installedFrontendFra
 	})
 	.sort((a, b) => b.value - a.value);
 
-const noFrontendFrameworkCount = repoData.filter(x => arrayIntersect([...x.dependencies, ...x.devDependencies], frontendFrameworks).length === 0).length;
+const noFrontendFrameworkCount = repoDataWithRepos.filter(
+	x => arrayIntersect([...x.repo.dependencies, ...x.repo.devDependencies], frontendFrameworks).length === 0,
+).length;
 
-const installedToolingFrameworksInfo = multiGroupBy(repoData, x => {
-	const allDeps = [...x.dependencies, ...x.devDependencies];
+const installedToolingFrameworksInfo = multiGroupBy(repoDataWithRepos, x => {
+	const allDeps = [...x.repo.dependencies, ...x.repo.devDependencies];
 	const result = new Set<string>();
 
 	if (allDeps.some(x => x.includes('eslint'))) {
@@ -222,7 +160,7 @@ const installedToolingFrameworksInfo = multiGroupBy(repoData, x => {
 		result.add('dprint');
 	}
 
-	if (x.usesTypescript) {
+	if (x.repo.usesTypescript) {
 		result.add('typescript');
 	}
 
@@ -238,8 +176,8 @@ const installedToolingFrameworksChartInfo = Object.entries(installedToolingFrame
 	})
 	.sort((a, b) => b.value - a.value);
 
-const mostUsedDepsInfo = multiGroupBy(repoData, x => {
-	return [...x.dependencies, ...x.devDependencies];
+const mostUsedDepsInfo = multiGroupBy(repoDataWithRepos, x => {
+	return [...x.repo.dependencies, ...x.repo.devDependencies];
 });
 
 const mostUsedDepsChartInfo = Object.entries(mostUsedDepsInfo)
@@ -253,7 +191,7 @@ const mostUsedDepsChartInfo = Object.entries(mostUsedDepsInfo)
 
 const limitedMostUsedDepsChartInfo = mostUsedDepsChartInfo.filter(x => x.value >= 10);
 
-const hasBetaManifestInfo = groupBy(repoData, x => x.hasBetaManifest.toString());
+const hasBetaManifestInfo = groupBy(repoDataWithRepos, x => x.repo.hasBetaManifest.toString());
 const hasBetaManifestChartInfo = Object.entries(hasBetaManifestInfo)
 	.map(([key, value]) => {
 		return {
@@ -274,7 +212,6 @@ const hasBetaManifestChartInfo = Object.entries(hasBetaManifestInfo)
 	> files.
 </p>
 
-<!--<PieChart dataPoints={licenceChartInfo} isPercentual={false} calculatePrecentages={true} client:only="svelte" />-->
 <BarChart
 	dataPoints={licenceChartInfo.map(x => x.value)}
 	labels={licenceChartInfo.map(x => x.label)}
@@ -285,9 +222,8 @@ const hasBetaManifestChartInfo = Object.entries(hasBetaManifestInfo)
 	client:only="svelte"
 />
 
-<p>Licenses with more than 50 plugins and unknown licenses are not shown in the chart below.</p>
+<p>Licenses that are used by more than 100 plugins are excluded from the chart below.</p>
 
-<!--<PieChart dataPoints={licenceChartSmallInfo} isPercentual={false} client:only="svelte" />-->
 <BarChart
 	dataPoints={licenceChartSmallInfo.map(x => x.value)}
 	labels={licenceChartSmallInfo.map(x => x.label)}
@@ -309,7 +245,6 @@ const hasBetaManifestChartInfo = Object.entries(hasBetaManifestInfo)
 <BarChart
 	dataPoints={Object.values(licensePermissions)}
 	labels={permissionsLabels}
-	isPercentual={false}
 	aspectRatio={2}
 	logScale={false}
 	seriesName="Number of Plugins"
@@ -331,7 +266,6 @@ const hasBetaManifestChartInfo = Object.entries(hasBetaManifestInfo)
 <BarChart
 	dataPoints={Object.values(licenseConditions)}
 	labels={conditionsLabels}
-	isPercentual={false}
 	aspectRatio={2}
 	logScale={false}
 	seriesName="Number of Plugins"
@@ -353,7 +287,6 @@ const hasBetaManifestChartInfo = Object.entries(hasBetaManifestInfo)
 <BarChart
 	dataPoints={Object.values(licenseLimitations)}
 	labels={limitaionsLabels}
-	isPercentual={false}
 	aspectRatio={2}
 	logScale={false}
 	seriesName="Number of Plugins"
@@ -368,27 +301,10 @@ const hasBetaManifestChartInfo = Object.entries(hasBetaManifestInfo)
 	))
 }
 
-<!--<h3>Typescript Usage</h3>-->
-
-<!--<p>The number of plugins that use Typescript.</p>-->
-
-<!--<PieChart dataPoints={usesTsChartInfo} isPercentual={false} calculatePrecentages={true} client:only="svelte" />-->
-<!--<BarChart-->
-<!--	dataPoints={usesTsChartInfo.map(x => x.value)}-->
-<!--	labels={usesTsChartInfo.map(x => x.label)}-->
-<!--	logScale={false}-->
-<!--	aspectRatio={2}-->
-<!--	seriesName="Number of Plugins"-->
-<!--	calculatePrecentages={true}-->
-<!--	percent100={totalPluginCount}-->
-<!--	client:only="svelte"-->
-<!--/>-->
-
 <h3>BRAT Beta Manifest Usage</h3>
 
 <p>The percentage of plugins that have a BRAT beta manifest.</p>
 
-<!--<PieChart dataPoints={hasBetaManifestChartInfo} isPercentual={false} calculatePrecentages={true} client:only="svelte" />-->
 <BarChart
 	dataPoints={hasBetaManifestChartInfo.map(x => x.value)}
 	labels={hasBetaManifestChartInfo.map(x => x.label)}
@@ -406,7 +322,6 @@ const hasBetaManifestChartInfo = Object.entries(hasBetaManifestInfo)
 
 <p>The distribution of package managers used in plugins. The package manager is determined by the presence of a lockfile in the plugin repository.</p>
 
-<!--<PieChart dataPoints={packageManagerChartInfo} isPercentual={false} calculatePrecentages={true} client:only="svelte" />-->
 <BarChart
 	dataPoints={packageManagerChartInfo.map(x => x.value)}
 	labels={packageManagerChartInfo.map(x => x.label)}
@@ -423,7 +338,6 @@ const hasBetaManifestChartInfo = Object.entries(hasBetaManifestInfo)
 	The distribution of code bundlers used in plugins. The bundler is determined by the presence of dependencies in the plugins <code>package.json</code>.
 </p>
 
-<!--<PieChart dataPoints={installedBundlersChartInfo} isPercentual={false} calculatePrecentages={true} client:only="svelte" />-->
 <BarChart
 	dataPoints={installedBundlersChartInfo.map(x => x.value)}
 	labels={installedBundlersChartInfo.map(x => x.label)}
@@ -438,7 +352,6 @@ const hasBetaManifestChartInfo = Object.entries(hasBetaManifestInfo)
 
 <p>The distribution of developer tooling used in plugins.</p>
 
-<!--<PieChart dataPoints={installedBundlersChartInfo} isPercentual={false} calculatePrecentages={true} client:only="svelte" />-->
 <BarChart
 	dataPoints={installedToolingFrameworksChartInfo.map(x => x.value)}
 	labels={installedToolingFrameworksChartInfo.map(x => x.label)}
@@ -457,7 +370,6 @@ const hasBetaManifestChartInfo = Object.entries(hasBetaManifestInfo)
 	>.
 </p>
 
-<!--<PieChart dataPoints={installedTestingFrameworksChartInfo} isPercentual={false} calculatePrecentages={true} client:only="svelte" />-->
 <BarChart
 	dataPoints={installedTestingFrameworksChartInfo.map(x => x.value)}
 	labels={installedTestingFrameworksChartInfo.map(x => x.label)}
@@ -480,7 +392,6 @@ const hasBetaManifestChartInfo = Object.entries(hasBetaManifestInfo)
 	>.
 </p>
 
-<!--<PieChart dataPoints={installedTestingFrameworksChartInfo} isPercentual={false} calculatePrecentages={true} client:only="svelte" />-->
 <BarChart
 	dataPoints={installedFrontendFrameworksChartInfo.map(x => x.value)}
 	labels={installedFrontendFrameworksChartInfo.map(x => x.label)}

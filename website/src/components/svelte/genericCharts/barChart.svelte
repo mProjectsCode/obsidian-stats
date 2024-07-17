@@ -2,11 +2,10 @@
 	import Chart from 'chart.js/auto';
 	import { onDestroy, onMount } from 'svelte';
 	import { ThemeObserver } from '../svelteUtils.ts';
-	import { ALL_OS } from '../../../../../src/release/release.ts';
 	import type { ChartDataset } from 'chart.js/dist/types';
 
 	export let dataPoints: number[];
-	export let dataPoints2: number[] | undefined;
+	export let dataPoints2: number[] | undefined = undefined;
 	export let labels: string[];
 	export let showDatalabels = false;
 	export let showXLabels = true;

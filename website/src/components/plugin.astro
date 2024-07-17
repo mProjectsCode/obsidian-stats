@@ -1,6 +1,5 @@
 ---
 import { projectRelativeUrl } from '../utils/base';
-import GithubLink from './githubLink.astro';
 import Commit from './commit.astro';
 import Aside from './aside.astro';
 import PluginDownloadChart from './svelte/pluginDownloadChart.svelte';
@@ -9,48 +8,33 @@ import type { PluginDataInterface } from '../../../src/plugin/plugin';
 import fs from 'node:fs/promises';
 import type { PluginRepoData } from '../../../src/pluginRepo/types';
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
-import { Icon } from '@astrojs/starlight/components';
 
 const { plugin } = Astro.props as { plugin: PluginDataInterface };
 const pluginDownloadData = getPluginDownloadsWeekly([plugin]);
 
 const latestReleaseDateString = plugin.versionHistory.at(-1)?.initialReleaseDate ?? plugin.addedCommit.date;
-const latestReleaseDate = new Date(latestReleaseDateString);
-
-const outdatedDangerThreshold = new Date();
-outdatedDangerThreshold.setFullYear(outdatedDangerThreshold.getFullYear() - 1);
-const outdatedDanger = latestReleaseDate < outdatedDangerThreshold && !plugin.removedCommit;
-
-const outdatedWarningThreshold = new Date();
-outdatedWarningThreshold.setDate(outdatedWarningThreshold.getDate() - 120);
-const outdatedWarning = latestReleaseDate < outdatedWarningThreshold && !outdatedDanger && !plugin.removedCommit;
 
 const obsidianLink = `obsidian://show-plugin?id=${plugin.id}`;
 const obsidianHubLink = `https://publish.obsidian.md/hub/02+-+Community+Expansions/02.05+All+Community+Expansions/Plugins/${plugin.id}`;
 const obsidianAddictLink = `https://obsidianaddict.com/plugin/${plugin.id}/`;
 
-let repoData: PluginRepoData | undefined = undefined;
-try {
-	const url = projectRelativeUrl(`../pluginRepos/data/${plugin.id}.json`);
-	repoData = JSON.parse(await fs.readFile(url, 'utf-8'));
-} catch (e) {
-	console.log('failed to load repo data');
-}
+const repoDataUrl = projectRelativeUrl(`../pluginRepos/data/${plugin.id}.json`);
+let repoData: PluginRepoData = JSON.parse(await fs.readFile(repoDataUrl, 'utf-8'));
 
 let mismatchedData: string[][] = [];
-if (repoData) {
+if (repoData.repo) {
 	const dataToCheck = [
-		[plugin.currentEntry.name, repoData.manifest.name, 'name'],
-		[plugin.currentEntry.author, repoData.manifest.author, 'author'],
-		[plugin.currentEntry.description, repoData.manifest.description, 'description'],
+		[plugin.currentEntry.name, repoData.repo.manifest.name, 'name'],
+		[plugin.currentEntry.author, repoData.repo.manifest.author, 'author'],
+		[plugin.currentEntry.description, repoData.repo.manifest.description, 'description'],
 	];
 
 	mismatchedData = dataToCheck.filter(x => x[0] !== x[1]);
 }
 
 const external_links: { text: string; href: string }[] = [
-	repoData?.manifest?.helpUrl ? { text: 'Plugin Docs', href: repoData.manifest.helpUrl } : (undefined as unknown as { text: string; href: string }),
-	{ text: 'GitHub Repo', href: plugin.currentEntry.repo },
+	repoData?.repo?.manifest?.helpUrl ? { text: 'Plugin Docs', href: repoData.repo.manifest.helpUrl } : (undefined as unknown as { text: string; href: string }),
+	{ text: 'GitHub Repo', href: `https://github.com/${plugin.currentEntry.repo}` },
 	{ text: 'View in Obsidian', href: obsidianLink },
 	{ text: 'View on ObsidianAddict', href: obsidianAddictLink },
 	{ text: 'View on the Obsidian Hub', href: obsidianHubLink },
@@ -71,36 +55,96 @@ const external_links: { text: string; href: string }[] = [
 		{ depth: 2, text: 'Version History', slug: 'version-history' },
 	]}
 >
-	{
-		plugin.removedCommit && (
-			<Aside variant="danger" title="Plugin has been Removed">
-				<p>
-					This plugin has been removed from the community list on <Commit commit={plugin.removedCommit} /> and can no longer be installed.
-				</p>
-			</Aside>
-		)
-	}
-
-	{
-		outdatedWarning && (
-			<Aside variant="caution" title="Inactivity Warning">
-				<p>The latest version of this plugin was released on the {latestReleaseDateString} and is thus more than 120 days old.</p>
-			</Aside>
-		)
-	}
-
-	{
-		outdatedDanger && (
-			<Aside variant="danger" title="Inactivity Danger">
-				<p>
-					The latest version of this plugin was released on the {latestReleaseDateString} and is thus more than a year old. There is a high chance that this
-					plugin is no longer maintained.
-				</p>
-			</Aside>
-		)
-	}
-
 	<p>{plugin.currentEntry.description}</p>
+
+	{
+		repoData.warnings.map(warning => {
+			switch (warning.id) {
+				case 'inactivity-12-months':
+					return (
+						<Aside variant="caution" title="Inactivity Warning">
+							<p>The latest version of this plugin was released on the {warning.lastReleaseDate} and is thus more than one year old.</p>
+						</Aside>
+					);
+				case 'inactivity-24-months':
+					return (
+						<Aside variant="danger" title="Inactivity Warning">
+							<p>The latest version of this plugin was released on the {warning.lastReleaseDate} and is thus more than two years old.</p>
+						</Aside>
+					);
+				case 'removed':
+					return (
+						<Aside variant="danger" title="Inactivity Warning">
+							<p>
+								This plugin has been removed from the community list on <Commit commit={warning.commit} /> and can no longer be installed.
+							</p>
+						</Aside>
+					);
+				case 'mismatched-manifest-data':
+					return (
+						<Aside variant="caution" title="Mismatched Data">
+							<p>The data in the community list does not match the data in the plugin's repository.</p>
+							<table class="full-width">
+								<thead>
+									<tr>
+										<th>Property</th>
+										<th>Community List</th>
+										<th>Repository</th>
+									</tr>
+								</thead>
+								<tbody>
+									{warning.data.map(x => (
+										<tr>
+											<td>{x.field}</td>
+											<td>{x.communityListValue}</td>
+											<td>{x.manifestValue}</td>
+										</tr>
+									))}
+								</tbody>
+							</table>
+						</Aside>
+					);
+				case 'unlicensed':
+					return (
+						<Aside variant="danger" title="Unlicensed Plugin">
+							<p>
+								This plugin is explicitly not licensed, thus the author has all rights reserved. This means that it can not be forked or maintained by another
+								developer without explicit approval be the current author.
+							</p>
+							<p>
+								This information is based on the <code>package.json</code> file and it's{' '}
+								<a href="https://docs.npmjs.com/cli/v10/configuring-npm/package-json#license" target="_blank">
+									specification
+								</a>
+								.
+							</p>
+						</Aside>
+					);
+				case 'no-license':
+					return (
+						<Aside variant="danger" title="Unlicensed Plugin">
+							<p>
+								This plugin intentionally or unintentionally specified no license. This means that it can not be forked or maintained by another developer
+								without explicit approval be the current author. Please consider asking the developer to add a license to{' '}
+								<a href={`https://github.com/${plugin.currentEntry.repo}`} target="_blank">
+									their repository
+								</a>
+								.
+							</p>
+							<p>
+								This information is based on the <code>package.json</code> file and it's{' '}
+								<a href="https://docs.npmjs.com/cli/v10/configuring-npm/package-json#license" target="_blank">
+									specification
+								</a>
+								.
+							</p>
+						</Aside>
+					);
+			}
+		})
+	}
+
+	{repoData.warnings.length !== 0 && <p class="muted">The above warnings are based on limited information and might not always be accurate.</p>}
 
 	<h2 id="data">Data</h2>
 
@@ -114,8 +158,8 @@ const external_links: { text: string; href: string }[] = [
 				<td>Author</td>
 				<td
 					>{
-						repoData?.manifest.authorUrl ? (
-							<a href={repoData?.manifest.authorUrl} target="_blank">
+						repoData.repo?.manifest.authorUrl ? (
+							<a href={repoData.repo?.manifest.authorUrl} target="_blank">
 								{plugin.currentEntry.author}
 							</a>
 						) : (
@@ -125,20 +169,20 @@ const external_links: { text: string; href: string }[] = [
 				>
 			</tr>
 			{
-				repoData?.manifest?.fundingUrl && (
+				repoData.repo?.manifest?.fundingUrl && (
 					<tr>
 						<td>Funding</td>
 						<td>
-							<a href={repoData.manifest.fundingUrl}>Support the Author!</a>
+							<a href={repoData.repo.manifest.fundingUrl}>Support the Author!</a>
 						</td>
 					</tr>
 				)
 			}
 			{
-				repoData && (
+				repoData.repo && (
 					<tr>
 						<td>Minimum Obsidian Version</td>
-						<td>{repoData.manifest.minAppVersion}</td>
+						<td>{repoData.repo.manifest.minAppVersion}</td>
 					</tr>
 				)
 			}
@@ -153,7 +197,7 @@ const external_links: { text: string; href: string }[] = [
 		</tbody>
 	</table>
 
-	{
+	<!-- {
 		mismatchedData.length > 0 && (
 			<Aside variant="caution" title="Mismatched Data">
 				<p>The data in the community list does not match the data in the plugin's repository.</p>
@@ -177,7 +221,7 @@ const external_links: { text: string; href: string }[] = [
 				</table>
 			</Aside>
 		)
-	}
+	} -->
 
 	<h3 class="only-show-small">Quick Links</h3>
 	<ul class="only-show-small">
@@ -222,24 +266,22 @@ const external_links: { text: string; href: string }[] = [
 	<h3 id="repository-data">Repository Data</h3>
 
 	{
-		repoData ? (
+		repoData.repo ? (
 			<>
 				<table class="full-width">
 					<tbody>
 						<tr>
-							<td>
-								License (from <code>package.json</code>)
-							</td>
-							<td>{repoData.license ?? 'No license found'}</td>
+							<td>License</td>
+							<td>{repoData.repo.license ?? 'Unknown'}</td>
 						</tr>
 						<tr>
 							<td>Package Manager</td>
-							<td>{repoData.packageManager ?? 'Unknown (no lock file found)'}</td>
+							<td>{repoData.repo.packageManager ?? 'Unknown (no lock file found)'}</td>
 						</tr>
 						<tr>
 							<td>Uses Typescript</td>
 							<td>
-								{repoData.usesTypescript ? (
+								{repoData.repo.usesTypescript ? (
 									'true'
 								) : (
 									<>
@@ -251,11 +293,11 @@ const external_links: { text: string; href: string }[] = [
 						<tr>
 							<td>Installed Bundlers</td>
 							<td>
-								{repoData.hasPackageJson ? (
-									repoData.installedBundlers.length === 0 ? (
+								{repoData.repo.hasPackageJson ? (
+									repoData.repo.installedBundlers.length === 0 ? (
 										'none'
 									) : (
-										repoData.installedBundlers.join(', ')
+										repoData.repo.installedBundlers.join(', ')
 									)
 								) : (
 									<>
@@ -267,11 +309,11 @@ const external_links: { text: string; href: string }[] = [
 						<tr>
 							<td>Installed Testing Frameworks</td>
 							<td>
-								{repoData.hasPackageJson ? (
-									repoData.installedTestingFrameworks.length === 0 ? (
+								{repoData.repo.hasPackageJson ? (
+									repoData.repo.installedTestingFrameworks.length === 0 ? (
 										'none'
 									) : (
-										repoData.installedTestingFrameworks.join(', ')
+										repoData.repo.installedTestingFrameworks.join(', ')
 									)
 								) : (
 									<>
@@ -283,8 +325,8 @@ const external_links: { text: string; href: string }[] = [
 						<tr>
 							<td>Has Test Files</td>
 							<td>
-								{repoData.hasPackageJson ? (
-									repoData.hasTestFiles ? (
+								{repoData.repo.hasPackageJson ? (
+									repoData.repo.hasTestFiles ? (
 										'true'
 									) : (
 										'false'
@@ -298,13 +340,13 @@ const external_links: { text: string; href: string }[] = [
 						</tr>
 						<tr>
 							<td>Uses BRAT beta releases</td>
-							<td>{repoData.hasBetaManifest ? 'true' : 'false'}</td>
+							<td>{repoData.repo.hasBetaManifest ? 'true' : 'false'}</td>
 						</tr>
 						<tr>
 							<td>Dependencies</td>
 							<td>
-								{repoData.hasPackageJson ? (
-									repoData.dependencies.sort().join(', ')
+								{repoData.repo.hasPackageJson ? (
+									repoData.repo.dependencies.sort().join(', ')
 								) : (
 									<>
 										No <code>package.json</code> found
@@ -315,8 +357,8 @@ const external_links: { text: string; href: string }[] = [
 						<tr>
 							<td>Dev Dependencies</td>
 							<td>
-								{repoData.hasPackageJson ? (
-									repoData.devDependencies.sort().join(', ')
+								{repoData.repo.hasPackageJson ? (
+									repoData.repo.devDependencies.sort().join(', ')
 								) : (
 									<>
 										No <code>package.json</code> found
@@ -327,6 +369,13 @@ const external_links: { text: string; href: string }[] = [
 					</tbody>
 				</table>
 
+				<p class="muted">
+					<i>License</i> information is extracted from the <code>package.json</code> file and interpreted based on it's{' '}
+					<a href="https://docs.npmjs.com/cli/v10/configuring-npm/package-json#license" target="_blank">
+						specification
+					</a>
+					. The author might not have updated this information to match the actual license.
+				</p>
 				<p class="muted">
 					<i>Has Test Files</i> looks for files ending in <code>.test.js</code>, <code>.test.ts</code>, <code>.spec.js</code> or <code>.spec.ts</code>.
 				</p>

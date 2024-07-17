@@ -4,17 +4,7 @@ import CliProgress from 'cli-progress';
 import { encodeName, gitLogToCommits } from '../utils.ts';
 import { Commit } from '../types.ts';
 
-import {
-	PLUGIN_LIST_PATH,
-	PLUGIN_STATS_PATH,
-	PLUGIN_DATA_PATH,
-	OBSIDIAN_RELEASES_FULL_PATH,
-	PLUGIN_TEMPLATE_FILE_PATH,
-	PLUGIN_TEMPLATE_REPLACEMENT_STRING,
-	PLUGIN_TEMPLATE_REPLACEMENT_STRING_JSON,
-	PLUGIN_TEMPLATE_OUTPUT_PATH,
-	PLUGIN_TEMPLATE_REPLACEMENT_STRING_NAME,
-} from '../constants.ts';
+import { PLUGIN_LIST_PATH, PLUGIN_STATS_PATH, PLUGIN_DATA_PATH, OBSIDIAN_RELEASES_FULL_PATH } from '../constants.ts';
 import { CDate } from '../date.ts';
 
 async function getPluginListChanges(): Promise<Commit[]> {
@@ -198,17 +188,9 @@ export async function buildPluginStats(): Promise<void> {
 
 	console.log(`Processed all plugins, writing to ${PLUGIN_DATA_PATH}`);
 
-	const pluginDataFile = Bun.file(PLUGIN_DATA_PATH);
-	await Bun.write(pluginDataFile, JSON.stringify(pluginData, null, '\t'));
+	// const pluginDataFile = Bun.file(PLUGIN_DATA_PATH);
+	// await Bun.write(pluginDataFile, JSON.stringify(pluginData));
 
-	// const templateFile = Bun.file(PLUGIN_TEMPLATE_FILE_PATH);
-	// const template = await templateFile.text();
-	//
-	// for (const plugin of pluginData) {
-	// 	let output = template.replaceAll(PLUGIN_TEMPLATE_REPLACEMENT_STRING, plugin.id);
-	// 	output = output.replaceAll(PLUGIN_TEMPLATE_REPLACEMENT_STRING_NAME, encodeName(plugin.currentEntry.name));
-	// 	output = output.replaceAll(PLUGIN_TEMPLATE_REPLACEMENT_STRING_JSON, JSON.stringify(plugin));
-	// 	const outputFile = Bun.file(`${PLUGIN_TEMPLATE_OUTPUT_PATH}/${plugin.id}.astro`);
-	// 	await Bun.write(outputFile, output);
-	// }
+	const pluginDataFile = Bun.file('plugin-data.zip');
+	await Bun.write(pluginDataFile, Bun.gzipSync(JSON.stringify(pluginData)));
 }

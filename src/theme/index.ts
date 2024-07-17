@@ -5,17 +5,7 @@ import CliProgress from 'cli-progress';
 
 import { encodeName, gitLogToCommits } from '../utils.ts';
 
-import {
-	THEME_LIST_PATH,
-	THEME_DATA_PATH,
-	OBSIDIAN_RELEASES_FULL_PATH,
-	THEME_TEMPLATE_FILE_PATH,
-	THEME_TEMPLATE_REPLACEMENT_STRING,
-	THEME_TEMPLATE_REPLACEMENT_STRING_JSON,
-	THEME_TEMPLATE_OUTPUT_PATH,
-	PLUGIN_LIST_PATH,
-	THEME_TEMPLATE_REPLACEMENT_STRING_NAME,
-} from '../constants.ts';
+import { THEME_LIST_PATH, THEME_DATA_PATH, OBSIDIAN_RELEASES_FULL_PATH } from '../constants.ts';
 
 async function getThemeListChanges(): Promise<Commit[]> {
 	console.log(`Looking for changes to "${OBSIDIAN_RELEASES_FULL_PATH}/${THEME_LIST_PATH}"`);

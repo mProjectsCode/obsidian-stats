@@ -1,6 +1,6 @@
 ---
+import { getPluginData } from '../../../../src/utils';
 import PluginsIndex from '../svelte/indexPages/pluginsIndex.svelte';
-import PluginDataFile from '../../../../plugin-data.json' assert { type: 'json' };
 ---
 
-<PluginsIndex data={PluginDataFile} client:only="svelte" />
+<PluginsIndex data={getPluginData()} client:only="svelte" />

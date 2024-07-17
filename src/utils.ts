@@ -2,9 +2,10 @@ import { type Commit, PerMonthDataPoint } from './types.ts';
 import { reduce } from 'itertools-ts';
 import { CDate } from './date.ts';
 import { PluginDataInterface } from './plugin/plugin.ts';
-import { ThemeData, ThemeDataInterface } from './theme/theme.ts';
-import PluginDataFile from '../plugin-data.json' assert { type: 'json' };
+import { ThemeDataInterface } from './theme/theme.ts';
 import ThemeDataFile from '../theme-data.json' assert { type: 'json' };
+import { gunzipSync } from 'node:zlib';
+import * as fs from 'node:fs';
 
 export function prettyDateString(date: string): string {
 	return CDate.fromDate(new Date(date)).toString();
@@ -253,7 +254,15 @@ export function multiGroupBy<T, K extends keyof any>(list: T[], getKey: (item: T
 }
 
 export function getPluginData(): PluginDataInterface[] {
-	return PluginDataFile as PluginDataInterface[];
+	let data = JSON.parse(gunzipSync(fs.readFileSync('../plugin-data.zip')).toString());
+
+	return data as PluginDataInterface[];
+}
+
+export function getPluginData_dataCollection(): PluginDataInterface[] {
+	let data = JSON.parse(gunzipSync(fs.readFileSync('plugin-data.zip')).toString());
+
+	return data as PluginDataInterface[];
 }
 
 export function getThemeData(): ThemeDataInterface[] {

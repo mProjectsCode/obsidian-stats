@@ -9,6 +9,28 @@ import { getPluginData } from '../../../../src/utils';
 const downloadReleaseCorrelationDataPoints = getDownloadReleaseCorrelationDataPoints(getPluginData());
 
 const sortedData = downloadReleaseCorrelationDataPoints.slice().sort((a, b) => a.downloads - b.downloads);
+
+const pluginData = getPluginData();
+
+const now = new Date();
+const lastUpdateInfo = pluginData
+	.map(x => {
+		if (x.versionHistory.length === 0) {
+			return {
+				value: 0,
+				label: x.id,
+			};
+		}
+
+		const lastUpdate = x.versionHistory.sort((a, b) => b.initialReleaseDate.localeCompare(a.initialReleaseDate))[0];
+		const date = new Date(lastUpdate.initialReleaseDate);
+		const dayDiff = Math.round((now.getTime() - date.getTime()) / (1000 * 60 * 60 * 24));
+		return {
+			value: dayDiff,
+			label: x.id,
+		};
+	})
+	.sort((a, b) => b.value - a.value);
 ---
 
 <p>
@@ -47,6 +69,19 @@ const sortedData = downloadReleaseCorrelationDataPoints.slice().sort((a, b) => a
 		logScale={true}
 		seriesName="Download count distribution"
 		calculatePrecentages={false}
+		showXLabels={false}
+		client:only="svelte"
+	/>
+</div>
+
+<p>The following chart shows the overall distribution days since the last plugin update.</p>
+
+<div>
+	<BarChart
+		dataPoints={lastUpdateInfo.map(x => x.value)}
+		labels={lastUpdateInfo.map(x => x.label)}
+		logScale={false}
+		seriesName="Days since last update distribution"
 		showXLabels={false}
 		client:only="svelte"
 	/>
