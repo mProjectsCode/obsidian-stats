@@ -21,17 +21,6 @@ const obsidianAddictLink = `https://obsidianaddict.com/plugin/${plugin.id}/`;
 const repoDataUrl = projectRelativeUrl(`../pluginRepos/data/${plugin.id}.json`);
 let repoData: PluginRepoData = JSON.parse(await fs.readFile(repoDataUrl, 'utf-8'));
 
-let mismatchedData: string[][] = [];
-if (repoData.repo) {
-	const dataToCheck = [
-		[plugin.currentEntry.name, repoData.repo.manifest.name, 'name'],
-		[plugin.currentEntry.author, repoData.repo.manifest.author, 'author'],
-		[plugin.currentEntry.description, repoData.repo.manifest.description, 'description'],
-	];
-
-	mismatchedData = dataToCheck.filter(x => x[0] !== x[1]);
-}
-
 const external_links: { text: string; href: string }[] = [
 	repoData?.repo?.manifest?.helpUrl ? { text: 'Plugin Docs', href: repoData.repo.manifest.helpUrl } : (undefined as unknown as { text: string; href: string }),
 	{ text: 'GitHub Repo', href: `https://github.com/${plugin.currentEntry.repo}` },
@@ -112,11 +101,7 @@ const external_links: { text: string; href: string }[] = [
 								developer without explicit approval be the current author.
 							</p>
 							<p>
-								This information is based on the <code>package.json</code> file and it's{' '}
-								<a href="https://docs.npmjs.com/cli/v10/configuring-npm/package-json#license" target="_blank">
-									specification
-								</a>
-								.
+								This information is based on the <code>LICENSE</code> file in the plugin's repository. Identification of said file may not be accurate.
 							</p>
 						</Aside>
 					);
@@ -132,11 +117,21 @@ const external_links: { text: string; href: string }[] = [
 								.
 							</p>
 							<p>
-								This information is based on the <code>package.json</code> file and it's{' '}
-								<a href="https://docs.npmjs.com/cli/v10/configuring-npm/package-json#license" target="_blank">
-									specification
-								</a>
-								.
+								This information is based on the absence of a <code>LICENSE</code>, <code>LICENSE.md</code>, or <code>LICENSE.txt</code> file in the plugin's
+								repository.
+							</p>
+						</Aside>
+					);
+				case 'mismatched-license':
+					return (
+						<Aside variant="danger" title="Mismatched License">
+							<p>
+								The license information in the plugin's <code>package.json</code> file (<code>{repoData.repo?.license}</code>) does not match the{' '}
+								<code>LICENSE</code> file (<code>{repoData.repo?.licenseFile}</code>) in the repository. The <code>LICENSE</code> file trakes precedence, but
+								please consider asking the developer to clarify the license of the plugin.
+							</p>
+							<p>
+								This information is based on the <code>LICENSE</code> file in the plugin's repository. Identification of said file may not be accurate.
 							</p>
 						</Aside>
 					);
@@ -197,32 +192,6 @@ const external_links: { text: string; href: string }[] = [
 		</tbody>
 	</table>
 
-	<!-- {
-		mismatchedData.length > 0 && (
-			<Aside variant="caution" title="Mismatched Data">
-				<p>The data in the community list does not match the data in the plugin's repository.</p>
-				<table class="full-width">
-					<thead>
-						<tr>
-							<th>Property</th>
-							<th>Community List</th>
-							<th>Repository</th>
-						</tr>
-					</thead>
-					<tbody>
-						{mismatchedData.map(x => (
-							<tr>
-								<td>{x[2]}</td>
-								<td>{x[0]}</td>
-								<td>{x[1]}</td>
-							</tr>
-						))}
-					</tbody>
-				</table>
-			</Aside>
-		)
-	} -->
-
 	<h3 class="only-show-small">Quick Links</h3>
 	<ul class="only-show-small">
 		{
@@ -272,7 +241,9 @@ const external_links: { text: string; href: string }[] = [
 					<tbody>
 						<tr>
 							<td>License</td>
-							<td>{repoData.repo.license ?? 'Unknown'}</td>
+							<td>
+								<code>{repoData.repo.license}</code> in <code>package.json</code>, <code>{repoData.repo.licenseFile}</code> in <code>LICENSE</code> file
+							</td>
 						</tr>
 						<tr>
 							<td>Package Manager</td>
@@ -370,11 +341,8 @@ const external_links: { text: string; href: string }[] = [
 				</table>
 
 				<p class="muted">
-					<i>License</i> information is extracted from the <code>package.json</code> file and interpreted based on it's{' '}
-					<a href="https://docs.npmjs.com/cli/v10/configuring-npm/package-json#license" target="_blank">
-						specification
-					</a>
-					. The author might not have updated this information to match the actual license.
+					<i>License</i> information is extracted from the <code>package.json</code> and the <code>LICENSE</code> file. If they do not match, say{' '}
+					<code>unknown</code>, or say <code>not found</code>, please check the repository or contact the author for clarification.
 				</p>
 				<p class="muted">
 					<i>Has Test Files</i> looks for files ending in <code>.test.js</code>, <code>.test.ts</code>, <code>.spec.js</code> or <code>.spec.ts</code>.

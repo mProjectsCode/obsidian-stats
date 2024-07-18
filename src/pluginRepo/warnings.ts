@@ -20,11 +20,11 @@ function inactivity(plugin: PluginDataInterface, repo: PluginRepoExtractedData |
 	const latestReleaseDate = new Date(latestReleaseDateString);
 
 	const outdatedDangerThreshold = new Date();
-	outdatedDangerThreshold.setFullYear(outdatedDangerThreshold.getFullYear() - 1);
+	outdatedDangerThreshold.setFullYear(outdatedDangerThreshold.getFullYear() - 2);
 	const outdatedDanger = latestReleaseDate < outdatedDangerThreshold && !plugin.removedCommit;
 
 	const outdatedWarningThreshold = new Date();
-	outdatedDangerThreshold.setFullYear(outdatedDangerThreshold.getFullYear() - 2);
+	outdatedWarningThreshold.setFullYear(outdatedWarningThreshold.getFullYear() - 1);
 	const outdatedWarning = latestReleaseDate < outdatedWarningThreshold && !outdatedDanger && !plugin.removedCommit;
 
 	if (outdatedDanger) {
@@ -68,19 +68,37 @@ function mismatchedData(plugin: PluginDataInterface, repo: PluginRepoExtractedDa
 	}
 }
 
+function symmetricStartsWith(a: string, b: string): boolean {
+	return a.startsWith(b) || b.startsWith(a);
+}
+
 function license(plugin: PluginDataInterface, repo: PluginRepoExtractedData | undefined): PluginWarning | undefined {
 	if (repo) {
-		if (repo.license === 'explicitly unlicensed') {
+		if (repo.licenseFile === 'explicitly unlicensed') {
 			return {
 				severity: PluginWarningSeverity.CAUTION,
 				id: 'unlicensed',
 			};
 		}
 
-		if (repo.license === 'no license') {
+		if (repo.licenseFile === 'no license') {
 			return {
 				severity: PluginWarningSeverity.CAUTION,
 				id: 'no-license',
+			};
+		}
+
+		if (
+			repo.licenseFile !== 'unknown' &&
+			repo.license !== 'unknown' &&
+			repo.licenseFile !== 'not found' &&
+			repo.license !== 'not found' &&
+			repo.license !== 'no license' &&
+			!symmetricStartsWith(repo.licenseFile.toLowerCase(), repo.license.toLowerCase())
+		) {
+			return {
+				severity: PluginWarningSeverity.CAUTION,
+				id: 'mismatched-license',
 			};
 		}
 	}

@@ -6,6 +6,7 @@ import { arrayIntersect, getPluginData, getPluginData_dataCollection, uniqueConc
 import { PluginManifest, PluginRepoData, PluginRepoExtractedData } from './types.ts';
 import CliProgress from 'cli-progress';
 import { warnings } from './warnings.ts';
+import { LicenseComparer } from '../license/licenseCompare.ts';
 
 export async function clonePluginRepos() {
 	const pluginData = (await Bun.file(PLUGIN_DATA_PATH).json()) as PluginDataInterface[];
@@ -70,114 +71,10 @@ function normalizeLicenseIdentifier(identifier: string | undefined | null): stri
 		return 'no license';
 	}
 
-	const lcIdentifier = identifier.toLowerCase();
-
-	if (lcIdentifier.includes('tbd')) {
-		return 'no license';
-	}
-
-	if (lcIdentifier.includes('mit')) {
-		return 'MIT';
-	}
-
-	if (lcIdentifier.includes('see license')) {
-		return 'see license file';
-	}
-
-	if (lcIdentifier.includes('agpl') && lcIdentifier.includes('3')) {
-		return 'AGPL-3.0';
-	}
-
-	if (lcIdentifier.includes('gpl') && lcIdentifier.includes('3')) {
-		return 'GPL-3.0';
-	}
-
-	if (lcIdentifier.includes('gnu') && lcIdentifier.includes('3')) {
-		return 'GPL-3.0';
-	}
-
-	if (lcIdentifier.includes('agpl') && lcIdentifier.includes('2')) {
-		return 'AGPL-2.0';
-	}
-
-	if (lcIdentifier.includes('gpl') && lcIdentifier.includes('2')) {
-		return 'GPL-2.0';
-	}
-
-	if (lcIdentifier.includes('gnu') && lcIdentifier.includes('2')) {
-		return 'GPL-2.0';
-	}
-
-	if (lcIdentifier.includes('gnu') || lcIdentifier.includes('gpl')) {
-		return 'GPL-2.0';
-	}
-
-	if (lcIdentifier.includes('apache') && lcIdentifier.includes('2')) {
-		return 'Apache-2.0';
-	}
-
-	if (lcIdentifier.includes('apache')) {
-		return 'Apache-2.0';
-	}
-
-	if (lcIdentifier === 'the unlicense' || lcIdentifier === 'unlicense') {
-		return 'Unlicense';
-	}
-
-	if (lcIdentifier === 'unlicensed') {
-		return 'explicitly unlicensed';
-	}
-
-	if (lcIdentifier === 'isc') {
-		return 'ISC';
-	}
-
-	if (lcIdentifier === 'mpl-2.0') {
-		return 'MPL-2.0';
-	}
-
-	if (lcIdentifier === 'mpl-1.1') {
-		return 'MPL-1.1';
-	}
-
-	if (lcIdentifier === 'mpl-1.0') {
-		return 'MPL-1.0';
-	}
-
-	if (lcIdentifier.includes('bsd') && lcIdentifier.includes('3')) {
-		return 'BSD-3-Clause';
-	}
-
-	if (lcIdentifier.includes('bsd') && lcIdentifier.includes('2')) {
-		return 'BSD-2-Clause';
-	}
-
-	if (lcIdentifier.includes('bsd') && lcIdentifier.includes('0')) {
-		return '0BSD';
-	}
-
-	if ((lcIdentifier.includes('bsd') && lcIdentifier.includes('4')) || lcIdentifier === 'bsd') {
-		return 'BSD-4-Clause';
-	}
-
-	if (lcIdentifier === 'blueoak-1.0.0') {
-		return 'BlueOak-1.0.0';
-	}
-
-	if (lcIdentifier.includes('cc0')) {
-		return 'CC0';
-	}
-
-	if (lcIdentifier === 'wtfpl') {
-		return 'CC0';
-	}
-
-	console.warn(`Unknown license: ${identifier}`);
-
-	return 'unknown';
+	return identifier;
 }
 
-async function extractFromRepo(plugin: PluginDataInterface): Promise<PluginRepoExtractedData | undefined> {
+async function extractFromRepo(plugin: PluginDataInterface, licenseComparer: LicenseComparer): Promise<PluginRepoExtractedData | undefined> {
 	const repoPath = `pluginRepos/repos/${plugin.id}`;
 	if (!(await fs.exists(repoPath))) {
 		console.log(`Repo for plugin ${plugin.id} does not exist`);
@@ -197,7 +94,8 @@ async function extractFromRepo(plugin: PluginDataInterface): Promise<PluginRepoE
 		hasTestFiles: false,
 		hasBetaManifest: false,
 		fileCounts: {},
-		license: 'unknown',
+		license: 'not found',
+		licenseFile: 'not found',
 		manifest: manifest,
 	};
 
@@ -261,13 +159,40 @@ async function extractFromRepo(plugin: PluginDataInterface): Promise<PluginRepoE
 		data.license = normalizeLicenseIdentifier(packageJson.license);
 	}
 
+	const licenseFile = await tryReadLicense(repoPath);
+	if (licenseFile !== undefined) {
+		data.licenseFile = licenseComparer.compare(licenseFile) ?? 'unknown';
+		if (data.license !== data.licenseFile) {
+			console.log(`License mismatch for ${plugin.id}: ${data.license} vs ${data.licenseFile}`);
+		}
+	}
+
 	return data;
+}
+
+async function tryReadLicense(repoPath: string): Promise<string | undefined> {
+	if (await fs.exists(`${repoPath}/LICENSE`)) {
+		return await fs.readFile(`${repoPath}/LICENSE`, 'utf-8');
+	} else if (await fs.exists(`${repoPath}/LICENSE.md`)) {
+		return await fs.readFile(`${repoPath}/LICENSE.md`, 'utf-8');
+	} else if (await fs.exists(`${repoPath}/LICENSE.txt`)) {
+		return await fs.readFile(`${repoPath}/LICENSE.txt`, 'utf-8');
+	} else if (await fs.exists(`${repoPath}/LICENSE.MD`)) {
+		return await fs.readFile(`${repoPath}/LICENSE.MD`, 'utf-8');
+	} else if (await fs.exists(`${repoPath}/LICENSE.TXT`)) {
+		return await fs.readFile(`${repoPath}/LICENSE.TXT`, 'utf-8');
+	}
+
+	return undefined;
 }
 
 export async function collectRepoData() {
 	await fs.rm('pluginRepos/data', { recursive: true, force: true });
 
 	const pluginData = getPluginData_dataCollection();
+
+	const licenseComparer = new LicenseComparer();
+	await licenseComparer.init();
 
 	for (const plugin of pluginData) {
 		const data: PluginRepoData = {
@@ -277,7 +202,7 @@ export async function collectRepoData() {
 		};
 
 		if (!plugin.removedCommit) {
-			data.repo = await extractFromRepo(plugin);
+			data.repo = await extractFromRepo(plugin, licenseComparer);
 		}
 
 		data.warnings = warnings.map(x => x(plugin, data.repo)).filter(x => x !== undefined);

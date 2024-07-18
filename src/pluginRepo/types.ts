@@ -18,6 +18,7 @@ export interface PluginRepoExtractedData {
 	hasBetaManifest: boolean;
 	fileCounts: Record<string, number>;
 	license: string;
+	licenseFile: string;
 	manifest: PluginManifest;
 }
 
@@ -80,13 +81,19 @@ export interface PluginWarningNoLicense {
 	id: 'no-license';
 }
 
+export interface PluginWarningMismatchedLicense {
+	severity: PluginWarningSeverity;
+	id: 'mismatched-license';
+}
+
 export type PluginWarning =
 	| PluginWarningInactivity12Months
 	| PluginWarningInactivity6Months
 	| PluginWarningRemoved
 	| PluginWarningMismatchedManifestData
 	| PluginWarningUnlicensed
-	| PluginWarningNoLicense;
+	| PluginWarningNoLicense
+	| PluginWarningMismatchedLicense;
 
 type NonNullableFields<T> = {
 	[P in keyof T]: NonNullable<T[P]>;

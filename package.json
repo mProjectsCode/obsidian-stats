@@ -3,13 +3,13 @@
 	"module": "src/index.ts",
 	"type": "module",
 	"scripts": {
-		"fetch-plugin-data": "bun run src/plugin/fetchData.ts",
-		"fetch-theme-data": "bun run src/theme/fetchData.ts",
-		"fetch-release-data": "bun run src/release/fetchData.ts",
-		"fetch-data": "bun run src/fetchData.ts",
-		"clone-plugin-repos": "bun run src/pluginRepo/cloneRepos.ts",
-		"collect-plugin-repo-data": "bun run src/pluginRepo/collectData.ts",
-		"all-the-data": "bun run fetch-data && bun run clone-plugin-repos && bun run collect-plugin-repo-data",
+		"data:plugin:fetch": "bun run src/plugin/fetchData.ts",
+		"data:theme:fetch": "bun run src/theme/fetchData.ts",
+		"data:release:fetch": "bun run src/release/fetchData.ts",
+		"data:fetch": "bun run src/fetchData.ts",
+		"data:plugin:clone-repos": "bun run src/pluginRepo/cloneRepos.ts",
+		"data:plugin:process": "bun run src/pluginRepo/collectData.ts",
+		"data": "bun run data:fetch && bun run data:plugin:clone-repos && bun run data:plugin:process",
 		"format": "prettier --write ."
 	},
 	"devDependencies": {
@@ -26,6 +26,7 @@
 		"@types/slug": "^5.0.7",
 		"arquero": "^5.3.0",
 		"cli-progress": "^3.12.0",
+		"fast-dice-coefficient": "^1.0.3",
 		"itertools-ts": "^1.27.0",
 		"prettier": "^3.3.3",
 		"prettier-plugin-astro": "^0.14.1",

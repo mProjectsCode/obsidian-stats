@@ -1,3 +1,3 @@
-import {processLicences} from "./index.ts";
+import {processLicenses} from "./index.ts";
 
-await processLicences();
+await processLicenses();

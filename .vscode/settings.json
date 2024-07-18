@@ -1,7 +1,7 @@
 {
 	"files.exclude": {
 		"obsidian-releases": true,
-		"choosealicense.com": true,
+		"choosealicense.com": false,
 		"pluginRepos": true
 	}
 }

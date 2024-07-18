@@ -20,7 +20,7 @@ const repoDataWithRepos = repoData.filter(x => x.repo !== undefined) as PluginRe
 
 const totalPluginCount = repoDataWithRepos.length;
 
-const licenceInfo = groupBy(repoDataWithRepos, x => x.repo.license);
+const licenceInfo = groupBy(repoDataWithRepos, x => x.repo.licenseFile);
 
 const licenceChartInfo = Object.entries(licenceInfo)
 	.map(([key, value]) => {
@@ -207,9 +207,8 @@ const hasBetaManifestChartInfo = Object.entries(hasBetaManifestInfo)
 <p>The licenses of plugins are processed to collapse synonyms for the same license into one.</p>
 
 <p>
-	The following chart shows the distribution of licenses in the plugins. The licenses are based on the licenses that are mentioned in the plugins <code
-		>package.json</code
-	> files.
+	The following chart shows the distribution of licenses in the plugins. The information is based on the identified <code>LICENSE</code> files in the repositories.
+	Identification of those file may not be accurate.
 </p>
 
 <BarChart

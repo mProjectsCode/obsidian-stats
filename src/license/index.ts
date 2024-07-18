@@ -31,7 +31,7 @@ export interface Licenses {
     }
 }
 
-export async function processLicences() {
+export async function processLicenses() {
     const dir = await fs.readdir('choosealicense.com/_licenses');
     const licenses = await Promise.all(dir.map(async (file) => {
         const data = await fs.readFile(`choosealicense.com/_licenses/${file}`, 'utf-8');
