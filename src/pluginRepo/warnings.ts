@@ -90,8 +90,8 @@ function license(plugin: PluginDataInterface, repo: PluginRepoExtractedData | un
 
 		if (
 			repo.licenseFile !== 'unknown' &&
-			repo.license !== 'unknown' &&
 			repo.licenseFile !== 'not found' &&
+			repo.license !== 'unknown' &&
 			repo.license !== 'not found' &&
 			repo.license !== 'no license' &&
 			!symmetricStartsWith(repo.licenseFile.toLowerCase(), repo.license.toLowerCase())
