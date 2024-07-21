@@ -7204,7 +7204,8 @@
 			"repo": "sspaeti/obsidian_kanagawa",
 			"screenshot": "dark.png",
 			"modes": [
-				"dark"
+				"dark",
+				"light"
 			]
 		},
 		"changeHistory": [
@@ -7224,6 +7225,15 @@
 					"hash": "177f1d940bd94b7ba7eb65a96670465638be7782"
 				},
 				"oldValue": "main"
+			},
+			{
+				"property": "modes",
+				"commit": {
+					"date": "2024-07-08",
+					"hash": "e0b0adbbcc5bc62e230f8ac0e9a1808c3f11e134"
+				},
+				"oldValue": "dark",
+				"newValue": "dark, light"
 			}
 		]
 	},
@@ -11986,7 +11996,8 @@
 			"repo": "sspaeti/obsidian_rose_pine",
 			"screenshot": "dark.jpg",
 			"modes": [
-				"dark"
+				"dark",
+				"light"
 			]
 		},
 		"changeHistory": [
@@ -11998,6 +12009,15 @@
 				},
 				"oldValue": "",
 				"newValue": ""
+			},
+			{
+				"property": "modes",
+				"commit": {
+					"date": "2024-07-08",
+					"hash": "e0b0adbbcc5bc62e230f8ac0e9a1808c3f11e134"
+				},
+				"oldValue": "dark",
+				"newValue": "dark, light"
 			}
 		]
 	},
@@ -14846,6 +14866,244 @@
 				},
 				"oldValue": "",
 				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "pxld",
+		"name": "Pxld",
+		"addedCommit": {
+			"date": "2024-07-12",
+			"hash": "b013bf243dc521cea3df799eb9757415a8b176e6"
+		},
+		"initialEntry": {
+			"name": "Pxld",
+			"author": "Lina674",
+			"repo": "Lina674/Pxld-Obsidian-Theme",
+			"screenshot": "Screenshot (72).png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Pxld",
+			"author": "Lina674",
+			"repo": "Lina674/Pxld-Obsidian-Theme",
+			"screenshot": "merged_diagonal_resized.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-07-12",
+					"hash": "b013bf243dc521cea3df799eb9757415a8b176e6"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "screenshot",
+				"commit": {
+					"date": "2024-07-12",
+					"hash": "5646c9a8cb8bba6332b76d276abf5fb2b70bf866"
+				},
+				"oldValue": "Screenshot (72).png",
+				"newValue": "Screenshot (721).png"
+			},
+			{
+				"property": "screenshot",
+				"commit": {
+					"date": "2024-07-12",
+					"hash": "42fefbb6c1df0216a3c1906a48f41fa7d12e38d0"
+				},
+				"oldValue": "Screenshot (721).png"
+			},
+			{
+				"property": "screenshot",
+				"commit": {
+					"date": "2024-07-12",
+					"hash": "a92d2a7217293176fb8ea783f219f1f50b6640b0"
+				},
+				"newValue": "merged_diagonal_resized.png"
+			}
+		]
+	},
+	{
+		"id": "chiaroscuroflow",
+		"name": "chiaroscuroflow",
+		"addedCommit": {
+			"date": "2024-07-14",
+			"hash": "03b282f38ce45776d98d495264923b14e655a814"
+		},
+		"initialEntry": {
+			"name": "chiaroscuroflow",
+			"author": "Quinta0",
+			"repo": "Quinta0/chiaroscuroflow",
+			"screenshot": "cover.png",
+			"modes": [
+				"light",
+				"dark"
+			]
+		},
+		"currentEntry": {
+			"name": "chiaroscuroflow",
+			"author": "Quinta0",
+			"repo": "Quinta0/chiaroscuroflow",
+			"screenshot": "cover.png",
+			"modes": [
+				"light",
+				"dark"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-07-14",
+					"hash": "03b282f38ce45776d98d495264923b14e655a814"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "mutedblue",
+		"name": "MutedBlue",
+		"addedCommit": {
+			"date": "2024-07-15",
+			"hash": "f99cefec5fa9ecceaf50edb5f57e2b608c574e07"
+		},
+		"removedCommit": {
+			"date": "2024-07-15",
+			"hash": "fbb54b263275095d48a2401a48ce09ffe5ee93bf"
+		},
+		"initialEntry": {
+			"name": "MutedBlue",
+			"author": "HasanTheSyrian",
+			"repo": "HasanTheSyrian/Muted-Blue-Obsidian",
+			"screenshot": "preview.png",
+			"modes": [
+				"dark"
+			]
+		},
+		"currentEntry": {
+			"name": "MutedBlue",
+			"author": "HasanTheSyrian",
+			"repo": "HasanTheSyrian/Muted-Blue-Obsidian",
+			"screenshot": "preview.png",
+			"modes": [
+				"dark"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-07-15",
+					"hash": "f99cefec5fa9ecceaf50edb5f57e2b608c574e07"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2024-07-15",
+					"hash": "fbb54b263275095d48a2401a48ce09ffe5ee93bf"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "muted-blue",
+		"name": "Muted-Blue",
+		"addedCommit": {
+			"date": "2024-07-15",
+			"hash": "fbb54b263275095d48a2401a48ce09ffe5ee93bf"
+		},
+		"initialEntry": {
+			"name": "Muted-Blue",
+			"author": "HasanTheSyrian",
+			"repo": "HasanTheSyrian/Muted-Blue-Obsidian",
+			"screenshot": "preview.png",
+			"modes": [
+				"dark"
+			]
+		},
+		"currentEntry": {
+			"name": "Muted-Blue",
+			"author": "HasanTheSyrian",
+			"repo": "HasanTheSyrian/Muted-Blue-Obsidian",
+			"screenshot": "preview.png",
+			"modes": [
+				"dark"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-07-15",
+					"hash": "fbb54b263275095d48a2401a48ce09ffe5ee93bf"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "oreo",
+		"name": "Oreo",
+		"addedCommit": {
+			"date": "2024-07-17",
+			"hash": "834cd72e2f91a451b8440cbf5b4b23cc7b7ec134"
+		},
+		"initialEntry": {
+			"name": "Oreo",
+			"author": "carols12352",
+			"repo": "carols12352/Oreo-theme",
+			"screenshot": "light-dark-Oreo.png",
+			"modes": [
+				"light",
+				"dark"
+			]
+		},
+		"currentEntry": {
+			"name": "Oreo",
+			"author": "carols12352",
+			"repo": "carols12352/Oreo-theme",
+			"screenshot": "images/thumbnail.png",
+			"modes": [
+				"light",
+				"dark"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-07-17",
+					"hash": "834cd72e2f91a451b8440cbf5b4b23cc7b7ec134"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "screenshot",
+				"commit": {
+					"date": "2024-07-17",
+					"hash": "083e1e3d32fff858a877bf12cb4603068be27d7b"
+				},
+				"oldValue": "light-dark-Oreo.png",
+				"newValue": "images/thumbnail.png"
 			}
 		]
 	}

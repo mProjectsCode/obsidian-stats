@@ -2,7 +2,7 @@
 import type { PluginRepoData, PluginRepoDataNonNull } from '../../../../src/pluginRepo/types';
 import BarChart from '../svelte/genericCharts/barChart.svelte';
 import fs from 'node:fs/promises';
-import { arrayIntersect, getPluginData, groupBy, multiGroupBy } from '../../../../src/utils';
+import { arrayIntersect, groupBy, multiGroupBy } from '../../../../src/utils';
 import type { Licenses } from '../../../../src/license';
 import { projectRelativeUrl } from '../../utils/base';
 
@@ -189,7 +189,7 @@ const mostUsedDepsChartInfo = Object.entries(mostUsedDepsInfo)
 	})
 	.sort((a, b) => b.value - a.value);
 
-const limitedMostUsedDepsChartInfo = mostUsedDepsChartInfo.filter(x => x.value >= 10);
+const limitedMostUsedDepsChartInfo = mostUsedDepsChartInfo.filter(x => x.value / totalPluginCount >= 0.01);
 
 const hasBetaManifestInfo = groupBy(repoDataWithRepos, x => x.repo.hasBetaManifest.toString());
 const hasBetaManifestChartInfo = Object.entries(hasBetaManifestInfo)
@@ -209,6 +209,15 @@ const hasBetaManifestChartInfo = Object.entries(hasBetaManifestInfo)
 <p>
 	The following chart shows the distribution of licenses in the plugins. The information is based on the identified <code>LICENSE</code> files in the repositories.
 	Identification of those file may not be accurate.
+</p>
+
+<p>
+	<code>not found</code> means that a no license file was found in the repository. 
+	Obsidian <a href="https://docs.obsidian.md/Developer+policies#Copyright+and+licensing" target="_blank">requires a license file to be present</a> for new plugins, but this is not enforced retroactively.
+</p>
+
+<p>
+	<code>unknown</code> means that a license file was found, but the license could not be identified.
 </p>
 
 <BarChart
@@ -407,7 +416,9 @@ const hasBetaManifestChartInfo = Object.entries(hasBetaManifestInfo)
 
 <h4>Most Used Dependencies</h4>
 
-<p>This table shows direct dependencies of all plugins, sorted by how many plugins use them. Dependencies with less than 10 usages are not shown.</p>
+<p>
+	This table shows direct dependencies of all plugins, sorted by how many plugins use them. Dependencies with less than one percent usage are not shown.
+</p>
 
 <table>
 	<thead>

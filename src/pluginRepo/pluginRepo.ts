@@ -1,15 +1,14 @@
-import { PLUGIN_DATA_PATH } from '../constants.ts';
 import { PluginDataInterface } from '../plugin/plugin.ts';
 import fs from 'node:fs/promises';
 import { $, Verboseness } from '../shellUtils.ts';
-import { arrayIntersect, getPluginData, getPluginData_dataCollection, uniqueConcat } from '../utils.ts';
+import { arrayIntersect, getPluginData_dataCollection, uniqueConcat } from '../utils.ts';
 import { PluginManifest, PluginRepoData, PluginRepoExtractedData } from './types.ts';
 import CliProgress from 'cli-progress';
 import { warnings } from './warnings.ts';
 import { LicenseComparer } from '../license/licenseCompare.ts';
 
 export async function clonePluginRepos() {
-	const pluginData = (await Bun.file(PLUGIN_DATA_PATH).json()) as PluginDataInterface[];
+	const pluginData = getPluginData_dataCollection();
 
 	await fs.rm('pluginRepos/repos', { recursive: true, force: true });
 	await fs.mkdir('pluginRepos/repos', { recursive: true });
