@@ -4,7 +4,10 @@ import PluginDownloadsNameCorrelationChart from '../svelte/pluginDownloadsNameCo
 import PluginReleaseCountDownloadsCorrelationChart from '../svelte/pluginReleaseCountDownloadsCorrelationChart.svelte';
 import PluginReleaseTimeDownloadsCorrelationChart from '../svelte/pluginReleaseTimeDownloadsCorrelationChart.svelte';
 import BarChart from '../svelte/genericCharts/barChart.svelte';
-import { getPluginData } from '../../../../src/utils';
+import { getPluginData, groupBy } from '../../../../src/utils';
+import { CDate } from '../../../../src/date';
+import { getRepoData } from '../../utils/base';
+import type { PluginWarning } from '../../../../src/pluginRepo/types';
 
 const downloadReleaseCorrelationDataPoints = getDownloadReleaseCorrelationDataPoints(getPluginData());
 
@@ -31,58 +34,47 @@ const lastUpdateInfo = pluginData
 		};
 	})
 	.sort((a, b) => b.value - a.value);
+
+const pluginDataGroupedByReleaseMonth = groupBy(pluginData, x => {
+	const date = CDate.fromString(x.addedCommit.date);
+	return date.toMonthString();
+});
+
+const repoData = await getRepoData();
+const repoDataMap = new Map(repoData.map(x => [x.id, x]));
+
+const warningPercentByReleaseMonth = Object.entries(pluginDataGroupedByReleaseMonth)
+	.map(([month, plugins]) => {
+		let total = plugins.length;
+		let warningCounts: Record<PluginWarning['id'], number> = {
+			'inactivity-12-months': 0,
+			"inactivity-24-months": 0,
+			'removed': 0,
+			"mismatched-license": 0,
+			"no-license": 0,
+			'unlicensed': 0,	
+			"mismatched-manifest-data": 0,	
+		};
+
+		for (const plugin of plugins) {
+			const repo = repoDataMap.get(plugin.id)!;
+
+			for (const warning of repo.warnings) {
+				warningCounts[warning.id] += 1;
+			}
+		}
+
+		const warningPercent: Record<PluginWarning['id'], number> = Object.fromEntries(
+			Object.entries(warningCounts).map(([key, value]) => {
+				return [key, value / total];
+			})
+		) as Record<PluginWarning['id'], number>;
+
+		return {
+			month,
+			warningPercent,
+		};
+	})
+	.sort((a, b) => a.month.localeCompare(b.month));
 ---
 
-<p>
-	This figure shows the correlation between the number of downloads and the number of releases. This shows that plugins with more downloads tend to have more
-	releases.
-</p>
-
-<div>
-	<PluginReleaseCountDownloadsCorrelationChart dataPoints={downloadReleaseCorrelationDataPoints} client:only="svelte" />
-</div>
-
-<p>This figure shows the correlation between the number of downloads and the initial release time.</p>
-
-<div>
-	<PluginReleaseTimeDownloadsCorrelationChart dataPoints={downloadReleaseCorrelationDataPoints} client:only="svelte" />
-</div>
-
-<p>
-	The chart below shows the correlation between the name of the plugin and the number of downloads. The regression line is calculated using the Simple Linear
-	Regression algorithm. It is evident that there is a slight correlation between the placement of the plugin in the alphabet and the number of downloads.
-</p>
-
-<div>
-	<PluginDownloadsNameCorrelationChart dataPoints={downloadReleaseCorrelationDataPoints} client:only="svelte" />
-</div>
-
-<p>
-	This chart shows the overall distribution of downloads, it is clear that the majority of plugins have a low number of downloads, with a few plugins having a
-	very high number of downloads.
-</p>
-
-<div>
-	<BarChart
-		dataPoints={sortedData.map((x, i) => x.downloads)}
-		labels={sortedData.map(x => x.id)}
-		logScale={true}
-		seriesName="Download count distribution"
-		calculatePrecentages={false}
-		showXLabels={false}
-		client:only="svelte"
-	/>
-</div>
-
-<p>The following chart shows the overall distribution days since the last plugin update.</p>
-
-<div>
-	<BarChart
-		dataPoints={lastUpdateInfo.map(x => x.value)}
-		labels={lastUpdateInfo.map(x => x.label)}
-		logScale={false}
-		seriesName="Days since last update distribution"
-		showXLabels={false}
-		client:only="svelte"
-	/>
-</div>

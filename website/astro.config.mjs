@@ -26,9 +26,36 @@ export default defineConfig({
 				},
 				{
 					label: 'Plugin Stats',
-					autogenerate: {
-						directory: 'pluginStats',
-					},
+					items: [
+						{
+							label: 'Overview',
+							link: '/pluginstats',
+						},
+						{
+							label: 'Hall of Fame',
+							link: '/pluginstats/hall-of-fame',
+						},
+						{
+							label: 'Downloads',
+							link: '/pluginstats/downloads',
+						},
+						{
+							label: 'Community Plugin List',
+							link: '/pluginstats/community-plugin-list',
+						},
+						{
+							label: 'Updates',
+							link: '/pluginstats/updates',
+						},
+						{
+							label: 'Repository Data',
+							link: '/pluginstats/repo-data',
+						},
+						{
+							label: 'Licenses',
+							link: '/pluginstats/licenses',
+						}
+					]
 				},
 				{
 					label: 'Theme Stats',
@@ -48,6 +75,8 @@ export default defineConfig({
 		svelte(),
 	],
 	redirects: {
-		'/globalstats/plugins/': '/obsidian-stats/home/about/',
+		'/globalstats/plugins/': '/obsidian-stats/',
+		'/pluginstats/halloffame/': '/obsidian-stats/pluginstats/hall-of-fame/',
+		'/pluginstats/repodata/': '/obsidian-stats/pluginstats/repo-data/',
 	},
 });

@@ -1,6 +1,6 @@
 import { type PluginDataInterface } from './plugin.ts';
 import { type DownloadDataPoint, type DownloadReleaseCorrelationDataPoint, type PerMonthDataPoint } from '../types.ts';
-import { filterRemoved, getAddedDataForMonth, getRemovedDataForMonth, iterateDataMonthly } from '../utils.ts';
+import { filterNonRemoved, filterRemoved, getAddedDataForMonth, getRemovedDataForMonth, iterateDataMonthly } from '../utils.ts';
 import { reduce } from 'itertools-ts';
 import { CDate } from '../date.ts';
 
@@ -115,6 +115,12 @@ export function getPluginCountAddedMonthly(plugins: PluginDataInterface[]): PerM
 			value: releasedPlugins.length,
 		};
 	});
+}
+
+export function getPluginAddedRecentList(plugins: PluginDataInterface[]): PluginDataInterface[] {
+	return filterNonRemoved(plugins)
+		.sort((a, b) => b.addedCommit.date.localeCompare(a.addedCommit.date))
+		.slice(0, 15);
 }
 
 export function getPluginCountMonthly(plugins: PluginDataInterface[]): PerMonthDataPoint[] {

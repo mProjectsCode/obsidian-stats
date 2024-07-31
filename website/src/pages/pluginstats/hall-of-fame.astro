@@ -1,0 +1,74 @@
+---
+import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
+import PluginsMostDownloaded from '../../components/plugins/hallOfFame/pluginsMostDownloaded.astro';
+
+
+---
+
+<StarlightPage
+    frontmatter={{
+        title: 'Plugin Hall of Fame',
+        description: `The top 5 plugins in multiple categories.`
+    }}
+    headings={[
+        {depth: 2, text: '2024 (Preliminary)', slug: '2024'},
+        {depth: 2, text: '2023', slug: '2023'},
+        {depth: 2, text: '2022', slug: '2022'},
+        {depth: 2, text: '2021', slug: '2021'},
+        {depth: 2, text: '2020', slug: '2020'},
+    ]}
+>
+    <h3>Most Downloaded</h3>
+
+    <PluginsMostDownloaded />
+
+    <h2 id="2024">2024 (Preliminary)</h2>
+
+    <h3>Most Downloaded</h3>
+
+    <PluginsMostDownloaded year={2024} />
+
+    <h3>Most Downloaded New Plugins of 2023</h3>
+
+    <PluginsMostDownloaded year={2024} releaseYear={2024} />
+
+    <h2 id="2023">2023</h2>
+
+    <h3>Most Downloaded</h3>
+
+    <PluginsMostDownloaded year={2023} />
+
+    <h3>Most Downloaded New Plugins of 2023</h3>
+
+    <PluginsMostDownloaded year={2023} releaseYear={2023} />
+
+    <h2 id="2022">2022</h2>
+
+    <h3>Most Downloaded</h3>
+
+    <PluginsMostDownloaded year={2022} />
+
+    <h3>Most Downloaded New Plugins of 2022</h3>
+
+    <PluginsMostDownloaded year={2022} releaseYear={2022} />
+
+    <h2 id="2021">2021</h2>
+
+    <h3>Most Downloaded</h3>
+
+    <PluginsMostDownloaded year={2021} />
+
+    <h3>Most Downloaded New Plugins of 2021</h3>
+
+    <PluginsMostDownloaded year={2021} releaseYear={2021} />
+
+    <h2 id="2020">2020</h2>
+
+    <h3>Most Downloaded</h3>
+
+    <PluginsMostDownloaded year={2020} />
+
+    <h3>Most Downloaded New Plugins of 2020</h3>
+
+    <PluginsMostDownloaded year={2020} releaseYear={2020} />
+</StarlightPage>

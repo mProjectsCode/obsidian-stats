@@ -15106,5 +15106,138 @@
 				"newValue": "images/thumbnail.png"
 			}
 		]
+	},
+	{
+		"id": "brainhack",
+		"name": "Brainhack",
+		"addedCommit": {
+			"date": "2024-07-21",
+			"hash": "55cfad581b7cf970ffff8822c9d0352e2d1c1b5d"
+		},
+		"initialEntry": {
+			"name": "Brainhack",
+			"author": "Spekulucius",
+			"repo": "Spekulucius/obsidian-brainhack",
+			"screenshot": "preview.png",
+			"modes": [
+				"light",
+				"dark"
+			]
+		},
+		"currentEntry": {
+			"name": "Brainhack",
+			"author": "Spekulucius",
+			"repo": "Spekulucius/obsidian-brainhack",
+			"screenshot": "preview.png",
+			"modes": [
+				"light",
+				"dark"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-07-21",
+					"hash": "55cfad581b7cf970ffff8822c9d0352e2d1c1b5d"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "nobb",
+		"name": "nobb",
+		"addedCommit": {
+			"date": "2024-07-26",
+			"hash": "88a75b5fcced00c3b8a7adbcce2da005fdd6d444"
+		},
+		"initialEntry": {
+			"name": "nobb",
+			"author": "buluw",
+			"repo": "buluw/nobb-obsidian",
+			"screenshot": "nobb-obtheme.jpg",
+			"modes": [
+				"dark"
+			]
+		},
+		"currentEntry": {
+			"name": "nobb",
+			"author": "buluw",
+			"repo": "buluw/nobb-obsidian",
+			"screenshot": "nobb-obtheme.jpg",
+			"modes": [
+				"dark"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-07-26",
+					"hash": "88a75b5fcced00c3b8a7adbcce2da005fdd6d444"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "modes",
+				"commit": {
+					"date": "2024-07-29",
+					"hash": "a03a9d4e3e391bf3cebec56468df6b295f51dbbf"
+				},
+				"oldValue": [
+					"dark"
+				]
+			},
+			{
+				"property": "modes",
+				"commit": {
+					"date": "2024-07-29",
+					"hash": "70722f5e21b4223a474132b7bdf3ffb22f4fe794"
+				},
+				"newValue": [
+					"dark"
+				]
+			}
+		]
+	},
+	{
+		"id": "vanilla-amoled-color",
+		"name": "Vanilla AMOLED Color",
+		"addedCommit": {
+			"date": "2024-07-29",
+			"hash": "a03a9d4e3e391bf3cebec56468df6b295f51dbbf"
+		},
+		"initialEntry": {
+			"name": "Vanilla AMOLED Color",
+			"author": "sskki",
+			"repo": "Sskki-exe/vanilla-amoled-theme-color",
+			"screenshot": "sample-screenshot-sm.png",
+			"modes": [
+				"dark"
+			]
+		},
+		"currentEntry": {
+			"name": "Vanilla AMOLED Color",
+			"author": "sskki",
+			"repo": "Sskki-exe/vanilla-amoled-theme-color",
+			"screenshot": "sample-screenshot-sm.png",
+			"modes": [
+				"dark"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-07-29",
+					"hash": "a03a9d4e3e391bf3cebec56468df6b295f51dbbf"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
 	}
 ]

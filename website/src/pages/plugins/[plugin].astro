@@ -1,5 +1,5 @@
 ---
-import Plugin from '../../components/plugin.astro';
+import PluginComponent from '../../components/plugin.astro';
 import { getPluginData } from '../../../../src/utils';
 
 export function getStaticPaths() {
@@ -19,4 +19,4 @@ export function getStaticPaths() {
 const { pluginDatum } = Astro.props;
 ---
 
-<Plugin plugin={pluginDatum} />
+<PluginComponent plugin={pluginDatum} />

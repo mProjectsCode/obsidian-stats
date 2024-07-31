@@ -15,6 +15,7 @@
 	export let logScale = false;
 	export let calculatePrecentages = false;
 	export let percent100 = 1;
+	export let stacked = false;
 
 	export let colors = [
 		'rgba(255, 99, 132, 1)', // Red
@@ -83,6 +84,7 @@
 							ticks: {
 								display: showXLabels,
 							},
+							stacked,
 						},
 						y: {
 							min: logScale ? 1 : 0,
@@ -90,6 +92,7 @@
 							grid: {
 								color: chartStyle.line,
 							},
+							stacked,
 						},
 					},
 					plugins: {

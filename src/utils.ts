@@ -128,6 +128,10 @@ export function filterRemoved<T extends AbstractDataInterface>(data: T[]): T[] {
 	return data.filter(x => isRemoved(x));
 }
 
+export function filterNonRemoved<T extends AbstractDataInterface>(data: T[]): T[] {
+	return data.filter(x => !isRemoved(x));
+}
+
 export function iterateDataMonthly<T>(data: AbstractDataInterface[], fn: (d: Date, year: string, month: string) => T): T[] {
 	const retData: T[] = [];
 

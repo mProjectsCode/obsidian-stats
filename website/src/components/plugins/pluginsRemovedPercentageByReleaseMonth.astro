@@ -1,9 +1,0 @@
----
-import { getPluginPercentageRemovedByReleaseMonth } from '../../../../src/plugin/data';
-import { getPluginData } from '../../../../src/utils';
-import DataPerMonthChart from '../svelte/genericCharts/dataPerMonthChart.svelte';
-
-const dataPoints = getPluginPercentageRemovedByReleaseMonth(getPluginData());
----
-
-<DataPerMonthChart dataPoints={dataPoints} max={100} title="Percentage of Retired Plugins by Release Month" client:only="svelte" />

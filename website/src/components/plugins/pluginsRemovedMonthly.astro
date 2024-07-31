@@ -1,9 +1,0 @@
----
-import { getPluginCountRemovedMonthly } from '../../../../src/plugin/data';
-import { getPluginData } from '../../../../src/utils';
-import DataPerMonthChart from '../svelte/genericCharts/dataPerMonthChart.svelte';
-
-const dataPoints = getPluginCountRemovedMonthly(getPluginData());
----
-
-<DataPerMonthChart dataPoints={dataPoints} title="Total Retired Plugin Count" type="line" client:only="svelte" />
