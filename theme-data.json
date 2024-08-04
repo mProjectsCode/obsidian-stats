@@ -15239,5 +15239,151 @@
 				"newValue": ""
 			}
 		]
+	},
+	{
+		"id": "abate",
+		"name": "Abate",
+		"addedCommit": {
+			"date": "2024-07-29",
+			"hash": "5f06a3c81e96bf13e52afb6fb78e17ca36b44051"
+		},
+		"initialEntry": {
+			"name": "Abate",
+			"author": "ricedev10",
+			"repo": "ricedev10/Abate-obsidian-theme",
+			"screenshot": "ScreenshotPreview.png",
+			"modes": [
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Abate",
+			"author": "ricedev10",
+			"repo": "ricedev10/Abate-theme",
+			"screenshot": "ScreenshotPreview.png",
+			"modes": [
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-07-29",
+					"hash": "5f06a3c81e96bf13e52afb6fb78e17ca36b44051"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "repo",
+				"commit": {
+					"date": "2024-07-29",
+					"hash": "7c09be1651ab73ff1b984d8c55be7530b607b5b1"
+				},
+				"oldValue": "ricedev10/Abate-obsidian-theme",
+				"newValue": "ricedev10/Abate-theme"
+			}
+		]
+	},
+	{
+		"id": "ayu-1",
+		"name": "ayu",
+		"addedCommit": {
+			"date": "2024-07-31",
+			"hash": "04b708fd28da858a476acee5659c6bbd7d184145"
+		},
+		"removedCommit": {
+			"date": "2024-07-31",
+			"hash": "1f96b8379c83eb2022b7795a118fc74769e3de38"
+		},
+		"initialEntry": {
+			"name": "ayu",
+			"author": "Taro",
+			"repo": "taronull/ayu-obsidian",
+			"screenshot": "cover.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "ayu",
+			"author": "taronull",
+			"repo": "taronull/ayu-obsidian",
+			"screenshot": "cover.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-07-31",
+					"hash": "04b708fd28da858a476acee5659c6bbd7d184145"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "author",
+				"commit": {
+					"date": "2024-07-31",
+					"hash": "b6ff892324b7391d1716f63f72cbf7de20aac336"
+				},
+				"oldValue": "Taro",
+				"newValue": "taronull"
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2024-07-31",
+					"hash": "1f96b8379c83eb2022b7795a118fc74769e3de38"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "ayu-light-mirage",
+		"name": "Ayu Light & Mirage",
+		"addedCommit": {
+			"date": "2024-07-31",
+			"hash": "1f96b8379c83eb2022b7795a118fc74769e3de38"
+		},
+		"initialEntry": {
+			"name": "Ayu Light & Mirage",
+			"author": "Taro",
+			"repo": "taronull/ayu-obsidian",
+			"screenshot": "cover.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Ayu Light & Mirage",
+			"author": "Taro",
+			"repo": "taronull/ayu-obsidian",
+			"screenshot": "cover.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-07-31",
+					"hash": "1f96b8379c83eb2022b7795a118fc74769e3de38"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
 	}
 ]
