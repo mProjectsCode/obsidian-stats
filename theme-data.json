@@ -15385,5 +15385,83 @@
 				"newValue": ""
 			}
 		]
+	},
+	{
+		"id": "shade-sanctuary",
+		"name": "Shade Sanctuary",
+		"addedCommit": {
+			"date": "2024-08-02",
+			"hash": "ae01cd88038581e8afb3b33860e3b0f447566461"
+		},
+		"initialEntry": {
+			"name": "Shade Sanctuary",
+			"author": "Elevict",
+			"repo": "Elevict/Shade-Sanctuary",
+			"screenshot": "cover.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Shade Sanctuary",
+			"author": "Elevict",
+			"repo": "Elevict/Shade-Sanctuary",
+			"screenshot": "cover.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-08-02",
+					"hash": "ae01cd88038581e8afb3b33860e3b0f447566461"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "underwater",
+		"name": "Underwater",
+		"addedCommit": {
+			"date": "2024-08-03",
+			"hash": "1fef9c7b74ef186d9642fd4bdc83485083008e15"
+		},
+		"initialEntry": {
+			"name": "Underwater",
+			"author": "Seniblue",
+			"repo": "Seniblue/Underwater",
+			"screenshot": "uw.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Underwater",
+			"author": "Seniblue",
+			"repo": "Seniblue/Underwater",
+			"screenshot": "uw.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-08-03",
+					"hash": "1fef9c7b74ef186d9642fd4bdc83485083008e15"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
 	}
 ]
