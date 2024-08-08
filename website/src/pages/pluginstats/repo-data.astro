@@ -131,151 +131,148 @@ const hasBetaManifestChartInfo = Object.entries(hasBetaManifestInfo)
 ---
 
 <StarlightPage
-    frontmatter={{
-        title: 'Community Plugin List',
-        description: `Changes in the plugins on the community plugin list.`
-    }}
-    headings={[
-        {depth: 2, text: 'BRAT Beta Manifest Usage', slug: 'brat-beta-manifest-usage'},
-        {depth: 2, text: 'Dependencies', slug: 'dependencies'},
-        {depth: 3, text: 'Package Manager Usage', slug: 'package-manager-usage'},
-        {depth: 3, text: 'Code Bundler Usage', slug: 'code-bundler-usage'},
-        {depth: 3, text: 'Developer Tooling Usage', slug: 'developer-tooling-usage'},
-        {depth: 3, text: 'Testing Framework Usage', slug: 'testing-framework-usage'},
-        {depth: 3, text: 'Frontend Framework Usage', slug: 'frontend-framework-usage'},
-        {depth: 3, text: 'Most Used Dependencies', slug: 'most-used-dependencies'},
-    ]}
+	frontmatter={{
+		title: 'Community Plugin List',
+		description: `Changes in the plugins on the community plugin list.`,
+	}}
+	headings={[
+		{ depth: 2, text: 'BRAT Beta Manifest Usage', slug: 'brat-beta-manifest-usage' },
+		{ depth: 2, text: 'Dependencies', slug: 'dependencies' },
+		{ depth: 3, text: 'Package Manager Usage', slug: 'package-manager-usage' },
+		{ depth: 3, text: 'Code Bundler Usage', slug: 'code-bundler-usage' },
+		{ depth: 3, text: 'Developer Tooling Usage', slug: 'developer-tooling-usage' },
+		{ depth: 3, text: 'Testing Framework Usage', slug: 'testing-framework-usage' },
+		{ depth: 3, text: 'Frontend Framework Usage', slug: 'frontend-framework-usage' },
+		{ depth: 3, text: 'Most Used Dependencies', slug: 'most-used-dependencies' },
+	]}
 >
-    <h2 id="brat-beta-manifest-usage">BRAT Beta Manifest Usage</h2>
+	<h2 id="brat-beta-manifest-usage">BRAT Beta Manifest Usage</h2>
 
-    <p>The percentage of plugins that have a BRAT beta manifest.</p>
+	<p>The percentage of plugins that have a BRAT beta manifest.</p>
 
-    <BarChart
-        dataPoints={hasBetaManifestChartInfo.map(x => x.value)}
-        labels={hasBetaManifestChartInfo.map(x => x.label)}
-        logScale={false}
-        aspectRatio={2}
-        seriesName="Number of Plugins"
-        calculatePrecentages={true}
-        percent100={totalPluginCount}
-        client:only="svelte"
-    />
+	<BarChart
+		dataPoints={hasBetaManifestChartInfo.map(x => x.value)}
+		labels={hasBetaManifestChartInfo.map(x => x.label)}
+		logScale={false}
+		aspectRatio={2}
+		seriesName="Number of Plugins"
+		calculatePrecentages={true}
+		percent100={totalPluginCount}
+		client:only="svelte"
+	/>
 
-    <h2 id="dependencies">Dependencies</h2>
+	<h2 id="dependencies">Dependencies</h2>
 
-    <h3 id="package-manager-usage">Package Manager Usage</h3>
+	<h3 id="package-manager-usage">Package Manager Usage</h3>
 
-    <p>The distribution of package managers used in plugins. The package manager is determined by the presence of a lockfile in the plugin repository.</p>
+	<p>The distribution of package managers used in plugins. The package manager is determined by the presence of a lockfile in the plugin repository.</p>
 
-    <BarChart
-        dataPoints={packageManagerChartInfo.map(x => x.value)}
-        labels={packageManagerChartInfo.map(x => x.label)}
-        logScale={false}
-        seriesName="Number of Plugins"
-        calculatePrecentages={true}
-        percent100={totalPluginCount}
-        client:only="svelte"
-    />
+	<BarChart
+		dataPoints={packageManagerChartInfo.map(x => x.value)}
+		labels={packageManagerChartInfo.map(x => x.label)}
+		logScale={false}
+		seriesName="Number of Plugins"
+		calculatePrecentages={true}
+		percent100={totalPluginCount}
+		client:only="svelte"
+	/>
 
-    <h3 id="code-bundler-usage">Code Bundler Usage</h3>
+	<h3 id="code-bundler-usage">Code Bundler Usage</h3>
 
-    <p>
-        The distribution of code bundlers used in plugins. The bundler is determined by the presence of dependencies in the plugins <code>package.json</code>.
-    </p>
+	<p>
+		The distribution of code bundlers used in plugins. The bundler is determined by the presence of dependencies in the plugins <code>package.json</code>.
+	</p>
 
-    <BarChart
-        dataPoints={installedBundlersChartInfo.map(x => x.value)}
-        labels={installedBundlersChartInfo.map(x => x.label)}
-        logScale={false}
-        seriesName="Number of Plugins"
-        calculatePrecentages={true}
-        percent100={totalPluginCount}
-        client:only="svelte"
-    />
+	<BarChart
+		dataPoints={installedBundlersChartInfo.map(x => x.value)}
+		labels={installedBundlersChartInfo.map(x => x.label)}
+		logScale={false}
+		seriesName="Number of Plugins"
+		calculatePrecentages={true}
+		percent100={totalPluginCount}
+		client:only="svelte"
+	/>
 
-    <h3 id="developer-tooling-usage">Developer Tooling Usage</h3>
+	<h3 id="developer-tooling-usage">Developer Tooling Usage</h3>
 
-    <p>The distribution of developer tooling used in plugins.</p>
+	<p>The distribution of developer tooling used in plugins.</p>
 
-    <BarChart
-        dataPoints={installedToolingFrameworksChartInfo.map(x => x.value)}
-        labels={installedToolingFrameworksChartInfo.map(x => x.label)}
-        logScale={false}
-        seriesName="Number of Plugins"
-        calculatePrecentages={true}
-        percent100={totalPluginCount}
-        client:only="svelte"
-    />
+	<BarChart
+		dataPoints={installedToolingFrameworksChartInfo.map(x => x.value)}
+		labels={installedToolingFrameworksChartInfo.map(x => x.label)}
+		logScale={false}
+		seriesName="Number of Plugins"
+		calculatePrecentages={true}
+		percent100={totalPluginCount}
+		client:only="svelte"
+	/>
 
-    <h3 id="testing-framework-usage">Testing Framework Usage</h3>
+	<h3 id="testing-framework-usage">Testing Framework Usage</h3>
 
-    <p>
-        The distribution of testing frameworks used in plugins. The testing frameworks usage is determined by the presence of dependencies in the plugins <code
-            >package.json</code
-        >.
-    </p>
+	<p>
+		The distribution of testing frameworks used in plugins. The testing frameworks usage is determined by the presence of dependencies in the plugins <code
+			>package.json</code
+		>.
+	</p>
 
-    <BarChart
-        dataPoints={installedTestingFrameworksChartInfo.map(x => x.value)}
-        labels={installedTestingFrameworksChartInfo.map(x => x.label)}
-        logScale={false}
-        seriesName="Number of Plugins"
-        calculatePrecentages={true}
-        percent100={totalPluginCount}
-        client:only="svelte"
-    />
+	<BarChart
+		dataPoints={installedTestingFrameworksChartInfo.map(x => x.value)}
+		labels={installedTestingFrameworksChartInfo.map(x => x.label)}
+		logScale={false}
+		seriesName="Number of Plugins"
+		calculatePrecentages={true}
+		percent100={totalPluginCount}
+		client:only="svelte"
+	/>
 
-    <p>
-        {noTestingFrameworkCount} ({((noTestingFrameworkCount * 100) / totalPluginCount).toFixed(2)}%) plugins use no testing framework.
-    </p>
+	<p>
+		{noTestingFrameworkCount} ({((noTestingFrameworkCount * 100) / totalPluginCount).toFixed(2)}%) plugins use no testing framework.
+	</p>
 
-    <h3 id="frontend-framework-usage">Frontend Framework Usage</h3>
+	<h3 id="frontend-framework-usage">Frontend Framework Usage</h3>
 
-    <p>
-        The distribution of frontend frameworks used in plugins. The frontend frameworks usage is determined by the presence of dependencies in the plugins <code
-            >package.json</code
-        >.
-    </p>
+	<p>
+		The distribution of frontend frameworks used in plugins. The frontend frameworks usage is determined by the presence of dependencies in the plugins <code
+			>package.json</code
+		>.
+	</p>
 
-    <BarChart
-        dataPoints={installedFrontendFrameworksChartInfo.map(x => x.value)}
-        labels={installedFrontendFrameworksChartInfo.map(x => x.label)}
-        logScale={false}
-        seriesName="Number of Plugins"
-        calculatePrecentages={true}
-        percent100={totalPluginCount}
-        client:only="svelte"
-    />
+	<BarChart
+		dataPoints={installedFrontendFrameworksChartInfo.map(x => x.value)}
+		labels={installedFrontendFrameworksChartInfo.map(x => x.label)}
+		logScale={false}
+		seriesName="Number of Plugins"
+		calculatePrecentages={true}
+		percent100={totalPluginCount}
+		client:only="svelte"
+	/>
 
-    <p>
-        {noFrontendFrameworkCount} ({((noFrontendFrameworkCount * 100) / totalPluginCount).toFixed(2)}%) plugins use no frontend framework.
-    </p>
+	<p>
+		{noFrontendFrameworkCount} ({((noFrontendFrameworkCount * 100) / totalPluginCount).toFixed(2)}%) plugins use no frontend framework.
+	</p>
 
-    <h3 id="most-used-dependencies">Most Used Dependencies</h3>
+	<h3 id="most-used-dependencies">Most Used Dependencies</h3>
 
-    <p>
-        This table shows direct dependencies of all plugins, sorted by how many plugins use them. Dependencies with less than one percent usage are not shown.
-    </p>
+	<p>This table shows direct dependencies of all plugins, sorted by how many plugins use them. Dependencies with less than one percent usage are not shown.</p>
 
-    <table>
-        <thead>
-            <tr>
-                <th> Name</th>
-                <th> Usage Count</th>
-                <th> Usage Percentage</th>
-            </tr>
-        </thead>
-        <tbody>
-            {
-                limitedMostUsedDepsChartInfo.map(x => (
-                    <tr>
-                        <td>{x.label}</td>
-                        <td>{x.value}</td>
-                        <td>{((x.value * 100) / totalPluginCount).toFixed(2)}%</td>
-                    </tr>
-                ))
-            }
-        </tbody>
-    </table>
-
+	<table>
+		<thead>
+			<tr>
+				<th> Name</th>
+				<th> Usage Count</th>
+				<th> Usage Percentage</th>
+			</tr>
+		</thead>
+		<tbody>
+			{
+				limitedMostUsedDepsChartInfo.map(x => (
+					<tr>
+						<td>{x.label}</td>
+						<td>{x.value}</td>
+						<td>{((x.value * 100) / totalPluginCount).toFixed(2)}%</td>
+					</tr>
+				))
+			}
+		</tbody>
+	</table>
 </StarlightPage>

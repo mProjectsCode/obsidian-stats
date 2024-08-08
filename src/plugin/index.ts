@@ -175,6 +175,22 @@ async function getPluginDownloadStats(): Promise<PluginDownloadStats[]> {
 	return pluginDownloadStats;
 }
 
+function filterPlugins(data: PluginData[]): PluginData[] {
+	// remove any undefined that sneaks in
+	data = data.filter(x => x !== undefined);
+
+	// remove plugins that have been added and removed on the same day
+	data = data.filter(x => x.addedCommit.date !== x.removedCommit?.date);
+
+	// remove plugins that have 0 downloads and were added more than 7 days ago
+	const refDate = CDate.fromNow();
+	refDate.advanceByDays(-7);
+	const refDateString = refDate.toString();
+	data = data.filter(x => x.getDownloadCount() > 0 || x.addedCommit.date > refDateString);
+
+	return data;
+}
+
 export async function buildPluginStats(): Promise<void> {
 	const pluginLists = await getPluginLists();
 	let pluginData = buildPluginData(pluginLists);
@@ -183,8 +199,7 @@ export async function buildPluginStats(): Promise<void> {
 	updateWeeklyDownloadStats(pluginData, pluginDownloadStats);
 	updateVersionHistory(pluginData, pluginDownloadStats);
 
-	pluginData = pluginData.filter(x => x !== undefined);
-	pluginData = pluginData.filter(x => x.addedCommit.date !== x.removedCommit?.date);
+	pluginData = filterPlugins(pluginData);
 
 	console.log(`Processed all plugins, writing to ${PLUGIN_DATA_PATH}`);
 

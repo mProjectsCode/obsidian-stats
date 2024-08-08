@@ -112,24 +112,40 @@ export class PluginData {
 				});
 			}
 
-			const changes = keys
-				.map(key => {
-					// @ts-expect-error TS7053
-					const oldValue = this.currentEntry[key];
-					// @ts-expect-error TS7053
-					const newValue = newEntry[key];
+			for (const key of keys) {
+				// @ts-expect-error TS7053
+				const oldValue = this.currentEntry[key];
+				// @ts-expect-error TS7053
+				const newValue = newEntry[key];
 
-					if (oldValue !== newValue) {
-						return {
-							property: key,
-							commit: pluginList.commit,
-							oldValue,
-							newValue,
-						} satisfies EntryChange;
-					}
-				})
-				.filter(x => x !== undefined) as EntryChange[];
-			this.changeHistory.push(...changes);
+				if (oldValue !== newValue) {
+					this.changeHistory.push({
+						property: key,
+						commit: pluginList.commit,
+						oldValue,
+						newValue,
+					} satisfies EntryChange);
+				}
+			}
+
+			// const changes = keys
+			// 	.map(key => {
+			// 		// @ts-expect-error TS7053
+			// 		const oldValue = this.currentEntry[key];
+			// 		// @ts-expect-error TS7053
+			// 		const newValue = newEntry[key];
+
+			// 		if (oldValue !== newValue) {
+			// 			return {
+			// 				property: key,
+			// 				commit: pluginList.commit,
+			// 				oldValue,
+			// 				newValue,
+			// 			} satisfies EntryChange;
+			// 		}
+			// 	})
+			// 	.filter(x => x !== undefined) as EntryChange[];
+			// this.changeHistory.push(...changes);
 			this.currentEntry = newEntry;
 		}
 	}
@@ -171,5 +187,10 @@ export class PluginData {
 	sortVersionHistory() {
 		this.versionHistory = Array.from(this.#versionHistoryMap.values());
 		this.versionHistory.sort((a, b) => (Version.lessThan(Version.fromString(a.version), Version.fromString(b.version)) ? -1 : 1));
+	}
+
+	getDownloadCount(): number {
+		const values = Object.values(this.downloadHistory);
+		return Math.max(...values, 0);
 	}
 }

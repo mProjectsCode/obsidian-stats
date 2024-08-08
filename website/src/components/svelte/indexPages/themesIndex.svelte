@@ -3,7 +3,7 @@
 	import GithubLink from '../helpers/githubLink.svelte';
 	import Commit from '../helpers/commit.svelte';
 	import { onMount } from 'svelte';
-	import type { ThemeDataInterface } from '../../../../../src/theme/data.ts';
+	import type { ThemeDataInterface } from '../../../../../src/theme/theme.ts';
 
 	export let data: ThemeDataInterface[] = [];
 
@@ -13,24 +13,24 @@
 	const addedSort = (x: ThemeDataInterface) => x.addedCommit.date;
 	const removedSort = (x: ThemeDataInterface) => (x.removedCommit?.date ? x.removedCommit.date : '');
 
-	let sortByAccessor: (x: ThemeDataInterface) => unknown = nameSort;
+	let sortCriteria: (x: ThemeDataInterface) => string = nameSort;
 
 	let ascending = false;
 
 	let sorted: ThemeDataInterface[] = [...data];
 
-	function sort(accessor: (x: ThemeDataInterface) => unknown): void {
-		if (accessor === sortByAccessor) {
+	function sort(criteria: (x: ThemeDataInterface) => string): void {
+		if (criteria === sortCriteria) {
 			ascending = !ascending;
 		} else {
-			sortByAccessor = accessor;
+			sortCriteria = criteria;
 			ascending = true;
 		}
 
 		const sortModifier = ascending ? 1 : -1;
 		sorted = sorted.sort((a, b) => {
-			const _a = sortByAccessor(a);
-			const _b = sortByAccessor(b);
+			const _a = sortCriteria(a);
+			const _b = sortCriteria(b);
 
 			if (_a < _b) {
 				return -1 * sortModifier;
@@ -43,7 +43,7 @@
 	}
 
 	onMount(() => {
-		sort(sortByAccessor);
+		sort(sortCriteria);
 	});
 </script>
 

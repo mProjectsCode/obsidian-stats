@@ -78,140 +78,136 @@ const limitaionsLabels = Object.keys(licenseLimitations).map(x => licenses.descr
 ---
 
 <StarlightPage
-    frontmatter={{
-        title: 'Plugin Licenses',
-        description: `An overview over the different licenses that plugins use.`
-    }}
-    headings={[
-        { depth: 2, text: 'License Usage', slug: 'license-usage' },
-        { depth: 2, text: 'License Terms', slug: 'license-terms' },
-        { depth: 3, text: 'Permissions', slug: 'permissions' },
-        { depth: 3, text: 'Conditions', slug: 'conditions' },
-        { depth: 3, text: 'Limitations', slug: 'limitations' },
-    ]}
+	frontmatter={{
+		title: 'Plugin Licenses',
+		description: `An overview over the different licenses that plugins use.`,
+	}}
+	headings={[
+		{ depth: 2, text: 'License Usage', slug: 'license-usage' },
+		{ depth: 2, text: 'License Terms', slug: 'license-terms' },
+		{ depth: 3, text: 'Permissions', slug: 'permissions' },
+		{ depth: 3, text: 'Conditions', slug: 'conditions' },
+		{ depth: 3, text: 'Limitations', slug: 'limitations' },
+	]}
 >
+	<p>
+		Licenses are important, they protect the authors work and give you as a user certain guarantees and limitations. It's important to know what you can and
+		can't do with a plugin, such as redistributing it, modifying it, or using it in a commercial context. Another developer might want to continue development
+		of an abandoned plugin, but if he is allowed depends on the license. This page gives you an overview over the different licenses that plugins use.
+	</p>
 
-    <p>
-        Licenses are important, they protect the authors work and give you as a user certain guarantees and limitations. 
-        It's important to know what you can and can't do with a plugin, such as redistributing it, modifying it, or using it in a commercial context.
-        Another developer might want to continue development of an abandoned plugin, but if he is allowed depends on the license.
-        This page gives you an overview over the different licenses that plugins use.
-    </p>
+	<p>
+		Licenses are extracted from <code>LICENSE</code> file in each plugin repository. The license text is then compared to a set of known licenses to determine the
+		license. This process uses similarity matching, so the result may not be accurate.
+	</p>
 
-    <p>
-        Licenses are extracted from <code>LICENSE</code> file in each plugin repository. 
-        The license text is then compared to a set of known licenses to determine the license.
-        This process uses similarity matching, so the result may not be accurate.
-    </p>
+	<h2 id="license-usage">License Usage</h2>
 
-    <h2 id="license-usage">License Usage</h2>
+	<p>The following chart shows the distribution of licenses in the plugins.</p>
 
-    <p>
-        The following chart shows the distribution of licenses in the plugins.
-    </p>
+	<p>
+		<code>not found</code> means that a no license file was found in the repository. Obsidian <a
+			href="https://docs.obsidian.md/Developer+policies#Copyright+and+licensing"
+			target="_blank">requires a license file to be present</a
+		> for new plugins, but this is not enforced retroactively.
+	</p>
 
-    <p>
-        <code>not found</code> means that a no license file was found in the repository. 
-        Obsidian <a href="https://docs.obsidian.md/Developer+policies#Copyright+and+licensing" target="_blank">requires a license file to be present</a> for new plugins, but this is not enforced retroactively.
-    </p>
+	<p>
+		<code>unknown</code> means that a license file was found, but the license could not be identified.
+	</p>
 
-    <p>
-        <code>unknown</code> means that a license file was found, but the license could not be identified.
-    </p>
+	<BarChart
+		dataPoints={licenceChartInfo.map(x => x.value)}
+		labels={licenceChartInfo.map(x => x.label)}
+		logScale={false}
+		seriesName="Number of Plugins with a specific license"
+		calculatePrecentages={true}
+		percent100={totalPluginCount}
+		client:only="svelte"
+	/>
 
-    <BarChart
-        dataPoints={licenceChartInfo.map(x => x.value)}
-        labels={licenceChartInfo.map(x => x.label)}
-        logScale={false}
-        seriesName="Number of Plugins with a specific license"
-        calculatePrecentages={true}
-        percent100={totalPluginCount}
-        client:only="svelte"
-    />
+	<p>Licenses that are used by more than 100 plugins are excluded from the chart below.</p>
 
-    <p>Licenses that are used by more than 100 plugins are excluded from the chart below.</p>
+	<BarChart
+		dataPoints={licenceChartSmallInfo.map(x => x.value)}
+		labels={licenceChartSmallInfo.map(x => x.label)}
+		logScale={false}
+		seriesName="Number of Plugins with a specific license"
+		calculatePrecentages={true}
+		percent100={totalPluginCount}
+		client:only="svelte"
+	/>
 
-    <BarChart
-        dataPoints={licenceChartSmallInfo.map(x => x.value)}
-        labels={licenceChartSmallInfo.map(x => x.label)}
-        logScale={false}
-        seriesName="Number of Plugins with a specific license"
-        calculatePrecentages={true}
-        percent100={totalPluginCount}
-        client:only="svelte"
-    />
+	<h2 id="license-terms">License Terms</h2>
 
-    <h2 id="license-terms">License Terms</h2>
+	<p>The following charts show the distribution of license terms in the plugins. The terms are based on the licenses shown in the charts above.</p>
 
-    <p>The following charts show the distribution of license terms in the plugins. The terms are based on the licenses shown in the charts above.</p>
+	<h3 id="permissions">Permissions</h3>
 
-    <h3 id="permissions">Permissions</h3>
+	<p>A number of plugins give the following permissions.</p>
 
-    <p>A number of plugins give the following permissions.</p>
+	<BarChart
+		dataPoints={Object.values(licensePermissions)}
+		labels={permissionsLabels}
+		aspectRatio={2}
+		logScale={false}
+		seriesName="Number of Plugins that give permission"
+		calculatePrecentages={true}
+		percent100={totalPluginCount}
+		client:only="svelte"
+	/>
 
-    <BarChart
-        dataPoints={Object.values(licensePermissions)}
-        labels={permissionsLabels}
-        aspectRatio={2}
-        logScale={false}
-        seriesName="Number of Plugins that give permission"
-        calculatePrecentages={true}
-        percent100={totalPluginCount}
-        client:only="svelte"
-    />
+	{
+		licenses.descriptions.permissions.map(x => (
+			<p>
+				<strong>{x.label}</strong>: {x.description}
+			</p>
+		))
+	}
 
-    {
-        licenses.descriptions.permissions.map(x => (
-            <p>
-                <strong>{x.label}</strong>: {x.description}
-            </p>
-        ))
-    }
+	<h3 id="conditions">Conditions</h3>
 
-    <h3 id="conditions">Conditions</h3>
+	<p>A number of plugins impose the following conditions.</p>
 
-    <p>A number of plugins impose the following conditions.</p>
+	<BarChart
+		dataPoints={Object.values(licenseConditions)}
+		labels={conditionsLabels}
+		aspectRatio={2}
+		logScale={false}
+		seriesName="Number of Plugins that impose the condition"
+		calculatePrecentages={true}
+		percent100={totalPluginCount}
+		client:only="svelte"
+	/>
 
-    <BarChart
-        dataPoints={Object.values(licenseConditions)}
-        labels={conditionsLabels}
-        aspectRatio={2}
-        logScale={false}
-        seriesName="Number of Plugins that impose the condition"
-        calculatePrecentages={true}
-        percent100={totalPluginCount}
-        client:only="svelte"
-    />
+	{
+		licenses.descriptions.conditions.map(x => (
+			<p>
+				<strong>{x.label}</strong>: {x.description}
+			</p>
+		))
+	}
 
-    {
-        licenses.descriptions.conditions.map(x => (
-            <p>
-                <strong>{x.label}</strong>: {x.description}
-            </p>
-        ))
-    }
+	<h3 id="limitations">Limitations</h3>
 
-    <h3 id="limitations">Limitations</h3>
+	<p>A number of plugins impose the following limitations.</p>
 
-    <p>A number of plugins impose the following limitations.</p>
+	<BarChart
+		dataPoints={Object.values(licenseLimitations)}
+		labels={limitaionsLabels}
+		aspectRatio={2}
+		logScale={false}
+		seriesName="Number of Plugins that impose the limitation"
+		calculatePrecentages={true}
+		percent100={totalPluginCount}
+		client:only="svelte"
+	/>
 
-    <BarChart
-        dataPoints={Object.values(licenseLimitations)}
-        labels={limitaionsLabels}
-        aspectRatio={2}
-        logScale={false}
-        seriesName="Number of Plugins that impose the limitation"
-        calculatePrecentages={true}
-        percent100={totalPluginCount}
-        client:only="svelte"
-    />
-
-    {
-        licenses.descriptions.limitations.map(x => (
-            <p>
-                <strong>{x.label}</strong>: {x.description}
-            </p>
-        ))
-    }
-
+	{
+		licenses.descriptions.limitations.map(x => (
+			<p>
+				<strong>{x.label}</strong>: {x.description}
+			</p>
+		))
+	}
 </StarlightPage>

@@ -2,7 +2,7 @@
 import GithubLink from './githubLink.astro';
 import Commit from './commit.astro';
 import Aside from './aside.astro';
-import { ThemeDataInterface } from '../../../src/theme/theme';
+import type { ThemeDataInterface } from '../../../src/theme/theme';
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
 
 const { theme } = Astro.props as { theme: ThemeDataInterface };

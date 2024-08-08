@@ -5,22 +5,19 @@ import { getPluginData } from '../../../../src/utils';
 ---
 
 <StarlightPage
-    frontmatter={{
-        title: 'Plugin Overview',
-        description: `Overview of all Obsidian plugins.`,
-        head: [
-            {
-                tag: 'style',
-                content: ':root { --sl-content-width: 90rem !important; }',
-            }
-        ],
-        tableOfContents: false
-    }}
+	frontmatter={{
+		title: 'Plugin Overview',
+		description: `Overview of all Obsidian plugins.`,
+		head: [
+			{
+				tag: 'style',
+				content: ':root { --sl-content-width: 90rem !important; }',
+			},
+		],
+		tableOfContents: false,
+	}}
 >
-    <p>
-        This table shows all plugins ever available on the community plugin page.
-        You can sort the table by clicking on the column headers.
-    </p>
+	<p>This table shows all plugins ever available on the community plugin page. You can sort the table by clicking on the column headers.</p>
 
-    <PluginsIndex data={getPluginData()} client:only="svelte" />
+	<PluginsIndex data={getPluginData()} client:only="svelte" />
 </StarlightPage>

@@ -48,12 +48,12 @@ const warningPercentByReleaseMonth = Object.entries(pluginDataGroupedByReleaseMo
 		let total = plugins.length;
 		let warningCounts: Record<PluginWarning['id'], number> = {
 			'inactivity-12-months': 0,
-			"inactivity-24-months": 0,
-			'removed': 0,
-			"mismatched-license": 0,
-			"no-license": 0,
-			'unlicensed': 0,	
-			"mismatched-manifest-data": 0,	
+			'inactivity-24-months': 0,
+			removed: 0,
+			'mismatched-license': 0,
+			'no-license': 0,
+			unlicensed: 0,
+			'mismatched-manifest-data': 0,
 		};
 
 		for (const plugin of plugins) {
@@ -67,7 +67,7 @@ const warningPercentByReleaseMonth = Object.entries(pluginDataGroupedByReleaseMo
 		const warningPercent: Record<PluginWarning['id'], number> = Object.fromEntries(
 			Object.entries(warningCounts).map(([key, value]) => {
 				return [key, value / total];
-			})
+			}),
 		) as Record<PluginWarning['id'], number>;
 
 		return {
@@ -77,4 +77,3 @@ const warningPercentByReleaseMonth = Object.entries(pluginDataGroupedByReleaseMo
 	})
 	.sort((a, b) => a.month.localeCompare(b.month));
 ---
-

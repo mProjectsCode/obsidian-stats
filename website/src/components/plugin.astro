@@ -25,7 +25,7 @@ const external_links: { text: string; href: string }[] = [
 	repoData?.repo?.manifest?.helpUrl ? { text: 'Plugin Docs', href: repoData.repo.manifest.helpUrl } : (undefined as unknown as { text: string; href: string }),
 	{ text: 'GitHub Repo', href: `https://github.com/${plugin.currentEntry.repo}` },
 	{ text: 'View in Obsidian', href: obsidianLink },
-	{ text: 'View on ObsidianAddict', href: obsidianAddictLink },
+	// { text: 'View on ObsidianAddict', href: obsidianAddictLink },
 	{ text: 'View on the Obsidian Hub', href: obsidianHubLink },
 ].filter(Boolean);
 ---

@@ -1,7 +1,15 @@
 ---
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
 import { getPluginData } from '../../../../src/utils';
-import { getPluginAddedRecentList, getPluginCountAddedMonthly, getPluginCountMonthly, getPluginCountRemovedMonthly, getPluginCountWoRetiredMonthly, getPluginPercentageRemovedByReleaseMonth, getPluginRemovedRecentList } from '../../../../src/plugin/data';
+import {
+	getPluginAddedRecentList,
+	getPluginCountAddedMonthly,
+	getPluginCountMonthly,
+	getPluginCountRemovedMonthly,
+	getPluginCountWoRetiredMonthly,
+	getPluginPercentageRemovedByReleaseMonth,
+	getPluginRemovedRecentList,
+} from '../../../../src/plugin/data';
 import DataPerMonthChart from '../../components/svelte/genericCharts/dataPerMonthChart.svelte';
 import PluginLink from '../../components/pluginLink.astro';
 import Commit from '../../components/commit.astro';
@@ -26,123 +34,110 @@ const warningsByReleaseMonth = await getPluginWarningPercentByReleaseMonth(plugi
 ---
 
 <StarlightPage
-    frontmatter={{
-        title: 'Community Plugin List',
-        description: `Changes in the plugins on the community plugin list.`
-    }}
-    headings={[
-        { depth: 2, text: 'Plugin Count', slug: 'plugin-count' },
-        { depth: 2, text: 'New Plugins', slug: 'new-plugins' },
-        { depth: 2, text: 'Removed Plugins', slug: 'removed-plugins' },
-        { depth: 2, text: 'Mismatched Data', slug: 'mismatched-data' },
-    ]}
+	frontmatter={{
+		title: 'Community Plugin List',
+		description: `Changes in the plugins on the community plugin list.`,
+	}}
+	headings={[
+		{ depth: 2, text: 'Plugin Count', slug: 'plugin-count' },
+		{ depth: 2, text: 'New Plugins', slug: 'new-plugins' },
+		{ depth: 2, text: 'Removed Plugins', slug: 'removed-plugins' },
+		{ depth: 2, text: 'Mismatched Data', slug: 'mismatched-data' },
+	]}
 >
+	<p>
+		The community plugin list is the list of community plugins which are directly downloadable from within Obsidian. This page tracks the number of total
+		plugins on the list, as well as changes to the list over time.
+	</p>
 
-    <p>
-        The community plugin list is the list of community plugins which are directly downloadable from within Obsidian.
-        This page tracks the number of total plugins on the list, as well as changes to the list over time.
-    </p>
+	<h2 id="plugin-count">Plugin Count</h2>
 
-    <h2 id="plugin-count">Plugin Count</h2>
+	<DataPerMonthChart dataPoints={pluginCountMonthly} title="Total Plugin Count" type="line" client:only="svelte" />
 
-    <DataPerMonthChart dataPoints={pluginCountMonthly} title="Total Plugin Count" type="line" client:only="svelte" />
+	<DataPerMonthChart dataPoints={pluginCountWoRetiredMonthly} title="Total Plugin Count without Retired Plugins" type="line" client:only="svelte" />
 
-    <DataPerMonthChart dataPoints={pluginCountWoRetiredMonthly} title="Total Plugin Count without Retired Plugins" type="line" client:only="svelte" />
+	<h2 id="new-plugins">New Plugins</h2>
 
-    <h2 id="new-plugins">New Plugins</h2>
+	<p>This shows how many new plugins have been added to the community plugin list each month.</p>
 
-    <p>
-        This shows how many new plugins have been added to the community plugin list each month.
-    </p>
+	<DataPerMonthChart dataPoints={pluginCountAddedMonthly} title="New Plugins per Month" client:only="svelte" />
 
-    <DataPerMonthChart dataPoints={pluginCountAddedMonthly} title="New Plugins per Month" client:only="svelte" />
+	<p>This is a list of the most recently added plugins.</p>
 
-    <p>
-        This is a list of the most recently added plugins.
-    </p>
+	<table>
+		<thead>
+			<tr>
+				<th>Plugin</th>
+				<th>Release Date</th>
+			</tr>
+		</thead>
+		<tbody>
+			{
+				pluginAddedRecentList.map(x => (
+					<tr>
+						<td>
+							<PluginLink id={x.id} />
+						</td>
+						<td>
+							<Commit commit={x.addedCommit} />
+						</td>
+					</tr>
+				))
+			}
+		</tbody>
+	</table>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Plugin</th>
-                <th>Release Date</th>
-            </tr>
-        </thead>
-        <tbody>
-            {
-                pluginAddedRecentList.map(x => (
-                    <tr>
-                        <td>
-                            <PluginLink id={x.id} />
-                        </td>
-                        <td>
-                            <Commit commit={x.addedCommit} />
-                        </td>
-                    </tr>
-                ))
-            }
-        </tbody>
-    </table>
+	<h2 id="removed-plugins">Removed Plugins</h2>
 
-    <h2 id="removed-plugins">Removed Plugins</h2>
+	<p>This shows how many plugins have been removed from the community plugin list each month.</p>
 
-    <p>
-        This shows how many plugins have been removed from the community plugin list each month.
-    </p>
+	<DataPerMonthChart dataPoints={pluginCountRemovedMonthly} title="Total Retired Plugin Count" type="line" client:only="svelte" />
 
-    <DataPerMonthChart dataPoints={pluginCountRemovedMonthly} title="Total Retired Plugin Count" type="line" client:only="svelte" />
+	<p>This shows what percentage of plugins, sorted by their release month, have been removed from the community plugin list.</p>
 
-    <p>
-        This shows what percentage of plugins, sorted by their release month, have been removed from the community plugin list.
-    </p>    
+	<DataPerMonthChart dataPoints={pluginPercentageRemovedByReleaseMonth} max={100} title="Percentage of Retired Plugins by Release Month" client:only="svelte" />
 
-    <DataPerMonthChart dataPoints={pluginPercentageRemovedByReleaseMonth} max={100} title="Percentage of Retired Plugins by Release Month" client:only="svelte" />
+	<p>This is a list of the most recently removed plugins.</p>
 
-    <p>
-        This is a list of the most recently removed plugins.
-    </p>
+	<table>
+		<thead>
+			<tr>
+				<th>Plugin</th>
+				<th>Removed Date</th>
+			</tr>
+		</thead>
+		<tbody>
+			{
+				pluginRemovedRecentList.map(x => (
+					<tr>
+						<td>
+							<PluginLink id={x.id} />
+						</td>
+						<td>
+							<Commit commit={x.removedCommit} />
+						</td>
+					</tr>
+				))
+			}
+		</tbody>
+	</table>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Plugin</th>
-                <th>Removed Date</th>
-            </tr>
-        </thead>
-        <tbody>
-            {
-                pluginRemovedRecentList.map(x => (
-                    <tr>
-                        <td>
-                            <PluginLink id={x.id} />
-                        </td>
-                        <td>
-                            <Commit commit={x.removedCommit} />
-                        </td>
-                    </tr>
-                ))
-            }
-        </tbody>
-    </table>
+	<h2 id="mismatched-data">Mismatched Data</h2>
 
-    <h2 id="mismatched-data">Mismatched Data</h2>
+	<p>
+		Mismatched manifest and community listing data by release month. It seems that <strong>a lot</strong> of plugins have mismatched manifest and community listing
+		data. It seems like forgetting to update the other when updating one is a common mistake.
+	</p>
 
-    <p>
-        Mismatched manifest and community listing data by release month.
-        It seems that <strong>a lot</strong> of plugins have mismatched manifest and community listing data. 
-        It seems like forgetting to update the other when updating one is a common mistake.
-    </p>
-    
-    <div>
-        <BarChart
-            dataPoints={warningsByReleaseMonth.map(x => x.warningPercent['mismatched-manifest-data'])}
-            labels={warningsByReleaseMonth.map(x => x.month)}
-            logScale={false}
-            calculatePrecentages={true}
-            seriesName="missmatched data"
-            showXLabels={true}
-            client:only="svelte"
-        />
-    </div>
-
+	<div>
+		<BarChart
+			dataPoints={warningsByReleaseMonth.map(x => x.warningPercent['mismatched-manifest-data'])}
+			labels={warningsByReleaseMonth.map(x => x.month)}
+			logScale={false}
+			calculatePrecentages={true}
+			seriesName="missmatched data"
+			showXLabels={true}
+			client:only="svelte"
+		/>
+	</div>
 </StarlightPage>

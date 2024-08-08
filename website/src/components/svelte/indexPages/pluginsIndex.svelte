@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { PluginDataInterface } from '../../../../../src/plugin/data.ts';
+	import type { PluginDataInterface } from '../../../../../src/plugin/plugin.ts';
 	import PluginLink from '../helpers/pluginLink.svelte';
 	import GithubLink from '../helpers/githubLink.svelte';
 	import Commit from '../helpers/commit.svelte';
@@ -14,24 +14,24 @@
 	const addedSort = (x: PluginDataInterface) => x.addedCommit.date;
 	const removedSort = (x: PluginDataInterface) => (x.removedCommit?.date ? x.removedCommit.date : '');
 
-	let sortByAccessor: (x: PluginDataInterface) => unknown = idSort;
+	let sortCriteria: (x: PluginDataInterface) => string = idSort;
 
 	let ascending = false;
 
 	let sorted: PluginDataInterface[] = [...data];
 
-	function sort(accessor: (x: PluginDataInterface) => unknown): void {
-		if (accessor === sortByAccessor) {
+	function sort(criteria: (x: PluginDataInterface) => string): void {
+		if (criteria === sortCriteria) {
 			ascending = !ascending;
 		} else {
-			sortByAccessor = accessor;
+			sortCriteria = criteria;
 			ascending = true;
 		}
 
 		const sortModifier = ascending ? 1 : -1;
 		sorted = sorted.sort((a, b) => {
-			const _a = sortByAccessor(a);
-			const _b = sortByAccessor(b);
+			const _a = sortCriteria(a);
+			const _b = sortCriteria(b);
 
 			if (_a < _b) {
 				return -1 * sortModifier;
@@ -44,7 +44,7 @@
 	}
 
 	onMount(() => {
-		sort(sortByAccessor);
+		sort(sortCriteria);
 	});
 </script>
 

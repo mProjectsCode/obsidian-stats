@@ -30,7 +30,7 @@ export async function getPluginWarningPercentByReleaseMonth(plugins: PluginDataI
 		const date = CDate.fromString(x.addedCommit.date);
 		return date.toMonthString();
 	});
-	
+
 	const repoData = await getRepoData();
 	const repoDataMap = new Map(repoData.map(x => [x.id, x]));
 
@@ -39,12 +39,12 @@ export async function getPluginWarningPercentByReleaseMonth(plugins: PluginDataI
 			let total = plugins.length;
 			let warningCounts: Record<PluginWarning['id'], number> = {
 				'inactivity-12-months': 0,
-				"inactivity-24-months": 0,
-				'removed': 0,
-				"mismatched-license": 0,
-				"no-license": 0,
-				'unlicensed': 0,	
-				"mismatched-manifest-data": 0,	
+				'inactivity-24-months': 0,
+				removed: 0,
+				'mismatched-license': 0,
+				'no-license': 0,
+				unlicensed: 0,
+				'mismatched-manifest-data': 0,
 			};
 
 			for (const plugin of plugins) {
@@ -58,7 +58,7 @@ export async function getPluginWarningPercentByReleaseMonth(plugins: PluginDataI
 			const warningPercent: Record<PluginWarning['id'], number> = Object.fromEntries(
 				Object.entries(warningCounts).map(([key, value]) => {
 					return [key, value / total];
-				})
+				}),
 			) as Record<PluginWarning['id'], number>;
 
 			return {

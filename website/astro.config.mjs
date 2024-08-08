@@ -54,8 +54,8 @@ export default defineConfig({
 						{
 							label: 'Licenses',
 							link: '/pluginstats/licenses',
-						}
-					]
+						},
+					],
 				},
 				{
 					label: 'Theme Stats',
