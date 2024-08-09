@@ -32,3 +32,60 @@ a.right-sidebar-link {
 		display: none;
 	}
 }
+
+/* remove extra colors */
+:root,
+:root[data-theme='light'] {
+	--sl-color-bg-nav: var(--sl-color-bg);
+	--sl-color-bg-sidebar: var(--sl-color-bg);
+
+	/* rounded code blocks */
+	--ec-brdRad: 0.5rem !important;
+	--ec-brdWd: 0px !important;
+}
+
+/* Nice scroll bars */
+* {
+	scrollbar-color: var(--sl-color-gray-6) var(--sl-color-bg);
+	scrollbar-width: thin;
+}
+
+.expressive-code pre {
+	scrollbar-color: var(--sl-color-gray-5) var(--sl-color-gray-6) !important;
+	scrollbar-width: thin !important;
+}
+
+/* Sidebar active page */
+[aria-current='page'],
+[aria-current='page']:hover,
+[aria-current='page']:focus {
+	color: var(--sl-color-text-accent);
+	background-color: var(--sl-color-gray-6);
+}
+
+/* Remove some borders */
+.right-sidebar {
+	border: none;
+}
+
+.content-panel + .content-panel {
+	border: none;
+}
+
+.sidebar-pane {
+	border: none;
+}
+
+.header {
+	border: none;
+}
+
+summary#starlight__on-this-page--mobile {
+	border: none;
+}
+
+/* rounded asides */
+aside.starlight-aside {
+	border: none;
+	border-radius: 0.5rem;
+}

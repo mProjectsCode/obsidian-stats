@@ -28,7 +28,7 @@ export interface PluginManifest {
 	name: string;
 	version: string;
 	authorUrl?: string;
-	fundingUrl?: string;
+	fundingUrl?: string | Record<string, string>;
 
 	description: string;
 	id: string;
