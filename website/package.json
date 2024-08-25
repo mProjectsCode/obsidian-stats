@@ -16,13 +16,13 @@
 		"@astrojs/svelte": "^5.7.0",
 		"@types/regression": "^2.0.6",
 		"astro": "4.14.2",
-		"chart.js": "^4.4.3",
+		"chart.js": "^4.4.4",
 		"chartjs-plugin-annotation": "^3.0.1",
 		"chartjs-plugin-datalabels": "^2.2.0",
 		"ml-regression-simple-linear": "3.0.1",
 		"regression": "^2.0.1",
 		"sharp": "^0.33.5",
-		"svelte": "^4.2.18",
+		"svelte": "^4.2.19",
 		"typescript": "^5.5.4",
 		"zod": "^3.23.8"
 	}
