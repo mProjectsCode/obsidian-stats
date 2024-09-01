@@ -4051,7 +4051,7 @@
 			"name": "Shimmering Focus",
 			"author": "pseudometa",
 			"repo": "chrisgrieser/shimmering-focus",
-			"screenshot": "assets/promo-screenshot.png",
+			"screenshot": "assets/promo-screenshot.webp",
 			"modes": [
 				"dark",
 				"light"
@@ -4108,6 +4108,15 @@
 					"hash": "8948f4031ba450d7e6a0ec7b1e5daadc27c2119e"
 				},
 				"oldValue": true
+			},
+			{
+				"property": "screenshot",
+				"commit": {
+					"date": "2024-08-16",
+					"hash": "8cec1be0942758c49a24286f6bd9581d3dc47a47"
+				},
+				"oldValue": "assets/promo-screenshot.png",
+				"newValue": "assets/promo-screenshot.webp"
 			}
 		]
 	},
@@ -15458,6 +15467,45 @@
 				"commit": {
 					"date": "2024-08-03",
 					"hash": "1fef9c7b74ef186d9642fd4bdc83485083008e15"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "kiwi-mono",
+		"name": "Kiwi Mono",
+		"addedCommit": {
+			"date": "2024-08-25",
+			"hash": "e32cc87a08a2ff0f7008da3085a7e0e62004d6fe"
+		},
+		"initialEntry": {
+			"name": "Kiwi Mono",
+			"author": "c-sooyoung",
+			"repo": "c-sooyoung/kiwi-mono-obsidian-theme",
+			"screenshot": "thumbnail.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Kiwi Mono",
+			"author": "c-sooyoung",
+			"repo": "c-sooyoung/kiwi-mono-obsidian-theme",
+			"screenshot": "thumbnail.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-08-25",
+					"hash": "e32cc87a08a2ff0f7008da3085a7e0e62004d6fe"
 				},
 				"oldValue": "",
 				"newValue": ""
