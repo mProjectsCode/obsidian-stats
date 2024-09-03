@@ -15511,5 +15511,161 @@
 				"newValue": ""
 			}
 		]
+	},
+	{
+		"id": "lumines",
+		"name": "Lumines",
+		"addedCommit": {
+			"date": "2024-08-18",
+			"hash": "df2b71af7ca356b860882f9877682cc9d2475b8b"
+		},
+		"initialEntry": {
+			"name": "Lumines",
+			"author": "Avesend",
+			"repo": "Avesend/obsidian-lumines",
+			"screenshot": "obsidian-lumines.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Lumines",
+			"author": "Avesend",
+			"repo": "Avesend/obsidian-lumines",
+			"screenshot": "obsidian-lumines.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-08-18",
+					"hash": "df2b71af7ca356b860882f9877682cc9d2475b8b"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "colored-candy",
+		"name": "Colored Candy",
+		"addedCommit": {
+			"date": "2024-08-28",
+			"hash": "5b1fbbf3193a3d858ac72d8742f60fba701eab4b"
+		},
+		"initialEntry": {
+			"name": "Colored Candy",
+			"author": "Erika Gozar",
+			"repo": "Erallie/colored-candy",
+			"screenshot": "colored-candy-thumbnail.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Colored Candy",
+			"author": "Erika Gozar",
+			"repo": "Erallie/colored-candy",
+			"screenshot": "colored-candy-thumbnail.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-08-28",
+					"hash": "5b1fbbf3193a3d858ac72d8742f60fba701eab4b"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "adrenaline",
+		"name": "Adrenaline",
+		"addedCommit": {
+			"date": "2024-08-31",
+			"hash": "8ef0d8e7ce9bccc2fe299fa9567ca352ef419d8b"
+		},
+		"initialEntry": {
+			"name": "Adrenaline",
+			"author": "Spekulucius",
+			"repo": "Spekulucius/obsidian-adrenaline",
+			"screenshot": "adrenaline_thumbnail.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Adrenaline",
+			"author": "Spekulucius",
+			"repo": "Spekulucius/obsidian-adrenaline",
+			"screenshot": "adrenaline_thumbnail.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-08-31",
+					"hash": "8ef0d8e7ce9bccc2fe299fa9567ca352ef419d8b"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "oistnb",
+		"name": "OISTNB",
+		"addedCommit": {
+			"date": "2024-09-01",
+			"hash": "744cac964c310b90b0b083e5f65c7dc2d25861f1"
+		},
+		"initialEntry": {
+			"name": "OISTNB",
+			"author": "omsandeeppatil",
+			"repo": "omsandippatil/OISTNB",
+			"screenshot": "OISTNB.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "OISTNB",
+			"author": "omsandeeppatil",
+			"repo": "omsandippatil/OISTNB",
+			"screenshot": "OISTNB.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-09-01",
+					"hash": "744cac964c310b90b0b083e5f65c7dc2d25861f1"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
 	}
 ]
