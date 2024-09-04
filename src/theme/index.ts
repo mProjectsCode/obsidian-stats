@@ -2,8 +2,7 @@ import { $, Verboseness } from '../shellUtils.ts';
 import { Commit } from '../types.ts';
 import { ThemeData, ThemeList } from './theme.ts';
 import CliProgress from 'cli-progress';
-
-import { encodeName, gitLogToCommits } from '../utils.ts';
+import { gitLogToCommits } from '../utils.ts';
 
 import { THEME_LIST_PATH, THEME_DATA_PATH, OBSIDIAN_RELEASES_FULL_PATH } from '../constants.ts';
 

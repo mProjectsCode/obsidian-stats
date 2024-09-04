@@ -1,21 +1,13 @@
 import { Commit, EntryChange } from '../types.ts';
 import slug from 'slug';
 import { uniqueConcat } from '../utils.ts';
-
-export interface ThemeListEntry {
-	name: string;
-	author: string;
-	repo: string;
-	screenshot: string;
-	modes: ['dark'] | ['light'] | ['dark', 'light'] | ['light', 'dark'];
-	legacy?: boolean;
-}
+import type { ORR_CommunityTheme } from '../types.ts';
 
 export class ThemeList {
-	entries: ThemeListEntry[];
+	entries: ORR_CommunityTheme[];
 	commit: Commit;
 
-	constructor(entries: ThemeListEntry[], commit: Commit) {
+	constructor(entries: ORR_CommunityTheme[], commit: Commit) {
 		this.entries = entries;
 		this.commit = commit;
 	}
@@ -26,8 +18,8 @@ export interface ThemeDataInterface {
 	name: string;
 	addedCommit: Commit;
 	removedCommit?: Commit;
-	initialEntry: ThemeListEntry;
-	currentEntry: ThemeListEntry;
+	initialEntry: ORR_CommunityTheme;
+	currentEntry: ORR_CommunityTheme;
 	changeHistory: EntryChange[];
 }
 
@@ -50,11 +42,11 @@ export class ThemeData {
 	name: string;
 	addedCommit: Commit;
 	removedCommit?: Commit;
-	initialEntry: ThemeListEntry;
-	currentEntry: ThemeListEntry;
+	initialEntry: ORR_CommunityTheme;
+	currentEntry: ORR_CommunityTheme;
 	changeHistory: EntryChange[];
 
-	constructor(name: string, addedCommit: Commit, initialEntry: ThemeListEntry) {
+	constructor(name: string, addedCommit: Commit, initialEntry: ORR_CommunityTheme) {
 		this.name = name;
 		this.id = themeNameToId(name);
 		this.addedCommit = addedCommit;

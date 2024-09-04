@@ -1,1 +1,1 @@
-{"id":"fantasy-calendar","warnings":[{"severity":"danger","id":"removed","commit":{"date":"2023-12-29","hash":"78068ae1e12fa15825d5745ddf9cd1a7607d006f"}}]}
+{"id":"fantasy-calendar","warnings":[{"severity":"danger","id":"removed","commit":{"date":"2023-12-29","hash":"78068ae1e12fa15825d5745ddf9cd1a7607d006f"}}],"removalReason":"Replaced by Calendarium plugin","deprecatedVersions":[]}

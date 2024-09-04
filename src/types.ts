@@ -37,3 +37,29 @@ export interface DownloadReleaseCorrelationDataPoint {
 	initialReleaseDate: number;
 	initialReleaseDateString: string;
 }
+
+export interface ORR_CommunityPluginRemoved {
+	id: string;
+	name: string;
+	reason: string;
+}
+
+export interface ORR_CommunityPlugin {
+	id: string;
+	name: string;
+	author: string;
+	description: string;
+	repo: string;
+}
+
+export interface ORR_CommunityTheme {
+	name: string;
+	author: string;
+	repo: string;
+	screenshot: string;
+	modes: ['dark'] | ['light'] | ['dark', 'light'] | ['light', 'dark'];
+	legacy?: boolean;
+}
+
+// record of plugin id to list of deprecated versions
+export type ORR_CommunityPluginDeprecations = Record<string, string[]>;

@@ -1,1 +1,1 @@
-{"id":"obsidian-extra-md-commands","warnings":[{"severity":"danger","id":"removed","commit":{"date":"2022-03-14","hash":"9051fa2d65b02f98ba9368098db2d996aef0cff7"}}]}
+{"id":"obsidian-extra-md-commands","warnings":[{"severity":"danger","id":"removed","commit":{"date":"2022-03-14","hash":"9051fa2d65b02f98ba9368098db2d996aef0cff7"}}],"removalReason":"Features now available in the Smarter Markdown Hotkeys and Wrap with Shortcuts plugins","deprecatedVersions":[]}

@@ -4,6 +4,8 @@ export interface PluginRepoData {
 	id: string;
 	repo: PluginRepoExtractedData | undefined;
 	warnings: PluginWarning[];
+	removalReason: string | undefined;
+	deprecatedVersions: string[];
 }
 
 export interface PluginRepoExtractedData {

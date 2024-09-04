@@ -1,20 +1,13 @@
 import { Commit, DownloadHistory, EntryChange, VersionHistory } from '../types.ts';
 import { uniqueConcat } from '../utils.ts';
 import { Version } from '../version.ts';
-
-export interface PluginListEntry {
-	id: string;
-	name: string;
-	author: string;
-	description: string;
-	repo: string;
-}
+import type { ORR_CommunityPlugin } from '../types.ts';
 
 export class PluginList {
-	entries: PluginListEntry[];
+	entries: ORR_CommunityPlugin[];
 	commit: Commit;
 
-	constructor(entries: PluginListEntry[], commit: Commit) {
+	constructor(entries: ORR_CommunityPlugin[], commit: Commit) {
 		this.entries = entries;
 		this.commit = commit;
 	}
@@ -28,8 +21,8 @@ export interface PluginDataInterface {
 	id: string;
 	addedCommit: Commit;
 	removedCommit?: Commit;
-	initialEntry: PluginListEntry;
-	currentEntry: PluginListEntry;
+	initialEntry: ORR_CommunityPlugin;
+	currentEntry: ORR_CommunityPlugin;
 	changeHistory: EntryChange[];
 	downloadHistory: DownloadHistory;
 	versionHistory: VersionHistory[];
@@ -53,14 +46,14 @@ export class PluginData {
 	id: string;
 	addedCommit: Commit;
 	removedCommit?: Commit;
-	initialEntry: PluginListEntry;
-	currentEntry: PluginListEntry;
+	initialEntry: ORR_CommunityPlugin;
+	currentEntry: ORR_CommunityPlugin;
 	changeHistory: EntryChange[];
 	downloadHistory: DownloadHistory;
 	versionHistory: VersionHistory[];
 	#versionHistoryMap: Map<string, VersionHistory>;
 
-	constructor(id: string, addedCommit: Commit, initialEntry: PluginListEntry) {
+	constructor(id: string, addedCommit: Commit, initialEntry: ORR_CommunityPlugin) {
 		this.id = id;
 		this.addedCommit = addedCommit;
 		this.initialEntry = initialEntry;

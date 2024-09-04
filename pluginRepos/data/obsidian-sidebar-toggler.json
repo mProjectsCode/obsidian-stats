@@ -1,1 +1,1 @@
-{"id":"obsidian-sidebar-toggler","warnings":[{"severity":"danger","id":"removed","commit":{"date":"2023-02-21","hash":"b8fa3325385b50ac7e10197ed87398c7b1364e95"}}]}
+{"id":"obsidian-sidebar-toggler","warnings":[{"severity":"danger","id":"removed","commit":{"date":"2023-02-21","hash":"b8fa3325385b50ac7e10197ed87398c7b1364e95"}}],"removalReason":"Features can be achieved with the Advanced URI plugin","deprecatedVersions":[]}

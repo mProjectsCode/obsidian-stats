@@ -6,6 +6,7 @@ import { PluginManifest, PluginRepoData, PluginRepoExtractedData } from './types
 import CliProgress from 'cli-progress';
 import { warnings } from './warnings.ts';
 import { LicenseComparer } from '../license/licenseCompare.ts';
+import { ORR_CommunityPluginDeprecations, ORR_CommunityPluginRemoved } from '../types.ts';
 
 export async function clonePluginRepos() {
 	const pluginData = getPluginData_dataCollection();
@@ -188,6 +189,9 @@ async function tryReadLicense(repoPath: string): Promise<string | undefined> {
 export async function collectRepoData() {
 	await fs.rm('pluginRepos/data', { recursive: true, force: true });
 
+	const pluginRemovedList = (await Bun.file('obsidian-releases/community-plugins-removed.json').json()) as ORR_CommunityPluginRemoved[];
+	const pluginDeprecations = (await Bun.file('obsidian-releases/community-plugin-deprecation.json').json()) as ORR_CommunityPluginDeprecations;
+
 	const pluginData = getPluginData_dataCollection();
 
 	const licenseComparer = new LicenseComparer();
@@ -198,7 +202,18 @@ export async function collectRepoData() {
 			id: plugin.id,
 			repo: undefined,
 			warnings: [],
+			removalReason: undefined,
+			deprecatedVersions: [],
 		};
+
+		const removedListEntry = pluginRemovedList.find(x => x.id === plugin.id);
+		if (removedListEntry) {
+			data.removalReason = removedListEntry.reason;
+		}
+
+		if (pluginDeprecations[plugin.id]) {
+			data.deprecatedVersions = pluginDeprecations[plugin.id];
+		}
 
 		if (!plugin.removedCommit) {
 			data.repo = await extractFromRepo(plugin, licenseComparer);
