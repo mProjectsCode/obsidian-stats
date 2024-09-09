@@ -15667,5 +15667,51 @@
 				"newValue": ""
 			}
 		]
+	},
+	{
+		"id": "black",
+		"name": "Black",
+		"addedCommit": {
+			"date": "2024-09-09",
+			"hash": "2a87c62218f17a42760d727e6c70632bc8504ba9"
+		},
+		"initialEntry": {
+			"name": "Black",
+			"author": "Simon Ostini (behem0th)",
+			"repo": "b3h3m0th/obsidian-black-theme",
+			"screenshot": "screenshot_512x275.png",
+			"modes": [
+				"dark"
+			]
+		},
+		"currentEntry": {
+			"name": "Black",
+			"author": "Simon Ostini (behem0th)",
+			"repo": "b3h3m0th/black-obsidian-theme",
+			"screenshot": "screenshot_512x275.png",
+			"modes": [
+				"dark"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-09-09",
+					"hash": "2a87c62218f17a42760d727e6c70632bc8504ba9"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "repo",
+				"commit": {
+					"date": "2024-09-09",
+					"hash": "6976556e8c14c527443e2c880af9c2109424f53f"
+				},
+				"oldValue": "b3h3m0th/obsidian-black-theme",
+				"newValue": "b3h3m0th/black-obsidian-theme"
+			}
+		]
 	}
 ]
