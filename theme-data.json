@@ -6200,6 +6200,10 @@
 			"date": "2022-01-27",
 			"hash": "ce30a96bc0b2119f29bf8fb60e30c26bfbe841a4"
 		},
+		"removedCommit": {
+			"date": "2024-09-13",
+			"hash": "85b4e9eeebb9561a655bb7a05ed1365127104f88"
+		},
 		"initialEntry": {
 			"name": "Vintage Theme",
 			"author": "natelandau",
@@ -6247,6 +6251,15 @@
 					"hash": "177f1d940bd94b7ba7eb65a96670465638be7782"
 				},
 				"newValue": true
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2024-09-13",
+					"hash": "85b4e9eeebb9561a655bb7a05ed1365127104f88"
+				},
+				"oldValue": "",
+				"newValue": ""
 			}
 		]
 	},
@@ -6570,6 +6583,10 @@
 			"date": "2022-03-21",
 			"hash": "2e212258069bd0e8da1311ee113b686ed9afb318"
 		},
+		"removedCommit": {
+			"date": "2024-09-13",
+			"hash": "85b4e9eeebb9561a655bb7a05ed1365127104f88"
+		},
 		"initialEntry": {
 			"name": "Aqua",
 			"author": "sahilpatel09",
@@ -6606,6 +6623,15 @@
 					"hash": "177f1d940bd94b7ba7eb65a96670465638be7782"
 				},
 				"oldValue": "main"
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2024-09-13",
+					"hash": "85b4e9eeebb9561a655bb7a05ed1365127104f88"
+				},
+				"oldValue": "",
+				"newValue": ""
 			}
 		]
 	},
@@ -13736,7 +13762,7 @@
 		"currentEntry": {
 			"name": "Rift",
 			"author": "Noah Boos",
-			"repo": "noahboos/Rift",
+			"repo": "NoahBoos/Obsidian-Theme-Rift",
 			"screenshot": "showcase-temporaire.png",
 			"modes": [
 				"dark"
@@ -13751,6 +13777,15 @@
 				},
 				"oldValue": "",
 				"newValue": ""
+			},
+			{
+				"property": "repo",
+				"commit": {
+					"date": "2024-09-01",
+					"hash": "6eed9d2e1fc88dae18e6f73d322601ca297866fd"
+				},
+				"oldValue": "noahboos/Rift",
+				"newValue": "NoahBoos/Obsidian-Theme-Rift"
 			}
 		]
 	},
