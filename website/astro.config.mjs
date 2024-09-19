@@ -62,9 +62,16 @@ export default defineConfig({
 				},
 				{
 					label: 'Theme Stats',
-					autogenerate: {
-						directory: 'themeStats',
-					},
+					items: [
+						{
+							label: 'Overview',
+							link: '/themestats',
+						},
+						{
+							label: 'Community Theme List',
+							link: '/themestats/community-theme-list',
+						},
+					],
 				},
 				{
 					label: 'Release Stats',

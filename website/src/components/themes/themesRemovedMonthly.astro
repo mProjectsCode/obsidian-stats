@@ -1,9 +1,0 @@
----
-import ThemeDataFile from '../../../../theme-data.json' assert { type: 'json' };
-import { getThemeCountRemovedMonthly } from '../../../../src/theme/data';
-import DataPerMonthChart from '../svelte/genericCharts/dataPerMonthChart.svelte';
-
-const dataPoints = getThemeCountRemovedMonthly(ThemeDataFile);
----
-
-<DataPerMonthChart dataPoints={dataPoints} title="Total Retired Theme Count" type="line" client:only="svelte" />

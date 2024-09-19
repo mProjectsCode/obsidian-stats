@@ -1,6 +1,6 @@
 import { type ThemeDataInterface } from './theme.ts';
 import { type PerMonthDataPoint } from '../types.ts';
-import { filterRemoved, getAddedDataForMonth, getRemovedDataForMonth, isRemoved, iterateDataMonthly } from '../utils.ts';
+import { filterNonRemoved, filterRemoved, getAddedDataForMonth, getRemovedDataForMonth, isRemoved, iterateDataMonthly } from '../utils.ts';
 
 export function getThemeRemovedList(themes: ThemeDataInterface[]): ThemeDataInterface[] {
 	return filterRemoved(themes).sort((a, b) => a.id.localeCompare(b.id));
@@ -35,6 +35,12 @@ export function getThemeCountAddedMonthly(themes: ThemeDataInterface[]): PerMont
 			value: releasedThemes.length,
 		};
 	});
+}
+
+export function getThemeAddedRecentList(themes: ThemeDataInterface[]): ThemeDataInterface[] {
+	return filterNonRemoved(themes)
+		.sort((a, b) => b.addedCommit.date.localeCompare(a.addedCommit.date))
+		.slice(0, 15);
 }
 
 export function getThemeCountMonthly(themes: ThemeDataInterface[]): PerMonthDataPoint[] {

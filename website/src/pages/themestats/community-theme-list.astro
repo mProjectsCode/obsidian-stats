@@ -1,0 +1,119 @@
+---
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import { getThemeData } from '../../../../src/utils';
+import {
+	getThemeAddedRecentList,
+	getThemeCountAddedMonthly,
+	getThemeCountMonthly,
+	getThemeCountRemovedMonthly,
+	getThemeCountWoRetiredMonthly,
+	getThemePercentageRemovedByReleaseMonth,
+	getThemeRemovedRecentList,
+} from '../../../../src/theme/data';
+import DataPerMonthChart from '../../components/svelte/genericCharts/dataPerMonthChart.svelte';
+import ThemeLink from '../../components/themeLink.astro';
+import Commit from '../../components/commit.astro';
+
+const themeData = getThemeData();
+
+const themeCountAddedMonthly = getThemeCountAddedMonthly(themeData);
+
+const themeCountRemovedMonthly = getThemeCountRemovedMonthly(themeData);
+
+const themePercentageRemovedByReleaseMonth = getThemePercentageRemovedByReleaseMonth(themeData);
+
+const themeRemovedRecentList = getThemeRemovedRecentList(themeData);
+const themeAddedRecentList = getThemeAddedRecentList(themeData);
+
+const themeCountMonthly = getThemeCountMonthly(themeData);
+const themeCountWoRetiredMonthly = getThemeCountWoRetiredMonthly(themeData);
+---
+
+<StarlightPage
+	frontmatter={{
+		title: 'Community Theme List',
+		description: `Changes in the themes on the community theme list.`,
+	}}
+	headings={[
+		{ depth: 2, text: 'Theme Count', slug: 'theme-count' },
+		{ depth: 2, text: 'New Themes', slug: 'new-themes' },
+		{ depth: 2, text: 'Removed Themes', slug: 'removed-themes' },
+	]}
+>
+	<p>
+		The community theme list is the list of community themes which are directly downloadable from within Obsidian. This page tracks the number of total themes
+		on the list, as well as changes to the list over time.
+	</p>
+
+	<h2 id="theme-count">Theme Count</h2>
+
+	<DataPerMonthChart dataPoints={themeCountMonthly} title="Total Theme Count" type="line" client:only="svelte" />
+
+	<DataPerMonthChart dataPoints={themeCountWoRetiredMonthly} title="Total Theme Count without Retired Themes" type="line" client:only="svelte" />
+
+	<h2 id="new-themes">New Themes</h2>
+
+	<p>This shows how many new themes have been added to the community theme list each month.</p>
+
+	<DataPerMonthChart dataPoints={themeCountAddedMonthly} title="New Themes per Month" client:only="svelte" />
+
+	<p>This is a list of the most recently added themes.</p>
+
+	<table>
+		<thead>
+			<tr>
+				<th>Theme</th>
+				<th>Release Date</th>
+			</tr>
+		</thead>
+		<tbody>
+			{
+				themeAddedRecentList.map(x => (
+					<tr>
+						<td>
+							<ThemeLink id={x.id} name={x.name} />
+						</td>
+						<td>
+							<Commit commit={x.addedCommit} />
+						</td>
+					</tr>
+				))
+			}
+		</tbody>
+	</table>
+
+	<h2 id="removed-themes">Removed Themes</h2>
+
+	<p>This shows how many themes have been removed from the community theme list each month.</p>
+
+	<DataPerMonthChart dataPoints={themeCountRemovedMonthly} title="Total Retired Theme Count" type="line" client:only="svelte" />
+
+	<p>This shows what percentage of themes, sorted by their release month, have been removed from the community theme list.</p>
+
+	<DataPerMonthChart dataPoints={themePercentageRemovedByReleaseMonth} max={100} title="Percentage of Retired Themes by Release Month" client:only="svelte" />
+
+	<p>This is a list of the most recently removed themes.</p>
+
+	<table>
+		<thead>
+			<tr>
+				<th>Theme</th>
+				<th>Removed Date</th>
+			</tr>
+		</thead>
+		<tbody>
+			{
+				themeRemovedRecentList.map(x => (
+					<tr>
+						<td>
+							<ThemeLink id={x.id} name={x.name} />
+						</td>
+						<td>
+							<Commit commit={x.removedCommit} />
+						</td>
+					</tr>
+				))
+			}
+		</tbody>
+	</table>
+</StarlightPage>
