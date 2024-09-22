@@ -15748,5 +15748,120 @@
 				"newValue": "b3h3m0th/black-obsidian-theme"
 			}
 		]
+	},
+	{
+		"id": "refined-default",
+		"name": "Refined Default",
+		"addedCommit": {
+			"date": "2024-09-11",
+			"hash": "e2bd8305de6b084e18e21c4b9beb548286f1381b"
+		},
+		"initialEntry": {
+			"name": "Refined Default",
+			"author": "Faisal Tamano Jr.",
+			"repo": "FaisalTamanoJr/Refined-Default",
+			"screenshot": "banner.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Refined Default",
+			"author": "Faisal Tamano Jr.",
+			"repo": "FaisalTamanoJr/Refined-Default",
+			"screenshot": "banner.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-09-11",
+					"hash": "e2bd8305de6b084e18e21c4b9beb548286f1381b"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "rose-red",
+		"name": "Rose Red",
+		"addedCommit": {
+			"date": "2024-08-18",
+			"hash": "75c996974efa259a67ec2fabbaf33d70c6dd7abd"
+		},
+		"initialEntry": {
+			"name": "Rose Red",
+			"author": "Atmanand Gauns",
+			"repo": "tu2-atmanand/RoseRed-ObsidianTheme",
+			"screenshot": "Thumbnail.png",
+			"modes": [
+				"dark"
+			]
+		},
+		"currentEntry": {
+			"name": "Rose Red",
+			"author": "Atmanand Gauns",
+			"repo": "tu2-atmanand/RoseRed-ObsidianTheme",
+			"screenshot": "Thumbnail.png",
+			"modes": [
+				"dark"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-08-18",
+					"hash": "75c996974efa259a67ec2fabbaf33d70c6dd7abd"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "minimal-edge",
+		"name": "Minimal Edge",
+		"addedCommit": {
+			"date": "2024-09-12",
+			"hash": "8534ee42fa8490b767d230286f0c86f46e6b9132"
+		},
+		"initialEntry": {
+			"name": "Minimal Edge",
+			"author": "Elhary",
+			"repo": "Elhary/Obsidian-Minimal-Edge",
+			"screenshot": "minimal-edge.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Minimal Edge",
+			"author": "Elhary",
+			"repo": "Elhary/Obsidian-Minimal-Edge",
+			"screenshot": "minimal-edge.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-09-12",
+					"hash": "8534ee42fa8490b767d230286f0c86f46e6b9132"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
 	}
 ]
