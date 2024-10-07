@@ -11,11 +11,11 @@
 		"astro": "astro"
 	},
 	"dependencies": {
-		"@astrojs/check": "0.9.3",
+		"@astrojs/check": "0.9.4",
 		"@astrojs/starlight": "0.28.2",
-		"@astrojs/svelte": "5.7.1",
+		"@astrojs/svelte": "5.7.2",
 		"@types/regression": "^2.0.6",
-		"astro": "4.15.9",
+		"astro": "4.15.12",
 		"chart.js": "^4.4.4",
 		"chartjs-plugin-annotation": "^3.0.1",
 		"chartjs-plugin-datalabels": "^2.2.0",
