@@ -15863,5 +15863,333 @@
 				"newValue": ""
 			}
 		]
+	},
+	{
+		"id": "amoled-serenity",
+		"name": "AMOLED Serenity",
+		"addedCommit": {
+			"date": "2024-09-28",
+			"hash": "d865aecd621d41fb9494aa5fbd0535d03eff0272"
+		},
+		"initialEntry": {
+			"name": "AMOLED Serenity",
+			"author": "Darth Demono",
+			"repo": "darthdemono/AMOLED-Serenity",
+			"screenshot": "AMOLED-Serenity-sm.png",
+			"modes": [
+				"dark"
+			]
+		},
+		"currentEntry": {
+			"name": "AMOLED Serenity",
+			"author": "Darth Demono",
+			"repo": "darthdemono/AMOLED-Serenity",
+			"screenshot": "AMOLED-Serenity-sm.png",
+			"modes": [
+				"dark"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-09-28",
+					"hash": "d865aecd621d41fb9494aa5fbd0535d03eff0272"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "hackthebox",
+		"name": "Hackthebox",
+		"addedCommit": {
+			"date": "2024-09-29",
+			"hash": "b1755dade5de30e68bf81d24ae72f731fd3460b8"
+		},
+		"initialEntry": {
+			"name": "Hackthebox",
+			"author": "Golam",
+			"repo": "golam71/obsidian-hackthebox",
+			"screenshot": "dark.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Hackthebox",
+			"author": "Golam",
+			"repo": "golam71/obsidian-hackthebox",
+			"screenshot": "dark.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-09-29",
+					"hash": "b1755dade5de30e68bf81d24ae72f731fd3460b8"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "transparent",
+		"name": "Transparent",
+		"addedCommit": {
+			"date": "2024-10-11",
+			"hash": "a013c1bf8758a618df2a8490153e4e005bbca05e"
+		},
+		"initialEntry": {
+			"name": "Transparent",
+			"author": "Oczko24",
+			"repo": "Oczko24/Obsidian-transparent",
+			"screenshot": "cover.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Transparent",
+			"author": "Oczko24",
+			"repo": "Oczko24/Obsidian-transparent",
+			"screenshot": "cover.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-10-11",
+					"hash": "a013c1bf8758a618df2a8490153e4e005bbca05e"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "lagom",
+		"name": "Lagom",
+		"addedCommit": {
+			"date": "2024-10-11",
+			"hash": "f1f75a4c3f8faf9db68f8e960f6daf1cde2e12a2"
+		},
+		"initialEntry": {
+			"name": "Lagom",
+			"author": "LeslyeCream",
+			"repo": "LeslyeCream/Lagom-Obsidian-Theme",
+			"screenshot": "IMG_20241009_134537.jpg",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Lagom",
+			"author": "LeslyeCream",
+			"repo": "LeslyeCream/Lagom-Obsidian-Theme",
+			"screenshot": "IMG_20241009_134537.jpg",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-10-11",
+					"hash": "f1f75a4c3f8faf9db68f8e960f6daf1cde2e12a2"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "simply-colorful",
+		"name": "Simply Colorful",
+		"addedCommit": {
+			"date": "2024-10-12",
+			"hash": "ee23f4c2a44fd9c39a761a3fe63457b1aba0cc34"
+		},
+		"initialEntry": {
+			"name": "Simply Colorful",
+			"author": "Lorenzo Pegorari",
+			"repo": "LorenzoPegorari/SimplyColorful",
+			"screenshot": "preview.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Simply Colorful",
+			"author": "Lorenzo Pegorari",
+			"repo": "LorenzoPegorari/SimplyColorful",
+			"screenshot": "preview.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-10-12",
+					"hash": "ee23f4c2a44fd9c39a761a3fe63457b1aba0cc34"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "onenice",
+		"name": "OneNice",
+		"addedCommit": {
+			"date": "2024-10-13",
+			"hash": "dcb38212cfa93fc4c6d1f15ac021c984cdb71322"
+		},
+		"initialEntry": {
+			"name": "OneNice",
+			"author": "S.Sunhaloo - P.Roy",
+			"repo": "Sunhaloo/OneNice",
+			"screenshot": "OneNice.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "OneNice",
+			"author": "S.Sunhaloo - P.Roy",
+			"repo": "Sunhaloo/OneNice",
+			"screenshot": "OneNice.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-10-13",
+					"hash": "dcb38212cfa93fc4c6d1f15ac021c984cdb71322"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "fancy-a-story",
+		"name": "Fancy-a-Story",
+		"addedCommit": {
+			"date": "2024-10-15",
+			"hash": "935bbd4c63a71937a28ab2c0ef4d54f714c415c3"
+		},
+		"initialEntry": {
+			"name": "Fancy-a-Story",
+			"author": "Kapirklaa",
+			"repo": "Kapirklaa/obsidian-fancy-a-story",
+			"screenshot": "overview-mini.webp",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Fancy-a-Story",
+			"author": "Kapirklaa",
+			"repo": "ElsaTam/obsidian-fancy-a-story",
+			"screenshot": "overview-mini.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-10-15",
+					"hash": "935bbd4c63a71937a28ab2c0ef4d54f714c415c3"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "repo",
+				"commit": {
+					"date": "2024-10-15",
+					"hash": "36fdb95363e0601a40b695e98f552d63a322f710"
+				},
+				"oldValue": "Kapirklaa/obsidian-fancy-a-story",
+				"newValue": "ElsaTam/obsidian-fancy-a-story"
+			},
+			{
+				"property": "screenshot",
+				"commit": {
+					"date": "2024-10-15",
+					"hash": "4f259a387db43bd4656466fe921785b9621550ca"
+				},
+				"oldValue": "overview-mini.webp",
+				"newValue": "overview-mini.png"
+			}
+		]
+	},
+	{
+		"id": "flexoki-warm",
+		"name": "Flexoki Warm",
+		"addedCommit": {
+			"date": "2024-10-15",
+			"hash": "10f0c920a6d3e087b37db9ba1c1eb5c514de5e15"
+		},
+		"initialEntry": {
+			"name": "Flexoki Warm",
+			"author": "ofalvai",
+			"repo": "ofalvai/flexoki-warm",
+			"screenshot": "screenshots/cover-small.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Flexoki Warm",
+			"author": "ofalvai",
+			"repo": "ofalvai/flexoki-warm",
+			"screenshot": "screenshots/cover-small.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-10-15",
+					"hash": "10f0c920a6d3e087b37db9ba1c1eb5c514de5e15"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
 	}
 ]
