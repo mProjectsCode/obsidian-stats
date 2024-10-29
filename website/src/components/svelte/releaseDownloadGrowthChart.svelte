@@ -4,10 +4,14 @@
 	import { ThemeObserver } from './svelteUtils.ts';
 	import { ALL_OS, type WeeklyReleaseGrowthEntry } from '../../../../src/release/release.ts';
 
-	export let dataPoints: Record<string, number[]>;
-	export let labels: string[];
+	interface Props {
+		dataPoints: Record<string, number[]>;
+		labels: string[];
+	}
 
-	let downloadChartEl: HTMLCanvasElement;
+	let { dataPoints, labels }: Props = $props();
+
+	let downloadChartEl: HTMLCanvasElement = $state();
 
 	let themeObserver: ThemeObserver;
 

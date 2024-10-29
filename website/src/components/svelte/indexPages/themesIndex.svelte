@@ -5,7 +5,11 @@
 	import { onMount } from 'svelte';
 	import type { ThemeDataInterface } from '../../../../../src/theme/theme.ts';
 
-	export let data: ThemeDataInterface[] = [];
+	interface Props {
+		data?: ThemeDataInterface[];
+	}
+
+	let { data = [] }: Props = $props();
 
 	const nameSort = (x: ThemeDataInterface) => x.name.toLowerCase();
 	const authorSort = (x: ThemeDataInterface) => x.currentEntry.author.toLowerCase();
@@ -17,7 +21,7 @@
 
 	let ascending = false;
 
-	let sorted: ThemeDataInterface[] = [...data];
+	let sorted: ThemeDataInterface[] = $state([...data]);
 
 	function sort(criteria: (x: ThemeDataInterface) => string): void {
 		if (criteria === sortCriteria) {
@@ -50,11 +54,11 @@
 <table>
 	<thead>
 		<tr>
-			<th on:click={() => sort(nameSort)}>Name</th>
-			<th on:click={() => sort(authorSort)}>Author</th>
-			<th on:click={() => sort(repoSort)}>Repo</th>
-			<th on:click={() => sort(addedSort)}>Added Date</th>
-			<th on:click={() => sort(removedSort)}>Removed Date</th>
+			<th onclick={() => sort(nameSort)}>Name</th>
+			<th onclick={() => sort(authorSort)}>Author</th>
+			<th onclick={() => sort(repoSort)}>Repo</th>
+			<th onclick={() => sort(addedSort)}>Added Date</th>
+			<th onclick={() => sort(removedSort)}>Removed Date</th>
 		</tr>
 	</thead>
 	<tbody>

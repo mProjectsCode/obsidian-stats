@@ -6,9 +6,13 @@
 	import { CDate } from '../../../../src/date.ts';
 	import { SimpleLinearRegression } from 'ml-regression-simple-linear';
 
-	export let dataPoints: DownloadReleaseCorrelationDataPoint[];
+	interface Props {
+		dataPoints: DownloadReleaseCorrelationDataPoint[];
+	}
 
-	let downloadNameChartEl: HTMLCanvasElement;
+	let { dataPoints }: Props = $props();
+
+	let downloadNameChartEl: HTMLCanvasElement = $state();
 
 	let themeObserver: ThemeObserver;
 

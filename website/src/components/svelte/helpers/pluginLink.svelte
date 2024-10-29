@@ -1,7 +1,11 @@
 <script lang="ts">
 	import slug from 'slug';
 
-	export let id: string;
+	interface Props {
+		id: string;
+	}
+
+	let { id }: Props = $props();
 </script>
 
 <a href={'/obsidian-stats/plugins/' + slug(id)}>{id}</a>

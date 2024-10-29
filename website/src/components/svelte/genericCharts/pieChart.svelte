@@ -3,12 +3,21 @@
 	import { onDestroy, onMount } from 'svelte';
 	import { ThemeObserver } from '../svelteUtils.ts';
 
-	let downloadChartEl: HTMLCanvasElement;
+	let downloadChartEl: HTMLCanvasElement = $state();
 
 	let themeObserver: ThemeObserver;
 
-	export let dataPoints: { label: string; value: number }[];
-	export let colors = [
+	interface Props {
+		dataPoints: { label: string; value: number }[];
+		colors?: any;
+		isPercentual?: boolean;
+		showDatalabels?: boolean;
+		calculatePrecentages?: boolean;
+	}
+
+	let {
+		dataPoints,
+		colors = [
 		'rgba(255, 99, 132, 1)', // Red
 		'rgba(54, 162, 235, 1)', // Blue
 		'rgba(255, 205, 86, 1)', // Yellow
@@ -24,10 +33,11 @@
 		'rgba(255, 184, 77, 1)', // Mustard
 		'rgba(145, 232, 225, 1)', // Aqua
 		'rgba(236, 112, 99, 1)', // Salmon
-	];
-	export let isPercentual = false;
-	export let showDatalabels = false;
-	export let calculatePrecentages = false;
+	],
+		isPercentual = false,
+		showDatalabels = false,
+		calculatePrecentages = false
+	}: Props = $props();
 
 	onMount(() => {
 		themeObserver = new ThemeObserver();

@@ -5,9 +5,13 @@
 	import { ThemeObserver } from './svelteUtils.ts';
 	import { CDate } from '../../../../src/date.ts';
 
-	export let dataPoints: DownloadReleaseCorrelationDataPoint[];
+	interface Props {
+		dataPoints: DownloadReleaseCorrelationDataPoint[];
+	}
 
-	let downloadGrowthChartEl: HTMLCanvasElement;
+	let { dataPoints }: Props = $props();
+
+	let downloadGrowthChartEl: HTMLCanvasElement = $state();
 
 	let themeObserver: ThemeObserver;
 

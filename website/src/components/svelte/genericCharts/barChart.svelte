@@ -4,20 +4,37 @@
 	import { ThemeObserver } from '../svelteUtils.ts';
 	import type { ChartDataset } from 'chart.js/dist/types';
 
-	export let dataPoints: number[];
-	export let dataPoints2: number[] | undefined = undefined;
-	export let labels: string[];
-	export let showDatalabels = false;
-	export let showXLabels = true;
-	export let seriesName = '';
-	export let seriesName2 = '';
-	export let aspectRatio = 1;
-	export let logScale = false;
-	export let calculatePrecentages = false;
-	export let percent100 = 1;
-	export let stacked = false;
 
-	export let colors = [
+	interface Props {
+		dataPoints: number[];
+		dataPoints2?: number[] | undefined;
+		labels: string[];
+		showDatalabels?: boolean;
+		showXLabels?: boolean;
+		seriesName?: string;
+		seriesName2?: string;
+		aspectRatio?: number;
+		logScale?: boolean;
+		calculatePrecentages?: boolean;
+		percent100?: number;
+		stacked?: boolean;
+		colors?: any;
+	}
+
+	let {
+		dataPoints,
+		dataPoints2 = undefined,
+		labels,
+		showDatalabels = false,
+		showXLabels = true,
+		seriesName = '',
+		seriesName2 = '',
+		aspectRatio = 1,
+		logScale = false,
+		calculatePrecentages = false,
+		percent100 = 1,
+		stacked = false,
+		colors = [
 		'rgba(255, 99, 132, 1)', // Red
 		'rgba(54, 162, 235, 1)', // Blue
 		'rgba(255, 205, 86, 1)', // Yellow
@@ -33,9 +50,10 @@
 		'rgba(255, 184, 77, 1)', // Mustard
 		'rgba(145, 232, 225, 1)', // Aqua
 		'rgba(236, 112, 99, 1)', // Salmon
-	];
+	]
+	}: Props = $props();
 
-	let downloadChartEl: HTMLCanvasElement;
+	let downloadChartEl: HTMLCanvasElement = $state();
 
 	let themeObserver: ThemeObserver;
 

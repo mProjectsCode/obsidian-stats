@@ -4,10 +4,14 @@
 	import { type DownloadDataPoint } from '../../../../src/types.ts';
 	import { ThemeObserver } from './svelteUtils.ts';
 
-	export let dataPoints: DownloadDataPoint[];
+	interface Props {
+		dataPoints: DownloadDataPoint[];
+	}
 
-	let downloadChartEl: HTMLCanvasElement;
-	let downloadGrowthChartEl: HTMLCanvasElement;
+	let { dataPoints }: Props = $props();
+
+	let downloadChartEl: HTMLCanvasElement = $state();
+	let downloadGrowthChartEl: HTMLCanvasElement = $state();
 
 	let themeObserver: ThemeObserver;
 

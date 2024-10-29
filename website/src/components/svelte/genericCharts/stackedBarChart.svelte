@@ -4,9 +4,18 @@
 	import { ThemeObserver } from '../svelteUtils.ts';
 	import { ALL_OS } from '../../../../../src/release/release.ts';
 
-	export let dataPoints: { label: string; data: number[] }[];
-	export let labels: string[];
-	export let colors = [
+	interface Props {
+		dataPoints: { label: string; data: number[] }[];
+		labels: string[];
+		colors?: any;
+		isPercentual?: boolean;
+		showDatalabels?: boolean;
+	}
+
+	let {
+		dataPoints,
+		labels,
+		colors = [
 		'rgba(255, 99, 132, 1)', // Red
 		'rgba(54, 162, 235, 1)', // Blue
 		'rgba(255, 205, 86, 1)', // Yellow
@@ -22,11 +31,12 @@
 		'rgba(255, 184, 77, 1)', // Mustard
 		'rgba(145, 232, 225, 1)', // Aqua
 		'rgba(236, 112, 99, 1)', // Salmon
-	];
-	export let isPercentual = false;
-	export let showDatalabels = false;
+	],
+		isPercentual = false,
+		showDatalabels = false
+	}: Props = $props();
 
-	let downloadChartEl: HTMLCanvasElement;
+	let downloadChartEl: HTMLCanvasElement = $state();
 
 	let themeObserver: ThemeObserver;
 

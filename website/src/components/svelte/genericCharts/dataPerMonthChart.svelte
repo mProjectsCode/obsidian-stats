@@ -4,13 +4,23 @@
 	import { type PerMonthDataPoint } from '../../../../../src/types.ts';
 	import { ThemeObserver } from '../svelteUtils.ts';
 
-	export let dataPoints: PerMonthDataPoint[];
-	export let title: string;
-	export let min: number = 0;
-	export let max: number | undefined = undefined;
-	export let type: 'bar' | 'line' = 'bar';
+	interface Props {
+		dataPoints: PerMonthDataPoint[];
+		title: string;
+		min?: number;
+		max?: number | undefined;
+		type?: 'bar' | 'line';
+	}
 
-	let chartEl: HTMLCanvasElement;
+	let {
+		dataPoints,
+		title,
+		min = 0,
+		max = undefined,
+		type = 'bar'
+	}: Props = $props();
+
+	let chartEl: HTMLCanvasElement = $state();
 
 	let themeObserver: ThemeObserver;
 

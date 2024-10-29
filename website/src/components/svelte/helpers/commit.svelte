@@ -1,7 +1,11 @@
 <script lang="ts">
 	import type { Commit } from '../../../../../src/types.ts';
 
-	export let commit: Commit;
+	interface Props {
+		commit: Commit;
+	}
+
+	let { commit }: Props = $props();
 	let url = 'https://github.com/obsidianmd/obsidian-releases/commit/' + commit.hash;
 </script>
 

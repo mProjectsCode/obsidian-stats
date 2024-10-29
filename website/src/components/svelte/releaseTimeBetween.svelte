@@ -3,9 +3,13 @@
 	import { onDestroy, onMount } from 'svelte';
 	import { ThemeObserver } from './svelteUtils.ts';
 
-	export let dataPoints: { [version: string]: number };
+	interface Props {
+		dataPoints: { [version: string]: number };
+	}
 
-	let downloadChartEl: HTMLCanvasElement;
+	let { dataPoints }: Props = $props();
+
+	let downloadChartEl: HTMLCanvasElement = $state();
 
 	let themeObserver: ThemeObserver;
 

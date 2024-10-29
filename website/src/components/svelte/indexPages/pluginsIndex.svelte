@@ -5,7 +5,11 @@
 	import Commit from '../helpers/commit.svelte';
 	import { onMount } from 'svelte';
 
-	export let data: PluginDataInterface[] = [];
+	interface Props {
+		data?: PluginDataInterface[];
+	}
+
+	let { data = [] }: Props = $props();
 
 	const idSort = (x: PluginDataInterface) => x.id.toLowerCase();
 	const nameSort = (x: PluginDataInterface) => x.currentEntry.name.toLowerCase();
@@ -18,7 +22,7 @@
 
 	let ascending = false;
 
-	let sorted: PluginDataInterface[] = [...data];
+	let sorted: PluginDataInterface[] = $state([...data]);
 
 	function sort(criteria: (x: PluginDataInterface) => string): void {
 		if (criteria === sortCriteria) {
@@ -51,12 +55,12 @@
 <table>
 	<thead>
 		<tr>
-			<th on:click={() => sort(idSort)}>Id</th>
-			<th on:click={() => sort(nameSort)}>Name</th>
-			<th on:click={() => sort(authorSort)}>Author</th>
-			<th on:click={() => sort(repoSort)}>Repo</th>
-			<th on:click={() => sort(addedSort)}>Added Date</th>
-			<th on:click={() => sort(removedSort)}>Removed Date</th>
+			<th onclick={() => sort(idSort)}>Id</th>
+			<th onclick={() => sort(nameSort)}>Name</th>
+			<th onclick={() => sort(authorSort)}>Author</th>
+			<th onclick={() => sort(repoSort)}>Repo</th>
+			<th onclick={() => sort(addedSort)}>Added Date</th>
+			<th onclick={() => sort(removedSort)}>Removed Date</th>
 		</tr>
 	</thead>
 	<tbody>
