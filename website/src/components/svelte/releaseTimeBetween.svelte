@@ -41,9 +41,10 @@
 							},
 							// Set ticks to weeks + days
 							ticks: {
-								callback: (value: number) => {
-									const weeks = Math.floor(value / 7);
-									const days = value % 7;
+								callback: (value: string | number) => {
+									const v = value as number;
+									const weeks = Math.floor(v / 7);
+									const days = v % 7;
 
 									return `${weeks}w ${days}d`;
 								},

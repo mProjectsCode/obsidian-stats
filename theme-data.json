@@ -8734,7 +8734,7 @@
 			"name": "Atomus",
 			"author": "PedroHenrique17",
 			"repo": "PedroHenrique17/Atomus",
-			"screenshot": "Screenshot_1.png",
+			"screenshot": "Screenshot_2.png",
 			"modes": [
 				"dark"
 			]
@@ -8756,6 +8756,15 @@
 					"hash": "e52dcea1ba983821900784b0c0d97b5916b049fb"
 				},
 				"oldValue": "master"
+			},
+			{
+				"property": "screenshot",
+				"commit": {
+					"date": "2024-10-05",
+					"hash": "476cbfc1cb3dcece65da17e7b00f860f79df796c"
+				},
+				"oldValue": "Screenshot_1.png",
+				"newValue": "Screenshot_2.png"
 			}
 		]
 	},
@@ -10691,6 +10700,10 @@
 			"date": "2023-06-13",
 			"hash": "0ed97b07d7cc996339652b1250fb759db2938fe7"
 		},
+		"removedCommit": {
+			"date": "2024-10-05",
+			"hash": "9b7c839f1eaf7240ce7387ece0a512bacff6673c"
+		},
 		"initialEntry": {
 			"name": "Oozy",
 			"author": "Zak Lezaja",
@@ -10733,6 +10746,15 @@
 				"commit": {
 					"date": "2023-06-22",
 					"hash": "318218388e2ba3b12ad872e7e9453f8ef7d7c48b"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2024-10-05",
+					"hash": "9b7c839f1eaf7240ce7387ece0a512bacff6673c"
 				},
 				"oldValue": "",
 				"newValue": ""
@@ -12571,6 +12593,10 @@
 			"date": "2024-01-31",
 			"hash": "dd6194867ddee0577e9e5d6f7f357b86070c4002"
 		},
+		"removedCommit": {
+			"date": "2024-10-05",
+			"hash": "185281816d9358c17e9af2e8bc1cb273c18da112"
+		},
 		"initialEntry": {
 			"name": "DarkNebula",
 			"author": "9636Dev",
@@ -12595,6 +12621,15 @@
 				"commit": {
 					"date": "2024-01-31",
 					"hash": "dd6194867ddee0577e9e5d6f7f357b86070c4002"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2024-10-05",
+					"hash": "185281816d9358c17e9af2e8bc1cb273c18da112"
 				},
 				"oldValue": "",
 				"newValue": ""
