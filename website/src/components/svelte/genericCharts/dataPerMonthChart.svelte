@@ -12,15 +12,9 @@
 		type?: 'bar' | 'line';
 	}
 
-	let {
-		dataPoints,
-		title,
-		min = 0,
-		max = undefined,
-		type = 'bar'
-	}: Props = $props();
+	let { dataPoints, title, min = 0, max = undefined, type = 'bar' }: Props = $props();
 
-	let chartEl: HTMLCanvasElement = $state();
+	let chartEl: HTMLCanvasElement | undefined = $state();
 
 	let themeObserver: ThemeObserver;
 

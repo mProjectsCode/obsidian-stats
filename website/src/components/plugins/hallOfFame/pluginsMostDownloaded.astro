@@ -70,7 +70,7 @@ let chartLabels = [...chartLabelSet];
 chartLabels.sort();
 
 let chartData = downloadDataTop.map(x => {
-	let data = new Array(chartLabels.length).fill(undefined);
+	let data: (number | undefined)[] = new Array(chartLabels.length).fill(undefined);
 
 	for (const download of x.downloads) {
 		const index = chartLabels.indexOf(download.date);

@@ -11,7 +11,7 @@
 
 	let { dataPoints, labels }: Props = $props();
 
-	let downloadChartEl: HTMLCanvasElement = $state();
+	let downloadChartEl: HTMLCanvasElement | undefined = $state();
 
 	let themeObserver: ThemeObserver;
 

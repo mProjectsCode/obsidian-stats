@@ -11,7 +11,7 @@
 
 	let { dataPoints }: Props = $props();
 
-	let downloadGrowthChartEl: HTMLCanvasElement = $state();
+	let downloadGrowthChartEl: HTMLCanvasElement | undefined = $state();
 
 	let themeObserver: ThemeObserver;
 
@@ -66,7 +66,8 @@
 						tooltip: {
 							callbacks: {
 								label: item => {
-									return `${item.raw.label} (${item.raw.x}, ${CDate.fromDate(new Date(item.raw.y))})`;
+									const i = item as { raw: { x: number; y: number; label: string } };
+									return `${i.raw.label} (${i.raw.x}, ${CDate.fromDate(new Date(i.raw.y))})`;
 								},
 							},
 						},

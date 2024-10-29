@@ -2,8 +2,7 @@
 	import Chart from 'chart.js/auto';
 	import { onDestroy, onMount } from 'svelte';
 	import { ThemeObserver } from '../svelteUtils.ts';
-	import type { ChartDataset } from 'chart.js/dist/types';
-
+	import type { ChartDataset } from 'chart.js/auto';
 
 	interface Props {
 		dataPoints: number[];
@@ -35,25 +34,25 @@
 		percent100 = 1,
 		stacked = false,
 		colors = [
-		'rgba(255, 99, 132, 1)', // Red
-		'rgba(54, 162, 235, 1)', // Blue
-		'rgba(255, 205, 86, 1)', // Yellow
-		'rgba(75, 192, 192, 1)', // Teal
-		'rgba(255, 159, 64, 1)', // Orange
-		'rgba(153, 102, 255, 1)', // Purple
-		'rgba(255, 77, 166, 1)', // Pink
-		'rgba(102, 204, 255, 1)', // Light Blue
-		'rgba(255, 128, 0, 1)', // Orange
-		'rgba(70, 191, 189, 1)', // Turquoise
-		'rgba(128, 133, 233, 1)', // Lavender
-		'rgba(177, 238, 147, 1)', // Lime Green
-		'rgba(255, 184, 77, 1)', // Mustard
-		'rgba(145, 232, 225, 1)', // Aqua
-		'rgba(236, 112, 99, 1)', // Salmon
-	]
+			'rgba(255, 99, 132, 1)', // Red
+			'rgba(54, 162, 235, 1)', // Blue
+			'rgba(255, 205, 86, 1)', // Yellow
+			'rgba(75, 192, 192, 1)', // Teal
+			'rgba(255, 159, 64, 1)', // Orange
+			'rgba(153, 102, 255, 1)', // Purple
+			'rgba(255, 77, 166, 1)', // Pink
+			'rgba(102, 204, 255, 1)', // Light Blue
+			'rgba(255, 128, 0, 1)', // Orange
+			'rgba(70, 191, 189, 1)', // Turquoise
+			'rgba(128, 133, 233, 1)', // Lavender
+			'rgba(177, 238, 147, 1)', // Lime Green
+			'rgba(255, 184, 77, 1)', // Mustard
+			'rgba(145, 232, 225, 1)', // Aqua
+			'rgba(236, 112, 99, 1)', // Salmon
+		],
 	}: Props = $props();
 
-	let downloadChartEl: HTMLCanvasElement = $state();
+	let downloadChartEl: HTMLCanvasElement | undefined = $state();
 
 	let themeObserver: ThemeObserver;
 
@@ -114,10 +113,11 @@
 						},
 					},
 					plugins: {
+						// @ts-ignore
 						datalabels: {
 							display: showDatalabels,
 							color: chartStyle.text,
-							formatter: (value, context) => {
+							formatter: (value: number, context: unknown) => {
 								return value;
 							},
 						},

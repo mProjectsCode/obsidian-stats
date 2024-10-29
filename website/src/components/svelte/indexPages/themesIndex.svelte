@@ -69,8 +69,7 @@
 				<td><GithubLink repo={theme.currentEntry.repo}></GithubLink></td>
 				<td><Commit commit={theme.addedCommit}></Commit></td>
 				<td
-					>{#if theme.removedCommit}
-						<Commit commit={theme.removedCommit}></Commit>{/if}</td
+					>{#if theme.removedCommit}<Commit commit={theme.removedCommit}></Commit>{/if}</td
 				>
 			</tr>
 		{/each}

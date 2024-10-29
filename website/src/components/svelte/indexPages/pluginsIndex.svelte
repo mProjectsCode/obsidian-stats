@@ -72,8 +72,7 @@
 				<td><GithubLink repo={plugin.currentEntry.repo}></GithubLink></td>
 				<td><Commit commit={plugin.addedCommit}></Commit></td>
 				<td
-					>{#if plugin.removedCommit}
-						<Commit commit={plugin.removedCommit}></Commit>{/if}</td
+					>{#if plugin.removedCommit}<Commit commit={plugin.removedCommit}></Commit>{/if}</td
 				>
 			</tr>
 		{/each}

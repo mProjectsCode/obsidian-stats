@@ -10,8 +10,8 @@
 
 	let { dataPoints }: Props = $props();
 
-	let downloadChartEl: HTMLCanvasElement = $state();
-	let downloadGrowthChartEl: HTMLCanvasElement = $state();
+	let downloadChartEl: HTMLCanvasElement | undefined = $state();
+	let downloadGrowthChartEl: HTMLCanvasElement | undefined = $state();
 
 	let themeObserver: ThemeObserver;
 
@@ -29,7 +29,7 @@
 						{
 							type: 'line',
 							label: 'Downloads',
-							data: dataPoints.map(d => d.downloads),
+							data: dataPoints.map(d => d.downloads ?? null),
 							borderColor: chartStyle.accent,
 							backgroundColor: chartStyle.accent,
 						},
@@ -57,7 +57,7 @@
 						{
 							type: 'bar',
 							label: 'Download Growth Week over Week',
-							data: dataPoints.map(d => d.growth),
+							data: dataPoints.map(d => d.growth ?? null),
 							borderColor: chartStyle.accent,
 							backgroundColor: chartStyle.accent,
 						},

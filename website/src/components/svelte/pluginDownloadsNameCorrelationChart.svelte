@@ -12,7 +12,7 @@
 
 	let { dataPoints }: Props = $props();
 
-	let downloadNameChartEl: HTMLCanvasElement = $state();
+	let downloadNameChartEl: HTMLCanvasElement | undefined = $state();
 
 	let themeObserver: ThemeObserver;
 
@@ -68,7 +68,8 @@
 						tooltip: {
 							callbacks: {
 								label: item => {
-									return `${item.raw.label} (${item.raw.y})`;
+									const i = item as { raw: { x: number; y: number; label: string } };
+									return `${i.raw.label} (${i.raw.y})`;
 								},
 							},
 						},
