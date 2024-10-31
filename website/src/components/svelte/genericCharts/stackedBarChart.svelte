@@ -72,6 +72,10 @@
 							},
 						},
 						zoom: {
+							pan: {
+								enabled: enableZoom,
+								mode: 'x',
+							},
 							zoom: {
 								wheel: {
 									enabled: enableZoom,
