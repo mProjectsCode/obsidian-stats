@@ -1,13 +1,20 @@
-import { GithubReleaseEntry } from './release.ts';
-import { RELEASE_FULL_DATA_PATH, RELEASE_STATS_URL, RELEASE_WEEKLY_DATA_PATH } from '../constants.ts';
+import type { GithubReleaseEntry, ObsidianReleaseInfo } from './release.ts';
+import {
+	RELEASE_CHANGELOG_PATH,
+	RELEASE_FULL_DATA_PATH,
+	RELEASE_INFO_URL,
+	RELEASE_STATS_URL,
+	RELEASE_WEEKLY_DATA_PATH
+} from '../constants.ts';
 import { distributeValueEqually, getNextMondays } from '../utils.ts';
 import { escape, from, fromCSV, op, table } from 'arquero';
+import { XMLParser } from "fast-xml-parser";
 import { Struct } from 'arquero/dist/types/op/op-api';
 import ColumnTable from 'arquero/dist/types/table/column-table';
 import { Version } from '../version.ts';
 import { CDate } from '../date.ts';
 
-async function fetchReleaseStats(): Promise<ColumnTable> {
+async function fetchGithubStats(): Promise<ColumnTable> {
 	const releases: GithubReleaseEntry[] = [];
 	let currentPage: string | null = RELEASE_STATS_URL;
 	while (currentPage) {
@@ -45,6 +52,32 @@ async function fetchReleaseStats(): Promise<ColumnTable> {
 	);
 
 	return from(releaseData).orderby('version', 'asset', 'date');
+}
+
+
+async function fetchChangelogStats(): Promise<ColumnTable> {
+	let currentPage: string | null = RELEASE_INFO_URL;
+
+	const response = await fetch(currentPage);
+	const parser = new XMLParser();
+	const xml = parser.parse(await response.text());
+	const entries: ObsidianReleaseInfo[] = xml.feed.entry.map((entry: any) => {
+		const release_info = entry.id.slice(30);
+		let version = release_info.match(/v\d+\.\d+(\.\d+)?/)?.[0] ?? '';
+		if (version.length && version.split('.').length !== 0) {
+			if (version.split('.').length === 1) version += +'.0';
+			version = Version.alphabetic(version);
+		}
+		return {
+			version: version,
+			platform: release_info.match(/desktop|mobile|publish/)?.[0] as "desktop" | "mobile" | "publish",
+			insider: entry.title.includes('Early access'),
+			date: new Date(entry.updated),
+			info: entry.content,
+		}
+	});
+
+	return from(entries).orderby('version', 'date');
 }
 
 function computeWeeklyDownloads(previousData: ColumnTable, currentData: ColumnTable, previousDate: Date, endDate: Date): ColumnTable {
@@ -97,32 +130,16 @@ function weeklyFactors(dates: Date[], startDate: Date, endDate: Date): number[] 
 	return [startWeekCover / totalWeekCover, ...Array.from({ length: dates.length - 2 }, () => 1 / totalWeekCover), endWeekCover / totalWeekCover];
 }
 
-export async function testWeeklyDownloads(): Promise<void> {
-	const previousFullDataFile = Bun.file('releases-prev-data.csv');
-	const previousReleaseData = fromCSV(await previousFullDataFile.text()).select('version', 'asset', 'downloads');
-
-	const currentFullDataFile = Bun.file('releases-full-data.csv');
-	const currentReleaseData = fromCSV(await currentFullDataFile.text()).select('version', 'asset', 'downloads');
-
-	const endDate = new Date();
-	const previousDate = new Date(endDate.getTime() - 0 * 86400000);
-
-	const incrementalData = computeWeeklyDownloads(previousReleaseData, currentReleaseData, previousDate, endDate);
-
-	const weeklyDownloadsFile = Bun.file(RELEASE_WEEKLY_DATA_PATH);
-	const weeklyDownloadsTable = fromCSV(await weeklyDownloadsFile.text(), { parse: { date: String } });
-	const combinedWeeklyDownloadsTable = combineWeeklyDownloads(weeklyDownloadsTable, incrementalData);
-
-	await Bun.write(Bun.file('res.csv'), combinedWeeklyDownloadsTable.toCSV());
-	await Bun.write(Bun.file('incr.csv'), incrementalData.toCSV());
-}
-
 export async function buildReleaseStats(): Promise<void> {
-	const releaseData = await fetchReleaseStats();
-	// const releaseData = fromCSV(await Bun.file(RELEASE_FULL_DATA_PATH).text());
+	const githubData = await fetchGithubStats();
+	const changelogData = await fetchChangelogStats();
+
+	// const githubData = fromCSV(await Bun.file(RELEASE_FULL_DATA_PATH).text());
+	// const changelogData = fromCSV(await Bun.file(RELEASE_CHANGELOG_PATH).text());
 
 	const releaseFullDataFile = Bun.file(RELEASE_FULL_DATA_PATH);
 	const releaseWeeklyDataFile = Bun.file(RELEASE_WEEKLY_DATA_PATH);
+	const changelogDataFile = Bun.file(RELEASE_CHANGELOG_PATH);
 
 	const lastModifiedDate = new Date(releaseFullDataFile.lastModified);
 	const currentDate = new Date();
@@ -154,11 +171,12 @@ export async function buildReleaseStats(): Promise<void> {
 		]);
 	}
 
-	const incrementalData = computeWeeklyDownloads(previousReleaseData, releaseData, lastModifiedDate, currentDate);
+	const incrementalData = computeWeeklyDownloads(previousReleaseData, githubData, lastModifiedDate, currentDate);
 	const combinedWeeklyDownloadsTable = combineWeeklyDownloads(weeklyData, incrementalData);
 
 	await Bun.write(releaseWeeklyDataFile, combinedWeeklyDownloadsTable.toCSV());
-	await Bun.write(releaseFullDataFile, releaseData.toCSV());
+	await Bun.write(releaseFullDataFile, githubData.toCSV());
+	await Bun.write(changelogDataFile, changelogData.toCSV());
 }
 
-// await testWeeklyDownloads();
+await buildReleaseStats();
