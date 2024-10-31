@@ -3,10 +3,12 @@
 	import { onDestroy, onMount } from 'svelte';
 	import { ThemeObserver } from '../svelteUtils.ts';
 	import type { ChartDataset } from 'chart.js/auto';
+	import zoomPlugin from 'chartjs-plugin-zoom';
 
 	interface Props {
 		dataPoints: number[];
 		dataPoints2?: number[] | undefined;
+		backgrounds?: string[];
 		labels: string[];
 		showDatalabels?: boolean;
 		showXLabels?: boolean;
@@ -18,12 +20,14 @@
 		percent100?: number;
 		stacked?: boolean;
 		colors?: any;
+		enableZoom?: boolean;
 	}
 
 	let {
 		dataPoints,
 		dataPoints2 = undefined,
 		labels,
+		backgrounds = undefined,
 		showDatalabels = false,
 		showXLabels = true,
 		seriesName = '',
@@ -50,6 +54,7 @@
 			'rgba(145, 232, 225, 1)', // Aqua
 			'rgba(236, 112, 99, 1)', // Salmon
 		],
+		enableZoom = false,
 	}: Props = $props();
 
 	let downloadChartEl: HTMLCanvasElement | undefined = $state();
@@ -67,7 +72,7 @@
 				{
 					label: seriesName,
 					data: dataPoints,
-					backgroundColor: chartStyle.accent,
+					backgroundColor: backgrounds ?? chartStyle.accent,
 				},
 				dataPoints2 !== undefined
 					? {
@@ -84,7 +89,7 @@
 				}
 			}
 
-			// console.log(labels, dataPoints);
+			Chart.register(zoomPlugin);
 
 			return new Chart(downloadChartEl!, {
 				type: 'bar',
@@ -139,6 +144,17 @@
 								},
 							},
 						},
+						zoom: {
+							zoom: {
+								wheel: {
+									enabled: enableZoom,
+								},
+								pinch: {
+									enabled: enableZoom,
+								},
+								mode: 'x',
+							},
+						}
 					},
 					aspectRatio: aspectRatio,
 				},

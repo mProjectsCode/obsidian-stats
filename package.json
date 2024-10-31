@@ -25,6 +25,7 @@
 		"@types/semver": "^7.5.8",
 		"@types/slug": "^5.0.9",
 		"arquero": "^5.4.1",
+		"chartjs-plugin-zoom": "^2.0.1",
 		"cli-progress": "^3.12.0",
 		"fast-dice-coefficient": "^1.0.3",
 		"fast-xml-parser": "^4.5.0",
