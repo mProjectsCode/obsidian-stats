@@ -179,4 +179,4 @@ export async function buildReleaseStats(): Promise<void> {
 	await Bun.write(changelogDataFile, changelogData.toCSV());
 }
 
-await buildReleaseStats();
+// await buildReleaseStats();
