@@ -70,6 +70,14 @@ export interface GithubReleaseEntry {
 	reactions: GithubReleaseReactions;
 }
 
+export interface ObsidianReleaseInfo {
+	version: string;
+	platform: "desktop" | "mobile";
+	insider: boolean;
+	date: Date;
+	info: string;
+}
+
 export type GithubReleases = GithubReleaseEntry[];
 
 export interface ReleaseAsset {

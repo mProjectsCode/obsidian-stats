@@ -10,6 +10,7 @@
 		colors?: any;
 		isPercentual?: boolean;
 		showDatalabels?: boolean;
+		enableZoom?: boolean;
 	}
 
 	let {
@@ -34,6 +35,7 @@
 		],
 		isPercentual = false,
 		showDatalabels = false,
+		enableZoom = false,
 	}: Props = $props();
 
 	let downloadChartEl: HTMLCanvasElement | undefined = $state();
@@ -67,6 +69,17 @@
 							color: chartStyle.text,
 							formatter: (value: number, context: unknown) => {
 								return value;
+							},
+						},
+						zoom: {
+							zoom: {
+								wheel: {
+									enabled: enableZoom,
+								},
+								pinch: {
+									enabled: enableZoom,
+								},
+								mode: 'x',
 							},
 						},
 					},

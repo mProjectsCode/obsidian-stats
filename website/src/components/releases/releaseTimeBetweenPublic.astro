@@ -1,0 +1,30 @@
+---
+import { readFileSync } from 'fs';
+import { fromCSV, op } from 'arquero';
+
+import BarChart from '../svelte/genericCharts/barChart.svelte';
+import { Version } from '../../../../src/version';
+
+const ReleaseData = fromCSV(readFileSync('../releases-changelog.csv', 'utf8'))
+    .filter(d => d!.platform === 'desktop' && !d.insider)
+    .orderby('date');
+const ReleaseTimeData = ReleaseData
+    .select('date', 'version')
+    .dedupe();
+
+const activeDaysBetweenPublicVersions = ReleaseTimeData
+    .derive({ timeBetween: d => op.timestamp(op.lead(d.date, 1, op.now())) - op.timestamp(d.date) })
+    .impute({ timeBetween: 0 })
+    .derive({ timeBetween: d => op.round(d.timeBetween / 24 / 60 / 60 / 1000) })
+    .rollup({ timeBetween: d => op.array_agg(d.timeBetween) })
+    .objects()[0].timeBetween;
+
+const publicPatchVersions: string[] = ReleaseData.array('version').map(x => Version.pretty(x));
+---
+
+<BarChart
+        labels={publicPatchVersions}
+        dataPoints={activeDaysBetweenPublicVersions}
+        seriesName="Days since last public patch"
+        client:only="svelte"
+/>

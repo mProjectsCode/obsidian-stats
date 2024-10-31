@@ -3,8 +3,11 @@ title: Release Overview
 description: An overview of the Obsidian Releases
 ---
 
-import ReleasesTimeBetween from '../../../components/releases/releasesTimeBetween.astro';
+import ReleasesTimeBetweenPatch from '../../../components/releases/releasesTimeBetweenPatch.astro';
+import ReleasesTimeBetweenPublic from '../../../components/releases/releaseTimeBetweenPublic.astro';
+import ReleasesTimeBetweenMinor from '../../../components/releases/releaseTimeBetweenMinor.astro';
 import ReleasesOverview from '../../../components/releases/releasesOverview.astro';
+import ReleasesChangelogLength from '../../../components/releases/releasesChangelogLength.astro';
 
 The following table shows the number of patches per minor version.
 This does not include insider releases.
@@ -13,6 +16,27 @@ This does not include insider releases.
 
 ## Lifetimes of Versions
 
-This set of graphs shows the time that a version was the most recent version.
+The following graph shows how long each version was the latest (most recent release),
+a higher bar indicates that the version was the latest release for a longer period of time.
+Each bar is colored either blue to indicate that it is <i>public</i> release, or red if it represents an <i>insider</i> release.
 
-<ReleasesTimeBetween />
+<ReleasesTimeBetweenPatch />
+
+
+This chart, instead, only shows the time it took between each public release, ignoring all insider releases.
+
+<ReleasesTimeBetweenPublic />
+
+Finally, in this chart, only the minor version (i.e. "0.2", "1.2", etc.) is considered, and the time between each minor version is calculated.
+The red color indicates how long the minor version was the latest available version, or in other words, how long it took for the next minor version to be released.
+The blue color indicates how many days it took for the next minor version to be released after the last patch.
+
+<ReleasesTimeBetweenMinor />
+
+
+## Release Changelog Size
+
+The following graph shows the amount of changes for every release, split by category.
+Keep in mind that this is not a definitive indicator of the actual 'substantiveness' of a release.
+
+<ReleasesChangelogLength />

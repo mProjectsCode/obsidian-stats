@@ -1,0 +1,39 @@
+---
+import { readFileSync } from 'fs';
+import { escape, fromCSV, op } from 'arquero';
+import { getMajorVersions } from '../../../../src/release/data';
+
+import BarChart from '../svelte/genericCharts/barChart.svelte';
+import StackedBarChart from '../svelte/genericCharts/stackedBarChart.svelte';
+import { Version } from '../../../../src/version';
+
+const ReleaseData = fromCSV(readFileSync('../releases-changelog.csv', 'utf8'))
+	.filter(d => d!.platform === 'desktop')
+	.dedupe('version')
+	.orderby('date');
+const ReleaseTimeData = ReleaseData
+	.select('date', 'insider', 'version').dedupe();
+
+const allVersions: string[] = ReleaseData.distinctArray('version').map(x => Version.pretty(x));
+
+const activeDaysForAllVersions: number[] = ReleaseTimeData.derive({ timeBetween: d => op.timestamp(op.lead(d.date, 1, op.now())) - op.timestamp(d.date) })
+	.impute({ timeBetween: 0 })
+	.derive({ timeBetween: d => op.round(d.timeBetween / 24 / 60 / 60 / 1000) })
+	.rollup({ timeBetween: d => op.array_agg(d.timeBetween) })
+	.objects()[0].timeBetween;
+const activeDaysForInsiderVersions: number[] = activeDaysForAllVersions.map((x, i) => ReleaseTimeData.objects()[i].insider ? x : 0);
+const activeDaysForPublicVersions: number[] = activeDaysForAllVersions.map((x, i) => ReleaseTimeData.objects()[i].insider ? 0 : x);
+const activeDaysData = [
+	{ label: 'Insider Patch', data: activeDaysForInsiderVersions, backgroundColor: 'rgba(255, 99, 132)' },
+	{ label: 'Public Patch', data: activeDaysForPublicVersions, backgroundColor: 'rgba(54, 162, 235)' }
+]
+
+---
+
+<StackedBarChart
+	dataPoints={activeDaysData}
+	labels={allVersions}
+	seriesName="Days patch was latest release"
+	enableZoom={true}
+	client:only="svelte"
+/>
