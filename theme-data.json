@@ -16226,5 +16226,155 @@
 				"newValue": ""
 			}
 		]
+	},
+	{
+		"id": "evangelion",
+		"name": "evangelion",
+		"addedCommit": {
+			"date": "2024-10-28",
+			"hash": "b25be997170b0ddea4b43f03093b146e5deebd88"
+		},
+		"initialEntry": {
+			"name": "evangelion",
+			"author": "xero",
+			"repo": "xero/evangelion.obsidian",
+			"screenshot": "preview.png",
+			"modes": [
+				"dark"
+			]
+		},
+		"currentEntry": {
+			"name": "evangelion",
+			"author": "xero",
+			"repo": "xero/evangelion.obsidian",
+			"screenshot": "preview.png",
+			"modes": [
+				"dark"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-10-28",
+					"hash": "b25be997170b0ddea4b43f03093b146e5deebd88"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "borealis",
+		"name": "Borealis",
+		"addedCommit": {
+			"date": "2024-10-16",
+			"hash": "c375952407af518a6059545f6a890351ab6b9760"
+		},
+		"initialEntry": {
+			"name": "Borealis",
+			"author": "Juanchi Parra",
+			"repo": "juanchiparra/obsidian-borealis",
+			"screenshot": "docs/dark-cover.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Borealis",
+			"author": "Juanchi Parra",
+			"repo": "juanchiparra/obsidian-borealis",
+			"screenshot": "docs/dark-cover.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-10-16",
+					"hash": "c375952407af518a6059545f6a890351ab6b9760"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "red-shadow",
+		"name": "Red-Shadow",
+		"addedCommit": {
+			"date": "2024-10-18",
+			"hash": "a0159051bb3ae340341d6e9cf5064aff7bc1b7b5"
+		},
+		"initialEntry": {
+			"name": "Red-Shadow",
+			"author": "DKLiberty",
+			"repo": "DKLiberty/Red-Shadow",
+			"screenshot": "Resources/Screenshot.png",
+			"modes": [
+				"dark"
+			]
+		},
+		"currentEntry": {
+			"name": "Red-Shadow",
+			"author": "DKLiberty",
+			"repo": "DKLiberty/Red-Shadow",
+			"screenshot": "Resources/Screenshot.png",
+			"modes": [
+				"dark"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-10-18",
+					"hash": "a0159051bb3ae340341d6e9cf5064aff7bc1b7b5"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "luminex",
+		"name": "Luminex",
+		"addedCommit": {
+			"date": "2024-10-21",
+			"hash": "7e1dba8abab1343e29821c5c6be4e9ecbcefa9a8"
+		},
+		"initialEntry": {
+			"name": "Luminex",
+			"author": "abhimangs",
+			"repo": "abhimangs/Obsidian-Luminex",
+			"screenshot": "Assets/Obsidian-Cover.png",
+			"modes": [
+				"dark"
+			]
+		},
+		"currentEntry": {
+			"name": "Luminex",
+			"author": "abhimangs",
+			"repo": "abhimangs/Obsidian-Luminex",
+			"screenshot": "Assets/Obsidian-Cover.png",
+			"modes": [
+				"dark"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-10-21",
+					"hash": "7e1dba8abab1343e29821c5c6be4e9ecbcefa9a8"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
 	}
 ]
