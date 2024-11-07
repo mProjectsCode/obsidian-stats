@@ -1,9 +1,9 @@
-version,platform,insider,date,info
+version,platform,insider,date,info,major_release
 ,publish,false,2023-02-27,"<h2>Improvements</h2>
 <ul>
 <li>New Obsidian Publish default theme. Brings Publish up to par with the CSS theme and variables created for the Obsidian 1.0 desktop app. You can check it out by going to the <a href=""https://help.obsidian.md/"">Help site</a>.</li>
 <li>See our guide on <a href=""https://docs.obsidian.md/Themes/Obsidian+Publish+themes/Best+practices+for+Publish+themes"">Best practices for Publish themes</a></li>
-</ul>"
+</ul>",false
 ,publish,false,2023-04-18,"<h2>Improvements</h2>
 <ul>
 <li>Improved Lighthouse scores for performance, SEO, accessibility, and best practices — now at 100% or close to 100% when using default theme</li>
@@ -16,7 +16,7 @@ version,platform,insider,date,info
 <h2>No longer broken</h2>
 <ul>
 <li>Removed table of contents on 404 page</li>
-</ul>"
+</ul>",false
 ,publish,false,2023-04-25,"<h2>Improvements</h2>
 <ul>
 <li>Added <code>sitemap.xml</code></li>
@@ -24,7 +24,7 @@ version,platform,insider,date,info
 <h2>No longer broken</h2>
 <ul>
 <li>Fixed issue with home pages sometimes returning a 404 error</li>
-</ul>"
+</ul>",false
 ,publish,false,2023-07-24,"<h2>Improvements</h2>
 <ul>
 <li>When using stacked tabs the close button is always displayed on the spine</li>
@@ -32,12 +32,12 @@ version,platform,insider,date,info
 <h2>No longer broken</h2>
 <ul>
 <li>Social cards and meta descriptions are now automatically stripped of Markdown formatting syntax</li>
-</ul>"
+</ul>",false
 ,publish,false,2024-03-05,"<h2>Improvements</h2>
 <ul>
 <li>Publish now supports full-text search. Try it out by searching the <a href=""https://help.obsidian.md/Home"">Obsidian Help</a>.</li>
 <li>Full-text search supports multiple word queries using quotation marks, e.g. <code>&quot;core plugins&quot;</code></li>
-</ul>"
+</ul>",false
 00.00.01,desktop,false,2020-03-30,"<p>Initial release.</p>
 <p>Notable features include:</p>
 <ul>
@@ -45,7 +45,7 @@ version,platform,insider,date,info
 <li>[[Internal link]] with auto-complete.</li>
 <li>Image (<code>.png</code>) and audio (<code>.mp3</code>) file embed with <code>![[filename.png]]</code> [[embedding]] syntax.</li>
 <li>Plugin system.</li>
-</ul>"
+</ul>",false
 00.00.02,desktop,false,2020-04-02,"<ul>
 <li>Graph view: navigate to file when clicking on a node.</li>
 <li>Graph view: collision detection to avoid overlap.</li>
@@ -61,14 +61,14 @@ version,platform,insider,date,info
 <li>Sidebar: sidebar title should not be select-able.</li>
 <li>Sidebar: click current tab again to collapse.</li>
 <li>Sidebar: add collapse button to each panel.</li>
-</ul>"
+</ul>",false
 00.00.03,desktop,false,2020-04-05,"<ul>
 <li>Linux version first release.</li>
 <li>Slides plugin: use <code>---</code> to separate your slides and start presenting right away.</li>
 <li>Audio recorder plugin: record audio and save as attachment (it gets automatically appended to the end of your current file).</li>
 <li>If you have a file at <code>Folder/Another folder/My note.md</code> and &quot;My note&quot; is a unique name, <code>[[My note]]</code> and <code>[[my note]]</code> internal links will now resolve. It used to be that only the complete link will be resolved.</li>
 <li>Last opened tab and plugin enabled status are now saved in config.</li>
-</ul>"
+</ul>",false
 00.00.11,mobile,true,2021-03-12,"<ul>
 <li>The global action bar from the left swipe menu has been replaced with a ribbon that works identically to the desktop version.</li>
 <li>Command palette, and all the core plugin actions are now available from the ribbon.</li>
@@ -83,7 +83,7 @@ version,platform,insider,date,info
 <li>Keyboard retract on search to give more space.</li>
 <li>Performance improvements for animations.</li>
 <li>Lots of small UI tweaks to make various elements size correctly, overflow nicely, scrollable and fit within the viewport.</li>
-</ul>"
+</ul>",false
 00.00.12,mobile,true,2021-03-17,"<ul>
 <li>Fixed saving files always corrupts files larger than 5MB.</li>
 <li>Community plugins can now be installed. Some of them might not work correctly.</li>
@@ -98,7 +98,7 @@ version,platform,insider,date,info
 <li>Fixed animation glitches.</li>
 <li>Fixed notices not showing up in the correct spot.</li>
 <li>Tons of small UI tweaks for mobile interface.</li>
-</ul>"
+</ul>",false
 00.00.13,mobile,true,2021-03-22,"<ul>
 <li>Added <code>obsidian://</code> URI handler.</li>
 <li>Added &quot;Insert attachment&quot; toolbar item (needs to be configured).</li>
@@ -107,19 +107,19 @@ version,platform,insider,date,info
 <li>Fixed cursor goes under toolbar when pressing enter.</li>
 <li>Fixed small editor glitch with Japanese and Chinese input.</li>
 <li>Fixed copy to clipboard on Android.</li>
-</ul>"
+</ul>",false
 00.00.14,mobile,true,2021-03-27,"<ul>
 <li>Improved iCloud performance (Should no longer lag or freeze).</li>
 <li>You can now add local Obsidian vaults, sub folders, and files to other apps in Files.</li>
 <li>Improved Obsidian Sync reliability.</li>
-</ul>"
+</ul>",false
 00.00.15,mobile,true,2021-03-30,"<ul>
 <li>Fix iCloud sync not downloading whole vault.</li>
 <li>Fix unable to save/move files to Obsidian's iCloud folder.</li>
 <li>Sync will now ignore paths with invalid characters.</li>
 <li>Fixed Obsidian URI executes twice on first starting.</li>
 <li>Also includes updates up to Obsidian desktop v0.11.10.</li>
-</ul>"
+</ul>",false
 00.00.16,mobile,true,2021-04-08,"<ul>
 <li>New &quot;Quick Action&quot; pull down from the top, defaults to Command Palette, but can be configured.</li>
 <li>Completely revamped left and right sidebar animation.</li>
@@ -133,7 +133,7 @@ version,platform,insider,date,info
 <li>Fixed resize handle visible through side panes.</li>
 <li>Fixed long vault names don't look very nice.</li>
 <li>Also includes everything up to Desktop v0.11.13</li>
-</ul>"
+</ul>",false
 00.00.17,mobile,true,2021-04-20,"<ul>
 <li>Fixed can't backspace to delete <code>Tab</code> characters on Android.</li>
 <li>Fixed Option + left/right/delete not behaving correctly on iOS.</li>
@@ -143,7 +143,7 @@ version,platform,insider,date,info
 <li>Don't crash on iOS when selecting &quot;Camera&quot; when inserting attachments.</li>
 <li>Don't show hover tooltips for a split second when pressing buttons.</li>
 <li>Also includes everything up to Desktop v0.12.1</li>
-</ul>"
+</ul>",false
 00.00.18,mobile,true,2021-04-30,"<ul>
 <li>Includes all new functionality and bug fixes of Obsidian Desktop v0.12.2.</li>
 <li>
@@ -200,14 +200,14 @@ version,platform,insider,date,info
 <li>Menus triggered from file explorer will now have the file name indicated at the top.</li>
 </ul>
 </li>
-</ul>"
+</ul>",false
 00.00.19,mobile,true,2021-05-07,"<ul>
 <li>Fixed indented lists flicker when scrolled.</li>
 <li>Fixed line wrapping not properly applied on iOS, causing horizontal scroll.</li>
 <li>Fixed display issue on iOS where left side of the editor is cut off.</li>
 <li>Fixed sharing not working on iOS.</li>
 <li>Fixed strikethrough command adds highlight syntax instead.</li>
-</ul>"
+</ul>",false
 00.01.00,desktop,false,2020-04-10,"<ul>
 <li>Plugin: backlinks. Show number of backlinks for the current file in status bar.</li>
 <li>Plugin: word count. Show word current of current file.</li>
@@ -222,7 +222,7 @@ version,platform,insider,date,info
 <li>Link: fixed internal links not recognized on app start.</li>
 <li>File explorer: file deletion now asks for confirmation.</li>
 <li>File explorer: now you can move files into the vault folder for organization.</li>
-</ul>"
+</ul>",false
 00.01.00,mobile,true,2021-05-31,"<ul>
 <li>Includes all new functionality and bug fixes of Obsidian Desktop v0.12.4.</li>
 <li>You can now add global (non-editor) commands to the toolbar.</li>
@@ -236,7 +236,7 @@ version,platform,insider,date,info
 <li>Fixed iPad trackpad unable to click on some items the first time.</li>
 <li>Audio recorder now keeps the device awake to avoid losing the recording.</li>
 <li>Fixed unable to type polish ł on iPad keyboard.</li>
-</ul>"
+</ul>",false
 00.01.01,mobile,true,2021-06-02,"<ul>
 <li>Includes all new functionality and bug fixes of Obsidian Desktop v0.12.5.</li>
 <li>Fixed iOS app freeze when typing Chinese, Japanese or Korean.</li>
@@ -244,7 +244,7 @@ version,platform,insider,date,info
 <li>Added new command to focus on the editor.</li>
 <li>Fixed iOS <code>Cmd+Option+I</code> emitted as <code>Cmd+Option+6</code>. Thanks Apple.</li>
 <li>Fixed switching Workspaces causes the sidebars to stop working.</li>
-</ul>"
+</ul>",false
 00.01.04,mobile,true,2021-07-29,"<ul>
 <li>Includes all new functionality and bug fixes of Obsidian Desktop v0.12.9.</li>
 <li>Added a way to pin sidebars for tablet mode.</li>
@@ -257,7 +257,7 @@ version,platform,insider,date,info
 <li>Obsidian Sync now has improved handling of illegal characters on Android.</li>
 <li>Fixed <code>Shift+Option+Up/Down</code> duplicating line instead of selecting up/down.</li>
 <li><code>Alt+B/F/D</code> now properly inputs text on iOS.</li>
-</ul>"
+</ul>",false
 00.02.00,desktop,false,2020-04-13,"<ul>
 <li>Backlinks: show unlinked mentions as well.</li>
 <li>Preview: support embed Markdown files as well (with <code>![[page name]]</code>).</li>
@@ -266,7 +266,7 @@ version,platform,insider,date,info
 <li>Link: click an internal link while holding Ctrl or Cmd to follow it.</li>
 <li>Graph: fix previous note title still showing after switching to graph view.</li>
 <li>Slides: fix tables not working in presentation view.</li>
-</ul>"
+</ul>",false
 00.03.00,desktop,false,2020-04-21,"<ul>
 <li>Tag: tags are now supported, with auto-complete support.</li>
 <li>Tag pane plugin, displays all the tags sorted by number of occurrences.</li>
@@ -277,7 +277,7 @@ version,platform,insider,date,info
 <li>Graph view: links and neighboring nodes are highlighted when hovering a node, while other nodes are faded out.</li>
 <li>Graph view: better connected nodes now appear bigger.</li>
 <li>Quick switcher: show most recent files when no search is entered.</li>
-</ul>"
+</ul>",false
 00.04.00,desktop,false,2020-04-27,"<h3>Shiny new things</h3>
 <ul>
 <li>Command palette. Access commands by typing!</li>
@@ -299,7 +299,7 @@ version,platform,insider,date,info
 <li>Custom CSS: fix cannot disable the plugin if <code>obsidian.css</code> is not present.</li>
 <li>Quick switcher: fix issue where navigating to &quot;Page name&quot; would wipe it if there's a folder called the same name in the same directory.</li>
 <li>Fix line wrapping issues in title bar, embeds, and Backlinks panel.</li>
-</ul>"
+</ul>",false
 00.04.01,desktop,false,2020-05-04,"<ul>
 <li>Layout: you can now resize the left and right panels.</li>
 <li>File explorer: you can now set a folder as the &quot;attachment folder&quot;. Further pasted images, dropped images, and recorded audio files will be stored here.</li>
@@ -315,7 +315,7 @@ version,platform,insider,date,info
 <li>Task list: fix formatting in the task item will render the item twice in preview.</li>
 <li>Link suggestion: fix folder name not getting searched.</li>
 <li>Link: fix custom scheme URLs like <code>x-devonthink://</code> not working.</li>
-</ul>"
+</ul>",false
 00.05.00,desktop,false,2020-05-10,"<h2>Shiny new things</h2>
 <ul>
 <li><strong>Open multiple files side by side</strong>. See how you can now work with multiple notes.</li>
@@ -358,7 +358,7 @@ version,platform,insider,date,info
 <li>Fixed window size not preserved across sessions.</li>
 <li>Fixed multiple audio recorder icons appear when you repeatedly enable and disable the plugin.</li>
 <li>Removed Electron help menu items.</li>
-</ul>"
+</ul>",false
 00.05.01,desktop,false,2020-05-13,"<h2>Shiny new things</h2>
 <ul>
 <li>You can now make custom hotkeys in settings.</li>
@@ -392,7 +392,7 @@ version,platform,insider,date,info
 <li>Things like [[]] no longer highlight everything behind it in the editor.</li>
 <li>Things between dollar signs like $text$ no longer get highlighted.</li>
 <li>Similarly, an arrow ==&gt; is now recognized as not a highlight.</li>
-</ul>"
+</ul>",false
 00.05.02,desktop,false,2020-05-15,"<h2>Shiny new things</h2>
 <ul>
 <li>There's a new plugin: starred files. Starred files will appear in a &quot;Starred&quot; section in the left panel.</li>
@@ -413,7 +413,7 @@ version,platform,insider,date,info
 <li>Search in files now shows matches for filenames as well as content.</li>
 <li>We fixed some file name conflict issues, which had the danger of overwriting extant files.</li>
 <li>And we fiixed sometimes not being able to delete an empty folder.</li>
-</ul>"
+</ul>",false
 00.05.03,desktop,false,2020-05-15,"<p>A quick release to fix a couple of things.</p>
 <h2>Changes</h2>
 <ul>
@@ -424,7 +424,7 @@ version,platform,insider,date,info
 <ul>
 <li>The Starred File plugin no longer halfway shows up when it's disabled.</li>
 <li>We remembered to put in the release notes this time!</li>
-</ul>"
+</ul>",false
 00.06.00,desktop,false,2020-05-18,"<h2>Shiny new things</h2>
 <ul>
 <li>The big news: We've implemented linking to headings! Start typing a link like you would normally. Once you highlight the note you want from the list, press <code>#</code> instead of <code>Enter</code> and you'll see a list of headings in that file. Press <code>#</code> again for each subheading, and <code>Enter</code> to complete the link.</li>
@@ -452,7 +452,7 @@ version,platform,insider,date,info
 <li>In the sidebar, you can now close a removed pane after disabling a plugin.</li>
 <li>Linking an unlinked file no longer navigates to that file at the same time. If that makes no sense to you, you probably never saw the bug. Don't worry about it, it's fixed now.</li>
 <li>Graph view now runs a single instance in the background. This means you won't lag out the application by opening it multiple times.</li>
-</ul>"
+</ul>",false
 00.06.01,desktop,false,2020-05-22,"<h2>Shiny new things</h2>
 <ul>
 <li>The big news this release: We now support multiple vaults! You can now have windows open to different places, each with their own custom settings and CSS. Details on how to use this feature are in [[Work with multiple vaults]].</li>
@@ -467,7 +467,7 @@ version,platform,insider,date,info
 <ul>
 <li>We made a bunch of minor bug fixes and quality of life improvements. Things that were previously subtle or hidden in the interface are now revealed, tastefully. Places text could previously not be selected, are now selectable. Lines showing up in strange places are now replaced with informative text.</li>
 <li>Also we fixed a lot of typos in the docs. Plugins are no longer &quot;disabed&quot; by default.</li>
-</ul>"
+</ul>",false
 00.06.02,desktop,false,2020-05-22,"<p>Just a quick bug fix because there was a potential for data loss. But, we couldn't help adding a new feature as well.</p>
 <h2>Shiny new things</h2>
 <ul>
@@ -476,7 +476,7 @@ version,platform,insider,date,info
 <h2>No longer broken</h2>
 <ul>
 <li>There was a rare but dangerous bug wherein a race condition could cause two different autosaves to collide, resulting in blanking out a note. That should not happen any more.</li>
-</ul>"
+</ul>",false
 00.06.03,desktop,false,2020-05-24,"<h2>Shiny new things</h2>
 <ul>
 <li>The Graph View got some love. It should be much faster now, and zoomable!</li>
@@ -492,7 +492,7 @@ version,platform,insider,date,info
 <ul>
 <li>We unbroke the thing we broke where you couldn't click on a vault to choose it again. Clicks are meaningful again.</li>
 <li>Minor bugs squashed.</li>
-</ul>"
+</ul>",false
 00.06.04,desktop,false,2020-05-24,"<p>This is a small release to fix some bugs that made the Graph view unusable.</p>
 <h2>Shiny new things</h2>
 <ul>
@@ -510,7 +510,7 @@ version,platform,insider,date,info
 <li><code>ctrl-b</code> will now no longer step on OS- level movement hotkeys.</li>
 <li>Sometimes you could click through a note to the Graph view behind. This turns out to be a very counterintuitive way of doing Random Note, and we stopped that from happening.</li>
 <li>The Graph view would render the names of nodes behind other notes, which made them hard to read. They are now out front where they belong.</li>
-</ul>"
+</ul>",false
 00.06.05,desktop,false,2020-05-29,"<h2>Shiny new things</h2>
 <ul>
 <li>Due to popular demand, we now have inline latex support! Didn't really expect that to be a popular demand, but, we have it!</li>
@@ -541,7 +541,7 @@ version,platform,insider,date,info
 <li>The Home/End keys should go to a wrapped end of a line instead of the full line.</li>
 <li>Now when switching to preview mode while the link autosuggester is open, the autosuggester will no longer hang around uselessly.</li>
 <li>Sometimes the tag pane was empty for no reason. Now it will be as lush as it should be.</li>
-</ul>"
+</ul>",false
 00.06.06,desktop,false,2020-06-01,"<h2>Shiny new things</h2>
 <ul>
 <li>We added an option for deletions to use either 1) System trash, 2) local vault <code>.trash/</code> or 3) permanent delete like before. This means an extral layer of safety in case you accidentally delete a note. The default is System trash, but if the system trash is disabled, it will use <code>.trash/</code> by default.</li>
@@ -562,7 +562,7 @@ version,platform,insider,date,info
 <li>We Fixed pressing Enter on title rename sometimes causing a newline to be entered into the source editor.</li>
 <li>And we fixed the fact that clicking on some footnotes didn't do anything. It will now navigate as it should have all along.</li>
 <li>You know the thing where when you renamed a file, another open file with a link to it would not have the link properly updated? That shouldn't happen anymore.</li>
-</ul>"
+</ul>",false
 00.06.07,desktop,false,2020-06-02,"<p>Mostly some quick bug fixes this time around.</p>
 <h2>Changes</h2>
 <ul>
@@ -576,7 +576,7 @@ version,platform,insider,date,info
 <li>Links that are <code>[[#section]]</code> will now properly link to headings in the same file. This will also work for <code>[link](#heading)</code>.</li>
 <li>We fixed a bug where sometimes navigating back wouldn't let you navigate forward again.</li>
 <li>And we also fixed a thing where navigating back would not save layout when closing/opening the app.</li>
-</ul>"
+</ul>",false
 00.07.00,desktop,true,2020-06-09,"<h2>Shiny new things</h2>
 <ul>
 <li>We've rebuilt the pane system entirely, adding lots of functionality and flexibility to the way you can interact with your notes:</li>
@@ -604,7 +604,7 @@ version,platform,insider,date,info
 <li>A memory leak in graph view has been plugged.</li>
 <li>We fixed the bug where non-breaking spaces in filenames would cause unpleasant behavior.</li>
 <li>Relatedly, we fixed the bug where filenames with accented characters and CJK characters were causing trouble on MacOS. In summary: Unicode is weird.</li>
-</ul>"
+</ul>",false
 00.07.01,desktop,true,2020-06-10,"<p>Just some quick bug fixes on the heels of 0.7.0, cleaning up a little.</p>
 <h2>Changes</h2>
 <ul>
@@ -619,7 +619,7 @@ version,platform,insider,date,info
 <li>We fixed the thing where the graph view's pane would blank out or duplicate when the pane was moved.</li>
 <li>We fixed editor selection sometimes having two different colors.</li>
 <li>The bug with <code>Cmd/Ctrl-[</code> and <code>]</code> not incrementing numbered lists correctly is now fixed.</li>
-</ul>"
+</ul>",false
 00.07.02,desktop,true,2020-06-13,"<p>Some quick bug fixes on top of 0.7.1.</p>
 <h2>No longer broken</h2>
 <ul>
@@ -631,11 +631,11 @@ version,platform,insider,date,info
 <li>Block latex is now properly detected in editor when <code>$$</code> is on its own line.</li>
 <li>We fixed a trailing escaped character causing latex to not be detected in the editor.</li>
 <li>We fixed an issue where <code>Cmd-Z</code> does not undo the file name change.</li>
-</ul>"
+</ul>",false
 00.07.03,desktop,false,2020-06-14,"<h2>No longer broken</h2>
 <ul>
 <li>We fixed an issue where renaming a folder causes all files under it to no longer open in the app.</li>
-</ul>"
+</ul>",false
 00.07.04,desktop,false,2020-06-20,"<h2>Shiny new things</h2>
 <ul>
 <li>We've added command palette options for navigation between panes (up/down/left/right), as well as open in default app. And, yes, you can make them hotkeys!</li>
@@ -661,7 +661,7 @@ version,platform,insider,date,info
 <li>We fixed link and tag autocomplete showing up too far on the left.</li>
 <li>And we fixed block LaTeX not being recognized without a newline before it.</li>
 <li>We fixed internal links not working in edit mode when it contains _ or when spellchecker picks up a word.</li>
-</ul>"
+</ul>",false
 00.07.05,desktop,true,2020-07-01,"<h2>Shiny new things</h2>
 <ul>
 <li>We added a &quot;strict Markdown line break&quot; option for previews, which obeys Markdown's original newline spec. This will cause single line breaks to be ignored.</li>
@@ -685,7 +685,7 @@ version,platform,insider,date,info
 <li>Auto-detected URLs in the editor will no longer include the space or period characters after.</li>
 <li>And we fixed &quot;Focus on above/below/left/right pane&quot; option not always finding the correct pane to focus.</li>
 <li>Graph view now stops all activity soon after you stop interacting with it. This should save quite some CPU cycles if you prefer to have a graph open at all times.</li>
-</ul>"
+</ul>",false
 00.07.06,desktop,false,2020-07-02,"<h2>Shiny new things</h2>
 <ul>
 <li>We now render mermaid diagrams! <a href=""https://mermaid-js.github.io/mermaid/#/"">Mermaid</a> is a markup language similar to Markdown for producing diagrams and flow charts. The syntax to work with mermaid is a backtick-fenced code block, with the type set to <code>mermaid</code>, like so:</li>
@@ -715,7 +715,7 @@ version,platform,insider,date,info
 <li><code>Ctrl/Cmd-B</code> and <code>Ctrl/Cmd-I</code> are now customizable.</li>
 <li>Indenting/unindenting using &quot;smart indent lists&quot; should no longer become &quot;NaN.&quot;</li>
 <li>Consecutive links <code>[[link1]][link2]]</code> now links to the correct place in edit mode.</li>
-</ul>"
+</ul>",false
 00.08.00,desktop,false,2020-07-14,"<h2>Shiny new things</h2>
 <ul>
 <li>Major new feature: Search has been massively improved and expanded! Check this out:
@@ -755,7 +755,7 @@ version,platform,insider,date,info
 <li>There was a bug in the recognition of tags with numbers wherein some would be shown as tags in preview but not edit mode. That is fixed now.</li>
 <li>And we fixed the thing where toggle highlight command would just add more <code>==</code> instead of toggling as the name would suggest.</li>
 <li>Mermaid graphs would sometimes have boxes clip the last few letters of the text. That shouldn't happen anymore.</li>
-</ul>"
+</ul>",false
 00.08.01,desktop,false,2020-07-21,"<h2>Shiny new things</h2>
 <ul>
 <li>There's now a new Outline plugin, which works in the same way as the backlinks pane. An &quot;unlinked&quot; sidebar pane will show the outline of the current file, while a &quot;linked&quot; pane will always show the outline of the linked pane.</li>
@@ -789,7 +789,7 @@ version,platform,insider,date,info
 <li>Fixed editor horizontal scrollbar hidden behind text, so it could not be interacted with.</li>
 <li>Fixed <code>$$</code> latex blocks couldn't contain single dollar signs <code>$</code>.</li>
 <li>Backlinks pane now no longer cause lag when switching documents in a vault with heavy linking.</li>
-</ul>"
+</ul>",false
 00.08.02,desktop,false,2020-07-30,"<p>Lots of under the hood improvements on this one. Everyone should be made slightly happier, and a few people will be made much happier.</p>
 <h2>Changes</h2>
 <ul>
@@ -817,7 +817,7 @@ version,platform,insider,date,info
 <li>Fixed an editor crash issue caused by using a checklist inside a footnote.</li>
 <li>Word count for large files should no longer cause lag.</li>
 <li>Changing custom CSS no longer causes the editor to enter a broken state until the app is reloaded.</li>
-</ul>"
+</ul>",false
 00.08.03,desktop,true,2020-08-10,"<h2>Shiny new things</h2>
 <ul>
 <li>There is now a &quot;local&quot; graph view available. This is bound to a file, only showing notes related to the linked pane, similar to how backlinks and outline pane works. Use the &quot;More options&quot; menu to find the new &quot;Open local graph&quot; option. Try putting it in a sidebar!</li>
@@ -838,7 +838,7 @@ version,platform,insider,date,info
 <li>The editor no longer inserts an extra pair of <code>]]</code> closing brackets when &quot;smart indent list&quot; is turned off.</li>
 <li>Outline plugin no longer switches to a media file if one is opened in the editor. Now it more accurately just says &quot;No headings found.&quot;</li>
 <li>PDFs that previously had missing characters now render properly.</li>
-</ul>"
+</ul>",false
 00.08.04,desktop,false,2020-08-12,"<h2>Shiny new things</h2>
 <ul>
 <li>Search improvements:
@@ -873,7 +873,7 @@ version,platform,insider,date,info
 <li>When clicking on an unlinked local graph, backlink, or outline pane, the pane would previously reset or go blank. That no longer happens.</li>
 <li>LaTeX rendering was broken in 0.8.3 due to an optimization. It should now render properly.</li>
 <li>When deleting a file that's currently open, the outline and backlinks pane no longer closes to &quot;no file is open&quot;.</li>
-</ul>"
+</ul>",false
 00.08.05,desktop,true,2020-08-21,"<h2>Shiny new things</h2>
 <ul>
 <li>A new template plugin is now available. Designate a template folder and insert any of them on command. In the plugin setting, you can tell the plugin what to replace <code>{{date}}</code> and <code>{{time}}</code>  with. <code>{{title}}</code> will be replaced by the title of the current file. You can also insert {{date:FORMAT}} to customize date formatting individually.</li>
@@ -899,7 +899,7 @@ version,platform,insider,date,info
 <li>Mermaid graphs that couldn't be rendered due to an error won't scroll the whole app anymore.</li>
 <li>Duplicate embeds, LaTeX, and code blocks now properly renders instead of having the first one disappear.</li>
 <li>Spellcheck correction is now properly applied when using custom CSS themes that reduce line height.</li>
-</ul>"
+</ul>",false
 00.08.06,desktop,true,2020-08-24,"<h2>Shiny new things</h2>
 <ul>
 <li>Local graph now has an option to specify number of jumps from the current note.</li>
@@ -930,13 +930,13 @@ version,platform,insider,date,info
 <li>Clicking outline items now navigates and highlights the correct line.</li>
 <li>Fixed parse fail when there are <code>&amp;amp;</code> or other HTML entities.</li>
 <li>Tooltips no longer clip out of view when they're at the edge of the screen.</li>
-</ul>"
+</ul>",false
 00.08.07,desktop,true,2020-08-24,"<h2>Changes</h2>
 <ul>
 <li>The cache file that was previously in <code>vault/.obsidian/cache</code> is now moved to the &quot;APPDATA&quot; folder under <code>APPDATA&#92;Obsidian&#92;ObsidianCache&#92;VAULT-ID.json</code>. This should resolve issues with sync applications that caused conflicts with this file. See <a href=""https://www.electronjs.org/docs/api/app#appgetpathname"">Electron documentation</a> for the precise location of APPDATA on your platform.</li>
 <li>Removed non-functional work-in-progress publish plugin that was accidentally added in v0.8.6.</li>
 <li>Removed console.log of the i18n dictionary that was also accidentally added in v0.8.6.</li>
-</ul>"
+</ul>",false
 00.08.08,desktop,true,2020-08-24,"<h2>Changes</h2>
 <ul>
 <li>Hovering the unlink pane button now highlights the pane itself as well.</li>
@@ -945,12 +945,12 @@ version,platform,insider,date,info
 <ul>
 <li>Clicking on a checkbox should check the correct box instead of the one 3 lines down, oops.</li>
 <li>Clicking an outline pane link would sometimes not work depending on pane configuration. That's fixed now.</li>
-</ul>"
+</ul>",false
 00.08.09,desktop,false,2020-08-31,"<h2>No longer broken</h2>
 <ul>
 <li>Linking to headings using <code>[[filename#]]</code> should now properly show suggestions when <code>#</code> is typed, instead of requiring an additional character to be typed first.</li>
 <li>In some rare cases, vaults with many files would freeze when loading up. This should be fixed now.</li>
-</ul>"
+</ul>",false
 00.08.10,desktop,true,2020-08-31,"<h2>Shiny new things</h2>
 <ul>
 <li>Search &amp; backlinks now has an option to sort results, similar to file explorer.</li>
@@ -975,7 +975,7 @@ version,platform,insider,date,info
 <li>Consecutive tables now include proper spacing between them instead of being stuck together.</li>
 <li>In the file explorer, you can now click on file names while renaming them without exiting rename mode.</li>
 <li>Fixed footnotes with embedded documents not linking to the right footnote reference when clicked.</li>
-</ul>"
+</ul>",false
 00.08.11,desktop,true,2020-09-01,"<h2>No longer broken</h2>
 <ul>
 <li>Removed extra space at the bottom of the app.</li>
@@ -991,7 +991,7 @@ version,platform,insider,date,info
 <li>LaTeX inline blocks <code>$$</code> no longer has the space &amp; digit requirements like <code>$</code>.</li>
 <li>WIP translucency plugin disabled, will be re-enabled next release.</li>
 <li>Updated translations.</li>
-</ul>"
+</ul>",false
 00.08.12,desktop,false,2020-09-07,"<h2>Shiny new things</h2>
 <ul>
 <li>Update Electron to v10.1.1.</li>
@@ -1003,7 +1003,7 @@ version,platform,insider,date,info
 <h2>No longer broken</h2>
 <ul>
 <li>Line wrapping used to cause a weird space to appear on the second line when the previous line ends with any kind of formatted text. This is fixed by the new Electron.</li>
-</ul>"
+</ul>",false
 00.08.13,desktop,true,2020-09-07,"<h2>Shiny new things</h2>
 <ul>
 <li>The entire app is now frameless. This also means you can use custom CSS to change the color/appearance of the top bar.</li>
@@ -1029,7 +1029,7 @@ version,platform,insider,date,info
 <li>Fixed search operator <code>tag</code> miss every other result within the same file.</li>
 <li>Fixed a rare occurence of scroll lost when typing in a scroll-synced edit/preview configuration.</li>
 <li>Fixed heading not highlighted in preview mode when using the outline plugin if heading is on the last line of the note.</li>
-</ul>"
+</ul>",false
 00.08.14,desktop,false,2020-09-10,"<h2>Changes</h2>
 <ul>
 <li>Auto-complete Markdown links now generates the note's name in the display text instead of the full path.</li>
@@ -1046,7 +1046,7 @@ version,platform,insider,date,info
 <li>Titlebar text is now properly centered.</li>
 <li>Folder and file suggestion popovers now show in the correct position when the page has scrollbars.</li>
 <li>When linking unlinked mentions, the linked entry should now disappear from unlinked mentions list.</li>
-</ul>"
+</ul>",false
 00.08.15,desktop,false,2020-09-14,"<h2>Shiny new things</h2>
 <ul>
 <li>The app now registers the URL scheme &quot;obsidian://&quot;. This will attempt to open a file in any previously opened vaults.
@@ -1083,7 +1083,7 @@ version,platform,insider,date,info
 <li>Drag and drop panes no longer cause the moved pane to lose CSS styles and pane headers.</li>
 <li>MacOS can now double click the frameless window header to zoom or un-zoom.</li>
 <li>Numbered lists with checkboxes now renders correctly.</li>
-</ul>"
+</ul>",false
 00.09.00,desktop,true,2020-09-21,"<h2>Shiny new things</h2>
 <ul>
 <li>Graph view has been completely revamped.
@@ -1150,7 +1150,7 @@ version,platform,insider,date,info
 <li>Splitting a new pane sometimes caused the new pane to be very thin. That should now be fixed.</li>
 <li>Clicking on <code>file:///</code> links should now work properly on Linux. This was broken on a previous release.</li>
 <li>On MacOS, sometimes when double clicking the app titlebar to zoom, the window disappears and can't be made to reappear even if restarting the app. This will no longer happen.</li>
-</ul>"
+</ul>",false
 00.09.01,desktop,false,2020-09-24,"<h2>Changes</h2>
 <ul>
 <li>Search queries on graph now applies to all nodes, including tags and links to files that haven't been created yet.</li>
@@ -1164,7 +1164,7 @@ version,platform,insider,date,info
 <li>Previewing documents with large images that are longer than your your screen no longer causes jumping or flickering when scrolling.</li>
 <li>Hovering graph nodes will now stop hovering when the node moves away from the cursor.</li>
 <li>In some rare situations, the app would freeze when loading, where nothing can be clicked and the app is completely unresponsive. This shouldn't happen anymore.</li>
-</ul>"
+</ul>",false
 00.09.02,desktop,false,2020-09-30,"<h2>Shiny new things</h2>
 <ul>
 <li>There is now a publish plugin that works with Obsidian Publish. For more information, check out the <a href=""https://publish.obsidian.md/help/Add-on%20services/Obsidian%20Publish"">Obsidian Publish Service</a></li>
@@ -1188,7 +1188,7 @@ version,platform,insider,date,info
 <li>Slides can now be styled via custom CSS without having to use more specific rules.</li>
 <li><code>obsidian://</code> URIs now fixed for Linux.</li>
 <li>Fixed more instances where preview scroll was reset when scrolling with large images.</li>
-</ul>"
+</ul>",false
 00.09.03,desktop,false,2020-10-05,"<h2>Shiny new things</h2>
 <ul>
 <li>Clicking on checkbox within an embed block or a hover preview now updates the underlying file.</li>
@@ -1207,7 +1207,7 @@ version,platform,insider,date,info
 <li>Local graph search filter no longer filters out the current file, which causes everything else to disappear.</li>
 <li>Resetting graph to default now properly resets forces as well.</li>
 <li>Changing search queries now saves to workspace properly.</li>
-</ul>"
+</ul>",false
 00.09.04,desktop,false,2020-10-13,"<h2>Shiny new things</h2>
 <ul>
 <li>In preview mode, internal links to notes that don't exist yet are now given the CSS class <code>is-unresolved</code>, and now shows up in a different color than links to existing notes.</li>
@@ -1242,7 +1242,7 @@ version,platform,insider,date,info
 <li>Fixed a possibility that the hover preview gets stuck when clicking on the link.</li>
 <li>Fixed some characters not decoded properly when using <code>obsidian://</code> URLs, such as the comma <code>%2C</code>.</li>
 <li>Removed duplicate backlinks for links within footnote definitions.</li>
-</ul>"
+</ul>",false
 00.09.05,desktop,true,2020-10-19,"<h2>Shiny new things</h2>
 <ul>
 <li>
@@ -1281,7 +1281,7 @@ version,platform,insider,date,info
 <li>Fixed inability to see the last few characters when editing table that's longer than screen width.</li>
 <li>Malformed Markdown URLs no longer cause parsing failures.</li>
 <li>Linking an unlinked mention now shows up in linked mention right away.</li>
-</ul>"
+</ul>",false
 00.09.06,desktop,false,2020-10-20,"<h2>Breaking changes</h2>
 <ul>
 <li>Block references now require the <code>^</code> character to be part of the link, like so: <code>[[Filename#^blockid]]</code>.</li>
@@ -1300,7 +1300,7 @@ version,platform,insider,date,info
 <ul>
 <li>Image size syntax now works for internal images using the Markdown standard link format.</li>
 <li>Link auto-complete no longer strip characters after a <code>.</code> in the filename when using Markdown links.</li>
-</ul>"
+</ul>",false
 00.09.07,desktop,true,2020-10-26,"<h2>Shiny new things</h2>
 <ul>
 <li>The Plugin API alpha is now available! Hype!
@@ -1328,7 +1328,7 @@ version,platform,insider,date,info
 <li>Fixed resizing panes sometimes glitches and causes other panes to become tiny.</li>
 <li>Fixed unable to change language when checking for updates.</li>
 <li>Fixed <code>ogv</code> video files not properly included.</li>
-</ul>"
+</ul>",false
 00.09.08,desktop,true,2020-10-29,"<h2>Shiny new things</h2>
 <ul>
 <li>There is now a community plugins page to discover and install third party plugins.
@@ -1351,7 +1351,7 @@ version,platform,insider,date,info
 <li>Fixed text wrapping to next line, then jumping back to the same line when adding space character.</li>
 <li>Sized images will now stay at their specified size, even if the pane is smaller.</li>
 <li>Extra unnecessary scrollbar from heading/block embeds have been removed.</li>
-</ul>"
+</ul>",false
 00.09.09,desktop,true,2020-10-29,"<h2>Improvements</h2>
 <ul>
 <li>API now exports <code>View</code>.</li>
@@ -1361,7 +1361,7 @@ version,platform,insider,date,info
 <ul>
 <li>Third party plugins should no longer be disabled on reload.</li>
 <li>Clicking on a graph node should no longer cause an error in the developer console.</li>
-</ul>"
+</ul>",false
 00.09.10,desktop,false,2020-10-30,"<h2>Shiny new things</h2>
 <ul>
 <li>Community plugins page now has a download count, and is sorted using it.</li>
@@ -1376,7 +1376,7 @@ version,platform,insider,date,info
 <ul>
 <li>Lists in slides no longer show the collapse indicator.</li>
 <li>Tables in edit mode no longer shows a weird space in the middle.</li>
-</ul>"
+</ul>",false
 00.09.11,desktop,false,2020-11-03,"<h2>Shiny new things</h2>
 <ul>
 <li>You can now export notes to PDF.</li>
@@ -1394,7 +1394,7 @@ version,platform,insider,date,info
 <h2>No longer broken</h2>
 <ul>
 <li>Word count now works for languages that previously didn't work, such as Hebrew and Georgian.</li>
-</ul>"
+</ul>",false
 00.09.12,desktop,true,2020-11-10,"<h2>Shiny new things</h2>
 <ul>
 <li>You can now right click internal links to see many file options, such as opening in new pane, revealing in file navigation, open with default app, etc.</li>
@@ -1416,7 +1416,7 @@ version,platform,insider,date,info
 <li>Hover previews now properly renders embeds.</li>
 <li>Indenting from a numbered list to an unordered list no longer causes <code>undefined</code> to appear.</li>
 <li>Printing to PDF no longer generates clickable <code>app://obsidian.md</code> links for internal links.</li>
-</ul>"
+</ul>",false
 00.09.13,desktop,true,2020-11-12,"<h2>Shiny new things</h2>
 <ul>
 <li>You can now right click on search results, backlinks and unlinked mentions to show a file menu for some shortcuts.</li>
@@ -1436,7 +1436,7 @@ version,platform,insider,date,info
 <li>Ctrl-click on internal links should now work on MacOS.</li>
 <li>Popups from IMEs for east Asian languages such as Chinese and Japanese should no longer obscure the line you're typing on.</li>
 <li>Internal links now render properly in footnotes.</li>
-</ul>"
+</ul>",false
 00.09.14,desktop,true,2020-11-13,"<h2>Improvements</h2>
 <ul>
 <li>A mechanism has been added to deprecate specific versions of third-party plugins known to cause data loss. A notification will be shown to indicate that such a plugin has been disabled.</li>
@@ -1447,7 +1447,7 @@ version,platform,insider,date,info
 <li>Fixed negative path filters in graph search causes tags to be removed.</li>
 <li>Mermaid Gantt charts are now properly sized according to the view size.</li>
 <li>Search results can be scrolled again.</li>
-</ul>"
+</ul>",false
 00.09.15,desktop,false,2020-11-17,"<h2>Improvements</h2>
 <ul>
 <li>The updater has been improved to properly use system proxy settings when fetching downloads. (Requires installer update)</li>
@@ -1456,7 +1456,7 @@ version,platform,insider,date,info
 <ul>
 <li>Fix popups from IMEs for east Asian languages such as Chinese and Japanese not properly positioned for heading with larger font than body text.</li>
 <li>Fixed search not working for double-quote full word match that includes punctuation characters.</li>
-</ul>"
+</ul>",false
 00.09.16,desktop,true,2020-11-19,"<h2>Shiny new things</h2>
 <ul>
 <li>You can now specify <code>aliases</code> in front matter. These will then show up in the <code>[[</code> link suggestion, and auto-complete to <code>[[Filename|alias]]</code>. They will also be picked up in unlinked mentions. For example: <code>aliases: [AI, Artificial Intelligence]</code>. Add double quotes around your alias if it contains special characters.</li>
@@ -1483,7 +1483,7 @@ version,platform,insider,date,info
 <li><code>Workspace.getActiveLeafOfViewType</code> has been renamed to <code>getActiveViewOfType</code>.</li>
 </ul>
 </li>
-</ul>"
+</ul>",false
 00.09.17,desktop,false,2020-11-21,"<h2>Shiny new things</h2>
 <ul>
 <li>Obsidian now has a native build for Apple M1 (Apple Silicon).</li>
@@ -1498,7 +1498,7 @@ version,platform,insider,date,info
 <ul>
 <li>Fixed unable to type in edit mode after inserting a template or opening command palette or quick switcher.</li>
 <li>Star/unstar file in more options menu has been added back.</li>
-</ul>"
+</ul>",false
 00.09.18,desktop,true,2020-11-25,"<h2>Shiny new things</h2>
 <ul>
 <li>You can now download multiple themes and switch between them. They are now stored in the <code>vault/.obsidian/themes</code> folder. Be sure to disable the legacy option for <code>obsidian.css</code> when you do so!</li>
@@ -1532,7 +1532,7 @@ version,platform,insider,date,info
 <li><code>moment.js</code> has been replaced with <code>moment-with-locales.js</code>.</li>
 <li>CodeMirror has been updated to v5.58.3.</li>
 <li>A new event <code>layout-change</code> is has been added to <code>Workspace</code>.</li>
-</ul>"
+</ul>",false
 00.09.19,desktop,true,2020-11-26,"<h2>Improvements</h2>
 <ul>
 <li>Exporting to PDF now respects the &quot;show frontmatter&quot; option.</li>
@@ -1545,7 +1545,7 @@ version,platform,insider,date,info
 <li>Fixed search and replace in edit mode.</li>
 <li>Open themes/snippets folder now works properly.</li>
 <li>Search, backlinks and unlinked mentions should no longer glitch out when collapsing all results.</li>
-</ul>"
+</ul>",false
 00.09.20,desktop,false,2020-12-02,"<h2>Shiny new things</h2>
 <ul>
 <li>Quick switcher now auto-completes for aliases as well.</li>
@@ -1566,7 +1566,7 @@ version,platform,insider,date,info
 <h2>Developers</h2>
 <ul>
 <li><code>SuggestModal</code> and <code>FuzzySuggestModal</code> are now available for use.</li>
-</ul>"
+</ul>",false
 00.09.21,desktop,true,2020-12-07,"<h2>Shiny new things</h2>
 <ul>
 <li><a href=""https://publish.obsidian.md/help/Obsidian+Sync"">Obsidian Sync</a> is now available and can now be purchased. It features:
@@ -1599,13 +1599,13 @@ version,platform,insider,date,info
 <h2>Developers</h2>
 <ul>
 <li>Fuzzy search related functions <code>prepareQuery</code>, <code>fuzzySearch</code>, <code>renderMatches</code>, <code>renderResults</code>, <code>sortSearchResults</code>, are now available.</li>
-</ul>"
+</ul>",false
 00.09.22,desktop,false,2020-12-08,"<h2>No longer broken</h2>
 <ul>
 <li>Fixed preview &quot;readable line width&quot; option.</li>
 <li>Fixed preview pane could not fold lists and headings.</li>
 <li>Fixed YAML front matter not shown even when option is turned on.</li>
-</ul>"
+</ul>",false
 00.10.00,desktop,true,2020-12-14,"<h2>Shiny new things</h2>
 <ul>
 <li>You can now select multiple files in file explorer using <code>Alt+Click</code>, or multiple consecutive files using <code>Shift+Click</code>.</li>
@@ -1663,7 +1663,7 @@ version,platform,insider,date,info
 <li><code>App.on('codemirror', callback)</code> has been moved to <code>Workspace.on('codemirror', callback)</code>. The old method will be deprecated and will now proxy to the new one. There is no more event system on <code>App</code>.</li>
 </ul>
 </li>
-</ul>"
+</ul>",false
 00.10.01,desktop,false,2020-12-16,"<h2>Shiny new things</h2>
 <ul>
 <li>Pasting HTML content will now be automatically converted to Markdown. Same for drag and drop. For example, links you drag from web pages will now generate <code>[Display text](https://url)</code> instead of previously just the URL.</li>
@@ -1683,7 +1683,7 @@ version,platform,insider,date,info
 <li>Drag and drop a file to open in a pane will now properly push the navigation history so going backwards feels more natural.</li>
 <li>Spellchecker will now split words that are adjacent to CJK characters.</li>
 <li>The &quot;explain search term&quot; button now works properly again.</li>
-</ul>"
+</ul>",false
 00.10.02,desktop,true,2020-12-21,"<h2>Shiny new things</h2>
 <ul>
 <li>You can now embed search queries in the page using the fenced code block syntax with <code>query</code> as the language, similar to how mermaid works. Note that this syntax does not work in Obsidian Publish.</li>
@@ -1708,7 +1708,7 @@ version,platform,insider,date,info
 <li>Exposed <code>WorkspaceItem.getRoot()</code> which returns one of <code>Workspace.leftSplit</code>, <code>Workspace.rightSplit</code>, or <code>Workspace.rootSplit</code>. This can be used to distinguish whether a <code>WorkspaceLeaf</code> is in the center area or the sidebars.</li>
 <li>A new event has been added to <code>Workspace.on('quit', callback: (tasks: Tasks) =&gt; any)</code>. This takes a callback with a <code>Tasks</code> object. You can perform any cleanup tasks in here. For any async/promise-based cleanups, such as saving files, add your task to the execution queue using <code>Tasks.add(async () =&gt; { ... })</code> or <code>Tasks.addPromise(promise)</code> so that the app waits until your task is finished before quitting.</li>
 <li>The rendering lifecycle has been tweaked to allow plugins to add sub-components in the renderer post process step. Look for <code>MarkdownPostProcessorContext.addChild</code> for more details.</li>
-</ul>"
+</ul>",false
 00.10.03,desktop,true,2020-12-29,"<h2>Shiny new things</h2>
 <ul>
 <li>Nested Tags: you can now nest tags with unlimited hierarchies using the syntax <code>#parent/child/subchild</code>.
@@ -1754,7 +1754,7 @@ version,platform,insider,date,info
 <ul>
 <li><code>Setting</code> and <code>BaseComponent</code> now have a <code>setDisabled</code> function that will disable its control. Disabling a setting will disable all of its components.</li>
 <li><code>Scope.registerKey</code> is now deprecated. It is replaced by <code>Scope.register</code>.</li>
-</ul>"
+</ul>",false
 00.10.04,desktop,true,2020-12-30,"<h2>Improvements</h2>
 <ul>
 <li>Hotkeys has been once again reworked to use a &quot;semi&quot; layout independent mode. This should properly recognize remapped layouts like AZERTY and Dvorak, but still provide layout-independence from number and symbol keys.</li>
@@ -1764,7 +1764,7 @@ version,platform,insider,date,info
 <h2>No longer broken</h2>
 <ul>
 <li>Fixed tag pane sometimes not showing some nested tags depending on the sorting algorithm used.</li>
-</ul>"
+</ul>",false
 00.10.05,desktop,true,2020-12-31,"<h2>Improvements</h2>
 <ul>
 <li>Opening Obsidian with an <code>obsidian://</code> URI no longer opens all previously opened vaults.</li>
@@ -1781,7 +1781,7 @@ version,platform,insider,date,info
 <li>In the editor, <code>#parent/child</code> nested tags will only have <code>cm-hashtag-end</code> on the last piece of <code>&lt;span&gt;</code> when spellchecker breaks the tag into multiple pieces.</li>
 <li><code>MarkdownRenderChild</code> has been properly exported.</li>
 <li>Elements in the file explorer now has their file path encoded in a <code>data-path</code> attribute to facilitate custom CSS targeting.</li>
-</ul>"
+</ul>",false
 00.10.06,desktop,false,2021-01-04,"<h2>Improvements</h2>
 <ul>
 <li>Tags are now case insensitive in graph view.</li>
@@ -1793,7 +1793,7 @@ version,platform,insider,date,info
 <li>Internal links can now be selected again in preview.</li>
 <li>Folding headings in preview no longer causes the subsequent area to stay blank until the page is scrolled.</li>
 <li>Dragging and dropping text with a <code>:</code> character no longer creates a Markdown link.</li>
-</ul>"
+</ul>",false
 00.10.07,desktop,false,2021-01-07,"<h2>Shiny new things</h2>
 <ul>
 <li>Tags can now be clicked on Obsidian Publish to show a list of other pages containing the same tag.</li>
@@ -1808,7 +1808,7 @@ version,platform,insider,date,info
 <h2>No longer broken</h2>
 <ul>
 <li>Tags with underscore <code>_</code> will now auto-complete properly.</li>
-</ul>"
+</ul>",false
 00.10.08,desktop,false,2021-01-11,"<h2>Shiny new things</h2>
 <ul>
 <li>Obsidian Publish can now restrict site access with one or multiple passwords.</li>
@@ -1840,7 +1840,7 @@ version,platform,insider,date,info
 <ul>
 <li>The <code>file-open</code> event is now fired in a debounced frame instead of synchronously running while the <code>activeLeaf</code> is being set.</li>
 <li>The <code>layout-ready</code> event will now only fire once when the app finish loading the workspace, instead of also triggering when loading a different workspace.</li>
-</ul>"
+</ul>",false
 00.10.09,desktop,false,2021-01-19,"<h2>Shiny new things</h2>
 <ul>
 <li>Obsidian Publish now supports custom domains, subdomains or a sub-folder of your website. For details, <a href=""https://publish.obsidian.md/help/Licenses+%26+add-on+services/Obsidian+Publish#Custom+domain"">see the help docs</a>.</li>
@@ -1865,7 +1865,7 @@ version,platform,insider,date,info
 <li>Backlink panes now updates file titles correctly when a file is renamed.</li>
 <li>Opening a dialog no longer lets you accidentally focus or make modifications to the document behind the dialog.</li>
 <li>Pasting as HTML no longer copies over the text from <code>&lt;style&gt;</code> tags.</li>
-</ul>"
+</ul>",false
 00.10.10,desktop,true,2021-01-25,"<h2>Shiny new things</h2>
 <ul>
 <li>You can now choose to show all files, even if Obsidian doesn't recognize the file extension. This will allow you to link to those files, see them in the File Explorer, and open them from the Quick Switcher.</li>
@@ -1884,11 +1884,11 @@ version,platform,insider,date,info
 <h2>Developers</h2>
 <ul>
 <li>The API <code>Plugin.registerExtensions()</code> will now allow the app to recognize the file extension without requiring the user to turn on the &quot;Detect all file extensions&quot; option. In combination with <code>Plugin.registerView()</code>, you can now create custom viewers or editors for any file type that we don't currently support.</li>
-</ul>"
+</ul>",false
 00.10.11,desktop,false,2021-01-28,"<h2>No longer broken</h2>
 <ul>
 <li>Fixed unable to install or update plugins due to a change in GitHub's hosting infrastructure.</li>
-</ul>"
+</ul>",false
 00.10.12,desktop,true,2021-02-01,"<h2>Shiny new things</h2>
 <ul>
 <li>There is now a new syntax for comments. Comments will not show up in preview.
@@ -1927,7 +1927,7 @@ version,platform,insider,date,info
 <li>A new abstract view <code>TextFileView</code> is now available for use. This class is an <code>EditableFileView</code> that additionally takes care of saving/loading the file contents. If you wish to extend this view, you can simply hook up the functions that interfaces with your editor and the rest should be taken care of.</li>
 <li>There is now a <code>debounce</code> function exposed for convenience.</li>
 <li>Due to popular demand, there is now a new <code>Plugin.registerMarkdownCodeBlockProcessor</code> helper that makes it easier to register a handler for a custom fenced code block, similar to <code>mermaid</code> and <code>query</code> embeds.</li>
-</ul>"
+</ul>",false
 00.10.13,desktop,false,2021-02-05,"<h2>Improvements</h2>
 <ul>
 <li>Graph view can now zoom out more.</li>
@@ -1940,7 +1940,7 @@ version,platform,insider,date,info
 <li>Revert mermaid patch which caused links to stop working.</li>
 <li>Fixed buttons in global search pane disappearing when pane is small.</li>
 <li>Fixed Markdown links sometimes not properly converting for space character.</li>
-</ul>"
+</ul>",false
 00.11.00,desktop,false,2021-02-09,"<h2>Shiny new things</h2>
 <ul>
 <li>You can divide nodes in graph view into groups based on queries, and customize the color of each group. Color all the nodes!</li>
@@ -1981,7 +1981,7 @@ version,platform,insider,date,info
 }
 </code></pre>
 </li>
-</ul>"
+</ul>",false
 00.11.01,desktop,true,2021-02-16,"<h2>Shiny new things</h2>
 <ul>
 <li>Obsidian will now recognize symlinks or folder junctions inside the vault. They are supported, but not recommended because of the many issues they can cause. <a href=""https://help.obsidian.md/Symbolic+links+and+junctions"">Learn more.</a></li>
@@ -2005,7 +2005,7 @@ version,platform,insider,date,info
 <li>Graph color groups no longer reset to black for some colors.</li>
 <li>Moving a file will no longer show a &quot;successfully renamed&quot; message.</li>
 <li>The toggle highlights command/hotkey will now toggle properly for multi-line selections.</li>
-</ul>"
+</ul>",false
 00.11.02,desktop,true,2021-02-18,"<h2>No longer broken</h2>
 <ul>
 <li>Fenced code blocks are now properly styled.</li>
@@ -2015,7 +2015,7 @@ version,platform,insider,date,info
 <li>On MacOS, to drag and drop files on panes, you now have to hold <code>Shift</code> instead of <code>Alt</code> due to MacOS overriding the <code>Alt</code>-drop behavior.</li>
 <li>On MacOS, to drag and drop files from the system explorer and copy the file into the vault, you now have to hold <code>Ctrl</code> instead of <code>Cmd</code> due to a similar issue.</li>
 <li>Fixed vaults not working inside an emulated file system, such as a Cryptomator drive.</li>
-</ul>"
+</ul>",false
 00.11.03,desktop,false,2021-02-20,"<h2>Shiny new things</h2>
 <ul>
 <li>Obsidian Publish now has an option to block search engines from indexing your site.</li>
@@ -2024,7 +2024,7 @@ version,platform,insider,date,info
 <ul>
 <li>Fixed couldn't drag and drop text around the editor.</li>
 <li>Drag and drop files from the system explorer has been restored to copy the file into the vault by default. Holding <code>Ctrl</code> will create a link instead.</li>
-</ul>"
+</ul>",false
 00.11.04,desktop,true,2021-02-26,"<h2>Shiny new things</h2>
 <ul>
 <li>You can now start a timelapse graph animation using a command.</li>
@@ -2045,7 +2045,7 @@ version,platform,insider,date,info
 <li>Fixed <code>Ctrl+Click</code> on MacOS not working as right click in graph view.</li>
 <li>Fixed middle click not working on graph view to open in new pane.</li>
 <li>Changing ignored folders or changing file type filters should no longer cause sync to delete some files accidentally.</li>
-</ul>"
+</ul>",false
 00.11.05,desktop,false,2021-03-02,"<h2>No longer broken</h2>
 <ul>
 <li>Toggle checklist now works again when the line is empty.</li>
@@ -2053,7 +2053,7 @@ version,platform,insider,date,info
 <li>Fixed tables wrapping in edit mode.</li>
 <li>Search suggestions should now be correctly rendered.</li>
 <li>Fixed scroll sync with embeds that contain lists.</li>
-</ul>"
+</ul>",false
 00.11.06,desktop,true,2021-03-09,"<h2>Shiny new things</h2>
 <ul>
 <li>A new command has been added for opening a new workspace while saving the current one.</li>
@@ -2068,7 +2068,7 @@ version,platform,insider,date,info
 <h2>No longer broken</h2>
 <ul>
 <li>Fixed a rare case sync race condition on high latency network when running on multiple devices. This would previously undo the last few characters typed into the document.</li>
-</ul>"
+</ul>",false
 00.11.07,desktop,true,2021-03-14,"<h2>Shiny new things</h2>
 <ul>
 <li>There is now a new File Recovery core plugin that keeps snapshots of your most recently edited files for recovery. This can be used to restore lost data in cases where a computer crash causes a file to be corrupted, or when a plugin malfunction causes a file to be wiped.</li>
@@ -2088,7 +2088,7 @@ version,platform,insider,date,info
 <li>Fix heading and list folding not persisted properly.</li>
 <li>Fix the link suggestion box stuck on page when opening a links using hotkey.</li>
 <li>Fixed rare case of Sync getting stuck on a merge failure.</li>
-</ul>"
+</ul>",false
 00.11.08,desktop,true,2021-03-21,"<h2>Improvements</h2>
 <ul>
 <li>Clicking on a search result will now expand any folded regions to highlight the match.</li>
@@ -2102,12 +2102,12 @@ version,platform,insider,date,info
 <li>File recovery items can now be scrolled.</li>
 <li>Sync will no longer get stuck trying to delete a folder that has files inside.</li>
 <li>Fixed file explorer glitching out when there are many hidden unsupported files.</li>
-</ul>"
+</ul>",false
 00.11.09,desktop,false,2021-03-21,"<h2>No longer broken</h2>
 <ul>
 <li>Fixed crash on new vault.</li>
 <li>Fixed plugin tabs not added to the correct setting section.</li>
-</ul>"
+</ul>",false
 00.11.10,desktop,true,2021-03-26,"<h2>Shiny new things</h2>
 <ul>
 <li>Backlinks and unlinked mentions can now be filtered using a search query.</li>
@@ -2133,7 +2133,7 @@ version,platform,insider,date,info
 <ul>
 <li><code>tiff</code> files are no longer listed as supported images. The browser engine didn't support it in the first place.</li>
 <li>Sync should no longer get stuck on files larger than 100mb.</li>
-</ul>"
+</ul>",false
 00.11.11,desktop,true,2021-04-01,"<h2>Improvements</h2>
 <ul>
 <li>Hover previews now always requires holding <code>Cmd/Ctrl</code>.</li>
@@ -2158,11 +2158,11 @@ version,platform,insider,date,info
 <ul>
 <li>There is now a mobile emulation flag that can be used to emulate mobile mode. Use <code>app.emulateMobile(true)</code> to turn on emulation and <code>app.emulateMobile(false)</code> to turn off.</li>
 <li>Officially starting to discourage the use of CodeMirror 5's API if possible, and migrate to using the <code>Editor</code> interface. The <code>Editor</code> interface supports Obsidian Mobile and will be used to power the future WYSIWYG mode. We will gradually add any missing APIs to ensure feature compatibility with the older CM5 API when possible.</li>
-</ul>"
+</ul>",false
 00.11.12,desktop,true,2021-04-01,"<h2>No longer broken</h2>
 <ul>
 <li>Fixed CSS snippets stopped working.</li>
-</ul>"
+</ul>",false
 00.11.13,desktop,false,2021-04-04,"<h2>Shiny new things</h2>
 <ul>
 <li>Page preview can now be configured to require Ctrl/Cmd on hover for each component independently.</li>
@@ -2177,7 +2177,7 @@ version,platform,insider,date,info
 <ul>
 <li>Empty aliases in frontmatter should no longer cause the backlink pane to spin forever.</li>
 <li>Sync should now properly delete folders with <code>.DS_Store</code>.</li>
-</ul>"
+</ul>",false
 00.12.00,desktop,true,2021-04-19,"<h2>Shiny new things</h2>
 <ul>
 <li>You can now search for tasks using <code>task:</code> similar to <code>block:</code>. There is also <code>task-todo:</code> and <code>task-done:</code> which will match only the tasks that are incomplete or complete, respectively. Use <code>task:&quot;&quot;</code> to match all tasks.</li>
@@ -2237,7 +2237,7 @@ version,platform,insider,date,info
 </li>
 <li><code>MarkdownRenderChild</code> now requires a <code>containerEl</code> passed in via its constructor.</li>
 <li>You can now retrieve section information as a <code>MarkdownPostProcessor</code> from the context object <code>MarkdownPostProcessorContext.getSectionInfo()</code>.</li>
-</ul>"
+</ul>",false
 00.12.01,desktop,true,2021-04-20,"<h2>Improvements</h2>
 <ul>
 <li>On initial loading of the vault, the cache indexing notification will now contain the indexing progress.</li>
@@ -2256,7 +2256,7 @@ version,platform,insider,date,info
 <h2>Developers</h2>
 <ul>
 <li>The HTML property on task lists has been changed from <code>data-checklist</code> to <code>data-task</code> to be consistent with internal code names.</li>
-</ul>"
+</ul>",false
 00.12.02,desktop,true,2021-05-03,"<h2>Shiny new things</h2>
 <ul>
 <li>Command palette can now be configured to have &quot;pinned&quot; commands that appear at the top.</li>
@@ -2288,11 +2288,11 @@ version,platform,insider,date,info
 <li>You can now specify an <code>editorCallback</code> or <code>editorCheckCallback</code> in a command that will register your command as an editor command, which will allow it to be added to the editor toolbar on mobile.</li>
 <li><code>Adapter</code> now has a <code>stat</code> function.</li>
 <li>There is now a <code>Platform</code> object that can be used to determine whether the app is on mobile, along with some other platform information.</li>
-</ul>"
+</ul>",false
 00.12.03,desktop,false,2021-05-10,"<h2>Improvements</h2>
 <ul>
 <li>Update Electron to v12.0.6.</li>
-</ul>"
+</ul>",false
 00.12.04,desktop,false,2021-05-25,"<h2>Shiny new things</h2>
 <ul>
 <li>Quick switcher now has an option to show links to files that haven't been created yet.</li>
@@ -2326,7 +2326,7 @@ version,platform,insider,date,info
 <h2>Developers</h2>
 <ul>
 <li>Status bar elements now have a css class of the plugin ID added to it, for example, <code>plugin-word-count</code>.</li>
-</ul>"
+</ul>",false
 00.12.05,desktop,false,2021-06-07,"<h2>Shiny new things</h2>
 <ul>
 <li>The template core plugin now has commands to insert the current time or the current date.</li>
@@ -2353,7 +2353,7 @@ version,platform,insider,date,info
 <h2>Developers</h2>
 <ul>
 <li>There is now a function available for converting HTML to Markdown called <code>htmlToMarkdown</code>, which is using a pre-configured Turndown Service.</li>
-</ul>"
+</ul>",false
 00.12.06,desktop,true,2021-06-21,"<h2>Shiny new things</h2>
 <ul>
 <li>There's a new core plugin called &quot;Note Composer&quot; that can help you merge and split notes quickly.
@@ -2383,7 +2383,7 @@ version,platform,insider,date,info
 <ul>
 <li>Fixed <code>data-path</code> not updated when folders are renamed.</li>
 <li>There is now a <code>editor-menu</code> event on <code>Workspace</code>, which can be used to add more options to the context menu inside the editor.</li>
-</ul>"
+</ul>",false
 00.12.07,desktop,true,2021-06-23,"<h2>Improvements</h2>
 <ul>
 <li>Obsidian Sync will now no longer store the sync configuration in <code>sync.json</code>, and instead store it inside the app's storage using IndexedDB. This should prevent third party sync tools from accidentally corrupting the sync status database.</li>
@@ -2398,7 +2398,7 @@ version,platform,insider,date,info
 <li>Fixed search operators <code>line:</code>, <code>section:</code> and <code>block:</code> not showing correct explanation text.</li>
 <li>Fixed Obsidian Sync sometimes causing duplicate files when creating and then immediately renaming files when latency to the sync server is high.</li>
 <li>Fixed unable to use certain characters on non-english keyboards when renaming files because the app thinks the keyboard is entering an illegal character.</li>
-</ul>"
+</ul>",false
 00.12.08,desktop,true,2021-06-28,"<h2>Shiny new things</h2>
 <ul>
 <li>Obsidian Sync can now be used to synchronize your settings, appearance tweaks, custom CSS, and installed plugins.</li>
@@ -2410,12 +2410,12 @@ version,platform,insider,date,info
 <ul>
 <li>Obsidian's config file has been split up into 4 different files. Previously, it was just <code>config</code>. Now it's <code>app.json</code>, <code>appearance.json</code>, <code>core-plugins.json</code> and <code>community-plugins.json</code>.</li>
 <li><code>registerMarkdownPostProcessor</code> and <code>registerMarkdownCodeBlockProcessor</code> will now return the <code>MarkdownPostProcessor</code> callback function to facilitate manual un-registration.</li>
-</ul>"
+</ul>",false
 00.12.09,desktop,true,2021-06-30,"<h2>No longer broken</h2>
 <ul>
 <li>Fixed settings don't get saved if they've been ever changed before the new format migration in v0.12.8.</li>
 <li>Fixed hotkeys don't get saved through a restart in some situations.</li>
-</ul>"
+</ul>",false
 00.12.10,desktop,false,2021-07-07,"<h2>Migration notice</h2>
 <ul>
 <li>Since hotkeys are now stored in a separate file, if you're using Obsidian on multiple devices you might notice that your hotkeys will disappear on non-upgraded Obsidian instances when using Obsidian Sync to sync your app config. To migrate, upgrade Obsidian and turn on the hotkeys sync flag to receive the hotkeys, then restart Obsidian.</li>
@@ -2433,7 +2433,7 @@ version,platform,insider,date,info
 <h2>Developers</h2>
 <ul>
 <li>Obsidian's config files will now be formatted json instead of all on one line.</li>
-</ul>"
+</ul>",false
 00.12.11,desktop,true,2021-07-19,"<h2>Shiny new things</h2>
 <ul>
 <li>Note composer now adds a context menu item to headings which lets you extract the heading as well as all of its child content to a different note.</li>
@@ -2453,7 +2453,7 @@ version,platform,insider,date,info
 <ul>
 <li>The <code>Editor</code> interface now has a way to set multiple selections.</li>
 <li>There is now an API to perform HTTP requests without any CORS restrictions. The API is called <code>request()</code>.</li>
-</ul>"
+</ul>",false
 00.12.12,desktop,false,2021-07-26,"<h2>Shiny new things</h2>
 <ul>
 <li>You can now use the keyboard to navigate and select context menus.</li>
@@ -2481,7 +2481,7 @@ version,platform,insider,date,info
 <li>Fixed note composer not leaving empty lines when splitting a heading.</li>
 <li>Removing a local vault from the vault switcher will now properly clears any associated cache, as well as disassociate it from Obsidian Sync.</li>
 <li>Fixed tables that are longer than the pane's width previously couldn't be scrolled all the way to the right side.</li>
-</ul>"
+</ul>",false
 00.12.13,desktop,true,2021-08-03,"<h2>Improvements</h2>
 <ul>
 <li>Graph view timelapse animation improvements:
@@ -2495,7 +2495,7 @@ version,platform,insider,date,info
 <h2>No longer broken</h2>
 <ul>
 <li>Fixed deleting a file that is currently open sometimes causes the file to come back.</li>
-</ul>"
+</ul>",false
 00.12.14,desktop,true,2021-08-23,"<h2>Shiny new things</h2>
 <ul>
 <li>Added rename heading utility in editor context menu, which will rename the heading and update links.</li>
@@ -2512,7 +2512,7 @@ version,platform,insider,date,info
 <li>Fixed Obsidian Publish upload interface unable to check and uncheck folders when collapsed.</li>
 <li>Fixed can't check for updates when auto-update is turned off.</li>
 <li>Fixed undo pasting also undoes the previous characters typed.</li>
-</ul>"
+</ul>",false
 00.12.15,desktop,false,2021-08-29,"<h2>Shiny new things</h2>
 <ul>
 <li>You can now select text and right click to search for it globally.</li>
@@ -2520,7 +2520,7 @@ version,platform,insider,date,info
 <h2>No longer broken</h2>
 <ul>
 <li>Fixed rename heading not working when using links from the same document.</li>
-</ul>"
+</ul>",false
 00.12.16,desktop,true,2021-09-14,"<h2>Shiny new things</h2>
 <ul>
 <li>Added a command to undo closed panes. Default hotkey is <code>Ctrl/Cmd+Shift+T</code>.</li>
@@ -2543,7 +2543,7 @@ version,platform,insider,date,info
 <ul>
 <li>There is now access to the following bundled libraries: PDF.js, Mermaid, Prism, MathJax. Each library does things a bit differently but we now expose functions to load them if they weren't loaded already: <code>loadPdfJs</code>, <code>loadMermaid</code>, <code>loadPrism</code>, <code>loadMathJax</code>.</li>
 <li><code>request</code> can now set HTTP headers.</li>
-</ul>"
+</ul>",false
 00.12.17,desktop,true,2021-10-06,"<h2>Shiny new things</h2>
 <ul>
 <li>The theme store has received a massive upgrade! The interface has been completely revamped, now with download counts, sorting options, and a button to update each theme.</li>
@@ -2575,14 +2575,14 @@ version,platform,insider,date,info
 <li><code>editor-drop</code> fired before the editor receives a drop event. Works the same was as the paste event.</li>
 </ul>
 </li>
-</ul>"
+</ul>",false
 00.12.18,desktop,true,2021-10-12,"<h2>No longer broken</h2>
 <ul>
 <li>Fixed link suggestions sometimes disappears with large vault.</li>
 <li>Fixed heading rename doesn't work if there was no link to the heading.</li>
 <li>Fixed empty sidebar does not save collapsed state properly.</li>
 <li>Fixed theme manager sometimes showing no theme installed.</li>
-</ul>"
+</ul>",false
 00.12.19,desktop,false,2021-10-15,"<h2>Improvements</h2>
 <ul>
 <li>Rename heading now has a command in addition to the previous context menu action.</li>
@@ -2592,7 +2592,7 @@ version,platform,insider,date,info
 <ul>
 <li>Fixed editor suggestions for links and tags sometimes not working due to a race condition.</li>
 <li>Fixed current theme delete button sometimes shows in the next line.</li>
-</ul>"
+</ul>",false
 00.13.00,desktop,true,2021-11-10,"<h2>Shiny new things</h2>
 <ul>
 <li>Live Preview (also known as &quot;WYSIWYG&quot; mode) is now available for insider testing.
@@ -2653,7 +2653,7 @@ version,platform,insider,date,info
 <li>There is now a function to sanitize HTML called <code>sanitizeHTMLToDom</code> which returns a <code>DocumentFragment</code> of the sanitized HTML content.</li>
 <li>You can now <code>setInstructions</code> for an <code>EditorSuggest</code>.</li>
 <li>There is now a <code>wordAt</code> function on the <code>Editor</code> interface.</li>
-</ul>"
+</ul>",false
 00.13.01,desktop,true,2021-11-11,"<h2>Live preview improvements</h2>
 <ul>
 <li>Separators (<code>---</code>) are now implemented.</li>
@@ -2671,7 +2671,7 @@ version,platform,insider,date,info
 <h2>No longer broken</h2>
 <ul>
 <li>The insider build toggle in Settings &gt; About is now back.</li>
-</ul>"
+</ul>",false
 00.13.02,desktop,false,2021-11-12,"<h2>Live preview improvements</h2>
 <ul>
 <li>Added <code>list-bullet</code> css class for theme styling.</li>
@@ -2682,7 +2682,7 @@ version,platform,insider,date,info
 <li>External link icon should no longer be shown for embedded images.</li>
 <li>Fixed having a URL in image alt text breaks parsing.</li>
 <li>Fixed barelinks in footnotes disappears.</li>
-</ul>"
+</ul>",false
 00.13.03,desktop,true,2021-11-19,"<h2>Live preview improvements</h2>
 <ul>
 <li>Backlink in document is now available for Live preview, which can be toggled in the pane menu.</li>
@@ -2712,7 +2712,7 @@ version,platform,insider,date,info
 <li>Fixed copy from preview mode sometimes doesn't copy all the text.</li>
 <li>Fixed toggle strikethrough always adds more <code>~~</code> instead of removing.</li>
 <li>Pressing <code>Enter</code> when in an empty nested block quote will now only exit one level of block quote.</li>
-</ul>"
+</ul>",false
 00.13.04,desktop,true,2021-11-19,"<h2>Live preview improvements</h2>
 <ul>
 <li>Fixed mouse drag selection jumpiness.</li>
@@ -2727,7 +2727,7 @@ version,platform,insider,date,info
 <h2>Improvements</h2>
 <ul>
 <li>Plugin and theme download counts now have thousands separators.</li>
-</ul>"
+</ul>",false
 00.13.05,desktop,true,2021-11-22,"<h2>Shiny new things</h2>
 <ul>
 <li>You can now use drag and drop to re-arrange heading sections from the Outline pane.</li>
@@ -2747,7 +2747,7 @@ version,platform,insider,date,info
 <h2>No longer broken</h2>
 <ul>
 <li>Fixed clicking on an external link freezes the app for engine versions using Electron 12.</li>
-</ul>"
+</ul>",false
 00.13.06,desktop,true,2021-11-25,"<h2>Live preview improvements</h2>
 <ul>
 <li>Inline LaTeX is now supported and rendered.</li>
@@ -2766,7 +2766,7 @@ version,platform,insider,date,info
 <li>Improved handling of custom panes when plugins are no longer installed.</li>
 <li>There is now a &quot;Copy share link&quot; in the community plugin's information page.</li>
 <li>Leftover panes from disabled plugins will no longer be automatically closed. They will now show up as an un-recognized pane, and if the plugin is re-enabled, they will work again.</li>
-</ul>"
+</ul>",false
 00.13.07,desktop,true,2021-12-03,"<h2>Live preview improvements</h2>
 <ul>
 <li>Spell checker languages can now be changed on Windows and Linux. On MacOS, the system native spell checker is used, which automatically detects the language.</li>
@@ -2790,7 +2790,7 @@ version,platform,insider,date,info
 <li>Global search panes will no longer continuously run in the background when the pane is not in view.</li>
 <li>Fixed overflowing tooltips.</li>
 <li>Fixed drag and drop internal links on Windows looks weird.</li>
-</ul>"
+</ul>",false
 00.13.08,desktop,true,2021-12-09,"<h2>Shiny new things</h2>
 <ul>
 <li>Obsidian Sync now has a bulk restore functionality for deleted files.</li>
@@ -2821,7 +2821,7 @@ version,platform,insider,date,info
 <ul>
 <li>Breaking change: the <code>data-task</code> css class has been moved to the line element, rather than being on each piece of <code>&lt;span&gt;</code>.</li>
 <li>The API for CodeMirror 6 has now been opened up. To deeply integrate with CodeMirror 6, you will be required to write an <code>Extension</code> to augment the editor. More details and tutorials will be available later.</li>
-</ul>"
+</ul>",false
 00.13.09,desktop,true,2021-12-13,"<h2>Live preview improvements</h2>
 <ul>
 <li>Restored legacy editor to be default for now.</li>
@@ -2845,7 +2845,7 @@ version,platform,insider,date,info
 <li>Improved Markdown formatting commands like bold and italics detection when selecting the outside layer.</li>
 <li>Markdown formatting commands now ignores whitespace characters at the beginning or ending of the selection when being applied.</li>
 <li>Backlink in document can now be turned on by default in the settings page of the core plugin &quot;Backlinks&quot;.</li>
-</ul>"
+</ul>",false
 00.13.10,desktop,true,2021-12-14,"<h2>Shiny new things</h2>
 <ul>
 <li>Added basic RTL (right-to-left) text support. The option can be found in Settings &gt; Editor.</li>
@@ -2870,7 +2870,7 @@ version,platform,insider,date,info
 <li>Fixed tooltips wrap text in awkward spots.</li>
 <li>Fixed outgoing links unlinked mentions cuts off items that has a dot in the file name.</li>
 <li>Fixed changing image alt text does not update in reading view.</li>
-</ul>"
+</ul>",false
 00.13.11,desktop,true,2021-12-17,"<h2>Shiny new things</h2>
 <ul>
 <li>There is now a new Core plugin called &quot;Editor status&quot; which adds a status bar item showing you the current editor mode. You can also use it to toggle the editor mode.</li>
@@ -2895,12 +2895,12 @@ version,platform,insider,date,info
 <ul>
 <li>The <code>changed</code> event on MetadataCache now contains the file contents as well as the parsed metadata object.</li>
 <li>There is now two helper functions for <code>HTMLElement</code>: <code>isShown()</code> which tells you whether this element is shown, and <code>onNodeInserted</code> which can add a callback for when the element is shown. These statuses depend on the element to be attached to the DOM and require not having any parent or ancestor with the css <code>display: none</code>.</li>
-</ul>"
+</ul>",false
 00.13.12,desktop,true,2021-12-17,"<h2>No longer broken</h2>
 <ul>
 <li>Fixed line wrapping not working with panes smaller than 700px.</li>
 <li>Fixed unresolved links in Live Preview not taking into account link aliases.</li>
-</ul>"
+</ul>",false
 00.13.13,desktop,true,2021-12-20,"<h2>No longer broken</h2>
 <ul>
 <li>Fixed Live Preview sometimes unable to drop at the end of the document.</li>
@@ -2910,12 +2910,12 @@ version,platform,insider,date,info
 <li>Fixed when using in document search or clicking on a global search result, the search highlight is sometimes hidden due to Live Preview.</li>
 <li>Fixed using in document search and replace does not highlight the next match when replacing.</li>
 <li>Fixed sometimes selecting multi-line text results in a weirdly rendered selection box.</li>
-</ul>"
+</ul>",false
 00.13.14,desktop,false,2021-12-21,"<h2>Improvements</h2>
 <ul>
 <li>When changing default edit mode between Live Preview and Source mode, the new setting will now be automatically applied to all panes.</li>
 <li>Fixed default edit mode, which will now use Live Preview when not using Legacy editor.</li>
-</ul>"
+</ul>",false
 00.13.15,desktop,true,2021-12-23,"<h2>Improvements</h2>
 <ul>
 <li>Edit mode now supports headings in lists.</li>
@@ -2937,7 +2937,7 @@ version,platform,insider,date,info
 <h2>Developers</h2>
 <ul>
 <li><code>getSectionInfo()</code> is now implemented for custom code blocks in Live Preview.</li>
-</ul>"
+</ul>",false
 00.13.16,desktop,true,2021-12-24,"<h2>Improvements</h2>
 <ul>
 <li>Switching between files will now keep the undo/redo history for the last 20 files, unless the file was changed externally. Not available for the legacy editor.</li>
@@ -2950,7 +2950,7 @@ version,platform,insider,date,info
 <li>Fixed a rare case of data loss due to race condition caused by clicking on a link and triggering the loading of the additional syntax highlighting library.</li>
 <li>Fixed gutter alignment for empty lines above headings.</li>
 <li>Fixed mermaid diagrams overflowing.</li>
-</ul>"
+</ul>",false
 00.13.17,desktop,true,2021-12-29,"<h2>Improvements</h2>
 <ul>
 <li>Improved list bullet rendering to avoid jumping in Live Preview.</li>
@@ -2966,7 +2966,7 @@ version,platform,insider,date,info
 <h2>Developers</h2>
 <ul>
 <li>Heads up to theme developers: the <code>.list-bullet</code> CSS has been reworked. It will now keep the original character and superimpose the dot using the <code>:after</code> pseudo-element.</li>
-</ul>"
+</ul>",false
 00.13.18,desktop,true,2022-01-02,"<h2>Improvements</h2>
 <ul>
 <li>Improved fold indicators in new editor. They will now appear closer to the line's text rather than all the way at the left edge.</li>
@@ -2990,14 +2990,14 @@ version,platform,insider,date,info
 <h2>Developers</h2>
 <ul>
 <li>Added <code>.cm-active</code> to gutter elements as well.</li>
-</ul>"
+</ul>",false
 00.13.19,desktop,false,2022-01-05,"<h2>No longer broken</h2>
 <ul>
 <li>Fixed automatic numbering of lists doesn't stop at the end of the list and accidentally changes the numbers of lists further down the document.</li>
 <li>Fixed sometimes undo/redo combines multiple consecutive operations like typing and pasting into a single change.</li>
 <li>Fixed when redoing a change, the cursor would be put in the wrong spot afterwards.</li>
 <li>Fixed sometimes bad HTML causes Live Preview to crash with an error.</li>
-</ul>"
+</ul>",false
 00.13.20,desktop,true,2022-01-17,"<h2>Improvements</h2>
 <ul>
 <li>The new editor now supports the <code>cssclass</code> frontmatter property.</li>
@@ -3036,7 +3036,7 @@ version,platform,insider,date,info
 <li>The debug info command now includes the OS information.</li>
 <li>There is now a new <code>editorLivePreviewField: StateField&lt;boolean&gt;</code> that can be used to check whether Live Preview is enabled in the editor.</li>
 <li>Fixed out-of-bound <code>{line,ch}</code> pairs causes error with new editor.</li>
-</ul>"
+</ul>",false
 00.13.21,desktop,true,2022-01-17,"<h2>No longer broken</h2>
 <ul>
 <li>Fixed legacy editor crashes when using frontmatter.</li>
@@ -3046,7 +3046,7 @@ version,platform,insider,date,info
 <h2>Developers</h2>
 <ul>
 <li>Introduced <code>apiVersion: string</code> and <code>requireApiVersion(version: string): boolean</code> to help with API version requirements. Plugin authors can use this function to limit functionality that depends on new Obsidian APIs to avoid crashing on older versions of Obsidian.</li>
-</ul>"
+</ul>",false
 00.13.22,desktop,true,2022-01-24,"<h2>No longer broken</h2>
 <ul>
 <li>Fixed external URLs with <code>%</code> encodings stopped working.</li>
@@ -3064,14 +3064,14 @@ version,platform,insider,date,info
 <li>Added an option in community plugin pane to help debug slow plugin startup times.</li>
 <li>Fixed <code>editorLivePreviewField</code> not dynamically updated when Live preview is turned on/off.</li>
 <li>Added <code>data-type</code> to tab header elements.</li>
-</ul>"
+</ul>",false
 00.13.23,desktop,false,2022-01-27,"<h2>No longer broken</h2>
 <ul>
 <li>Fixed external URLs with <code>%</code> encodings stopped working but wasn't fully fixed last release.</li>
 <li>Fixed renaming files with <code>$</code> signs sometimes causes links to be generated incorrectly.</li>
 <li>Fixed link suggestion crashes when using Markdown links.</li>
 <li>Fixed link suggestion showing &quot;no results found&quot; when only one exact match found.</li>
-</ul>"
+</ul>",false
 00.13.24,desktop,true,2022-02-04,"<h2>Improvements</h2>
 <ul>
 <li>Reduced the chances of Obsidian Sync duplicating the contents of a note when it encounters a conflicting new note which is modified both locally and remotely. It will now keep the latest version when this happens. (This patch is only fully effective when all of your devices are upgraded to this version)</li>
@@ -3084,7 +3084,7 @@ version,platform,insider,date,info
 <li>Fixed heading fold broken when multiple space characters are used after <code>#</code>.</li>
 <li>Fixed plugins unable to load when using esbuild's new esmodule format.</li>
 <li>Fixed toggling checklists only adds list bullet when no lists exist.</li>
-</ul>"
+</ul>",false
 00.13.25,desktop,true,2022-02-18,"<h2>Shiny new things</h2>
 <ul>
 <li>Clicking on links in Live Preview will now open them directly.
@@ -3121,12 +3121,12 @@ version,platform,insider,date,info
 <li><code>TFile.unsafeCachedData</code> has been removed and is now stored in a private inaccessible <code>WeakMap</code> to avoid accidental use of this unsafe data.</li>
 <li>There is now a new <code>requestUrl</code> API function that returns an object with the http response <code>status</code>, <code>headers</code>, as well as getters for <code>arrayBuffer</code>, <code>json</code>, and <code>text</code>. This is a more advanced version of the <code>request</code> API. (Requires API version 0.13.25)</li>
 <li>The <code>request</code> and the new <code>requestUrl</code> functions can now accept a body of type ArrayBuffer.</li>
-</ul>"
+</ul>",false
 00.13.26,desktop,true,2022-02-18,"<h2>No longer broken</h2>
 <ul>
 <li>Fixed several themes broken due to the new <code>&lt;img&gt;</code> placeholders.</li>
 <li>Fixed reading view images without width/height gaining a null width/height attribute when the paragraph is edited.</li>
-</ul>"
+</ul>",false
 00.13.27,desktop,true,2022-02-28,"<h2>Shiny new things</h2>
 <ul>
 <li>Added new &quot;Cycle bullet/checkbox&quot; command that cycles between regular bullet, checkbox, and checked checkbox.</li>
@@ -3160,7 +3160,7 @@ version,platform,insider,date,info
 <li>There is a new <code>deleted</code> event on <code>MetadataCache</code> now.</li>
 <li><code>DataAdapter.stat</code> now returns the OS <code>mtime</code> and <code>ctime</code> for folders.</li>
 <li>Obsidian's icon library now supports all icons from <code>lucide</code>, a currently maintained fork of <code>feather-icons</code> with 547 supported icons. No need to import <code>feather-icons</code> anymore. You can browse them at <a href=""https://lucide.dev/"">Lucide.dev</a></li>
-</ul>"
+</ul>",false
 00.13.28,desktop,true,2022-03-01,"<h2>Improvements</h2>
 <ul>
 <li><code>Enter</code> on empty line now exits blockquotes again, and <code>Shift+Enter</code> has been improved to work as &quot;soft line wrap&quot; where it will smartly add indentation to keep you in the same list/blockquote but on the next line.</li>
@@ -3169,7 +3169,7 @@ version,platform,insider,date,info
 <ul>
 <li>Fixed outgoing links unlinked mention section stopped working.</li>
 <li>Fixed dollar signs in wikilinks parsed as math.</li>
-</ul>"
+</ul>",false
 00.13.29,desktop,true,2022-03-05,"<h2>Improvements</h2>
 <ul>
 <li>Slightly improved typing performance in global search.</li>
@@ -3181,7 +3181,7 @@ version,platform,insider,date,info
 <li>Fixed embedding indented list items sometimes render as code.</li>
 <li>Fixed pasting image files not working on macOS sometimes.</li>
 <li>Fixed embedding list items with children using different list symbols (for example <code>-</code> vs <code>*</code>) not working.</li>
-</ul>"
+</ul>",false
 00.13.30,desktop,false,2022-03-07,"<h2>Shiny new things</h2>
 <ul>
 <li>Major engine upgrade from Electron 13 to 16.
@@ -3196,7 +3196,7 @@ version,platform,insider,date,info
 <li>Fixed pasting images from websites.</li>
 <li>Fixed search and replace commands not working when search is already open.</li>
 <li>Fixed search in reading view always override search hotkeys from another pane.</li>
-</ul>"
+</ul>",false
 00.13.31,desktop,false,2022-03-08,"<h2>Shiny new things</h2>
 <ul>
 <li>Major engine upgrade from Electron 16 to 17.  This version fixes issues with emoji rendering in Electron 16.</li>
@@ -3207,17 +3207,17 @@ version,platform,insider,date,info
 <li>Fixed unable to open help vault.</li>
 <li>Fixed comment <code>%%</code> parsing regression in edit mode.</li>
 <li>Fixed cursor jumps back with some IMEs in Live Preview.</li>
-</ul>"
+</ul>",false
 00.13.32,desktop,true,2022-03-09,"<h2>No longer broken</h2>
 <ul>
 <li>Fixed typing with IME causes text duplication on Windows and Linux.</li>
 <li>Fixed lag caused by file explorer in large vaults due to a Chromium bug.</li>
 <li>Fixed Obsidian starts up with a blank window for a split second.</li>
-</ul>"
+</ul>",false
 00.13.33,desktop,false,2022-03-10,"<h2>No longer broken</h2>
 <ul>
 <li>Fixed wrong release built in 0.13.32.</li>
-</ul>"
+</ul>",false
 00.14.00,desktop,true,2022-03-14,"<h2>Callouts</h2>
 <p>Obsidian Markdown now allows you to create callout blocks (sometimes called &quot;admonitions&quot;). Callouts are written as a blockquote, inspired by the &quot;alert&quot; syntax from Microsoft Docs.</p>
 <p>A big shoutout to <code>@javalent</code> from the community for creating and maintaining the Admonitions plugin, from whom we've gotten a ton of help and inspiration!</p>
@@ -3261,7 +3261,7 @@ version,platform,insider,date,info
 <li>Plugin inline sourcemaps are now stripped for performance unless the debug startup time option is enabled.</li>
 <li>Fixed using <code>position: relative</code> on lists in reading mode causes scroll sync to be completely broken.</li>
 <li>Indentation guides in the editor are styled using the CSS class <code>cm-indent</code>, and will gain <code>cm-active-indent</code> for the indent closest to the selected line.</li>
-</ul>"
+</ul>",false
 00.14.01,desktop,true,2022-03-16,"<h2>Shiny new things</h2>
 <ul>
 <li>Live Preview now supports basic Markdown tables previewing.</li>
@@ -3282,7 +3282,7 @@ version,platform,insider,date,info
 <li>Fixed folding in Live Preview unfolds instantly if the text selection was placed in the folded block.</li>
 <li>Fixed hover page preview on Markdown links not working.</li>
 <li>Fixed copy code block button not showing in reading view.</li>
-</ul>"
+</ul>",false
 00.14.02,desktop,false,2022-03-17,"<h2>Shiny new things</h2>
 <ul>
 <li>Starred files now support hover page preview.</li>
@@ -3291,7 +3291,7 @@ version,platform,insider,date,info
 <ul>
 <li>Fixed consecutive tables in Live Preview are rendered together.</li>
 <li>Fixed queries in callouts not working.</li>
-</ul>"
+</ul>",false
 00.14.03,desktop,true,2022-03-28,"<h2>Shiny new things</h2>
 <ul>
 <li>You can now move, rename or locate your vaults directly from the vault switcher.</li>
@@ -3330,7 +3330,7 @@ version,platform,insider,date,info
 <li>Obsidian URI's <code>new</code> action now has an optional <code>append</code> flag and an optional <code>overwrite</code> flag. If <code>append</code> is set, it will append to an existing file if one is found. If <code>override</code> is set, it will overwrite an existing file if one is found, but only if <code>append</code> isn't set.</li>
 <li>Obsidian URI's <code>new</code> and <code>hook-get-address</code> actions can now optionally accept <code>x-success</code> as part of the <code>x-callback-url</code> specifications, and will return a <code>name</code>, <code>url</code>, and <code>file</code> (<code>file://</code>) as the returned URL parameters.</li>
 <li><code>Menu</code> constructor no longer requires <code>App</code> to be passed in.</li>
-</ul>"
+</ul>",false
 00.14.04,desktop,true,2022-03-31,"<h2>Shiny new things</h2>
 <ul>
 <li>Font settings can now list all fonts installed in the system (requires installer update to v0.14.4).</li>
@@ -3366,7 +3366,7 @@ version,platform,insider,date,info
 <li>There is now a <code>--font-interface-theme</code> and <code>--font-text-theme</code> dedicated for themes to set the fonts.</li>
 <li>Each theme and snippet is now put into its own <code>&lt;style&gt;</code> tag to avoid issues with imports not working.</li>
 <li><code>app</code> is now officially available as a global variable.</li>
-</ul>"
+</ul>",false
 00.14.05,desktop,false,2022-04-01,"<h2>Shiny new things</h2>
 <ul>
 <li>Updated installer to Electron 18.0.3 which fixes several bugs that were in Electron 17.
@@ -3387,7 +3387,7 @@ version,platform,insider,date,info
 <li>Reduced lag caused by big exclusion filters with Obsidian Sync.</li>
 <li>Fixed headings in lists causing indentation guides to misalign.</li>
 <li>Fixed monospaced font not applied.</li>
-</ul>"
+</ul>",false
 00.14.06,desktop,false,2022-04-11,"<h2>Shiny new things</h2>
 <ul>
 <li>You can now add folders to an ignore filter. Files matched by this filter will be down-ranked when using Quick Switcher and link suggestions, and will be excluded in search results and graph view.</li>
@@ -3405,7 +3405,7 @@ version,platform,insider,date,info
 <li>Dragging items and resizing panes should no longer get stuck when moving across <code>&lt;iframe&gt;</code> and <code>&lt;webview&gt;</code>.</li>
 <li>Dragging and dropping files from outside Obsidian should no longer cause its contents to be inserted before or after the link.</li>
 <li>Fixed soft-wrapping not working if line was folded when the note was opened.</li>
-</ul>"
+</ul>",false
 00.14.07,desktop,true,2022-04-25,"<h2>Improvements</h2>
 <ul>
 <li>Unlinked mentions now also skip over ignored files.</li>
@@ -3426,7 +3426,7 @@ version,platform,insider,date,info
 <h2>Developer</h2>
 <ul>
 <li>Updated Lucide to v0.30.0.</li>
-</ul>"
+</ul>",false
 00.14.08,desktop,true,2022-05-03,"<h2>Shiny new things for Obsidian Publish</h2>
 <ul>
 <li>
@@ -3482,11 +3482,11 @@ version,platform,insider,date,info
 <li>Fixed tab not working in modals.</li>
 <li><code>registerDomEvent</code> can now take an options object (for things like <code>{capture: true}</code>).</li>
 <li>Added <code>goWordLeft</code> and <code>goWordRight</code> editor commands.</li>
-</ul>"
+</ul>",false
 00.14.09,desktop,true,2022-05-03,"<h2>No longer broken</h2>
 <ul>
 <li>Fixed Obsidian Publish frontmatter <code>publish</code> flag not working.</li>
-</ul>"
+</ul>",false
 00.14.10,desktop,true,2022-05-10,"<h2>Shiny new things</h2>
 <ul>
 <li>You can now share your Obsidian Sync vaults with others.
@@ -3505,7 +3505,7 @@ version,platform,insider,date,info
 <li>Fixed some multi-character glyphs not rendering correctly due to an older version of the &quot;Inter&quot; font.</li>
 <li>Fixed Obsidian Publish menu option for &quot;Open in live site&quot; not opening the correct URL.</li>
 <li>Fixed <code>jsp</code> code blocks causes the editor parsing to crash.</li>
-</ul>"
+</ul>",false
 00.14.11,desktop,true,2022-05-16,"<h2>Improvements</h2>
 <ul>
 <li>You can now move or delete multiple selected items via the right-click context menu in the File Explorer.</li>
@@ -3517,13 +3517,13 @@ version,platform,insider,date,info
 <li>Hotkeys will no longer trigger multiple times when you hold down the hotkey.</li>
 <li>Links created by LaTeX or Mermaid will no longer accidentally navigate the app to an empty white page.</li>
 <li>Fixed vim mode has a blinking thin caret alongside the vim caret.</li>
-</ul>"
+</ul>",false
 00.14.12,desktop,true,2022-05-16,"<h2>No longer broken</h2>
 <ul>
 <li>Fixed holding down keys in the editor not working.</li>
 <li>Fixed vim mode cursor not updating position when focus leaves the editor.</li>
 <li>Fixed height computation disrupted by some themes resetting the <code>contain</code> property.</li>
-</ul>"
+</ul>",false
 00.14.13,desktop,true,2022-05-24,"<h2>Shiny new things</h2>
 <ul>
 <li>You can now rename block IDs when right clicking on the block ID, which will update all the references to that block ID.</li>
@@ -3543,7 +3543,7 @@ version,platform,insider,date,info
 <li>Fixed note composer &quot;merge note&quot; not properly updating links after merging.</li>
 <li>Fixed IME broken when typing on a line before a heading that starts with a space character.</li>
 <li>Fixed identical custom code blocks in Live Preview goes stale when switching documents.</li>
-</ul>"
+</ul>",false
 00.14.14,desktop,true,2022-05-26,"<h2>No longer broken</h2>
 <ul>
 <li>Fixed typing with IME sometimes causes the text to not get styled properly until another change is performed.</li>
@@ -3552,11 +3552,11 @@ version,platform,insider,date,info
 <li>Fixed Live Preview scrolling with scrollbar not re-rendering properly.</li>
 <li>Fixed File explorer not highlighting items properly when right clicking.</li>
 <li>Daily notes with templates are now created in a single step, instead of being created empty first and filled in after.</li>
-</ul>"
+</ul>",false
 00.14.15,desktop,false,2022-05-27,"<h2>No longer broken</h2>
 <ul>
 <li>Fixed typing with IME causes fold indicators to move around the note.</li>
-</ul>"
+</ul>",false
 00.15.00,desktop,true,2022-06-14,"<h2>Shiny new things</h2>
 <ul>
 <li>New &quot;Open in New Window&quot; command for opening views in a separate window.</li>
@@ -3587,7 +3587,7 @@ version,platform,insider,date,info
 <ul>
 <li>CodeMirror 6 has been updated from v0.19 to v6.0. If your plugin uses cm6 extensions, please upgrade to v6.0 soon, and make sure you set your <code>minAppVersion</code> to 0.15.0.</li>
 <li>Upgraded MathJax to v3.2.1.</li>
-</ul>"
+</ul>",false
 00.15.01,desktop,true,2022-06-15,"<h2>Shiny new things</h2>
 <ul>
 <li>The Tag pane can now be navigated with the keyboard.</li>
@@ -3613,7 +3613,7 @@ version,platform,insider,date,info
 <ul>
 <li>To account for sidebar views being able to receive focus, we have deprecated several <code>Workspace</code> functions whose behavior conflicted with user expectations.</li>
 <li>Added <code>.is-focused</code> class to the window body of the currently focused window.</li>
-</ul>"
+</ul>",false
 00.15.02,desktop,true,2022-06-17,"<h2>Improvements</h2>
 <ul>
 <li>Pressing <code>Esc</code> with a sidebar view focused will refocus your last note.</li>
@@ -3632,7 +3632,7 @@ version,platform,insider,date,info
 <ul>
 <li>Added <code>mod-active</code> class to the tab headers when the view is active.</li>
 <li>Updated Mermaid to v9.1.2.</li>
-</ul>"
+</ul>",false
 00.15.03,desktop,true,2022-06-17,"<h2>Shiny new things</h2>
 <ul>
 <li>You can now drag and drop panes across multiple windows.</li>
@@ -3677,7 +3677,7 @@ version,platform,insider,date,info
 <li><code>MenuItem</code> now has a new method <code>setSection(string)</code>. Items from the same section will be grouped together, in the order they were defined or first used. The default section (empty string) will contain all legacy/plugin/unspecified menu items and is usually put into a specific spot of the sort order (for example, before the danger items). Inspect the DOM to see existing sections' <code>data-section</code>.</li>
 <li>We've removed the ability to create <code>MenuItem</code> directly - please use <code>Menu.addItem</code> instead.</li>
 <li>On <code>View</code>, we've deprecated the <code>onHeaderMenu</code> and <code>onMoreOptionsMenu</code> in favor of a single <code>onPaneMenu</code> function with a <code>source</code> parameter. This new method will be used for both the header menu (right clicking on a tab header in the sidebar) and the more options menu (three dot menu).</li>
-</ul>"
+</ul>",false
 00.15.04,desktop,true,2022-07-05,"<h2>Shiny new things</h2>
 <ul>
 <li>Added &quot;Toggle always on top&quot; command to pin pop-out windows above all other windows on your desktop.</li>
@@ -3717,7 +3717,7 @@ version,platform,insider,date,info
 </li>
 <li>The behavior of <code>workspace.getActiveFile</code> has been updated to now return the file of the most recently active FileView. This change should improve compatibility for custom views now that sidebar views are focusable. If you were previously using <code>workspace.getMostRecentlyActiveFile</code> for v0.15.X compatibility, please switch back to <code>getActiveFile</code>.</li>
 <li>Note: Theme developers can avoid overriding the macOS native scrollbars by targeting <code>body:not(.native-scrollbars)</code> for any scrollbar styling.</li>
-</ul>"
+</ul>",false
 00.15.05,desktop,true,2022-07-08,"<h2>Improvements</h2>
 <ul>
 <li>Renamed &quot;Open current pane to new window&quot; command to &quot;Move current pane to new window.&quot;</li>
@@ -3740,7 +3740,7 @@ version,platform,insider,date,info
 <ul>
 <li>If a plugin view crashes when getting created, the view will properly get cleaned up.</li>
 <li><code>leaf.view</code> can now never be null.</li>
-</ul>"
+</ul>",false
 00.15.06,desktop,true,2022-07-12,"<h2>No longer broken</h2>
 <ul>
 <li>Fixed checkboxes not working in Live Preview.</li>
@@ -3749,7 +3749,7 @@ version,platform,insider,date,info
 <li>Fixed linked panes keeps stealing focus when navigated.</li>
 <li>Fixed LaTeX math not rendering in pop-out windows.</li>
 <li>Fixed &quot;Show File Explorer&quot; and other similar commands not focusing on the pane when activated.</li>
-</ul>"
+</ul>",false
 00.15.07,desktop,true,2022-07-18,"<h2>No longer broken</h2>
 <ul>
 <li>Fixed &quot;Inter&quot; not showing up in the font list. It will now appear at the top of the list for easy access.</li>
@@ -3760,7 +3760,7 @@ version,platform,insider,date,info
 <li>Escape no longer unfocuses a sidebar editor pane.</li>
 <li>The app will now fallback to a Github proxy when Github is inaccessible.</li>
 <li>Switching workspaces will now properly close all pop-out windows.</li>
-</ul>"
+</ul>",false
 00.15.08,desktop,false,2022-07-22,"<h2>Improvements</h2>
 <ul>
 <li>Added support for .mov and .mkv files. Exact codec support may vary by platform.</li>
@@ -3776,9 +3776,9 @@ version,platform,insider,date,info
 <li>The app will now fallback to a Github proxy when Github is inaccessible.</li>
 <li>Switching workspaces will now properly close all pop-out windows.</li>
 <li>Live Preview: Toggling checklist items in callout will no longer cause the callout to get collapsed.</li>
-</ul>"
+</ul>",false
 00.15.09,desktop,false,2022-07-26,"<h2>No longer broken</h2>
-<p>Fixed copying and pasting using the context menu.</p>"
+<p>Fixed copying and pasting using the context menu.</p>",false
 00.16.00,desktop,true,2022-09-29,"<h2>Note about custom themes</h2>
 <p>Major changes have been made to Obsidian's styling. If you are using a custom theme, make sure you update the theme to the latest version. If you are still seeing visual anomalies, we recommend switching to the default theme for the time being.</p>
 <h2>Shiny new things</h2>
@@ -3850,7 +3850,7 @@ version,platform,insider,date,info
 <p><strong>Q.</strong> How do I open notes side-by-side now?</p>
 <blockquote>
 <p>The behavior of <code>Cmd/Ctrl + Enter</code> and <code>Cmd/Ctrl + Click</code> have changed to opening links in a new tab. To open links in a new pane to the right, you can use <code>Cmd/Ctrl + Alt + Enter</code> or <code>Cmd/Ctrl + Alt + Click</code>.</p>
-</blockquote>"
+</blockquote>",false
 00.16.01,desktop,false,2022-08-31,"<h2>Improvements</h2>
 <ul>
 <li>The setting <strong>Appearance → Show view header</strong> has been renamed to <strong>Appearance → <em>Show tab title bar</em></strong>.</li>
@@ -3873,7 +3873,7 @@ version,platform,insider,date,info
 <li>Fixed misaligned logo in custom mode.</li>
 <li>Fixed status bar jitter when word count updates.</li>
 <li>macOS: Tweaked location of traffic lights when zoomed in/out.</li>
-</ul>"
+</ul>",false
 00.16.02,desktop,true,2022-09-02,"<h2>Shiny new things</h2>
 <p><img src=""https://user-images.githubusercontent.com/693981/188205363-0f24b2a5-3706-4a8c-b38b-7a66baa68ce6.gif"" alt=""tab-stacks""></p>
 <ul>
@@ -3891,7 +3891,7 @@ version,platform,insider,date,info
 <li>Theme modal will now show legacy themes that you have installed locally.</li>
 <li>Fixed &quot;backlink in document&quot; buttons not working.</li>
 <li>Outline view will only scroll the associated tab instead of all tabs with the same file.</li>
-</ul>"
+</ul>",false
 00.16.03,desktop,true,2022-09-19,"<h2>Shiny new things</h2>
 <ul>
 <li>Introducing <strong>per-tab history</strong>. Each tab now maintains its own history stack for navigation.</li>
@@ -3917,7 +3917,7 @@ version,platform,insider,date,info
 <li>macOS: Fixed &quot;Show context menu&quot; command not working with spelling corrections.</li>
 <li>Publish: fixed &quot;use live version&quot; not working with locally deleted files.</li>
 <li>Translucency is now disabled in fullscreen mode.</li>
-</ul>"
+</ul>",false
 00.16.04,desktop,true,2022-10-03,"<h2>No longer broken</h2>
 <ul>
 <li>&quot;Save File&quot; command now works with all text files, not just Markdown files.</li>
@@ -3926,12 +3926,12 @@ version,platform,insider,date,info
 <li>Fixed bug where inline document backlinks would sometimes render with a long scrollbar.</li>
 <li>Live Preview: Fixed bare emails not showing as links when appearing the middle of a line.</li>
 <li>Mermaid: improved rendering.</li>
-</ul>"
+</ul>",false
 00.16.05,desktop,true,2022-10-06,"<h2>No longer broken</h2>
 <ul>
 <li>Fixed lag when switching tabs on larger files.</li>
 <li>Fixed not being able to scroll within plugin details page.</li>
-</ul>"
+</ul>",false
 01.00.00,mobile,false,2021-07-07,"<ul>
 <li>This version is aimed for public release soon!</li>
 <li>Includes all new functionality and bug fixes of Obsidian Desktop v0.12.10.</li>
@@ -3951,7 +3951,7 @@ version,platform,insider,date,info
 </ul>
 </li>
 <li>Sharing for iOS will come in a later release.</li>
-</ul>"
+</ul>",false
 01.00.00,desktop,false,2022-10-13,"<h2>Before you dive in</h2>
 <p>We've made some big changes both visually and under the hood for this release. If you rely on any third party plugins or themes, we highly encourage you to <strong>check for updates</strong> <em>before</em> delving into Obsidian 1.0.</p>
 <ul>
@@ -4098,7 +4098,7 @@ version,platform,insider,date,info
 <p><strong>Q.</strong> Why can't I toggle checkboxes with <kbd>Ctrl</kbd><kbd>Enter</kbd> (or <kbd>⌘</kbd><kbd>Enter</kbd> on MacOS) anymore?</p>
 <blockquote>
 <p>The default hotkey for &quot;Toggle checkbox status&quot; has been changed to <kbd>Ctrl</kbd><kbd>L</kbd> (or <kbd>⌘</kbd><kbd>L</kbd> on MacOS). <kbd>Ctrl</kbd><kbd>Enter</kbd> is now the default hotkey for opening links under the cursor in a new tab. You can change these hotkeys in settings.</p>
-</blockquote>"
+</blockquote>",false
 01.00.01,desktop,true,2022-10-20,"<h2>No longer broken</h2>
 <ul>
 <li>macOS: Double-clicking the tab bar now maximizes the window in frameless mode.</li>
@@ -4126,21 +4126,21 @@ version,platform,insider,date,info
 <h2>Developers</h2>
 <ul>
 <li>Clicking on gutter elements now properly fires click events.</li>
-</ul>"
+</ul>",false
 01.00.02,mobile,true,2021-07-11,"<ul>
 <li>Includes all new functionality and bug fixes of Obsidian Desktop v0.12.10.</li>
 <li>Fixed rare case sync error when synchronizing deleted community plugins.</li>
 <li>Fixed Android 10 &quot;path cannot be resolved&quot; error when selecting vaults in Documents folder.</li>
-</ul>"
+</ul>",false
 01.00.02,desktop,true,2022-10-20,"<h2>No longer broken</h2>
 <ul>
 <li>Linux: fixed bug causing Obsidian to not boot.</li>
-</ul>"
+</ul>",false
 01.00.03,mobile,true,2021-07-12,"<ul>
 <li>Android: Fixed crash when files and folders contains <code>#</code> or <code>%</code> in their names.</li>
 <li>iOS: Obsidian will now properly create the iCloud folder on first boot up.</li>
 <li>iOS: Fixed minimum iOS requirement back down to iOS 12.</li>
-</ul>"
+</ul>",false
 01.00.03,desktop,true,2022-10-26,"<h2>No longer broken</h2>
 <ul>
 <li>Fixed vim mode <code>gj</code> on the last line jumps up.</li>
@@ -4149,13 +4149,13 @@ version,platform,insider,date,info
 <li>Fixed some rendering issues with translucency.</li>
 <li>Fixed artifacts in tabs on Linux.</li>
 <li>Removed Github fallback CDN which is no longer in operation.</li>
-</ul>"
+</ul>",false
 01.00.04,mobile,true,2021-07-15,"<ul>
 <li>Includes all new functionality and bug fixes of Obsidian Desktop v0.12.12.</li>
 <li>Improved startup speed for large vaults.</li>
 <li>Fixed Android app couldn't select locations in the external SD card.</li>
 <li>Fixed Android app crash or behave unexpectedly when file names contain <code>:</code>, <code>%</code> or <code>#</code> characters.</li>
-</ul>"
+</ul>",false
 01.00.05,mobile,false,2021-11-08,"<h2>Core update</h2>
 <p>Includes all new functionality and bug fixes up to Obsidian Desktop v0.12.19</p>
 <ul>
@@ -4186,7 +4186,7 @@ version,platform,insider,date,info
 <h2>iOS</h2>
 <ul>
 <li>The iOS app will now wait for iCloud to sync back configuration files before opening the vault to prevent load failures. This fixes the &quot;plugin failed to load&quot; popups that happens sometimes.</li>
-</ul>"
+</ul>",false
 01.01.00,mobile,false,2022-02-22,"<h2>Core update</h2>
 <p>Includes all new functionality and bug fixes up to Obsidian Desktop v0.13.24.
 This update also allows all new cm6-compatible plugins to run.</p>
@@ -4196,7 +4196,7 @@ In the meantime, feel free to use Source Mode when that happens. You can do that
 <p><strong>Vim mode</strong>
 Support for vim mode is now available, but must be enabled on a per-device basis on mobile. It is not really usable on a mobile device without an external keyboard.</p>
 <p><strong>Others</strong>
-Drag and drop features from desktop is now generally available across the app, and can be triggered by long-holding items. This includes drag and drop files and folders, starred items, and outline items.</p>"
+Drag and drop features from desktop is now generally available across the app, and can be triggered by long-holding items. This includes drag and drop files and folders, starred items, and outline items.</p>",false
 01.01.00,desktop,true,2022-12-05,"<h2>Shiny new things</h2>
 <ul>
 <li>Introducing the <strong>Canvas</strong> core plugin. You can now lay your notes out in an infinite, spatial canvas.</li>
@@ -4233,7 +4233,7 @@ Drag and drop features from desktop is now generally available across the app, a
 <li>Added new metadata APIs.</li>
 <li>Added macOS calendar entitlements.</li>
 <li>Added support for <code>fundingUrl</code> in the plugin manifest. The donation URL will be shown in the plugin gallery entry.</li>
-</ul>"
+</ul>",false
 01.01.00,desktop,false,2023-02-22,"<p>This update primarily focuses on Canvas improvements and overall bug fixes within the app.</p>
 <ul>
 <li><a href=""#canvas-improvements"">Canvas improvements</a> — Canvas settings, readonly mode, global search results, and more.</li>
@@ -4284,7 +4284,7 @@ Some other notable improvements to Canvas:</p>
 <li>Improved Mermaid text colors.</li>
 <li>The vim Codemirror extension has been updated to include all the latest upstream fixes and patches.</li>
 <li>Code blocks in Live Preview now show a copy icon if there is no language set.</li>
-</ul>"
+</ul>",false
 01.01.01,mobile,false,2022-03-21,"<h2>Core update</h2>
 <ul>
 <li>Includes all new functionality and bug fixes up to Obsidian Desktop v0.13.33.</li>
@@ -4301,7 +4301,7 @@ Some other notable improvements to Canvas:</p>
 <li>Fixed status bar always dark in light mode.</li>
 <li>Fixed remote resources from http links not working.</li>
 <li>Fixed file created/modified times being negative (shows up as year 1969) when using a 32-bit processor.</li>
-</ul>"
+</ul>",false
 01.01.01,desktop,true,2022-12-08,"<h2>Improvements</h2>
 <ul>
 <li>Canvas: 'delete' has been renamed to 'remove' to avoid confusion.</li>
@@ -4326,11 +4326,11 @@ Some other notable improvements to Canvas:</p>
 <li>File explorer: added back missing 'Open in new window' command to the context menu.</li>
 </ul>
 <h2>Developers</h2>
-<p><em>See v1.1.1 in the <a href=""https://github.com/obsidianmd/obsidian-api/blob/master/CHANGELOG.md#v111-2022-12-8--insider-build"">Developer CHANGELOG</a></em>.</p>"
+<p><em>See v1.1.1 in the <a href=""https://github.com/obsidianmd/obsidian-api/blob/master/CHANGELOG.md#v111-2022-12-8--insider-build"">Developer CHANGELOG</a></em>.</p>",false
 01.01.02,desktop,true,2022-12-08,"<h2>No longer broken</h2>
 <ul>
 <li>Canvas: fixed bug where text nodes don't always save their content.</li>
-</ul>"
+</ul>",false
 01.01.03,desktop,true,2022-12-09,"<h2>Improvements</h2>
 <ul>
 <li>Live Preview has been tweaked to avoid flashes of &quot;unstyled&quot; content while scrolling through larger documents.</li>
@@ -4352,7 +4352,7 @@ Some other notable improvements to Canvas:</p>
 <h2>Developers</h2>
 <ul>
 <li>Added a notice when opening a Canvas that fails to parse.</li>
-</ul>"
+</ul>",false
 01.01.04,desktop,true,2022-12-12,"<h2>Shiny new things</h2>
 <ul>
 <li>Canvas: Added &quot;Groups&quot; to canvas. Groups can be thought of as placemats for your cards. They always render below cards and dragging the group label will move all notes in the group at once. To create a group, select multiple cards then right-click and choose 'Create group.'</li>
@@ -4380,7 +4380,7 @@ Some other notable improvements to Canvas:</p>
 <h2>Developers</h2>
 <ul>
 <li>Canvas files are now multi-line formatted when saved. This should make the diffs more human-readable when stored in version control.</li>
-</ul>"
+</ul>",false
 01.01.05,desktop,true,2022-12-14,"<h2>Improvements</h2>
 <ul>
 <li>Embedded canvases now render a diagram of the underlying canvas. This works for canvases embedded within Markdown files (i.e. <code>![[daily_notes.canvas]]</code>) or embedded on another canvas.</li>
@@ -4403,7 +4403,7 @@ Some other notable improvements to Canvas:</p>
 <li>Canvas: Fixed issue where websites could not be interacted with in a popout window.</li>
 <li>Canvas: PDFs should be slightly less blurry.</li>
 <li>Canvas: Fixed bug where cards are unable to resize when an adjacent card is touching.</li>
-</ul>"
+</ul>",false
 01.01.06,desktop,true,2022-12-16,"<h2>Improvements</h2>
 <ul>
 <li>Canvas: Inline titles now render in file cards when enabled.</li>
@@ -4418,7 +4418,7 @@ Some other notable improvements to Canvas:</p>
 <li>Canvas: fixed &quot;Replace&quot; command not working in canvas file cards.</li>
 <li>Canvas: Fixed an issue where following links from the canvas would prevent editor-specific hotkeys from firing.</li>
 <li>Canvas: Fixed loading a website in a pop-out window causes Obsidian to crash on boot.</li>
-</ul>"
+</ul>",false
 01.01.07,desktop,true,2022-12-19,"<h2>Improvements</h2>
 <ul>
 <li>Canvas: Added new alignment options to justify content horizontally or vertically.</li>
@@ -4431,7 +4431,7 @@ Some other notable improvements to Canvas:</p>
 <li>Fixed hotkeys acting inconsistently across pop-out windows when a modal was visible.</li>
 <li>Canvas: fixed group label getting truncated while editing.</li>
 <li>Canvas: fixed bug where the file title would stay selected after updating the title. This caused some unexpected behavior when pressing undo (<code>Ctrl/Cmd + Z</code>) or paste (<code>Ctrl/Cmd + V</code>).</li>
-</ul>"
+</ul>",false
 01.01.08,desktop,true,2022-12-20,"<h2>Improvements</h2>
 <ul>
 <li>Canvas: YouTube embeds are now shown at 16:9 instead of square.</li>
@@ -4444,7 +4444,7 @@ Some other notable improvements to Canvas:</p>
 <li>Canvas: Fixed bug where pressing undo (<code>Ctrl/Cmd + Z</code>) would undo the file rename in addition to undoing an action on the Canvas.</li>
 <li>Canvas: Fixed issue where creating a new text card does not always zoom in to edit automatically.</li>
 <li>Canvas: Fixed crash when opening a modal while an iframe was focused.</li>
-</ul>"
+</ul>",false
 01.01.09,desktop,false,2022-12-23,"<p>The installer has been updated to use Electron v21 (requires downloading <a href=""https://obsidian.md"">the latest installer</a>).</p>
 <h2>No longer broken</h2>
 <ul>
@@ -4453,7 +4453,7 @@ Some other notable improvements to Canvas:</p>
 <li>File recovery now supports canvas files.</li>
 <li>Prevent <code>obsidian://new</code> URIs from creating folders outside of the vault.</li>
 <li>Prevent external websites embedded in canvas and plugins from opening URI links.</li>
-</ul>"
+</ul>",false
 01.01.10,desktop,true,2023-01-10,"<h2>Improvements</h2>
 <ul>
 <li>Deleting a file now closes its tab if there are other tabs in the tab group.</li>
@@ -4487,16 +4487,16 @@ Some other notable improvements to Canvas:</p>
 <ul>
 <li>Fixed <code>Menu.showAtPosition</code> not working when user has enabled &quot;native menus.&quot;</li>
 <li>Fixed processFrontMatter passing null when frontmatter section is empty, fixed not working with CRLF line endings.</li>
-</ul>"
+</ul>",false
 01.01.11,desktop,true,2023-01-10,"<h2>No longer broken</h2>
 <ul>
 <li>Canvas: fixed bug where arrow keys would move cards when editor was focused.</li>
 <li>Canvas: fixed bug where card position was not properly saved after moving a card via arrow keys.</li>
-</ul>"
+</ul>",false
 01.01.12,desktop,true,2023-01-12,"<h2>No longer broken</h2>
 <ul>
 <li>Fixed bug where linking to heading would insert the full file path even when &quot;shortest path when possible&quot; is set.</li>
-</ul>"
+</ul>",false
 01.01.13,desktop,true,2023-02-13,"<h2>Shiny new things</h2>
 <ul>
 <li>Canvas: Content from text cards will now appear as results in global searches.</li>
@@ -4533,7 +4533,7 @@ Some other notable improvements to Canvas:</p>
 <li>File explorer: ensure that leading and trailing spaces are always stripped when renaming a file.</li>
 <li>Fixed bug with &quot;fold less&quot; command not unfolding content on the selected line.</li>
 <li>File BOM will now automatically be stripped when Obsidian reads a file.</li>
-</ul>"
+</ul>",false
 01.01.14,desktop,true,2023-02-16,"<h2>No longer broken</h2>
 <ul>
 <li>Fixed issue where searching with an operator (e.g. &quot;tag:&quot;) would cause all canvas files to show in search results.</li>
@@ -4553,7 +4553,7 @@ Some other notable improvements to Canvas:</p>
 <h2>Developers</h2>
 <ul>
 <li>The Lucide icon library has been upgrade to v0.114.0 meaning there are new icons available to be used.</li>
-</ul>"
+</ul>",false
 01.01.15,desktop,true,2023-02-22,"<h2>No longer broken</h2>
 <ul>
 <li>Canvas: Fixed canvas settings not showing previously saved new file path.</li>
@@ -4562,7 +4562,7 @@ Some other notable improvements to Canvas:</p>
 <li>Fixed export to PDF error out when downscaling too much.</li>
 <li>The &quot;excluded files&quot; selector no longer allows you to accidentally add an empty entry.</li>
 <li>Fixed some more color issues for mermaid graphs.</li>
-</ul>"
+</ul>",false
 01.01.16,desktop,false,2023-03-01,"<h2>No longer broken</h2>
 <ul>
 <li>&quot;Zoom in&quot; and &quot;Zoom out&quot; commands now respect the same min and max zoom levels in <strong>Settings → Appearance</strong>.</li>
@@ -4573,7 +4573,7 @@ Some other notable improvements to Canvas:</p>
 <li>Fixed issue where native context menu does not appear in the correct location when window zoom is not 100%.</li>
 <li>Canvas: fixed issue with rendering invalid frontmatter section.</li>
 <li>Canvas: added message when trying to export an empty canvas.</li>
-</ul>"
+</ul>",false
 01.02.00,mobile,true,2022-03-19,"<h2>Core update</h2>
 <ul>
 <li>Includes all new functionality and bug fixes up to Obsidian Desktop v0.14.2.</li>
@@ -4581,7 +4581,7 @@ Some other notable improvements to Canvas:</p>
 <h2>iOS</h2>
 <ul>
 <li>You can now share text, links, image, and other attachments directly to the Obsidian app.</li>
-</ul>"
+</ul>",false
 01.02.00,desktop,false,2023-03-29,"<p>In this update, we revisited some of our older core plugins and provided more than just a fresh coat of paint. Most notably, the Starred plugin is going away in favor of its successor: Bookmarks.</p>
 <ul>
 <li><a href=""#bookmarks"">Bookmarks</a> — Meet the replacement to the Starred plugin.</li>
@@ -4617,7 +4617,7 @@ Some other notable improvements to Canvas:</p>
 <li>Fixed folding arrows being misaligned on list items.</li>
 <li>macOS: double-clicking the sidebar close buttons in the window frame will no longer trigger the window getting fullscreened.</li>
 <li>Fixed &quot;Fold more&quot; command not folding the current line if the cursor is on top of a heading.</li>
-</ul>"
+</ul>",true
 01.02.00,desktop,true,2023-03-29,"<h2>Shiny new things</h2>
 <ul>
 <li>Added new Bookmarks core plugin. This core plugin will be the successor to the Starred core plugin. It offers additional functionality such as bookmarked graphs and bookmarked headings. As well as better organization via drag-and-drop and <em>Bookmark groups</em>.</li>
@@ -4640,7 +4640,7 @@ Some other notable improvements to Canvas:</p>
 <li>Fixed folding arrows being misaligned on list items.</li>
 <li>macOS: double-clicking the sidebar close buttons in the window frame will no longer trigger the window getting fullscreened.</li>
 <li>Fixed &quot;Fold more&quot; command not folding the current line if the cursor is on top of a heading.</li>
-</ul>"
+</ul>",false
 01.02.01,mobile,true,2022-04-11,"<h2>Core update</h2>
 <ul>
 <li>Includes all new functionality and bug fixes up to Obsidian Desktop v0.14.6.</li>
@@ -4654,7 +4654,7 @@ Some other notable improvements to Canvas:</p>
 <ul>
 <li>Long-holding buttons that triggers an action (like the three dot menu) now triggers it after holding for 600ms instead of triggering it when the finger is released.</li>
 <li>Fixed app freezing when resuming from another app when using a large vault.</li>
-</ul>"
+</ul>",false
 01.02.01,desktop,true,2023-03-31,"<h2>Improvements</h2>
 <ul>
 <li>Publish: The &quot;Manage included folders&quot; and &quot;Manage excluded folders&quot; options will now filter out already selected folders.</li>
@@ -4678,7 +4678,7 @@ Some other notable improvements to Canvas:</p>
 <li>Bookmarks: Improved migration from Starred so that stale files that no longer exist and mismatched Starred file titles won't be migrated over.</li>
 <li>Starred: Fixed view not being scrollable.</li>
 <li>Starred: Fixed items missing hover styling.</li>
-</ul>"
+</ul>",false
 01.02.02,mobile,false,2022-06-07,"<h2>Core update</h2>
 <ul>
 <li>Includes all new functionality and bug fixes up to Obsidian Desktop v0.14.15.</li>
@@ -4693,7 +4693,7 @@ Some other notable improvements to Canvas:</p>
 <h2>iOS</h2>
 <ul>
 <li>Fixed black bar at the bottom on iPad when using external keyboard.</li>
-</ul>"
+</ul>",false
 01.02.02,desktop,true,2023-04-04,"<h2>Improvements</h2>
 <ul>
 <li>Bookmarks: Supports middle-click to open bookmarks in a new tab.</li>
@@ -4706,7 +4706,7 @@ Some other notable improvements to Canvas:</p>
 <li>Bookmarks: Fixed drag and drop sometimes dropping items in the wrong position.</li>
 <li>Bookmarks: Fixed dragging and dropping multiple items causing the item order to change.</li>
 <li>Bookmarks: Fixed bookmarks inside groups not showing their updated title on edit.</li>
-</ul>"
+</ul>",false
 01.02.03,desktop,true,2023-04-14,"<h2>Improvements</h2>
 <ul>
 <li>Outline view: Markdown formatting is now stripped.</li>
@@ -4734,7 +4734,7 @@ Some other notable improvements to Canvas:</p>
 <h2>Developers</h2>
 <ul>
 <li>Bookmarks: Added the full bookmark path as a <code>data-path</code> attribute for custom styling.</li>
-</ul>"
+</ul>",false
 01.02.05,desktop,true,2023-04-20,"<h2>Improvements</h2>
 <ul>
 <li>Publish: Added option to customize the navigation items in your Publish sidebar.</li>
@@ -4751,7 +4751,7 @@ Some other notable improvements to Canvas:</p>
 <li>Search: Operators such as <code>tag:</code> and <code>block:</code> will now work even if the operator is not lowercase (i.e. <code>TAG:</code>).</li>
 <li><code>Ctrl-M</code> will no longer minimize Obsidian on Windows.</li>
 <li>The vim Codemirror extension has been updated to include all the latest upstream fixes and patches.</li>
-</ul>"
+</ul>",false
 01.02.06,desktop,true,2023-04-26,"<p><strong>Important:</strong> Now that Bookmarks are available on mobile, the starred core plugin has officially been removed.</p>
 <h2>Improvements</h2>
 <ul>
@@ -4765,7 +4765,7 @@ Some other notable improvements to Canvas:</p>
 <li>Android: Fixed bug where file explorer could not drag files due to the context menu appearing.</li>
 <li>Canvas: Fixed bug where pressing &quot;edit&quot; didn't always zoom in far enough to edit the file.</li>
 <li>Fixed bug where sometimes it was impossible to drag files into a similarly named folder.</li>
-</ul>"
+</ul>",false
 01.02.07,desktop,true,2023-05-02,"<h2>Improvements</h2>
 <ul>
 <li>Added new command &quot;Create new note in current tab.&quot;</li>
@@ -4775,7 +4775,7 @@ Some other notable improvements to Canvas:</p>
 <li>Bookmarks: Better handling of bookmarks when syncing across devices. Should fix issues reported of bookmarks disappearing when using Obsidian Sync.</li>
 <li>Canvas: Fixed two-finger pinching when default wheel behavior is set to &quot;zoom.&quot;</li>
 <li>The &quot;rename&quot; modal will no longer report the rename as successful if the rename failed.</li>
-</ul>"
+</ul>",false
 01.02.08,desktop,true,2023-05-03,"<h2>Breaking changes</h2>
 <ul>
 <li>Removed support for <code>app://local</code> URLs. These were reported as a potential vulnerability when using iframes.</li>
@@ -4791,7 +4791,7 @@ Some other notable improvements to Canvas:</p>
 <ul>
 <li>Fixed issue with <code>navigator.clipboard</code> API not working in popout windows.</li>
 <li>If you were relying on <code>app://local</code> for functionality within your plugin, you should use <code>vault.getResourcePath(file: TFile)</code> and <code>vault.adapter.getResourcePath(vaultPath: string)</code> as a replacement. These also works on mobile.</li>
-</ul>"
+</ul>",false
 01.03.00,mobile,false,2022-07-12,"<h2>Core update</h2>
 <ul>
 <li>Includes all new functionality and bug fixes up to Obsidian Desktop v0.15.6.</li>
@@ -4800,7 +4800,7 @@ Some other notable improvements to Canvas:</p>
 <h2>iOS</h2>
 <ul>
 <li>You can now choose user installed fonts.</li>
-</ul>"
+</ul>",false
 01.03.00,desktop,true,2023-05-09,"<h2>Shiny new things</h2>
 <ul>
 <li>All new PDF viewer.</li>
@@ -4826,7 +4826,7 @@ Some other notable improvements to Canvas:</p>
 <li>Updated PIXI.js to v7.2.4.</li>
 <li>Updated Turndown to 7.1.2.</li>
 <li>Updated Mathjax to v3.2.2.</li>
-</ul>"
+</ul>",false
 01.03.01,desktop,true,2023-05-15,"<h2>Improvements</h2>
 <ul>
 <li>We've redesigned all the tree components (e.g. File Explorer, Outline view) to make the visual hierarchy more clear. This will likely impact any custom themes that you're using.</li>
@@ -4848,7 +4848,7 @@ Some other notable improvements to Canvas:</p>
 <h2>Developers</h2>
 <ul>
 <li>App will no longer show errors when plugins don't provide a &quot;Component,&quot; to renderMarkdown, they will now just show a warning.</li>
-</ul>"
+</ul>",false
 01.03.02,desktop,true,2023-05-19,"<h2>Shiny new things</h2>
 <ul>
 <li>YouTube and Twitter links can now be embedded within your notes using the Markdown image embed syntax (i.e. <code>![](https://www.youtube.com/...)</code>).</li>
@@ -4881,14 +4881,14 @@ Some other notable improvements to Canvas:</p>
 <li>Search: Clicking filenames in the search results will now respect the &quot;Always focus new tabs&quot; preference.</li>
 <li>Frontmatter will now still be recognized if there are spaces after the ending <code>---</code>.</li>
 <li>Fixed file saving interrupted when closing or quitting. Now Obsidian will properly wait for the file to be saved before closing.</li>
-</ul>"
+</ul>",false
 01.03.03,desktop,true,2023-05-23,"<h2>No longer broken</h2>
 <ul>
 <li>Fixed &quot;split right&quot; command not always creating a new tab group.</li>
 <li>Bookmarks: Fixed bookmark group rename not working.</li>
 <li>PDF: Fixed PDF reload when other files are changed.</li>
 <li>Fixed clicking in documents with embeds, images, or raw HTML sometimes causes scroll jump.</li>
-</ul>"
+</ul>",false
 01.03.04,desktop,false,2023-05-24,"<h2>Improvements</h2>
 <ul>
 <li>Reverted behavior change for links in pinned tabs. Clicking them will now open the link in another visible tab that is not pinned.</li>
@@ -4900,7 +4900,7 @@ Some other notable improvements to Canvas:</p>
 <li>Prevent math from inserting links that execute JavaScript when clicked on.</li>
 <li>Prevent plugins from breaking the PDF viewer.</li>
 <li>Fixed lag issues from warnings generated by plugins misusing <code>renderMarkdown</code>.</li>
-</ul>"
+</ul>",false
 01.03.05,desktop,false,2023-06-01,"<h2>Shiny new things</h2>
 <ul>
 <li>New app icon! Learn more <a href=""https://obsidian.md/blog/new-obsidian-icon/"">on our blog</a>. Requires <a href=""https://obsidian.md/download"">downloading the new installer</a>.</li>
@@ -4914,7 +4914,7 @@ Some other notable improvements to Canvas:</p>
 <li>Pressing <kbd>esc</kbd> while renaming a file will now properly cancel the rename instead of accepting the change.</li>
 <li>Fixed PDFs not loading in pop-out windows when the main window is minimized.</li>
 <li>Fixed issue where the <code>[[</code> link suggest would not always work if <code>]]</code> was not found on the current line.</li>
-</ul>"
+</ul>",false
 01.03.06,desktop,true,2023-06-26,"<h2>New shiny things</h2>
 <ul>
 <li>New Appearance setting to apply a custom app icon. Supports <code>.ico</code> and <code>.png</code> files.</li>
@@ -4941,12 +4941,12 @@ Some other notable improvements to Canvas:</p>
 <ul>
 <li><code>--p-spacing</code>  defines the spacing between paragraphs (defaults to <code>1rem</code>).</li>
 <li><code>--heading-spacing</code> defines the spacing above a heading when it follows a paragraph (defaults to 2.5x paragraph spacing).</li>
-</ul>"
+</ul>",false
 01.03.07,desktop,true,2023-06-26,"<h2>No longer broken</h2>
 <ul>
 <li>Removed command that wasn't ready for release just yet.</li>
 <li>Fixed styling issue where extra space was being added between lists and sublists.</li>
-</ul>"
+</ul>",false
 01.03.07,desktop,false,2023-07-31,"<h2>New shiny things</h2>
 <ul>
 <li>Added support for deep linking in PDFs. Links can be created by right clicking on a PDF's table of contents, an annotation, or any selected text.</li>
@@ -4974,7 +4974,7 @@ Some other notable improvements to Canvas:</p>
 <ul>
 <li><code>--p-spacing</code>  defines the spacing between paragraphs (defaults to <code>1rem</code>).</li>
 <li><code>--heading-spacing</code> defines the spacing above a heading when it follows a paragraph (defaults to 2.5x paragraph spacing).</li>
-</ul>"
+</ul>",false
 01.04.00,mobile,false,2022-10-19,"<h2>Improvements</h2>
 <ul>
 <li>Misc. visual improvements for settings.</li>
@@ -4987,7 +4987,7 @@ Some other notable improvements to Canvas:</p>
 <li>Tablet: The toggle button for the left sidebar is now visible again.</li>
 <li>iOS: fixed bug preventing cursor from selecting links in Live Preview.</li>
 <li>Fixed &quot;Edit link&quot; context menu item not selecting text.</li>
-</ul>"
+</ul>",false
 01.04.00,desktop,true,2023-07-26,"<h2>Shiny new things</h2>
 <p>Introducing <strong>Properties</strong>. A simple and durable way to add tags, aliases, dates, and other metadata to your notes. Your properties can even include links to other notes.</p>
 <img alt=""property-editor"" src=""https://github.com/obsidianmd/obsidian-api/assets/693981/aea72173-5663-459d-83de-6ff888f6bdd5"">
@@ -5058,7 +5058,7 @@ linklist:
 </code></pre>
 <h4><code>tag</code>/<code>alias</code>/<code>cssclass</code> vs <code>tags</code>/<code>aliases</code>/<code>cssclasses</code></h4>
 <p>As of 1.4.0, we're <strong>deprecating</strong> the &quot;tag&quot;, &quot;alias&quot;, and &quot;cssClass&quot; frontmatter keys. The new property editor will automatically migrate to <code>tags</code>, <code>aliases</code>, and <code>cssclasses</code> and the values will automatically be converted to lists.</p>
-<p>The old keys will still be identified correctly in the app, but the property editor will always prefer <code>tags</code> and <code>aliases</code>.</p>"
+<p>The old keys will still be identified correctly in the app, but the property editor will always prefer <code>tags</code> and <code>aliases</code>.</p>",false
 01.04.01,mobile,false,2022-10-26,"<h2>Core update</h2>
 <ul>
 <li>Includes all new functionality and bug fixes up to Obsidian Desktop v1.0.</li>
@@ -5069,7 +5069,7 @@ linklist:
 <li>Phone-only: Added haptic feedback for the context menu and pull-down menu.</li>
 <li>Tablet-only: Some interface elements like menus and popups will now use the desktop version since there's sufficient space on tablets.</li>
 <li>Long-press links in Live Preview to show context menu.</li>
-</ul>"
+</ul>",false
 01.04.01,desktop,true,2023-07-27,"<h2>Improvements</h2>
 <ul>
 <li>New icon for the Properties view.</li>
@@ -5083,7 +5083,7 @@ linklist:
 <li>Properties: Fixed copy/pasting text within properties not working.</li>
 <li>Properties: Fixed &quot;Edit file property&quot; command not showing in the command palette.</li>
 <li>Properties: The &quot;Remove&quot; menu item in the context menu of &quot;All Properties&quot; has been renamed to &quot;Unassign type&quot; to avoid confusion.</li>
-</ul>"
+</ul>",false
 01.04.02,mobile,true,2023-01-10,"<h2>Shiny new things</h2>
 <ul>
 <li>Introducing <strong>Canvas</strong>. You can now lay your notes out in an infinite, spatial canvas.</li>
@@ -5095,7 +5095,7 @@ linklist:
 <li>Phone only: The ribbon menu in the bottom navigation bar is now configurable. In the Appearance settings, you can now manage the order of the ribbon items as well as specify a &quot;quick access&quot; ribbon item.</li>
 <li>iOS: fixed <code>Command-W</code> closing the entire app instead of closing the current tab.</li>
 <li>iOS: fixed issue where numbered lists were being rendered as bullets.</li>
-</ul>"
+</ul>",false
 01.04.02,desktop,true,2023-07-31,"<h2>Improvements</h2>
 <ul>
 <li>Properties: Date and time properties will now automatically be inferred without needing to assign the property type.</li>
@@ -5120,7 +5120,7 @@ linklist:
 <li>Properties: <code>Tab</code> and <code>Shift-Tab</code> will now properly shift focus if the &quot;Add properties&quot; button is focused.</li>
 <li>Settings: &quot;Show file properties&quot; setting has been renamed to &quot;Show file properties in document.&quot;</li>
 <li>Editor: Scroll bar should no longer affect the position of the text when it appears on long documents.</li>
-</ul>"
+</ul>",false
 01.04.03,desktop,true,2023-08-14,"<h2>Improvements</h2>
 <ul>
 <li>Settings: Added a new toggle to show properties as source (YAML) in Live Preview.</li>
@@ -5156,13 +5156,13 @@ linklist:
 <h2>Developers</h2>
 <ul>
 <li>Disabled soft line width in <code>stringifyYaml</code> (this was causing some breakages with other plugins reading the YAML).</li>
-</ul>"
+</ul>",false
 01.04.04,mobile,false,2023-05-02,"<ul>
 <li>Includes all new functionality and bug fixes up to <a href=""https://forum.obsidian.md/t/obsidian-release-v1-2-6-insider-build/58686"">Obsidian Desktop v1.2.6</a>.</li>
 <li>Added Bookmarks core plugin and removed Starred core plugin.</li>
 <li>Android: Fixed bug where Bluetooth keyboard could cause the app to restart.</li>
 <li>Android: Fixed bug preventing files from being dragged in the file explorer due to the context menu appearing.</li>
-</ul>"
+</ul>",false
 01.04.04,desktop,true,2023-08-23,"<h2>Shiny new things</h2>
 <ul>
 <li>Search: New search syntax for properties.
@@ -5203,7 +5203,7 @@ linklist:
 <li><code>--metadata-display-editing</code></li>
 </ul>
 </li>
-</ul>"
+</ul>",false
 01.04.05,mobile,false,2023-05-23,"<ul>
 <li>Includes all new functionality and bug fixes up to <a href=""https://forum.obsidian.md/t/obsidian-release-v1-3/60251"">Obsidian Desktop v1.3.3</a>. This includes the new PDF viewer.</li>
 <li>Live Preview: Reduce flickering and flashing when selecting text.</li>
@@ -5211,7 +5211,7 @@ linklist:
 <li>iOS: Fixed Canvas unable to drop images dragged from other apps.</li>
 <li>iPad: Fixed issue where cursor and scroll position are messed up after dismissing the keyboard via the virtual keyboard's &quot;close keyboard button.&quot;</li>
 <li>iPad: Fixed switching apps causes Obsidian to lose text focus.</li>
-</ul>"
+</ul>",false
 01.04.05,desktop,true,2023-08-30,"<h2>Shiny new things</h2>
 <ul>
 <li>Obsidian accounts now support two-factor authentication. To enable, go to your account settings at <a href=""https://obsidian.md/account"">obsidian.md/account</a>. Make sure you've installed the v1.4.5 Insider build <em>before</em> enabling 2FA on your account to avoid getting locked out.</li>
@@ -5232,7 +5232,7 @@ linklist:
 <li>Properties: Fixed tag dropdown showing briefly in the top-level corner when removing a tag.</li>
 <li>Editor: Fixed &quot;Insert code block&quot; and &quot;Insert match block&quot; working with multiple cursors.</li>
 <li>macOS: Fixed &quot;Date &amp; time&quot; showing as &quot;Date time&quot; in the property menu.</li>
-</ul>"
+</ul>",false
 01.04.05,desktop,false,2023-08-31,"<p>This update introduces Properties, a simple and durable way to add tags, links, dates, and other metadata to your notes. The core plugins Search, Templates, and Backlinks have all received upgrades to support Properties. Some of the new features in this release:</p>
 <ul>
 <li>A new UI for editing properties, with autocomplete for property names and values</li>
@@ -5328,12 +5328,12 @@ linklist:
 </code></pre>
 <h4>About <code>tag</code>/<code>alias</code>/<code>cssclass</code> properties</h4>
 <p>As of 1.4.0, we have <strong>deprecated</strong> the &quot;tag&quot;, &quot;alias&quot;, and &quot;cssClass&quot; properties. The property editor will automatically convert these properties to <code>tags</code>, <code>aliases</code>, and <code>cssclasses</code> and the values will automatically be converted to lists.</p>
-<p>The old property names will still be identified correctly in the app, but the property editor will always prefer <code>tags</code>, <code>cssClasses</code>, and <code>aliases</code>.</p>"
+<p>The old property names will still be identified correctly in the app, but the property editor will always prefer <code>tags</code>, <code>cssClasses</code>, and <code>aliases</code>.</p>",true
 01.04.06,mobile,false,2023-06-01,"<ul>
 <li>New app icon! Learn more <a href=""https://obsidian.md/blog/new-obsidian-icon/"">on our blog</a>.</li>
 <li>Includes all new functionality and bug fixes up to <a href=""/changelog/2023-06-01-desktop-v1.3.5/"">Obsidian Desktop v1.3.5</a>.</li>
 <li>Fixed issues with zooming PDFs on iOS devices.</li>
-</ul>"
+</ul>",false
 01.04.06,desktop,true,2023-09-02,"<h2>Improvements</h2>
 <ul>
 <li>Live Preview: Notes can no longer include empty lines before the frontmatter block. If the frontmatter block does not start on the first line of the note, we will interpret it as regular text.</li>
@@ -5350,21 +5350,21 @@ linklist:
 <li>Properties: Fixed issue where properties editor would sometimes produce invalid frontmatter when editing.</li>
 <li>Properties: Fixed Tag suggest not showing suggestions if the input starts with '#'.</li>
 <li>macOS: Fixed &quot;Reveal in Finder&quot; hanging for a long time.</li>
-</ul>"
+</ul>",false
 01.04.07,mobile,true,2023-07-19,"<ul>
 <li>Includes all new functionality and bug fixes up to <a href=""/changelog/2023-06-26-desktop-v1.3.7/"">Obsidian Desktop v1.3.7</a>.</li>
-</ul>"
+</ul>",false
 01.04.08,mobile,true,2023-08-30,"<ul>
 <li>PDF: Fixed text selection.</li>
 <li>There is now a loading screen when loading the Obsidian Sync view.</li>
 <li>Added support for 2FA login.</li>
-</ul>"
+</ul>",false
 01.04.08,mobile,false,2023-08-31,"<p><strong>Note:</strong> Mobile Obsidian is still based on Obsidian Desktop v1.3.7.</p>
 <ul>
 <li>Added support for 2FA login.</li>
 <li>PDF: Fixed text selection.</li>
 <li>There is now a loading screen when loading the Obsidian Sync view.</li>
-</ul>"
+</ul>",false
 01.04.08,desktop,true,2023-09-05,"<h2>Improvements</h2>
 <ul>
 <li>Properties: New behavior when toggling &quot;Properties view&quot; core plugin. Enabling the core plugin will immediately open the &quot;All properties&quot; view.</li>
@@ -5379,7 +5379,7 @@ linklist:
 <li>Properties: Fixed &quot;Unassign type&quot; not working for properties with capital letters.</li>
 <li>Properties: It is no longer possible to unassign the type for default properties (<code>cssclasses</code>, <code>tags</code>, <code>aliases</code>).</li>
 <li>Files specified in the &quot;Excluded files&quot; setting will no longer be counted in the Tags view or Properties view.</li>
-</ul>"
+</ul>",false
 01.04.09,desktop,true,2023-09-07,"<h2>Improvements</h2>
 <ul>
 <li>Properties: Added a tooltip when hovering over property names in case the property name is too long and gets cut off.</li>
@@ -5396,7 +5396,7 @@ linklist:
 <li>Properties: Renaming a list property will no longer cause a type mismatch warning to appear.</li>
 <li>Properties: Clicking outside of the property editor will remove the empty property section for the note if there is one.</li>
 <li>Properties: Fixed &quot;type mismatch&quot; tooltip sometimes showing the wrong expected type.</li>
-</ul>"
+</ul>",false
 01.04.10,desktop,false,2023-09-11,"<h2>Improvements</h2>
 <h3>Editor</h3>
 <ul>
@@ -5454,15 +5454,15 @@ linklist:
 <h3>Fixed since last insider build</h3>
 <ul>
 <li>Fixed properties sidebar view not showing &quot;Add properties&quot; button if the active file has no properties yet.</li>
-</ul>"
+</ul>",false
 01.04.11,desktop,false,2023-09-11,"<h2>No longer broken</h2>
 <ul>
 <li>Canvas: Fixed issue preventing Canvas cards from entering edit mode.</li>
-</ul>"
+</ul>",false
 01.04.12,desktop,false,2023-09-12,"<h2>No longer broken</h2>
 <ul>
 <li>Fixed edits from source mode not properly updating the properties editor interface.</li>
-</ul>"
+</ul>",false
 01.04.12,mobile,true,2023-09-22,"<ul>
 <li>Includes all new functionality and bug fixes up to <a href=""https://obsidian.md/changelog/2023-09-22-desktop-v1.4.14/"">Obsidian Desktop v1.4.14</a>. This includes the new properties editor.</li>
 <li>Fixed drag and drop handler on iOS causing the view to scroll. This affects properties, the mobile toolbar, and the font picker.</li>
@@ -5478,8 +5478,8 @@ linklist:
 <ul>
 <li>Closing app settings no longer causes double animation.</li>
 <li>Fixed loading bar when opening the community themes and community plugins directory.</li>
-</ul>"
-01.04.13,desktop,false,2023-09-15,"<p>The installer has been updated to Electron v25.8.1 to address several vulnerabilities. To update, you must manually get the latest installer from <a href=""https://obsidian.md/download"">https://obsidian.md/download</a>.</p>"
+</ul>",false
+01.04.13,desktop,false,2023-09-15,"<p>The installer has been updated to Electron v25.8.1 to address several vulnerabilities. To update, you must manually get the latest installer from <a href=""https://obsidian.md/download"">https://obsidian.md/download</a>.</p>",false
 01.04.14,desktop,true,2023-09-22,"<h2>No longer broken</h2>
 <h3>General</h3>
 <ul>
@@ -5497,7 +5497,7 @@ linklist:
 <ul>
 <li>Fixed a Sync bug that in rare cases could cause file duplication when editing a file and then immediately renaming it.</li>
 <li>Property types will now be counted &quot;Main settings&quot; in the sync preferences.</li>
-</ul>"
+</ul>",false
 01.04.14,desktop,false,2023-09-26,"<h2>No longer broken</h2>
 <h3>General</h3>
 <ul>
@@ -5515,12 +5515,12 @@ linklist:
 <ul>
 <li>Fixed a Sync bug that in rare cases could cause file duplication when editing a file and then immediately renaming it.</li>
 <li>Property types will now be counted &quot;Main settings&quot; in the sync preferences.</li>
-</ul>"
+</ul>",false
 01.04.14,mobile,true,2023-10-10,"<ul>
 <li>Includes all new functionality and bug fixes up to <a href=""https://obsidian.md/changelog/2023-10-10-desktop-v1.4.15/"">Obsidian Desktop v1.4.15</a>.</li>
 <li>iOS: Added new persistent &quot;Hide keyboard&quot; button to the mobile toolbar.</li>
 <li>Canvas: Fixed Canvas view not being focused on touch.</li>
-</ul>"
+</ul>",false
 01.04.15,desktop,true,2023-10-10,"<h2>Improvements</h2>
 <h3>Properties</h3>
 <ul>
@@ -5558,7 +5558,7 @@ linklist:
 <li>Text selection will no longer be updated when the inline search input (<code>Ctrl/command + F</code>) loses focus.</li>
 <li>&quot;Split right&quot; and &quot;Split down&quot; commands will now copy the scroll position of the current leaf.</li>
 <li>Triggering a command from the macOS Application menu will now un-minimize the vault if the window is minimized.</li>
-</ul>"
+</ul>",false
 01.04.16,mobile,false,2023-10-13,"<ul>
 <li>Includes all new functionality and bug fixes up to <a href=""https://obsidian.md/changelog/2023-10-13-desktop-v1.4.16/"">Obsidian Desktop v1.4.16</a>.</li>
 <li>Fixed drag and drop handler on iOS causing the view to scroll. This affects properties, the mobile toolbar, and the font picker.</li>
@@ -5576,7 +5576,7 @@ linklist:
 <li>Suggestions will now appear inline below the cursor instead of attached to the keyboard.</li>
 <li>Closing app settings no longer causes double animation.</li>
 <li>Fixed loading bar when opening the community themes and community plugins directory.</li>
-</ul>"
+</ul>",false
 01.04.16,desktop,false,2023-10-13,"<h2>Improvements</h2>
 <h3>Properties</h3>
 <ul>
@@ -5601,7 +5601,7 @@ linklist:
 <h3>General</h3>
 <ul>
 <li>Triggering a command from the macOS Application menu will now un-minimize the vault if the window is minimized.</li>
-</ul>"
+</ul>",false
 01.05.00,desktop,true,2023-11-20,"<h2>Shiny new things</h2>
 <p>Brand new editor for Markdown <strong>tables</strong>. Table rows and columns are now easier to create, edit, sort, reorder, select, copy, and paste. These new table features can also be accessed via context menu, command palette, and hotkeys. Tables are still saved to plain text Markdown.</p>
 <p><video src=""https://user-images.githubusercontent.com/693981/284392728-eeb5609f-0622-4a3b-b514-c35993703fa7.mp4""  autoplay=""true"" muted=""muted"" style=""max-height:400px; min-height: 200px"" class=""rounded-lg""></video></p>
@@ -5666,7 +5666,7 @@ linklist:
 <ul>
 <li>File Explorer and Tags pane both received a small code refactor. This might affect some plugins that rely on the internal JS structure. Themes should not be affected.</li>
 <li>Tags can no longer end in a <code>/</code>.</li>
-</ul>"
+</ul>",false
 01.05.01,desktop,true,2023-11-29,"<h2>Improvements</h2>
 <h3>Tables</h3>
 <ul>
@@ -5689,7 +5689,7 @@ linklist:
 <li>Fixed tables sometimes showing multiple text selections.</li>
 <li>The <em>diff</em> view inside Sync History is now scrollable.</li>
 <li>Fixed <code>x</code> motion in Vim mode being able to delete newlines.</li>
-</ul>"
+</ul>",false
 01.05.02,desktop,true,2023-12-12,"<h2>Improvements</h2>
 <h3>Tables</h3>
 <ul>
@@ -5737,7 +5737,7 @@ linklist:
 <li>Search operators such as <code>file:</code> and <code>path:</code> are now case-insensitive. So you can use &quot;FILE:&quot; or &quot;PATH:&quot; now.</li>
 <li>Outgoing links: Fixed issue where unresolved block links would render as an empty row in outgoing links view.</li>
 <li>Fixed issue where links with custom display text (i.e. <code>[[link|alias]]</code>) would render incorrectly after a table.</li>
-</ul>"
+</ul>",false
 01.05.03,desktop,false,2023-12-26,"<h2>Shiny new things</h2>
 <p>Introducing a brand new editor for Markdown tables. Table rows and columns are now easier to create, edit, sort, reorder, select, copy, and paste. These new table features can also be accessed via context menu, command palette, and hotkeys. Tables are still saved to plain text Markdown.</p>
 <p><video src=""https://user-images.githubusercontent.com/693981/284392728-eeb5609f-0622-4a3b-b514-c35993703fa7.mp4""  autoplay=""true"" muted=""muted"" style=""max-height:400px; min-height: 200px"" class=""rounded-lg""></video></p>
@@ -5805,7 +5805,7 @@ linklist:
 <ul>
 <li>File Explorer and Tags pane both received a small code refactor. This might affect some plugins that rely on the internal JS structure. Themes should not be affected.</li>
 <li>Tags can no longer end in a <code>/</code>.</li>
-</ul>"
+</ul>",true
 01.05.03,desktop,true,2023-12-26,"<h2>Improvements</h2>
 <h3>Formatting</h3>
 <ul>
@@ -5830,7 +5830,7 @@ linklist:
 <li>Fixed issue where &quot;Clear formatting&quot; inside a table selection messing up the table formatting.</li>
 <li>&quot;Add cursor above&quot; and &quot;Add cursor below&quot; will now work as expected when you have multiple cursors already active.</li>
 <li>Missing embedded media attachments no longer give a prompt to &quot;Click to create.&quot;</li>
-</ul>"
+</ul>",false
 01.05.04,mobile,true,2024-02-06,"<ul>
 <li>Includes all new functionality and bug fixes up to <a href=""https://obsidian.md/changelog/2024-02-06-desktop-v1.5.4/"">Obsidian Desktop v1.5.4</a>.</li>
 <li>Added support for the new table editor.</li>
@@ -5839,7 +5839,7 @@ linklist:
 <li>The mobile drawer will now show &quot;no file&quot; in the right mobile drawer header instead of the last opened file.</li>
 <li>Fixed &quot;Toggle left sidebar&quot; and &quot;Toggle right sidebar&quot; not working on mobile.</li>
 <li>It's no longer possible for phones to load stacked tabs. The &quot;Toggle stacked tabs&quot; command is no longer shown in the command palette and loading a workspace with stacked tabs will unstack them on devices that don't support stacked tabs.</li>
-</ul>"
+</ul>",false
 01.05.04,desktop,true,2024-02-06,"<h2>Improvements</h2>
 <h3>Tables</h3>
 <ul>
@@ -5885,12 +5885,12 @@ linklist:
 <li>Fixed issue where vim cursor got out of sync with the Obsidian cursor. This made it possible to accidentally edit Properties inside vim mode.</li>
 <li>The vim cursor will now be hidden if the editor is not focused (good bye red box!)</li>
 <li>Restyled the Vim normal mode command panel.</li>
-</ul>"
+</ul>",false
 01.05.05,mobile,true,2024-02-13,"<ul>
 <li>Includes all new functionality and bug fixes up to <a href=""https://obsidian.md/changelog/2024-02-13-desktop-v1.5.5/"">Obsidian Desktop v1.5.5</a>.</li>
 <li>It's now possible to delete tables by placing the cursor after the table and pressing backspace.</li>
 <li>iOS: Fixed bug where selecting all the text in a table cell and pressing backspace would not clear the cell.</li>
-</ul>"
+</ul>",false
 01.05.05,desktop,true,2024-02-13,"<h2>Improvements</h2>
 <h3>Tables</h3>
 <ul>
@@ -5911,11 +5911,11 @@ linklist:
 <li>Fixed the appearance of the embedded backlinks for right-to-left interfaces.</li>
 <li>Fixed sidebar views missing a &quot;close&quot; button.</li>
 <li>Pressing <code>Home</code> when editing a table in source mode will now always go to the beginning of the line.</li>
-</ul>"
+</ul>",false
 01.05.06,mobile,true,2024-02-16,"<ul>
 <li>Includes all new functionality and bug fixes up to <a href=""https://obsidian.md/changelog/2024-02-16-desktop-v1.5.6/"">Obsidian Desktop v1.5.6</a>.</li>
 <li>Fixed indentation guide markers not aligning properly in source mode on iOS.</li>
-</ul>"
+</ul>",false
 01.05.06,desktop,true,2024-02-16,"<h2>Improvements</h2>
 <h3>Tables</h3>
 <ul>
@@ -5928,23 +5928,23 @@ linklist:
 <li>The focused item in the File Explorer will now hide after opening a file.</li>
 <li>Fixed visual block selection in Vim mode.</li>
 <li>Fixed bug with our <code>processFrontMatter</code> API not properly saving properties to a file that didn't previously have properties. This might have impacted plugins.</li>
-</ul>"
+</ul>",false
 01.05.07,mobile,true,2024-02-20,"<ul>
 <li>Includes all new functionality and bug fixes up to <a href=""https://obsidian.md/changelog/2024-02-20-desktop-v1.5.7/"">Obsidian Desktop v1.5.7</a>.</li>
 <li>Fixed indentation guide markers not aligning properly in source mode on iOS.</li>
-</ul>"
+</ul>",false
 01.05.07,desktop,true,2024-02-20,"<h2>No longer broken</h2>
 <ul>
 <li>Fixed links in properties not getting renamed updated when the file is renamed.</li>
 <li>Fixed Obsidian hanging while scrolling through long files if certain plugins that affect Live Preview are enabled.</li>
 <li>Fixed scroll jumping when typing inside a narrow pane.</li>
 <li>Fixed issue where Canvas would fail to render if a zero-byte image file was embedded on the canvas.</li>
-</ul>"
+</ul>",false
 01.05.08,desktop,true,2024-02-21,"<h2>No longer broken</h2>
 <ul>
 <li>Fixed properties not appearing when navigating from a file that has the same properties.</li>
 <li>Fixed <code>Home</code> and <code>End</code> not always navigating to the top and bottom of the document.</li>
-</ul>"
+</ul>",false
 01.05.08,mobile,false,2024-02-22,"<ul>
 <li>Obsidian now requires either Android 5.1+ or iOS 13+ to run.</li>
 <li>Includes all new functionality and bug fixes up to <a href=""https://obsidian.md/changelog/2024-02-22-desktop-v1.5.8/"">Obsidian Desktop v1.5.8</a>.</li>
@@ -5957,7 +5957,7 @@ linklist:
 <li>It's now possible to delete tables by placing the cursor after the table and pressing backspace.</li>
 <li>iOS: Fixed bug where selecting all the text in a table cell and pressing backspace would not clear the cell.</li>
 <li>iOS: Fixed indentation guide markers not aligning properly in source mode.</li>
-</ul>"
+</ul>",false
 01.05.08,desktop,false,2024-02-22,"<h2>Improvements</h2>
 <h3>Tables</h3>
 <ul>
@@ -6021,7 +6021,7 @@ linklist:
 <ul>
 <li>The installer has been updated to Electron v28.2.3. For macOS, Catalina 10.15 or higher is now required to run.</li>
 <li>See the <a href=""https://github.com/obsidianmd/obsidian-api/blob/master/CHANGELOG.md#v157"">API Changelog</a> for a list of API updates.</li>
-</ul>"
+</ul>",false
 01.05.09,mobile,true,2024-03-04T15:20Z,"<h2>Improvements</h2>
 <ul>
 <li>Includes all new functionality and bug fixes up to <a href=""https://obsidian.md/changelog/2024-03-04-desktop-v1.5.9/"">Obsidian Desktop v1.5.9</a>.</li>
@@ -6057,7 +6057,7 @@ linklist:
 <li>Improved compatibility with Apple Vision Pro's eye tracking making it clear what elements are interactive.</li>
 <li>Fixed the toolbar sometimes having too much space below it when using physical keyboard.</li>
 <li>Fixed sometimes the navigation bar shows behind the toolbar when using an external keyboard.</li>
-</ul>"
+</ul>",false
 01.05.09,desktop,true,2024-03-04T15:20Z,"<h2>Breaking changes</h2>
 <ul>
 <li>It is no longer possible to enable the &quot;Translucent windows&quot; setting on Windows.</li>
@@ -6076,12 +6076,12 @@ linklist:
 <li>Fixed links sometimes getting activated when clicking beyond the bounds of the link.</li>
 <li>Fixed pasting into table cells failing if cell has trailing space.</li>
 <li>Fix IME input on the line before a table causing extra newline characters to be inserted.</li>
-</ul>"
+</ul>",false
 01.05.10,desktop,true,2024-03-04T19:31Z,"<h2>No longer broken</h2>
 <ul>
 <li>Fixed readable line length not getting applied immediately when opening a tab.</li>
 <li>Added minor improvements to how Obsidian Sync initially loads before connecting to a remote vault.</li>
-</ul>"
+</ul>",false
 01.05.11,mobile,true,2024-03-13,"<h2>Improvements</h2>
 <ul>
 <li>Includes all new functionality and bug fixes up to <a href=""https://obsidian.md/changelog/2024-03-13-desktop-v1.5.11/"">Obsidian Desktop v1.5.11</a>.</li>
@@ -6115,7 +6115,7 @@ linklist:
 <ul>
 <li>Fixed the &quot;toggle sidebar&quot; commands causing the sidebars to get completely hidden.</li>
 <li>The formatting submenu will no longer appear in the editor context menu.</li>
-</ul>"
+</ul>",false
 01.05.11,desktop,true,2024-03-13,"<h2>Improvements</h2>
 <h3>Tables</h3>
 <ul>
@@ -6150,7 +6150,7 @@ linklist:
 <h2>For developers</h2>
 <ul>
 <li>Fixed <code>revealLeaf</code> failing to focus the correct window.</li>
-</ul>"
+</ul>",false
 01.05.11,mobile,false,2024-03-19,"<h2>Improvements</h2>
 <ul>
 <li>Includes all new functionality and bug fixes up to <a href=""https://obsidian.md/changelog/2024-03-19-desktop-v1.5.11/"">Obsidian Desktop v1.5.11</a>.</li>
@@ -6213,7 +6213,7 @@ linklist:
 <ul>
 <li>Fixed the &quot;toggle sidebar&quot; commands causing the sidebars to get completely hidden.</li>
 <li>The formatting submenu will no longer appear in the editor context menu.</li>
-</ul>"
+</ul>",false
 01.05.11,desktop,false,2024-03-19,"<h2>Breaking changes</h2>
 <ul>
 <li>It is no longer possible to enable the &quot;Translucent windows&quot; setting on Windows.</li>
@@ -6253,15 +6253,15 @@ linklist:
 <li>Fixed issue where <code>cssclasses</code> would sometimes stay applied to the tab when switching to another file.</li>
 <li>Fix bug with unresolved link color being overridden.</li>
 <li>Removed extra top padding when window is fullscreen and using &quot;Obsidian frame&quot; setting.</li>
-</ul>"
+</ul>",false
 01.05.12,mobile,false,2024-03-31,"<h2>No longer broken</h2>
 <ul>
 <li>Android: Fixed issues with some keyboards and voice input putting characters behind the cursor.</li>
-</ul>"
+</ul>",false
 01.05.12,desktop,false,2024-03-31,"<h2>No longer broken</h2>
 <ul>
 <li>Fixed issues with East Asian input methods putting characters behind the cursor.</li>
-</ul>"
+</ul>",false
 01.06.00,desktop,true,2024-05-09,"<h2>Shiny new things</h2>
 <ul>
 <li>The interface direction is now mirrored when the app is set to an RTL language.</li>
@@ -6384,7 +6384,7 @@ linklist:
 <li>Bare modals should respect <code>safe-area-insets</code> by default.</li>
 <li>Added loading state to some of the settings button that make remote requests.</li>
 <li>Global <code>app</code> has been completely removed from the API spec (previously it was marked as deprecated).</li>
-</ul>"
+</ul>",false
 01.06.01,mobile,true,2024-05-22,"<h2>Improvements</h2>
 <ul>
 <li>Includes all new functionality and bug fixes up to <a href=""https://obsidian.md/changelog/2024-05-22-desktop-v1.6.1/"">Obsidian Desktop v1.6.1</a>.</li>
@@ -6428,7 +6428,7 @@ linklist:
 <h2>Developers</h2>
 <ul>
 <li>There is a new <code>.mobile-tap</code> class that gets applied to elements when they are tapped. If you want to add an active state to your buttons on mobile, you can add the class <code>.tappable</code> to your element. When your element is touched, a <code>.mobile-tap</code> class will get applied.</li>
-</ul>"
+</ul>",false
 01.06.01,desktop,true,2024-05-22,"<h2>Improvements</h2>
 <ul>
 <li>Add autocompletion for footnote references using <code>[^</code>.</li>
@@ -6477,7 +6477,7 @@ linklist:
 <li>Mitigation for PDF.js vulnerability (<a href=""https://github.com/advisories/GHSA-wgrm-67xf-hhpq"">CVE-2024-4367</a>)</li>
 </ul>
 <h2>Developers</h2>
-<p>We have reverted the CSS changes to <code>.suggestion-popover</code> which should fix the issues with suggestions created by plugins appearing unstyled.</p>"
+<p>We have reverted the CSS changes to <code>.suggestion-popover</code> which should fix the issues with suggestions created by plugins appearing unstyled.</p>",false
 01.06.02,mobile,true,2024-06-04,"<h2>Improvements</h2>
 <ul>
 <li>Includes all new functionality and bug fixes up to <a href=""https://obsidian.md/changelog/2024-06-04-desktop-v1.6.2/"">Obsidian Desktop v1.6.2</a>.</li>
@@ -6496,7 +6496,7 @@ linklist:
 <li>Fix back button not always getting removed inside the Community plugins view.</li>
 <li>Fixed horizontal table scrolling.</li>
 <li>Fixed iOS not being able to open the context menu on sidebar tabs.</li>
-</ul>"
+</ul>",false
 01.06.02,desktop,true,2024-06-04,"<h2>Improvements</h2>
 <h3>Footnotes</h3>
 <ul>
@@ -6522,7 +6522,7 @@ linklist:
 <li>Multiple consecutive spaces are no longer collapsed in file names.</li>
 <li>The &quot;toggle bullet list&quot; command will now turn a task list into a bullet list.</li>
 <li>Fixed double-click not working in table cells.</li>
-</ul>"
+</ul>",false
 01.06.02,mobile,false,2024-06-07,"<ul>
 <li>Includes all new functionality and bug fixes up to <a href=""https://obsidian.md/changelog/2024-06-07-desktop-v1.6.2/"">Obsidian Desktop v1.6</a>.</li>
 <li>The mobile sidebars have received a slight design refresh. In an effort to reduce some of the visual complexity, we've changed the sidebar tabs to a dropdown list. We also removed the &quot;fullscreen&quot; button to further simplify things.</li>
@@ -6567,7 +6567,7 @@ linklist:
 <h2>Developers</h2>
 <ul>
 <li>There is a new <code>.mobile-tap</code> class that gets applied to elements when they are tapped. If you want to add an active state to your buttons on mobile, you can add the class <code>.tappable</code> to your element. When your element is touched, a <code>.mobile-tap</code> class will get applied.</li>
-</ul>"
+</ul>",true
 01.06.02,desktop,false,2024-06-07,"<p>This update focuses on improving a few long-standing sore points. Notably, we overhauled <strong>support for right-to-left (RTL) languages</strong>. The editor now automatically detects language direction per line, making it more adaptable for mixed-language usage. In addition, when the app is set to an RTL language, the interface is mirrored accordingly.</p>
 <p>We've improved the editing and reading experience of <strong>footnotes</strong>. This release is jam-packed with bug fixes and small improvements. This release includes numerous bug fixes and small improvements, along with some performance enhancements for loading and editing.</p>
 <h4>Highlights</h4>
@@ -6741,15 +6741,15 @@ linklist:
 <li>Modals should respect <code>safe-area-insets</code> without requiring additional CSS.</li>
 <li>Added loading state to some settings buttons that make remote requests.</li>
 <li>Completely removed global <code>app</code> from the API spec (previously it was marked as deprecated).</li>
-</ul>"
+</ul>",true
 01.06.03,mobile,false,2024-06-08,"<ul>
 <li>Includes all bug fixes up to <a href=""https://obsidian.md/changelog/2024-06-08-desktop-v1.6.3/"">Obsidian Desktop v1.6.3</a>.</li>
-</ul>"
+</ul>",false
 01.06.03,desktop,false,2024-06-08,"<h2>No longer broken</h2>
 <ul>
 <li>Fixed the log-in screen closing without an error if login failed.</li>
 <li>Fixed users with two-factor authentication not being able to log-in within the app.</li>
-</ul>"
+</ul>",false
 01.06.04,mobile,true,2024-06-20,"<h2>No longer broken</h2>
 <ul>
 <li>Added mobile tap effect to buttons in the &quot;New tab&quot; view.</li>
@@ -6760,7 +6760,7 @@ linklist:
 <li>Removed the &quot;Close others in tab group&quot; command on phones.</li>
 <li>Fixed tooltips sometimes briefly flashing when tapping on a tab.</li>
 <li>Fixed scrolling via an external device not working on iOS.</li>
-</ul>"
+</ul>",false
 01.06.04,desktop,true,2024-06-20,"<h2>Improvements</h2>
 <ul>
 <li>Added &quot;Publish current file&quot; command and menu item to Obsidian Publish.</li>
@@ -6820,12 +6820,12 @@ linklist:
 <ul>
 <li>Fixed issue with app ribbon items getting reordered incorrectly after drag and drop.</li>
 <li>Disabling and reenabling plugins no longer causes the position of their ribbon items to be lost.</li>
-</ul>"
+</ul>",false
 01.06.05,mobile,false,2024-06-25,"<ul>
 <li>Includes all new functionality and bug fixes up to Obsidian Desktop v1.6.5.</li>
 <li>Removed &quot;Open in new window&quot; context menu items from bookmarks.</li>
 <li>Removed &quot;Open to the right&quot; context menu item from bookmarks on smaller devices.</li>
-</ul>"
+</ul>",false
 01.06.05,desktop,false,2024-06-25,"<h2>Improvements</h2>
 <ul>
 <li>The installer has been updated to use Electron v30.1.2. To upgrade, install visit the <a href=""https://obsidian.md/download"">Obsidian download page</a> and reinstall Obsidian.</li>
@@ -6836,27 +6836,27 @@ linklist:
 <li>Fixed date and time input being cut off.</li>
 <li>Fixed extra border between vertical splits in the sidebar.</li>
 <li>Fixed bug where Graph view could constantly save and reload.</li>
-</ul>"
+</ul>",false
 01.06.06,mobile,true,2024-07-09,"<ul>
 <li>Includes all new functionality and bug fixes up to Obsidian Desktop v1.6.6.</li>
-</ul>"
+</ul>",false
 01.06.06,desktop,true,2024-07-09,"<h2>No longer broken</h2>
 <ul>
 <li>Fixed memory leak when disabling plugins that register custom ribbon buttons.</li>
 <li>Fixed overlap of indicators and bullets with right-to-left text.</li>
 <li>Fixed an issue where old file history was missing from the sync history view after renaming a file.</li>
-</ul>"
+</ul>",false
 01.06.07,mobile,true,2024-07-11,"<ul>
 <li>Includes all new functionality and bug fixes up to Obsidian Desktop v1.6.7.</li>
-</ul>"
+</ul>",false
 01.06.07,desktop,true,2024-07-11,"<h2>No longer broken</h2>
 <ul>
 <li>Fixed app freezing when closing a pop-out window while Obsidian Sync is syncing the active file.</li>
 <li>Fixed collapse indicators displaying the wrong direction next to right-to-left text.</li>
-</ul>"
+</ul>",false
 01.06.07,mobile,false,2024-07-18,"<ul>
 <li>Includes all new functionality and bug fixes up to Obsidian Desktop v1.6.7.</li>
-</ul>"
+</ul>",false
 01.06.07,desktop,false,2024-07-18,"<h2>No longer broken</h2>
 <ul>
 <li>Fixed app freezing when closing a pop-out window while Obsidian Sync is syncing the active file.</li>
@@ -6864,7 +6864,7 @@ linklist:
 <li>Fixed an issue where old file history was missing from the sync history view after renaming a file.</li>
 <li>Fixed collapse indicators displaying the wrong direction next to right-to-left text.</li>
 <li>Fixed overlap of indicators and bullets with right-to-left text.</li>
-</ul>"
+</ul>",false
 01.07.00,mobile,true,2024-08-08,"<ul>
 <li>Includes all new functionality and bug fixes up to Obsidian Desktop v1.7.0.</li>
 </ul>
@@ -6913,7 +6913,7 @@ linklist:
 <ul>
 <li>Fixed horizontal scrolling in community plugins with long descriptions.</li>
 <li>The community plugin sort button now matches the desktop version.</li>
-</ul>"
+</ul>",false
 01.07.00,desktop,true,2024-08-08,"<h2>Shiny new things</h2>
 <ul>
 <li>Obsidian Sync includes a new view that shows a collection of synchronized files. Activate it using the &quot;Sync: Show Sync history&quot; command.</li>
@@ -6962,7 +6962,7 @@ linklist:
 <li>Fixed issue where the &quot;&gt;&quot; character after a bare link was incorrectly parsed as a quote block.</li>
 <li>Fixed bug where items were not always visible after filtering in the Outline view.</li>
 <li>Fixed issue where search highlights were not cleared when the current Outline view filter was cleared.</li>
-</ul>"
+</ul>",false
 01.07.01,mobile,true,2024-08-27,"<ul>
 <li>Includes all new functionality and bug fixes up to Obsidian Desktop v1.7.1.</li>
 </ul>
@@ -6977,7 +6977,7 @@ linklist:
 <li>Fixed a bug where tapping on the mobile toolbar for the first time would sometimes close the keyboard.</li>
 <li>Improved the appearance of some Obsidian Sync screens.</li>
 <li>Fixed jitter when dismissing the keyboard on iOS.</li>
-</ul>"
+</ul>",false
 01.07.01,desktop,true,2024-08-27,"<h2>Improvements</h2>
 <ul>
 <li>Added a new screen in settings (General → Advanced) to show the total app load time. You can also enable a toggle to get a notified when startup takes too long, including details for debugging.</li>
@@ -7010,14 +7010,14 @@ linklist:
 <ul>
 <li>Plugin installation now automatically strips sourcemaps, making plugins smaller and faster to load.</li>
 <li>Theme developers: REM units are now synced with the base font size.</li>
-</ul>"
+</ul>",false
 01.07.02,mobile,true,2024-09-19,"<ul>
 <li>Includes all new functionality and bug fixes up to Obsidian Desktop v1.7.2.</li>
 </ul>
 <h2>No longer broken</h2>
 <ul>
 <li>Fix issue where an extra loading bar would appear for a couple frames as the splash screen is hiding.</li>
-</ul>"
+</ul>",false
 01.07.02,desktop,true,2024-09-19,"<h2>Improvements</h2>
 <ul>
 <li>Views now load only when visible, improving startup performance and memory usage. This might cause issues with some plugins, but we've published <a href=""https://docs.obsidian.md/Plugins/Guides/Understanding+deferred+views"">a guide</a> for plugin developers.</li>
@@ -7045,11 +7045,11 @@ linklist:
 <li>Fixed issue where files couldn’t be moved into folders with a file of the same name but different capitalization.</li>
 <li>Fixed issue where links with custom display text under a table confused the Markdown parser.</li>
 <li>Vim: The latest bugfixes from our vim library (<code>codemirror-vim</code>) have been added. This includes fixes for arrow navigation on wrapped lines.</li>
-</ul>"
+</ul>",false
 01.07.03,mobile,true,2024-09-24,"<ul>
 <li>Includes all new functionality and bug fixes up to Obsidian Desktop v1.7.3.</li>
 <li>iOS: The option to skip iCloud loading will now appear earlier in the startup process.</li>
-</ul>"
+</ul>",false
 01.07.03,desktop,true,2024-09-24,"<h2>Improvements</h2>
 <ul>
 <li>If a plugin takes a while to load at startup, a message will appear and give you the option to disable the plugin and restart the app.</li>
@@ -7060,14 +7060,14 @@ linklist:
 <li>Fixed sidebar views not always updating to reflect the latest active file.</li>
 <li>Fixed extra history entries appearing in the view navigation list.</li>
 <li>Fixed <code>append</code> and <code>prepend</code> URI actions adding extra newlines when the file content is empty.</li>
-</ul>"
+</ul>",false
 01.07.04,mobile,true,2024-10-08,"<ul>
 <li>Includes all new functionality and bug fixes up to Obsidian Desktop v1.7.4.</li>
 </ul>
 <h2>Mobile</h2>
 <ul>
 <li>Android: Fixed tapping on tag causing the sidebar to open and immediately close.</li>
-</ul>"
+</ul>",false
 01.07.04,desktop,true,2024-10-08,"<h2>Improvements</h2>
 <ul>
 <li>The &quot;Close all tabs in tab group&quot; command is no longer available in sidebars.</li>
@@ -7086,7 +7086,7 @@ linklist:
 <ul>
 <li>Lucide icons have been updated to 0.446.0.</li>
 <li>Fixed <code>requestUrl</code> failing silently when the URL fails to resolve.</li>
-</ul>"
+</ul>",false
 01.07.04,mobile,false,2024-10-16,"<p>Includes all new functionality and bug fixes up to <a href=""/changelog/2024-10-16-desktop-v1.7.4/"">Obsidian Desktop v1.7.4</a>.</p>
 <h2>Shiny new things</h2>
 <ul>
@@ -7146,7 +7146,7 @@ linklist:
 <ul>
 <li>Fixed horizontal scrolling in community plugins with long descriptions.</li>
 <li>The community plugin sort button now matches the desktop version.</li>
-</ul>"
+</ul>",true
 01.07.04,desktop,false,2024-10-16,"<h2>Shiny new things</h2>
 <ul>
 <li>Obsidian Sync: the new Sync History view shows a list of edits across the vault, useful when <a href=""https://help.obsidian.md/Obsidian+Sync/Collaborate+on+a+shared+vault"">collaborating on a shared vault</a>. Activate it using the &quot;Sync: Show Sync history&quot; command.</li>
@@ -7256,4 +7256,27 @@ linklist:
 <li>Theme developers: REM units are now synced with the base font size.</li>
 <li>Lucide icons have been updated to 0.446.0.</li>
 <li>Fixed <code>requestUrl</code> failing silently when the URL fails to resolve.</li>
-</ul>"
+</ul>",true
+01.07.05,mobile,false,2024-11-04,"<p>Includes all new functionality and bug fixes up to <a href=""/changelog/2024-11-04-desktop-v1.7.5/"">Obsidian Desktop v1.7.5</a>.</p>",false
+01.07.05,desktop,false,2024-11-04,"<h2>No longer broken</h2>
+<ul>
+<li>Updated the behavior of the &quot;Add internal link&quot; command so the cursor is placed at the end of the link text, and the link suggestion pop-up appears.</li>
+<li>Fixed issues where Sync Sidebar timestamps would not reflect changes made locally.</li>
+<li>Improved render performance of Canvas when there are many nodes on the screen.</li>
+<li>Fixed issues where the attachment folder would be displayed incorrectly in settings.</li>
+<li>Fixed regression where the &quot;Add tag&quot; command was not causing the tag suggestions to appear.</li>
+<li>Fixed bug where Sandbox vault would fail to load if the &quot;Start here&quot; file was missing.</li>
+<li>File Explorer: &quot;Reveal in file navigation&quot; now waits for the view to load.</li>
+<li>Fixed bug where tree components (such as the Outline view) would be slow to refresh on Android.</li>
+<li>Fixed bug where switching between Obsidian and other apps would cause the navigation bar and the toolbar to both be active.</li>
+<li>Fixed &quot;Installing theme&quot; notice not disappearing when installing a legacy theme.</li>
+<li>Fixed middle-click not closing tabs.</li>
+<li>Fixed bug where Graph view options would sometimes get overridden when opening a new graph view.</li>
+</ul>
+<h2>Developers</h2>
+<ul>
+<li>The installer has been updated to use Electron v32 (requires downloading <a href=""https://obsidian.md"">the latest installer</a>).</li>
+<li>Fixed vim <code>langmap</code> failing to load properly.</li>
+<li>Added a new debug mode for developers. To enable, run <code>app.debugMode(true);</code> in developer tools. When active, inline source maps will not be stripped from loaded plugins.</li>
+<li>Fixed MarkdownCodeBlockProcessor adding an extra newline when in reading mode.</li>
+</ul>",false

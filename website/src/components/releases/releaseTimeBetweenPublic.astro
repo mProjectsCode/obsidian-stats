@@ -1,6 +1,6 @@
 ---
 import { readFileSync } from 'fs';
-import { fromCSV, op } from 'arquero';
+import { fromCSV, op, escape } from 'arquero';
 
 import BarChart from '../svelte/genericCharts/barChart.svelte';
 import { Version } from '../../../../src/version';
@@ -19,7 +19,13 @@ const activeDaysBetweenPublicVersions = ReleaseTimeData
     .rollup({ timeBetween: d => op.array_agg(d.timeBetween) })
     .objects()[0].timeBetween;
 
-const publicPatchVersions: string[] = ReleaseData.array('version').map(x => Version.pretty(x));
+const versionDescriptor = ReleaseData.derive({ label: escape(d => {
+        let version = Version.pretty(d.version);
+        // if (d.major_release) version = version.split('.').slice(0, 2).join('.') + `(.${version.split('.').slice(2).join('.')})`;
+        if (d.major_release) version = version.split('.').slice(0, 2).join('.');
+        return version;
+    })});
+const publicPatchVersions: string[] = versionDescriptor.array('label');
 ---
 
 <BarChart

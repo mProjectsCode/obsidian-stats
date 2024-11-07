@@ -53,10 +53,16 @@ const changelogSizeData = ReleaseData
 
         return group;
     })});
-const allVersions: string[] = ReleaseData.distinctArray('version');
-const allVersionsPretty = allVersions.map(x => Version.pretty(x));
 
-const groups = from(changelogSizeData.objects().map(x => x.groups))
+const versionDescriptor = ReleaseData.derive({ label: escape(d => {
+        let version = Version.pretty(d.version);
+        // if (d.major_release) version = version.split('.').slice(0, 2).join('.') + `(.${version.split('.').slice(2).join('.')})`;
+        if (d.major_release) version = version.split('.').slice(0, 2).join('.');
+        return version;
+    })});
+const allVersions: string[] = versionDescriptor.array('label');
+
+const groups = from(changelogSizeData.objects().map(x => x.groups));
 const dataPoints = groups.columnNames().map(label => ({
     label: label.charAt(0).toUpperCase() + label.slice(1),
     data: groups.array(label),
@@ -66,7 +72,7 @@ const dataPoints = groups.columnNames().map(label => ({
 
 <StackedBarChart
         dataPoints={dataPoints}
-        labels={allVersionsPretty}
+        labels={allVersions}
         seriesName="Amount of changes mentioned in the changelog"
         enableZoom={true}
         client:only="svelte"

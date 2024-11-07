@@ -8,7 +8,6 @@ import { Version } from '../../../../src/version';
 
 const ReleaseData = fromCSV(readFileSync('../releases-changelog.csv', 'utf8'))
     .filter(d => d!.platform === 'desktop')
-    .dedupe('version')
     .orderby('date');
 const ReleaseTimeData = ReleaseData
     .select('date', 'insider', 'version')
