@@ -3,6 +3,8 @@
 	import { onDestroy, onMount } from 'svelte';
 	import { ThemeObserver } from '../svelteUtils.ts';
 	import { ALL_OS } from '../../../../../src/release/release.ts';
+	import resetZoom from './../../../assets/reset-zoom.svg?raw';
+
 
 	interface Props {
 		dataPoints: { label: string; data: number[] }[];
@@ -38,9 +40,19 @@
 		enableZoom = false,
 	}: Props = $props();
 
-	let downloadChartEl: HTMLCanvasElement | undefined = $state();
+	let chartElement: HTMLCanvasElement | undefined = $state();
+	let actionsContainer: HTMLDivElement | undefined;
 
 	let themeObserver: ThemeObserver;
+
+	function addAction(icon: string, action: () => void) {
+		const actionButton = document.createElement('button');
+		actionButton.classList.add('chart-action');
+		actionButton.innerHTML = icon;
+		actionButton.onclick = action;
+		actionsContainer!.appendChild(actionButton);
+		return actionButton;
+	}
 
 	onMount(() => {
 		themeObserver = new ThemeObserver();
@@ -49,7 +61,7 @@
 			Chart.defaults.color = chartStyle.text;
 			Chart.defaults.borderColor = chartStyle.line;
 
-			return new Chart(downloadChartEl!, {
+			const chart = new Chart(chartElement!, {
 				type: 'bar',
 				data: {
 					labels: labels,
@@ -84,6 +96,9 @@
 									enabled: enableZoom,
 								},
 								mode: 'x',
+								onZoom(context) {
+									chart.canvas.dispatchEvent(new CustomEvent('zoom'));
+								},
 							},
 						},
 					},
@@ -106,6 +121,23 @@
 					aspectRatio: 1,
 				},
 			});
+
+			actionsContainer = document.createElement('div');
+			actionsContainer.classList.add('chart-actions');
+			chart.canvas.parentElement!.appendChild(actionsContainer);
+
+			if (enableZoom) {
+				const resetZoomButton = addAction(resetZoom, () => {
+					chart.resetZoom();
+					resetZoomButton.disabled = true;
+				});
+				resetZoomButton.disabled = true;
+				chart.canvas.addEventListener('zoom', () => {
+					resetZoomButton.disabled = !chart.isZoomedOrPanned();
+				});
+			}
+
+			return chart;
 		});
 
 		themeObserver.initObserver();
@@ -117,7 +149,7 @@
 </script>
 
 <div class="chart-wrapper">
-	<canvas bind:this={downloadChartEl} id="release-download-chart"></canvas>
+	<canvas bind:this={chartElement} id="release-download-chart"></canvas>
 </div>
 
 <style>
