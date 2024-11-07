@@ -1,20 +1,23 @@
 ---
 import { readFileSync } from 'fs';
 import { escape, fromCSV, op } from 'arquero';
-import { getMajorVersions } from '../../../../src/release/data';
 
-import BarChart from '../svelte/genericCharts/barChart.svelte';
 import StackedBarChart from '../svelte/genericCharts/stackedBarChart.svelte';
 import { Version } from '../../../../src/version';
 
 const ReleaseData = fromCSV(readFileSync('../releases-changelog.csv', 'utf8'))
 	.filter(d => d!.platform === 'desktop')
-	.dedupe('version')
 	.orderby('date');
 const ReleaseTimeData = ReleaseData
 	.select('date', 'insider', 'version').dedupe();
 
-const allVersions: string[] = ReleaseData.distinctArray('version').map(x => Version.pretty(x));
+const versionDescriptor = ReleaseData.derive({ label: escape(d => {
+		let version = Version.pretty(d.version);
+		// if (d.major_release) version = version.split('.').slice(0, 2).join('.') + `(.${version.split('.').slice(2).join('.')})`;
+		if (d.major_release) version = version.split('.').slice(0, 2).join('.');
+		return version;
+	})});
+const allVersions: string[] = versionDescriptor.array('label');
 
 const activeDaysForAllVersions: number[] = ReleaseTimeData.derive({ timeBetween: d => op.timestamp(op.lead(d.date, 1, op.now())) - op.timestamp(d.date) })
 	.impute({ timeBetween: 0 })

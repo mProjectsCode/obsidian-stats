@@ -76,6 +76,7 @@ export interface ObsidianReleaseInfo {
 	insider: boolean;
 	date: Date;
 	info: string;
+	major_release: boolean;
 }
 
 export type GithubReleases = GithubReleaseEntry[];

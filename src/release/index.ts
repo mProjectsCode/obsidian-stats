@@ -64,8 +64,11 @@ async function fetchChangelogStats(): Promise<ColumnTable> {
 	const entries: ObsidianReleaseInfo[] = xml.feed.entry.map((entry: any) => {
 		const release_info = entry.id.slice(30);
 		let version = release_info.match(/v\d+\.\d+(\.\d+)?/)?.[0] ?? '';
+		let major_release = false;
 		if (version.length && version.split('.').length !== 0) {
-			if (version.split('.').length === 1) version += +'.0';
+			// Major releases do not conform to semantic versioning as you can have a major release which has
+			//   the same version number as the previous insider release (e.g. 1.7.4 insider and '1.7' (also 1.7.4))
+			major_release = /(?<!\d\.)\b\d+\.\d+\b(?!\.\d)/.test(entry.title);
 			version = Version.alphabetic(version);
 		}
 		return {
@@ -74,6 +77,7 @@ async function fetchChangelogStats(): Promise<ColumnTable> {
 			insider: entry.title.includes('Early access'),
 			date: new Date(entry.updated),
 			info: entry.content,
+			major_release
 		}
 	});
 
@@ -130,16 +134,17 @@ function weeklyFactors(dates: Date[], startDate: Date, endDate: Date): number[] 
 	return [startWeekCover / totalWeekCover, ...Array.from({ length: dates.length - 2 }, () => 1 / totalWeekCover), endWeekCover / totalWeekCover];
 }
 
-export async function buildReleaseStats(): Promise<void> {
-	const githubData = await fetchGithubStats();
+async function updateChangelogData() {
 	const changelogData = await fetchChangelogStats();
+	await Bun.write(RELEASE_CHANGELOG_PATH, changelogData.toCSV());
+}
 
-	// const githubData = fromCSV(await Bun.file(RELEASE_FULL_DATA_PATH).text());
-	// const changelogData = fromCSV(await Bun.file(RELEASE_CHANGELOG_PATH).text());
+async function updateGithubData() {
+	const githubData = await fetchGithubStats();
+	await Bun.write(RELEASE_FULL_DATA_PATH, githubData.toCSV());
 
 	const releaseFullDataFile = Bun.file(RELEASE_FULL_DATA_PATH);
 	const releaseWeeklyDataFile = Bun.file(RELEASE_WEEKLY_DATA_PATH);
-	const changelogDataFile = Bun.file(RELEASE_CHANGELOG_PATH);
 
 	const lastModifiedDate = new Date(releaseFullDataFile.lastModified);
 	const currentDate = new Date();
@@ -176,7 +181,12 @@ export async function buildReleaseStats(): Promise<void> {
 
 	await Bun.write(releaseWeeklyDataFile, combinedWeeklyDownloadsTable.toCSV());
 	await Bun.write(releaseFullDataFile, githubData.toCSV());
-	await Bun.write(changelogDataFile, changelogData.toCSV());
 }
 
-// await buildReleaseStats();
+export async function buildReleaseStats(): Promise<void> {
+	await updateGithubData();
+	await updateChangelogData();
+}
+
+// await updateGithubData();
+// await updateChangelogData();
