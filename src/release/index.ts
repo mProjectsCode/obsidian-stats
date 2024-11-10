@@ -1,14 +1,8 @@
 import type { GithubReleaseEntry, ObsidianReleaseInfo } from './release.ts';
-import {
-	RELEASE_CHANGELOG_PATH,
-	RELEASE_FULL_DATA_PATH,
-	RELEASE_INFO_URL,
-	RELEASE_STATS_URL,
-	RELEASE_WEEKLY_DATA_PATH
-} from '../constants.ts';
+import { RELEASE_CHANGELOG_PATH, RELEASE_FULL_DATA_PATH, RELEASE_INFO_URL, RELEASE_STATS_URL, RELEASE_WEEKLY_DATA_PATH } from '../constants.ts';
 import { distributeValueEqually, getNextMondays } from '../utils.ts';
 import { escape, from, fromCSV, op, table } from 'arquero';
-import { XMLParser } from "fast-xml-parser";
+import { XMLParser } from 'fast-xml-parser';
 import { Struct } from 'arquero/dist/types/op/op-api';
 import ColumnTable from 'arquero/dist/types/table/column-table';
 import { Version } from '../version.ts';
@@ -54,7 +48,6 @@ async function fetchGithubStats(): Promise<ColumnTable> {
 	return from(releaseData).orderby('version', 'asset', 'date');
 }
 
-
 async function fetchChangelogStats(): Promise<ColumnTable> {
 	let currentPage: string | null = RELEASE_INFO_URL;
 
@@ -73,12 +66,12 @@ async function fetchChangelogStats(): Promise<ColumnTable> {
 		}
 		return {
 			version: version,
-			platform: release_info.match(/desktop|mobile|publish/)?.[0] as "desktop" | "mobile" | "publish",
+			platform: release_info.match(/desktop|mobile|publish/)?.[0] as 'desktop' | 'mobile' | 'publish',
 			insider: entry.title.includes('Early access'),
 			date: new Date(entry.updated),
 			info: entry.content,
-			major_release
-		}
+			major_release,
+		};
 	});
 
 	return from(entries).orderby('version', 'date');

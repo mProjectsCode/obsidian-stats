@@ -158,7 +158,7 @@
 								},
 								mode: 'x',
 							},
-						}
+						},
 					},
 					aspectRatio: aspectRatio,
 				},

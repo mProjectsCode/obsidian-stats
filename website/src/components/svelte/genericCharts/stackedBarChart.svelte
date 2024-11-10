@@ -5,7 +5,6 @@
 	import { ALL_OS } from '../../../../../src/release/release.ts';
 	import resetZoom from './../../../assets/reset-zoom.svg?raw';
 
-
 	interface Props {
 		dataPoints: { label: string; data: number[] }[];
 		labels: string[];

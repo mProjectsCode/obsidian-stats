@@ -7,11 +7,9 @@ import BarChart from '../svelte/genericCharts/barChart.svelte';
 import { Version } from '../../../../src/version';
 
 const ReleaseData = fromCSV(readFileSync('../releases-changelog.csv', 'utf8'))
-    .filter(d => d!.platform === 'desktop')
-    .orderby('date');
-const ReleaseTimeData = ReleaseData
-    .select('date', 'insider', 'version')
-    .dedupe();
+	.filter(d => d!.platform === 'desktop')
+	.orderby('date');
+const ReleaseTimeData = ReleaseData.select('date', 'insider', 'version').dedupe();
 
 const allVersions: string[] = ReleaseData.distinctArray('version');
 const minorVersions: string[] = getMajorVersions(allVersions);
@@ -19,26 +17,25 @@ const minorVersions: string[] = getMajorVersions(allVersions);
 const majorVersionsPretty = minorVersions.map(x => Version.fromString(x).getMinor().toString());
 
 const activeDaysForMinorVersions: number[] = ReleaseTimeData.filter(escape(d => op.includes(minorVersions, d.version, 0)))
-    .derive({ timeBetween: d => op.timestamp(op.lead(d.date, 1, op.now())) - op.timestamp(d.date) })
-    .impute({ timeBetween: 0 })
-    .derive({ timeBetween: d => op.round(d.timeBetween / 24 / 60 / 60 / 1000) })
-    .rollup({ timeBetween: d => op.array_agg(d.timeBetween) })
-    .objects()[0].timeBetween;
+	.derive({ timeBetween: d => op.timestamp(op.lead(d.date, 1, op.now())) - op.timestamp(d.date) })
+	.impute({ timeBetween: 0 })
+	.derive({ timeBetween: d => op.round(d.timeBetween / 24 / 60 / 60 / 1000) })
+	.rollup({ timeBetween: d => op.array_agg(d.timeBetween) })
+	.objects()[0].timeBetween;
 
 const releaseCycleLength: number[] = ReleaseTimeData.derive({ minorVersion: escape(d => d.version.split('.').slice(0, 2).join('.')) })
-    .groupby('minorVersion')
-    .rollup({ timeBetween: d => op.timestamp(op.max(d.date)) - op.timestamp(op.min(d.date)) })
-    .derive({ timeBetween: d => op.round(d.timeBetween / 24 / 60 / 60 / 1000) })
-    .objects()
-    .map(x => x.timeBetween);
+	.groupby('minorVersion')
+	.rollup({ timeBetween: d => op.timestamp(op.max(d.date)) - op.timestamp(op.min(d.date)) })
+	.derive({ timeBetween: d => op.round(d.timeBetween / 24 / 60 / 60 / 1000) })
+	.objects()
+	.map(x => x.timeBetween);
 ---
 
 <BarChart
-        labels={majorVersionsPretty}
-        dataPoints={activeDaysForMinorVersions}
-        seriesName="Days in minor release cycle"
-        dataPoints2={releaseCycleLength}
-        seriesName2="Days since last patch"
-        client:only="svelte"
+	labels={majorVersionsPretty}
+	dataPoints={activeDaysForMinorVersions}
+	seriesName="Days in minor release cycle"
+	dataPoints2={releaseCycleLength}
+	seriesName2="Days since last patch"
+	client:only="svelte"
 />
-

@@ -6,74 +6,76 @@ import { Version } from '../../../../src/version';
 import StackedBarChart from '../svelte/genericCharts/stackedBarChart.svelte';
 
 const ReleaseData = fromCSV(readFileSync('../releases-changelog.csv', 'utf8'))
-    .filter(d => d!.platform === 'desktop')
-    .orderby('date');
+	.filter(d => d!.platform === 'desktop')
+	.orderby('date');
 
 // Defaults to uncategorized
 const headingCategories = {
-    'Uncategorized': 'uncategorized',
-    'Shiny new things': 'features',
-    'No longer broken': 'bugfixes',
-    'Changes': 'improvements',
-    'Breaking changes': 'breaking',
-    'Improvements': 'improvements',
-    'Developers': 'developers',
-    'Migration notice': 'uncategorized',
-    'Developer': 'developers',
-    'Shiny new things for Obsidian Publish': 'features',
-    'For Developers': 'developers',
-    'Bug fixes': 'bugfixes',
-    'New shiny things': 'features',
-    'For developers': 'developers',
-    'Improved': 'improvements',
-}
+	Uncategorized: 'uncategorized',
+	'Shiny new things': 'features',
+	'No longer broken': 'bugfixes',
+	Changes: 'improvements',
+	'Breaking changes': 'breaking',
+	Improvements: 'improvements',
+	Developers: 'developers',
+	'Migration notice': 'uncategorized',
+	Developer: 'developers',
+	'Shiny new things for Obsidian Publish': 'features',
+	'For Developers': 'developers',
+	'Bug fixes': 'bugfixes',
+	'New shiny things': 'features',
+	'For developers': 'developers',
+	Improved: 'improvements',
+};
 const allCategories = [...new Set(Object.values(headingCategories))];
 
-const changelogSizeData = ReleaseData
-    .filter(d => d!.platform === 'desktop')
-    .derive({ minorVersion: escape(d => d.version.split('.').slice(0, 2).join('.')) })
-    .derive({ groups: escape((d) => {
-        const content = d.info;
-        let headings = content.match(/<h\d>(.*?)<\/h\d>/g);
-        const group = Object.fromEntries(allCategories.map(x => [x, 0]));
-        if (!headings) {
-            group['uncategorized'] += content.match(/<li>/g)?.length;
-        } else {
-            const maxHeading = Math.min(...headings.map(x => parseInt(x.match(/<h(\d)>/)[1])));
-            headings = headings.filter(x => parseInt(x.match(/<h(\d)>/)[1]) === maxHeading);
+const changelogSizeData = ReleaseData.filter(d => d!.platform === 'desktop')
+	.derive({ minorVersion: escape(d => d.version.split('.').slice(0, 2).join('.')) })
+	.derive({
+		groups: escape(d => {
+			const content = d.info;
+			let headings = content.match(/<h\d>(.*?)<\/h\d>/g);
+			const group = Object.fromEntries(allCategories.map(x => [x, 0]));
+			if (!headings) {
+				group['uncategorized'] += content.match(/<li>/g)?.length;
+			} else {
+				const maxHeading = Math.min(...headings.map(x => parseInt(x.match(/<h(\d)>/)[1])));
+				headings = headings.filter(x => parseInt(x.match(/<h(\d)>/)[1]) === maxHeading);
 
-            let chunk = content.slice(0, content.indexOf(headings[0]));
-            group['uncategorized'] = chunk.match(/<li>/g)?.length ?? 0;
-            for (let i = 0; i < headings?.length; i++) {
-                const category = headingCategories[headings[i].match(/<h\d>(.*?)<\/h\d>/)[1]] || 'uncategorized';
-                chunk = content.slice(content.indexOf(headings[i]), content.indexOf(headings[i + 1]));
-                group[category] += chunk.match(/<li>/g)?.length;
-            }
-        }
+				let chunk = content.slice(0, content.indexOf(headings[0]));
+				group['uncategorized'] = chunk.match(/<li>/g)?.length ?? 0;
+				for (let i = 0; i < headings?.length; i++) {
+					const category = headingCategories[headings[i].match(/<h\d>(.*?)<\/h\d>/)[1]] || 'uncategorized';
+					chunk = content.slice(content.indexOf(headings[i]), content.indexOf(headings[i + 1]));
+					group[category] += chunk.match(/<li>/g)?.length;
+				}
+			}
 
-        return group;
-    })});
+			return group;
+		}),
+	});
 
-const versionDescriptor = ReleaseData.derive({ label: escape(d => {
-        let version = Version.pretty(d.version);
-        // if (d.major_release) version = version.split('.').slice(0, 2).join('.') + `(.${version.split('.').slice(2).join('.')})`;
-        if (d.major_release) version = version.split('.').slice(0, 2).join('.');
-        return version;
-    })});
+const versionDescriptor = ReleaseData.derive({
+	label: escape(d => {
+		let version = Version.pretty(d.version);
+		// if (d.major_release) version = version.split('.').slice(0, 2).join('.') + `(.${version.split('.').slice(2).join('.')})`;
+		if (d.major_release) version = version.split('.').slice(0, 2).join('.');
+		return version;
+	}),
+});
 const allVersions: string[] = versionDescriptor.array('label');
 
 const groups = from(changelogSizeData.objects().map(x => x.groups));
 const dataPoints = groups.columnNames().map(label => ({
-    label: label.charAt(0).toUpperCase() + label.slice(1),
-    data: groups.array(label),
+	label: label.charAt(0).toUpperCase() + label.slice(1),
+	data: groups.array(label),
 }));
-
 ---
 
 <StackedBarChart
-        dataPoints={dataPoints}
-        labels={allVersions}
-        seriesName="Amount of changes mentioned in the changelog"
-        enableZoom={true}
-        client:only="svelte"
+	dataPoints={dataPoints}
+	labels={allVersions}
+	seriesName="Amount of changes mentioned in the changelog"
+	enableZoom={true}
+	client:only="svelte"
 />

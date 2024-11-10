@@ -72,7 +72,7 @@ export interface GithubReleaseEntry {
 
 export interface ObsidianReleaseInfo {
 	version: string;
-	platform: "desktop" | "mobile";
+	platform: 'desktop' | 'mobile';
 	insider: boolean;
 	date: Date;
 	info: string;
