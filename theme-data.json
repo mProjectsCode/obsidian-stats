@@ -16434,5 +16434,44 @@
 				"newValue": "dark.png"
 			}
 		]
+	},
+	{
+		"id": "orange",
+		"name": "Orange",
+		"addedCommit": {
+			"date": "2024-10-02",
+			"hash": "ceeb83866b0764c2428bfcdaa4f173eac9968ecc"
+		},
+		"initialEntry": {
+			"name": "Orange",
+			"author": "Alex F",
+			"repo": "afrangi/Obsidian-Theme-Orange",
+			"screenshot": "screenshot.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Orange",
+			"author": "Alex F",
+			"repo": "afrangi/Obsidian-Theme-Orange",
+			"screenshot": "screenshot.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-10-02",
+					"hash": "ceeb83866b0764c2428bfcdaa4f173eac9968ecc"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
 	}
 ]
