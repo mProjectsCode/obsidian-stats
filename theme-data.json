@@ -16473,5 +16473,155 @@
 				"newValue": ""
 			}
 		]
+	},
+	{
+		"id": "winter-spices",
+		"name": "Winter Spices",
+		"addedCommit": {
+			"date": "2024-11-15",
+			"hash": "809ba635dda6a5094a362ccd15f2d59d509cdbfe"
+		},
+		"initialEntry": {
+			"name": "Winter Spices",
+			"author": "incantatem2",
+			"repo": "incantatem2/Obsidian-winter-spices",
+			"screenshot": "images/winterspices-thumbnail.jpg",
+			"modes": [
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Winter Spices",
+			"author": "incantatem2",
+			"repo": "incantatem2/Obsidian-winter-spices",
+			"screenshot": "images/winterspices-thumbnail.jpg",
+			"modes": [
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-11-15",
+					"hash": "809ba635dda6a5094a362ccd15f2d59d509cdbfe"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "consolas",
+		"name": "Consolas",
+		"addedCommit": {
+			"date": "2024-11-18",
+			"hash": "cb4224990dd38288eada84c1c0fc270cb30de705"
+		},
+		"initialEntry": {
+			"name": "Consolas",
+			"author": "Pinei",
+			"repo": "pinei/obsidian-consolas-theme",
+			"screenshot": "screenshot.png",
+			"modes": [
+				"dark"
+			]
+		},
+		"currentEntry": {
+			"name": "Consolas",
+			"author": "Pinei",
+			"repo": "pinei/obsidian-consolas-theme",
+			"screenshot": "screenshot.png",
+			"modes": [
+				"dark"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-11-18",
+					"hash": "cb4224990dd38288eada84c1c0fc270cb30de705"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "neutral-academia",
+		"name": "Neutral Academia",
+		"addedCommit": {
+			"date": "2024-11-15",
+			"hash": "b66d185bae586108c5b562b0a509e08604bdc623"
+		},
+		"initialEntry": {
+			"name": "Neutral Academia",
+			"author": "incantatem2",
+			"repo": "incantatem2/Obsidian-neutral-academia",
+			"screenshot": "images/neutralacademia-dark-thumbnail.jpg",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Neutral Academia",
+			"author": "incantatem2",
+			"repo": "incantatem2/Obsidian-neutral-academia",
+			"screenshot": "images/neutralacademia-dark-thumbnail.jpg",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-11-15",
+					"hash": "b66d185bae586108c5b562b0a509e08604bdc623"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "ink",
+		"name": "Ink",
+		"addedCommit": {
+			"date": "2024-11-18",
+			"hash": "5d8af8ace651b900481688ca3142cea731cee029"
+		},
+		"initialEntry": {
+			"name": "Ink",
+			"author": "harmtemolder",
+			"repo": "harmtemolder/obsidian-ink",
+			"screenshot": "screenshot.png",
+			"modes": [
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Ink",
+			"author": "harmtemolder",
+			"repo": "harmtemolder/obsidian-ink",
+			"screenshot": "screenshot.png",
+			"modes": [
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-11-18",
+					"hash": "5d8af8ace651b900481688ca3142cea731cee029"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
 	}
 ]
