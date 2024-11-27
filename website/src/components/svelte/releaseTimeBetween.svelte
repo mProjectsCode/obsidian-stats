@@ -78,8 +78,6 @@
 			});
 		});
 
-		console.log('added charts');
-
 		themeObserver.initObserver();
 	});
 

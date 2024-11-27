@@ -17,6 +17,10 @@ export class CDate {
 		const [year, month, date] = str.split('-').map(x => parseInt(x));
 		return new CDate(year, month, date);
 	}
+	static fromMonthString(str: string): CDate {
+		const [year, month, date] = str.split('-').map(x => parseInt(x));
+		return new CDate(year, month, date);
+	}
 
 	static fromDate(date: Date): CDate {
 		return new CDate(date.getFullYear(), date.getMonth() + 1, date.getDate());
@@ -30,12 +34,34 @@ export class CDate {
 		return new CDate(date.year, date.month, date.date);
 	}
 
+	yearString(): string {
+		return this.year.toString();
+	}
+
+	monthString(): string {
+		return this.month.toString().padStart(2, '0');
+	}
+
+	dateString(): string {
+		return this.date.toString().padStart(2, '0');
+	}
+
+	monthName(): string {
+		const date = this.toDate();
+		return date.toLocaleString('default', { month: 'long' });
+	}
+
+	monthNameFormat(): string {
+		const date = this.toDate();
+		return date.toLocaleString('default', { month: 'long', year: 'numeric' });
+	}
+
 	toString(): string {
-		return `${this.year}-${this.month.toString().padStart(2, '0')}-${this.date.toString().padStart(2, '0')}`;
+		return `${this.yearString()}-${this.monthString()}-${this.dateString()}`;
 	}
 
 	toMonthString(): string {
-		return `${this.year}-${this.month.toString().padStart(2, '0')}`;
+		return `${this.yearString()}-${this.monthString()}`;
 	}
 
 	toDate(): Date {
@@ -129,6 +155,20 @@ export class CDate {
 		return Math.floor((utc2 - utc1) / _MS_PER_DAY);
 	}
 
+	static iterateDaily<T>(start: CDate, end: CDate, callback: (date: CDate) => T): T[] {
+		const result: T[] = [];
+
+		const startDate = CDate.clone(start);
+		const endDate = CDate.clone(end);
+
+		while (startDate.smallerThan(endDate)) {
+			result.push(callback(CDate.clone(startDate)));
+			startDate.advanceDay();
+		}
+
+		return result;
+	}
+
 	static iterateWeekly<T>(start: CDate, end: CDate, callback: (date: CDate) => T): T[] {
 		const result: T[] = [];
 
@@ -140,7 +180,7 @@ export class CDate {
 		endDate.advanceDay();
 
 		while (startDate.smallerThan(endDate)) {
-			result.push(callback(startDate));
+			result.push(callback(CDate.clone(startDate)));
 			startDate.advanceWeek();
 		}
 
@@ -157,7 +197,7 @@ export class CDate {
 		endDate.date = 1;
 
 		while (startDate.smallerThan(endDate)) {
-			result.push(callback(startDate));
+			result.push(callback(CDate.clone(startDate)));
 			startDate.advanceMonth();
 		}
 

@@ -7280,3 +7280,34 @@ linklist:
 <li>Added a new debug mode for developers. To enable, run <code>app.debugMode(true);</code> in developer tools. When active, inline source maps will not be stripped from loaded plugins.</li>
 <li>Fixed MarkdownCodeBlockProcessor adding an extra newline when in reading mode.</li>
 </ul>",false
+01.07.06,mobile,false,2024-11-12,"<p>Includes all new functionality and bug fixes up to <a href=""/changelog/2024-11-12-desktop-v1.7.6/"">Obsidian Desktop v1.7.6</a>.</p>
+<h2>No longer broken</h2>
+<ul>
+<li>Fixed position of fold indicators in reading mode.</li>
+<li>Fixed Markdown viewport menu showing when dragging the cursor.</li>
+<li>Fixed iOS bug where Outline view didn’t update immediately after switching files.</li>
+</ul>",false
+01.07.06,desktop,false,2024-11-12,"<h2>No longer broken</h2>
+<ul>
+<li>Fixed Canvas performance issue where media files were remounted during panning.</li>
+<li>Fixed issue with property editor where property names would overlap with the property values.</li>
+<li>Clicking on a link in page preview will no longer switch the preview to edit mode.</li>
+<li>Fixed regression where Obsidian URI left the target window minimized.</li>
+<li>Fixed issue with parser using too much memory to parse larger Markdown files. This could cause Obsidian to crash when opening very large Markdown files.</li>
+<li>Fixed File Explorer not highlighting the active file on initial load.</li>
+</ul>",false
+01.07.07,mobile,false,2024-11-18,"<p>Includes all new functionality and bug fixes up to <a href=""/changelog/2024-11-18-desktop-v1.7.7/"">Obsidian Desktop v1.7.7</a>.</p>
+<h2>No longer broken</h2>
+<ul>
+<li>Fixed Share Extension not working on iOS 18.</li>
+<li>Fixed drag and drop in the file explorer and outline view not working on iOS.</li>
+<li>Fixed scroll position getting lost when the sidebar is collapsed.</li>
+</ul>",false
+01.07.07,desktop,false,2024-11-18,"<h2>No longer broken</h2>
+<ul>
+<li>Fixed position of fold indicators in reading mode.</li>
+</ul>
+<h2>Developers</h2>
+<ul>
+<li><a href=""https://obsidian.md/download"">Installer</a> has been updated to Electron 32.2.5. This includes the fix for Developer Tools not remembering dark mode.</li>
+</ul>",false

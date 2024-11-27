@@ -52,9 +52,9 @@ const warningsByReleaseMonth = await getPluginWarningPercentByReleaseMonth(plugi
 
 	<h2 id="plugin-count">Plugin Count</h2>
 
-	<DataPerMonthChart dataPoints={pluginCountMonthly} title="Total Plugin Count" type="line" client:only="svelte" />
-
-	<DataPerMonthChart dataPoints={pluginCountWoRetiredMonthly} title="Total Plugin Count without Retired Plugins" type="line" client:only="svelte" />
+	<DataPerMonthChart dataPoints={pluginCountWoRetiredMonthly} title="Total Plugin Count" type="line" client:only="svelte" />
+	
+	<DataPerMonthChart dataPoints={pluginCountMonthly} title="Total Plugin Count with Retired Plugins" type="line" client:only="svelte" />
 
 	<h2 id="new-plugins">New Plugins</h2>
 

@@ -38,6 +38,11 @@ export default defineConfig({
 							label: 'Hall of Fame',
 							link: '/pluginstats/hall-of-fame',
 						},
+						
+						{
+							label: 'Milestones',
+							link: '/pluginstats/milestones',
+						},
 						{
 							label: 'Downloads',
 							link: '/pluginstats/downloads',
