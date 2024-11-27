@@ -16586,5 +16586,42 @@
 				"newValue": ""
 			}
 		]
+	},
+	{
+		"id": "ink",
+		"name": "Ink",
+		"addedCommit": {
+			"date": "2024-11-18",
+			"hash": "5d8af8ace651b900481688ca3142cea731cee029"
+		},
+		"initialEntry": {
+			"name": "Ink",
+			"author": "harmtemolder",
+			"repo": "harmtemolder/obsidian-ink",
+			"screenshot": "screenshot.png",
+			"modes": [
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Ink",
+			"author": "harmtemolder",
+			"repo": "harmtemolder/obsidian-ink",
+			"screenshot": "screenshot.png",
+			"modes": [
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-11-18",
+					"hash": "5d8af8ace651b900481688ca3142cea731cee029"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
 	}
 ]
