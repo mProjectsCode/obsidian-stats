@@ -14,13 +14,32 @@ enum MilestoneType {
 }
 
 const MILESTONE_STEPS = [1, 2, 5];
-const MILESTONE_POTENTIALS = [100, 1_000, 10_000, 100_000, 1_000_000, 10_000_000, 100_000_000];
 
-const milestones = MILESTONE_POTENTIALS.flatMap((potential) => {
-    return MILESTONE_STEPS.map((step) => {
-        return potential * step;
+function milestonesFromPotentials(potentials: number[], steps: number[]): number[] {
+    return potentials.flatMap((potential) => {
+        return steps.map((step) => {
+            return Math.pow(10, potential) * step;
+        });
     });
-});
+}
+
+// 0: 1
+// 1: 10
+// 2: 100
+// 3: 1_000
+// 4: 10_000
+// 5: 100_000
+// 6: 1_000_000
+// 7: 10_000_000
+// 8: 100_000_000
+// 9: 1_000_000_000
+
+const milestones: Record<MilestoneType, number[]> = {
+    [MilestoneType.PLUGIN_COUNT]: milestonesFromPotentials([1, 2, 3, 4, 5], MILESTONE_STEPS),
+    [MilestoneType.TOTAL_DOWNLOADS]: milestonesFromPotentials([3, 4, 5, 6, 7, 8], MILESTONE_STEPS),
+    [MilestoneType.RELEASE_COUNT]: milestonesFromPotentials([1, 2, 3, 4], MILESTONE_STEPS),
+    [MilestoneType.DOWNLOAD_COUNT]: milestonesFromPotentials([3, 4, 5, 6, 7, 8], MILESTONE_STEPS),
+}
 
 const reachedMilestones: Record<MilestoneType, number> = {
     [MilestoneType.PLUGIN_COUNT]: -1,
@@ -43,7 +62,7 @@ const pluginDownloadCountWeekly = getPluginDownloadsWeekly(pluginData);
 const milestoneData: Map<string, MilestoneData[]> = new Map();
 
 function reachedMilestone(type: MilestoneType, value: number): boolean {
-    const target = milestones[reachedMilestones[type] + 1];
+    const target = milestones[type][reachedMilestones[type] + 1];
     if (value >= target) {
         reachedMilestones[type] += 1;
         return true;
@@ -55,7 +74,7 @@ function reachedMilestone(type: MilestoneType, value: number): boolean {
 function checkMilestones(type: MilestoneType, value: number, date: CDate, getMilestoneData: (milestone: number) => string): void {
     const monthString = date.toMonthString();
     while (reachedMilestone(type, value)) {
-        const milestone = milestones[reachedMilestones[type]];
+        const milestone = milestones[type][reachedMilestones[type]];
         const data = getMilestoneData(milestone);
         if (!milestoneData.has(monthString)) {
             milestoneData.set(monthString, []);
@@ -146,6 +165,12 @@ for (const [_, data] of milestoneDataArray) {
 		description: `Major milestones in the plugin ecosystem.`,
 	}}
 >
+    <p>
+        This page tracks major milestones in the Obsidian plugin ecosystem. 
+        This includes the number of plugins listed on the community plugin list, the total number of downloads for all plugins, and the number of releases and downloads for individual plugins.
+        Milestones are attributed to the months in which they are reached, as not all data is available on a daily basis.
+    </p>
+
     <div class="timeline">
         {milestoneDataArray.map(e => <div class="timeline-group">
             <h3 class="timeline-group-heading">{e[0]}</h3>
@@ -159,9 +184,6 @@ for (const [_, data] of milestoneDataArray) {
                                     The number of downloads for all plugins listed on the community plugin list reached {m.milestone.toLocaleString()}.
                                 </p>
                             </div>
-                            // <Aside title={`Total plugin downloads reach ${m.milestone.toLocaleString()}`} variant="tip">
-                            //     In {m.date.monthNameFormat()}, the number of downloads for all plugins listed on the community plugin list reached {m.milestone.toLocaleString()}.
-                            // </Aside>
                         );
                     } else if (m.type === MilestoneType.PLUGIN_COUNT) {
                         return (
@@ -171,9 +193,6 @@ for (const [_, data] of milestoneDataArray) {
                                     The number of plugins listed on the community plugin list reached {m.milestone.toLocaleString()}.
                                 </p>
                             </div>
-                            // <Aside title={`Total Plugin count reaches ${m.milestone.toLocaleString()}`} variant="caution">
-                            //     In {m.date.monthNameFormat()}, the number of plugins listed on the community plugin list reached {m.milestone.toLocaleString()}.
-                            // </Aside>
                         );
                     } else if (m.type === MilestoneType.RELEASE_COUNT) {
                         return (
@@ -183,9 +202,6 @@ for (const [_, data] of milestoneDataArray) {
                                     <PluginLink id={m.data}></PluginLink> is the first plugin to reach {m.milestone.toLocaleString()} releases.
                                 </p>
                             </div>
-                            // <Aside title={`First plugin reaches ${m.milestone.toLocaleString()} releases`} variant="note">
-                            //     In {m.date.monthNameFormat()}, <PluginLink id={m.data}></PluginLink> is the first plugin to reach {m.milestone.toLocaleString()} releases.
-                            // </Aside>
                         );
                     } else if (m.type === MilestoneType.DOWNLOAD_COUNT) {
                         return (
@@ -195,9 +211,6 @@ for (const [_, data] of milestoneDataArray) {
                                     <PluginLink id={m.data}></PluginLink> is the first plugin to reach {m.milestone.toLocaleString()} downloads.
                                 </p>
                             </div>
-                            // <Aside title={`First plugin reaches ${m.milestone.toLocaleString()} downloads`} variant="danger">
-                            //     In {m.date.monthNameFormat()}, <PluginLink id={m.data}></PluginLink> is the first plugin to reach {m.milestone.toLocaleString()} downloads.
-                            // </Aside>
                         );
                     }
                 })}

@@ -57,7 +57,7 @@
 		enableZoom = false,
 	}: Props = $props();
 
-	let downloadChartEl: HTMLCanvasElement | undefined = $state();
+	let downloadChartEl: HTMLCanvasElement | undefined = undefined;
 
 	let themeObserver: ThemeObserver;
 
@@ -71,13 +71,13 @@
 			let datasets: ChartDataset[] = [
 				{
 					label: seriesName,
-					data: dataPoints,
+					data: $state.snapshot(dataPoints),
 					backgroundColor: backgrounds ?? chartStyle.accent,
 				},
 				dataPoints2 !== undefined
 					? {
 							label: seriesName2,
-							data: dataPoints2,
+							data: $state.snapshot(dataPoints2),
 							backgroundColor: chartStyle.accent,
 						}
 					: undefined,

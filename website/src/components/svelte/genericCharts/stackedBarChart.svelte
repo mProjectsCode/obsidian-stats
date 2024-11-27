@@ -64,7 +64,7 @@
 				type: 'bar',
 				data: {
 					labels: labels,
-					datasets: dataPoints.map((dataPoint, i) => {
+					datasets: $state.snapshot(dataPoints).map((dataPoint, i) => {
 						return {
 							label: dataPoint.label,
 							data: dataPoint.data,

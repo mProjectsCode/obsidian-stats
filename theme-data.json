@@ -16360,7 +16360,7 @@
 			"name": "Luminex",
 			"author": "abhimangs",
 			"repo": "abhimangs/Obsidian-Luminex",
-			"screenshot": "Assets/Obsidian-Cover.png",
+			"screenshot": "assets/cover-obsidian.png",
 			"modes": [
 				"dark",
 				"light"
@@ -16384,6 +16384,15 @@
 				},
 				"oldValue": "dark",
 				"newValue": "dark, light"
+			},
+			{
+				"property": "screenshot",
+				"commit": {
+					"date": "2024-11-26",
+					"hash": "7672de6eb00af1f980ccd00b7f2e41551fcd99b8"
+				},
+				"oldValue": "Assets/Obsidian-Cover.png",
+				"newValue": "assets/cover-obsidian.png"
 			}
 		]
 	},
@@ -16618,6 +16627,141 @@
 				"commit": {
 					"date": "2024-11-18",
 					"hash": "5d8af8ace651b900481688ca3142cea731cee029"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "frost",
+		"name": "Frost",
+		"addedCommit": {
+			"date": "2024-11-22",
+			"hash": "9d0646fde9aa2c3d25a0c6f40d1687c896c71110"
+		},
+		"initialEntry": {
+			"name": "Frost",
+			"author": "drkpxl",
+			"repo": "/drkpxl/Frost",
+			"screenshot": "Recipe_example.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Frost",
+			"author": "drkpxl",
+			"repo": "drkpxl/Frost",
+			"screenshot": "screenshot.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-11-22",
+					"hash": "9d0646fde9aa2c3d25a0c6f40d1687c896c71110"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "repo",
+				"commit": {
+					"date": "2024-11-22",
+					"hash": "92c59d29b0843e5c237ae59a91b7a4e3b505e1b8"
+				},
+				"oldValue": "/drkpxl/Frost",
+				"newValue": "drkpxl/Frost"
+			},
+			{
+				"property": "screenshot",
+				"commit": {
+					"date": "2024-11-22",
+					"hash": "7d1e94fe157abe4f9d6883cbe6238e91502c88e0"
+				},
+				"oldValue": "Recipe_example.png",
+				"newValue": "screenshot.png"
+			}
+		]
+	},
+	{
+		"id": "glass-robo",
+		"name": "Glass Robo",
+		"addedCommit": {
+			"date": "2024-11-22",
+			"hash": "ae338cda519f8cd22e2f10200ad3f76af737a04f"
+		},
+		"initialEntry": {
+			"name": "Glass Robo",
+			"author": "Lorens Osman",
+			"repo": "lorens-osman-dev/Glass-Robo",
+			"screenshot": "cover.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Glass Robo",
+			"author": "Lorens Osman",
+			"repo": "lorens-osman-dev/Glass-Robo",
+			"screenshot": "cover.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-11-22",
+					"hash": "ae338cda519f8cd22e2f10200ad3f76af737a04f"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "mulled-wine",
+		"name": "Mulled Wine",
+		"addedCommit": {
+			"date": "2024-11-23",
+			"hash": "66169dd88ba938f5826197c7170d611e27068640"
+		},
+		"initialEntry": {
+			"name": "Mulled Wine",
+			"author": "incantatem2",
+			"repo": "incantatem2/Obsidian-mulled-wine",
+			"screenshot": "images/mulledwine-thumbnail.jpg",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Mulled Wine",
+			"author": "incantatem2",
+			"repo": "incantatem2/Obsidian-mulled-wine",
+			"screenshot": "images/mulledwine-thumbnail.jpg",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-11-23",
+					"hash": "66169dd88ba938f5826197c7170d611e27068640"
 				},
 				"oldValue": "",
 				"newValue": ""

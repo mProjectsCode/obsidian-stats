@@ -161,7 +161,7 @@ export class CDate {
 		const startDate = CDate.clone(start);
 		const endDate = CDate.clone(end);
 
-		while (startDate.smallerThan(endDate)) {
+		while (startDate.smallerThan(endDate) || startDate.equals(endDate)) {
 			result.push(callback(CDate.clone(startDate)));
 			startDate.advanceDay();
 		}
@@ -179,7 +179,7 @@ export class CDate {
 		endDate.advanceToNextSunday();
 		endDate.advanceDay();
 
-		while (startDate.smallerThan(endDate)) {
+		while (startDate.smallerThan(endDate) || startDate.equals(endDate)) {
 			result.push(callback(CDate.clone(startDate)));
 			startDate.advanceWeek();
 		}
@@ -196,7 +196,7 @@ export class CDate {
 		startDate.date = 1;
 		endDate.date = 1;
 
-		while (startDate.smallerThan(endDate)) {
+		while (startDate.smallerThan(endDate) || startDate.equals(endDate)) {
 			result.push(callback(CDate.clone(startDate)));
 			startDate.advanceMonth();
 		}

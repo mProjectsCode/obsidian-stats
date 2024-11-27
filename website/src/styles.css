@@ -159,7 +159,7 @@ aside.starlight-aside {
 	position: relative;
 }
 
-.timeline-element::before {
+/* .timeline-element::before {
 	position: absolute;
 	content: '';
 	top: calc(var(--sl-text-base) / 2 + var(--sl-text-base) / 5 - var(--timeline-element-indicator-size) / 2);
@@ -169,7 +169,7 @@ aside.starlight-aside {
 	border-radius: 50%;
 	background-color: var(--timeline-background-color);
 	border: 1px solid var(--sl-color-text-accent);
-}
+} */
 
 .timeline-element > p {
 	margin-top: 0.5rem !important;

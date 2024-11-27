@@ -47,9 +47,9 @@ const themeCountWoRetiredMonthly = getThemeCountWoRetiredMonthly(themeData);
 
 	<h2 id="theme-count">Theme Count</h2>
 
-	<DataPerMonthChart dataPoints={themeCountMonthly} title="Total Theme Count" type="line" client:only="svelte" />
-
-	<DataPerMonthChart dataPoints={themeCountWoRetiredMonthly} title="Total Theme Count without Retired Themes" type="line" client:only="svelte" />
+	<DataPerMonthChart dataPoints={themeCountWoRetiredMonthly} title="Total Theme Count" type="line" client:only="svelte" />
+	
+	<DataPerMonthChart dataPoints={themeCountMonthly} title="Total Theme Count with Retired Themes" type="line" client:only="svelte" />
 
 	<h2 id="new-themes">New Themes</h2>
 
