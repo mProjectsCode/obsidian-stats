@@ -8511,10 +8511,6 @@
 			"date": "2023-01-03",
 			"hash": "4179f5fc04c7b37fc5fad7f72400332a50a5bda6"
 		},
-		"removedCommit": {
-			"date": "2024-03-04",
-			"hash": "98085aa0c5e34cf4faa455acf84440dfccc400b9"
-		},
 		"initialEntry": {
 			"name": "Wikipedia",
 			"author": "Ha'ani Whitlock",
@@ -8567,6 +8563,15 @@
 				"commit": {
 					"date": "2024-03-04",
 					"hash": "98085aa0c5e34cf4faa455acf84440dfccc400b9"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Readded",
+				"commit": {
+					"date": "2024-12-06",
+					"hash": "c78d096ac9c9aadc92714d32382daf5b854c9d2c"
 				},
 				"oldValue": "",
 				"newValue": ""
@@ -10142,10 +10147,6 @@
 			"date": "2023-04-12",
 			"hash": "52a7bcb6fe5aec69c28e2869805559fe76577680"
 		},
-		"removedCommit": {
-			"date": "2024-03-04",
-			"hash": "98085aa0c5e34cf4faa455acf84440dfccc400b9"
-		},
 		"initialEntry": {
 			"name": "Serenity",
 			"author": "Ha'ani Whitlock",
@@ -10181,6 +10182,15 @@
 				"commit": {
 					"date": "2024-03-04",
 					"hash": "98085aa0c5e34cf4faa455acf84440dfccc400b9"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Readded",
+				"commit": {
+					"date": "2024-12-06",
+					"hash": "c78d096ac9c9aadc92714d32382daf5b854c9d2c"
 				},
 				"oldValue": "",
 				"newValue": ""
@@ -13895,6 +13905,24 @@
 				},
 				"oldValue": "",
 				"newValue": ""
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "885c56b6abdba2885a95f2c8dbfb0a6202326d85"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Readded",
+				"commit": {
+					"date": "2024-05-20",
+					"hash": "40bb233d83a46adbb6a0927451dcc9e0562f4842"
+				},
+				"oldValue": "",
+				"newValue": ""
 			}
 		]
 	},
@@ -13929,6 +13957,24 @@
 				"commit": {
 					"date": "2024-05-21",
 					"hash": "e462efa48ef9d6ef4abd6cdeffe2f8d72d6bf30e"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "885c56b6abdba2885a95f2c8dbfb0a6202326d85"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Readded",
+				"commit": {
+					"date": "2024-05-21",
+					"hash": "811f6caa9446f5ed55eae458f799aa9972a8667f"
 				},
 				"oldValue": "",
 				"newValue": ""
@@ -13980,6 +14026,42 @@
 				},
 				"oldValue": "https://github.com/CyanVoxel/vauxhall-obsidian",
 				"newValue": "CyanVoxel/vauxhall-obsidian"
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "885c56b6abdba2885a95f2c8dbfb0a6202326d85"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Readded",
+				"commit": {
+					"date": "2024-05-25",
+					"hash": "e118d483b0585e094e67cd84c1f9e48fa02c8fdb"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "repo",
+				"commit": {
+					"date": "2024-05-25",
+					"hash": "e118d483b0585e094e67cd84c1f9e48fa02c8fdb"
+				},
+				"oldValue": "CyanVoxel/vauxhall-obsidian",
+				"newValue": "https://github.com/CyanVoxel/vauxhall-obsidian"
+			},
+			{
+				"property": "repo",
+				"commit": {
+					"date": "2024-05-25",
+					"hash": "cc9e97d246addfbaee299fc40ca7c6dace33eef9"
+				},
+				"oldValue": "https://github.com/CyanVoxel/vauxhall-obsidian",
+				"newValue": "CyanVoxel/vauxhall-obsidian"
 			}
 		]
 	},
@@ -14016,6 +14098,24 @@
 				"commit": {
 					"date": "2024-06-03",
 					"hash": "e5865d48f34255d552ed2968a26dea666f18ce25"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "885c56b6abdba2885a95f2c8dbfb0a6202326d85"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Readded",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "b6b1119fb20340cbbfb1fc671d89cd7279dae49b"
 				},
 				"oldValue": "",
 				"newValue": ""
@@ -14058,6 +14158,24 @@
 				},
 				"oldValue": "",
 				"newValue": ""
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "885c56b6abdba2885a95f2c8dbfb0a6202326d85"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Readded",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "b6b1119fb20340cbbfb1fc671d89cd7279dae49b"
+				},
+				"oldValue": "",
+				"newValue": ""
 			}
 		]
 	},
@@ -14094,6 +14212,24 @@
 				"commit": {
 					"date": "2024-06-09",
 					"hash": "747f0bc9f1cd9ba1f28dad765b16d030e5370118"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "885c56b6abdba2885a95f2c8dbfb0a6202326d85"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Readded",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "b6b1119fb20340cbbfb1fc671d89cd7279dae49b"
 				},
 				"oldValue": "",
 				"newValue": ""
@@ -14136,6 +14272,24 @@
 				},
 				"oldValue": "",
 				"newValue": ""
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "885c56b6abdba2885a95f2c8dbfb0a6202326d85"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Readded",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "b6b1119fb20340cbbfb1fc671d89cd7279dae49b"
+				},
+				"oldValue": "",
+				"newValue": ""
 			}
 		]
 	},
@@ -14170,6 +14324,24 @@
 				"commit": {
 					"date": "2024-06-13",
 					"hash": "147bd7e9f7f65243876b3132e0a4510a18e46211"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "885c56b6abdba2885a95f2c8dbfb0a6202326d85"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Readded",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "b6b1119fb20340cbbfb1fc671d89cd7279dae49b"
 				},
 				"oldValue": "",
 				"newValue": ""
@@ -14209,6 +14381,24 @@
 				"commit": {
 					"date": "2024-06-13",
 					"hash": "3abf9363fecc574c9e6da1f47fcdd1f958bbfba4"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "885c56b6abdba2885a95f2c8dbfb0a6202326d85"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Readded",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "b6b1119fb20340cbbfb1fc671d89cd7279dae49b"
 				},
 				"oldValue": "",
 				"newValue": ""
@@ -14267,6 +14457,24 @@
 				},
 				"oldValue": "images/image-1.png",
 				"newValue": "images/image-1-small.png"
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "885c56b6abdba2885a95f2c8dbfb0a6202326d85"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Readded",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "b6b1119fb20340cbbfb1fc671d89cd7279dae49b"
+				},
+				"oldValue": "",
+				"newValue": ""
 			}
 		]
 	},
@@ -14367,6 +14575,24 @@
 				},
 				"oldValue": "image.png",
 				"newValue": "image-small.png"
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "885c56b6abdba2885a95f2c8dbfb0a6202326d85"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Readded",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "b6b1119fb20340cbbfb1fc671d89cd7279dae49b"
+				},
+				"oldValue": "",
+				"newValue": ""
 			}
 		]
 	},
@@ -14401,6 +14627,24 @@
 				"commit": {
 					"date": "2024-06-23",
 					"hash": "a071c4fcab10f9448b0eaf7ef2ce15937809fab0"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "885c56b6abdba2885a95f2c8dbfb0a6202326d85"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Readded",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "b6b1119fb20340cbbfb1fc671d89cd7279dae49b"
 				},
 				"oldValue": "",
 				"newValue": ""
@@ -14441,6 +14685,24 @@
 				},
 				"oldValue": "",
 				"newValue": ""
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "885c56b6abdba2885a95f2c8dbfb0a6202326d85"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Readded",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "b6b1119fb20340cbbfb1fc671d89cd7279dae49b"
+				},
+				"oldValue": "",
+				"newValue": ""
 			}
 		]
 	},
@@ -14475,6 +14737,24 @@
 				"commit": {
 					"date": "2024-06-23",
 					"hash": "5abecaa6bafd6dd1fdde034dcbe6a111f5434f54"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "885c56b6abdba2885a95f2c8dbfb0a6202326d85"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Readded",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "b6b1119fb20340cbbfb1fc671d89cd7279dae49b"
 				},
 				"oldValue": "",
 				"newValue": ""
@@ -14515,6 +14795,24 @@
 				},
 				"oldValue": "",
 				"newValue": ""
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "885c56b6abdba2885a95f2c8dbfb0a6202326d85"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Readded",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "b6b1119fb20340cbbfb1fc671d89cd7279dae49b"
+				},
+				"oldValue": "",
+				"newValue": ""
 			}
 		]
 	},
@@ -14552,6 +14850,24 @@
 				},
 				"oldValue": "",
 				"newValue": ""
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "885c56b6abdba2885a95f2c8dbfb0a6202326d85"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Readded",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "b6b1119fb20340cbbfb1fc671d89cd7279dae49b"
+				},
+				"oldValue": "",
+				"newValue": ""
 			}
 		]
 	},
@@ -14586,6 +14902,24 @@
 				"commit": {
 					"date": "2024-06-23",
 					"hash": "c099ac2fae09ba9e63b414eb1adcdcdc81180cda"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "885c56b6abdba2885a95f2c8dbfb0a6202326d85"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Readded",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "b6b1119fb20340cbbfb1fc671d89cd7279dae49b"
 				},
 				"oldValue": "",
 				"newValue": ""
@@ -14636,6 +14970,24 @@
 				},
 				"oldValue": "dark",
 				"newValue": "dark, light"
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "885c56b6abdba2885a95f2c8dbfb0a6202326d85"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Readded",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "b6b1119fb20340cbbfb1fc671d89cd7279dae49b"
+				},
+				"oldValue": "",
+				"newValue": ""
 			}
 		]
 	},
@@ -14675,6 +15027,24 @@
 				},
 				"oldValue": "",
 				"newValue": ""
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "885c56b6abdba2885a95f2c8dbfb0a6202326d85"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Readded",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "b6b1119fb20340cbbfb1fc671d89cd7279dae49b"
+				},
+				"oldValue": "",
+				"newValue": ""
 			}
 		]
 	},
@@ -14709,6 +15079,24 @@
 				"commit": {
 					"date": "2024-07-04",
 					"hash": "8ab8ee14098322409743fbc1d2939ac61e8661c6"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "885c56b6abdba2885a95f2c8dbfb0a6202326d85"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Readded",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "b6b1119fb20340cbbfb1fc671d89cd7279dae49b"
 				},
 				"oldValue": "",
 				"newValue": ""
@@ -14803,6 +15191,24 @@
 				},
 				"oldValue": "",
 				"newValue": ""
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "885c56b6abdba2885a95f2c8dbfb0a6202326d85"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Readded",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "b6b1119fb20340cbbfb1fc671d89cd7279dae49b"
+				},
+				"oldValue": "",
+				"newValue": ""
 			}
 		]
 	},
@@ -14869,6 +15275,24 @@
 					"hash": "4ba3b946a54c3f3708eb9c14bbc4b374229ebcc4"
 				},
 				"oldValue": "1.0.0"
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "885c56b6abdba2885a95f2c8dbfb0a6202326d85"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Readded",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "b6b1119fb20340cbbfb1fc671d89cd7279dae49b"
+				},
+				"oldValue": "",
+				"newValue": ""
 			}
 		]
 	},
@@ -14903,6 +15327,24 @@
 				"commit": {
 					"date": "2024-07-08",
 					"hash": "aa5558d0469087d4fd64d0e20c06037bb0d6dfac"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "885c56b6abdba2885a95f2c8dbfb0a6202326d85"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Readded",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "b6b1119fb20340cbbfb1fc671d89cd7279dae49b"
 				},
 				"oldValue": "",
 				"newValue": ""
@@ -14942,6 +15384,24 @@
 				"commit": {
 					"date": "2024-07-11",
 					"hash": "50df47ce59d53ad337122105d60f9b13237cf7a8"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "885c56b6abdba2885a95f2c8dbfb0a6202326d85"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Readded",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "b6b1119fb20340cbbfb1fc671d89cd7279dae49b"
 				},
 				"oldValue": "",
 				"newValue": ""
@@ -15009,6 +15469,24 @@
 					"hash": "a92d2a7217293176fb8ea783f219f1f50b6640b0"
 				},
 				"newValue": "merged_diagonal_resized.png"
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "885c56b6abdba2885a95f2c8dbfb0a6202326d85"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Readded",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "b6b1119fb20340cbbfb1fc671d89cd7279dae49b"
+				},
+				"oldValue": "",
+				"newValue": ""
 			}
 		]
 	},
@@ -15045,6 +15523,24 @@
 				"commit": {
 					"date": "2024-07-14",
 					"hash": "03b282f38ce45776d98d495264923b14e655a814"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "885c56b6abdba2885a95f2c8dbfb0a6202326d85"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Readded",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "b6b1119fb20340cbbfb1fc671d89cd7279dae49b"
 				},
 				"oldValue": "",
 				"newValue": ""
@@ -15135,6 +15631,24 @@
 				},
 				"oldValue": "",
 				"newValue": ""
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "885c56b6abdba2885a95f2c8dbfb0a6202326d85"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Readded",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "b6b1119fb20340cbbfb1fc671d89cd7279dae49b"
+				},
+				"oldValue": "",
+				"newValue": ""
 			}
 		]
 	},
@@ -15183,6 +15697,24 @@
 				},
 				"oldValue": "light-dark-Oreo.png",
 				"newValue": "images/thumbnail.png"
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "885c56b6abdba2885a95f2c8dbfb0a6202326d85"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Readded",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "b6b1119fb20340cbbfb1fc671d89cd7279dae49b"
+				},
+				"oldValue": "",
+				"newValue": ""
 			}
 		]
 	},
@@ -15219,6 +15751,24 @@
 				"commit": {
 					"date": "2024-07-21",
 					"hash": "55cfad581b7cf970ffff8822c9d0352e2d1c1b5d"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "885c56b6abdba2885a95f2c8dbfb0a6202326d85"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Readded",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "b6b1119fb20340cbbfb1fc671d89cd7279dae49b"
 				},
 				"oldValue": "",
 				"newValue": ""
@@ -15279,6 +15829,24 @@
 				"newValue": [
 					"dark"
 				]
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "885c56b6abdba2885a95f2c8dbfb0a6202326d85"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Readded",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "b6b1119fb20340cbbfb1fc671d89cd7279dae49b"
+				},
+				"oldValue": "",
+				"newValue": ""
 			}
 		]
 	},
@@ -15313,6 +15881,24 @@
 				"commit": {
 					"date": "2024-07-29",
 					"hash": "a03a9d4e3e391bf3cebec56468df6b295f51dbbf"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "885c56b6abdba2885a95f2c8dbfb0a6202326d85"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Readded",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "b6b1119fb20340cbbfb1fc671d89cd7279dae49b"
 				},
 				"oldValue": "",
 				"newValue": ""
@@ -15362,6 +15948,24 @@
 				},
 				"oldValue": "ricedev10/Abate-obsidian-theme",
 				"newValue": "ricedev10/Abate-theme"
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "885c56b6abdba2885a95f2c8dbfb0a6202326d85"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Readded",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "b6b1119fb20340cbbfb1fc671d89cd7279dae49b"
+				},
+				"oldValue": "",
+				"newValue": ""
 			}
 		]
 	},
@@ -15462,6 +16066,24 @@
 				},
 				"oldValue": "",
 				"newValue": ""
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "885c56b6abdba2885a95f2c8dbfb0a6202326d85"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Readded",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "b6b1119fb20340cbbfb1fc671d89cd7279dae49b"
+				},
+				"oldValue": "",
+				"newValue": ""
 			}
 		]
 	},
@@ -15498,6 +16120,24 @@
 				"commit": {
 					"date": "2024-08-02",
 					"hash": "ae01cd88038581e8afb3b33860e3b0f447566461"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "885c56b6abdba2885a95f2c8dbfb0a6202326d85"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Readded",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "b6b1119fb20340cbbfb1fc671d89cd7279dae49b"
 				},
 				"oldValue": "",
 				"newValue": ""
@@ -15540,6 +16180,24 @@
 				},
 				"oldValue": "",
 				"newValue": ""
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "885c56b6abdba2885a95f2c8dbfb0a6202326d85"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Readded",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "b6b1119fb20340cbbfb1fc671d89cd7279dae49b"
+				},
+				"oldValue": "",
+				"newValue": ""
 			}
 		]
 	},
@@ -15576,6 +16234,24 @@
 				"commit": {
 					"date": "2024-08-25",
 					"hash": "e32cc87a08a2ff0f7008da3085a7e0e62004d6fe"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "885c56b6abdba2885a95f2c8dbfb0a6202326d85"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Readded",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "b6b1119fb20340cbbfb1fc671d89cd7279dae49b"
 				},
 				"oldValue": "",
 				"newValue": ""
@@ -15618,6 +16294,24 @@
 				},
 				"oldValue": "",
 				"newValue": ""
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "885c56b6abdba2885a95f2c8dbfb0a6202326d85"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Readded",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "b6b1119fb20340cbbfb1fc671d89cd7279dae49b"
+				},
+				"oldValue": "",
+				"newValue": ""
 			}
 		]
 	},
@@ -15654,6 +16348,24 @@
 				"commit": {
 					"date": "2024-08-28",
 					"hash": "5b1fbbf3193a3d858ac72d8742f60fba701eab4b"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "885c56b6abdba2885a95f2c8dbfb0a6202326d85"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Readded",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "b6b1119fb20340cbbfb1fc671d89cd7279dae49b"
 				},
 				"oldValue": "",
 				"newValue": ""
@@ -15696,6 +16408,24 @@
 				},
 				"oldValue": "",
 				"newValue": ""
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "885c56b6abdba2885a95f2c8dbfb0a6202326d85"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Readded",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "b6b1119fb20340cbbfb1fc671d89cd7279dae49b"
+				},
+				"oldValue": "",
+				"newValue": ""
 			}
 		]
 	},
@@ -15732,6 +16462,24 @@
 				"commit": {
 					"date": "2024-09-01",
 					"hash": "744cac964c310b90b0b083e5f65c7dc2d25861f1"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "885c56b6abdba2885a95f2c8dbfb0a6202326d85"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Readded",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "b6b1119fb20340cbbfb1fc671d89cd7279dae49b"
 				},
 				"oldValue": "",
 				"newValue": ""
@@ -15781,6 +16529,24 @@
 				},
 				"oldValue": "b3h3m0th/obsidian-black-theme",
 				"newValue": "b3h3m0th/black-obsidian-theme"
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "885c56b6abdba2885a95f2c8dbfb0a6202326d85"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Readded",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "b6b1119fb20340cbbfb1fc671d89cd7279dae49b"
+				},
+				"oldValue": "",
+				"newValue": ""
 			}
 		]
 	},
@@ -15820,6 +16586,24 @@
 				},
 				"oldValue": "",
 				"newValue": ""
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "885c56b6abdba2885a95f2c8dbfb0a6202326d85"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Readded",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "b6b1119fb20340cbbfb1fc671d89cd7279dae49b"
+				},
+				"oldValue": "",
+				"newValue": ""
 			}
 		]
 	},
@@ -15854,6 +16638,24 @@
 				"commit": {
 					"date": "2024-08-18",
 					"hash": "75c996974efa259a67ec2fabbaf33d70c6dd7abd"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "885c56b6abdba2885a95f2c8dbfb0a6202326d85"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Readded",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "b6b1119fb20340cbbfb1fc671d89cd7279dae49b"
 				},
 				"oldValue": "",
 				"newValue": ""
@@ -15896,6 +16698,24 @@
 				},
 				"oldValue": "",
 				"newValue": ""
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "885c56b6abdba2885a95f2c8dbfb0a6202326d85"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Readded",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "b6b1119fb20340cbbfb1fc671d89cd7279dae49b"
+				},
+				"oldValue": "",
+				"newValue": ""
 			}
 		]
 	},
@@ -15930,6 +16750,24 @@
 				"commit": {
 					"date": "2024-09-28",
 					"hash": "d865aecd621d41fb9494aa5fbd0535d03eff0272"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "885c56b6abdba2885a95f2c8dbfb0a6202326d85"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Readded",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "b6b1119fb20340cbbfb1fc671d89cd7279dae49b"
 				},
 				"oldValue": "",
 				"newValue": ""
@@ -15972,6 +16810,24 @@
 				},
 				"oldValue": "",
 				"newValue": ""
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "885c56b6abdba2885a95f2c8dbfb0a6202326d85"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Readded",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "b6b1119fb20340cbbfb1fc671d89cd7279dae49b"
+				},
+				"oldValue": "",
+				"newValue": ""
 			}
 		]
 	},
@@ -16008,6 +16864,24 @@
 				"commit": {
 					"date": "2024-10-11",
 					"hash": "a013c1bf8758a618df2a8490153e4e005bbca05e"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "885c56b6abdba2885a95f2c8dbfb0a6202326d85"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Readded",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "b6b1119fb20340cbbfb1fc671d89cd7279dae49b"
 				},
 				"oldValue": "",
 				"newValue": ""
@@ -16050,6 +16924,24 @@
 				},
 				"oldValue": "",
 				"newValue": ""
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "885c56b6abdba2885a95f2c8dbfb0a6202326d85"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Readded",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "b6b1119fb20340cbbfb1fc671d89cd7279dae49b"
+				},
+				"oldValue": "",
+				"newValue": ""
 			}
 		]
 	},
@@ -16089,6 +16981,24 @@
 				},
 				"oldValue": "",
 				"newValue": ""
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "885c56b6abdba2885a95f2c8dbfb0a6202326d85"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Readded",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "b6b1119fb20340cbbfb1fc671d89cd7279dae49b"
+				},
+				"oldValue": "",
+				"newValue": ""
 			}
 		]
 	},
@@ -16125,6 +17035,24 @@
 				"commit": {
 					"date": "2024-10-13",
 					"hash": "dcb38212cfa93fc4c6d1f15ac021c984cdb71322"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "885c56b6abdba2885a95f2c8dbfb0a6202326d85"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Readded",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "b6b1119fb20340cbbfb1fc671d89cd7279dae49b"
 				},
 				"oldValue": "",
 				"newValue": ""
@@ -16185,6 +17113,24 @@
 				},
 				"oldValue": "overview-mini.webp",
 				"newValue": "overview-mini.png"
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "885c56b6abdba2885a95f2c8dbfb0a6202326d85"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Readded",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "b6b1119fb20340cbbfb1fc671d89cd7279dae49b"
+				},
+				"oldValue": "",
+				"newValue": ""
 			}
 		]
 	},
@@ -16224,6 +17170,24 @@
 				},
 				"oldValue": "",
 				"newValue": ""
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "885c56b6abdba2885a95f2c8dbfb0a6202326d85"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Readded",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "b6b1119fb20340cbbfb1fc671d89cd7279dae49b"
+				},
+				"oldValue": "",
+				"newValue": ""
 			}
 		]
 	},
@@ -16258,6 +17222,24 @@
 				"commit": {
 					"date": "2024-10-28",
 					"hash": "b25be997170b0ddea4b43f03093b146e5deebd88"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "885c56b6abdba2885a95f2c8dbfb0a6202326d85"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Readded",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "b6b1119fb20340cbbfb1fc671d89cd7279dae49b"
 				},
 				"oldValue": "",
 				"newValue": ""
@@ -16300,6 +17282,24 @@
 				},
 				"oldValue": "",
 				"newValue": ""
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "885c56b6abdba2885a95f2c8dbfb0a6202326d85"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Readded",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "b6b1119fb20340cbbfb1fc671d89cd7279dae49b"
+				},
+				"oldValue": "",
+				"newValue": ""
 			}
 		]
 	},
@@ -16334,6 +17334,24 @@
 				"commit": {
 					"date": "2024-10-18",
 					"hash": "a0159051bb3ae340341d6e9cf5064aff7bc1b7b5"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "885c56b6abdba2885a95f2c8dbfb0a6202326d85"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Readded",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "b6b1119fb20340cbbfb1fc671d89cd7279dae49b"
 				},
 				"oldValue": "",
 				"newValue": ""
@@ -16393,6 +17411,24 @@
 				},
 				"oldValue": "Assets/Obsidian-Cover.png",
 				"newValue": "assets/cover-obsidian.png"
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "885c56b6abdba2885a95f2c8dbfb0a6202326d85"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Readded",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "b6b1119fb20340cbbfb1fc671d89cd7279dae49b"
+				},
+				"oldValue": "",
+				"newValue": ""
 			}
 		]
 	},
@@ -16441,6 +17477,24 @@
 				},
 				"oldValue": "dark-simple.png",
 				"newValue": "dark.png"
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "885c56b6abdba2885a95f2c8dbfb0a6202326d85"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Readded",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "b6b1119fb20340cbbfb1fc671d89cd7279dae49b"
+				},
+				"oldValue": "",
+				"newValue": ""
 			}
 		]
 	},
@@ -16477,6 +17531,24 @@
 				"commit": {
 					"date": "2024-10-02",
 					"hash": "ceeb83866b0764c2428bfcdaa4f173eac9968ecc"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "885c56b6abdba2885a95f2c8dbfb0a6202326d85"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Readded",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "b6b1119fb20340cbbfb1fc671d89cd7279dae49b"
 				},
 				"oldValue": "",
 				"newValue": ""
@@ -16517,6 +17589,24 @@
 				},
 				"oldValue": "",
 				"newValue": ""
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "885c56b6abdba2885a95f2c8dbfb0a6202326d85"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Readded",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "b6b1119fb20340cbbfb1fc671d89cd7279dae49b"
+				},
+				"oldValue": "",
+				"newValue": ""
 			}
 		]
 	},
@@ -16551,6 +17641,24 @@
 				"commit": {
 					"date": "2024-11-18",
 					"hash": "cb4224990dd38288eada84c1c0fc270cb30de705"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "885c56b6abdba2885a95f2c8dbfb0a6202326d85"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Readded",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "b6b1119fb20340cbbfb1fc671d89cd7279dae49b"
 				},
 				"oldValue": "",
 				"newValue": ""
@@ -16593,6 +17701,24 @@
 				},
 				"oldValue": "",
 				"newValue": ""
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "885c56b6abdba2885a95f2c8dbfb0a6202326d85"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Readded",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "b6b1119fb20340cbbfb1fc671d89cd7279dae49b"
+				},
+				"oldValue": "",
+				"newValue": ""
 			}
 		]
 	},
@@ -16627,6 +17753,24 @@
 				"commit": {
 					"date": "2024-11-18",
 					"hash": "5d8af8ace651b900481688ca3142cea731cee029"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "885c56b6abdba2885a95f2c8dbfb0a6202326d85"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Readded",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "b6b1119fb20340cbbfb1fc671d89cd7279dae49b"
 				},
 				"oldValue": "",
 				"newValue": ""
@@ -16687,6 +17831,24 @@
 				},
 				"oldValue": "Recipe_example.png",
 				"newValue": "screenshot.png"
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "885c56b6abdba2885a95f2c8dbfb0a6202326d85"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Readded",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "b6b1119fb20340cbbfb1fc671d89cd7279dae49b"
+				},
+				"oldValue": "",
+				"newValue": ""
 			}
 		]
 	},
@@ -16726,6 +17888,24 @@
 				},
 				"oldValue": "",
 				"newValue": ""
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "885c56b6abdba2885a95f2c8dbfb0a6202326d85"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Readded",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "b6b1119fb20340cbbfb1fc671d89cd7279dae49b"
+				},
+				"oldValue": "",
+				"newValue": ""
 			}
 		]
 	},
@@ -16762,6 +17942,225 @@
 				"commit": {
 					"date": "2024-11-23",
 					"hash": "66169dd88ba938f5826197c7170d611e27068640"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "885c56b6abdba2885a95f2c8dbfb0a6202326d85"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Readded",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "b6b1119fb20340cbbfb1fc671d89cd7279dae49b"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "vortex",
+		"name": "Vortex",
+		"addedCommit": {
+			"date": "2024-11-30",
+			"hash": "9492b98f705da14368b4e2df9c46df35321678eb"
+		},
+		"initialEntry": {
+			"name": "Vortex",
+			"author": "abhimangs",
+			"repo": "abhimangs/obsidian-vortex",
+			"screenshot": "assets/cover.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Vortex",
+			"author": "abhimangs",
+			"repo": "abhimangs/obsidian-vortex",
+			"screenshot": "assets/cover.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-11-30",
+					"hash": "9492b98f705da14368b4e2df9c46df35321678eb"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "885c56b6abdba2885a95f2c8dbfb0a6202326d85"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Readded",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "b6b1119fb20340cbbfb1fc671d89cd7279dae49b"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "pine-rose",
+		"name": "Pine Rosé",
+		"addedCommit": {
+			"date": "2023-12-04",
+			"hash": "f7f745ff2698f0c114cf2db6c331322597dac7f3"
+		},
+		"removedCommit": {
+			"date": "2023-12-04",
+			"hash": "27928fad3e844351fbd4b003b089d31cb39d33d3"
+		},
+		"initialEntry": {
+			"name": "Pine Rosé",
+			"author": "sspaeti",
+			"repo": "sspaeti/obsidian_rose_pine.git",
+			"screenshot": "dark.png",
+			"modes": [
+				"dark"
+			]
+		},
+		"currentEntry": {
+			"name": "Pine Rosé",
+			"author": "sspaeti",
+			"repo": "sspaeti/obsidian_rose_pine.git",
+			"screenshot": "dark.png",
+			"modes": [
+				"dark"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2023-12-04",
+					"hash": "f7f745ff2698f0c114cf2db6c331322597dac7f3"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2023-12-04",
+					"hash": "27928fad3e844351fbd4b003b089d31cb39d33d3"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "kanagawa-paper",
+		"name": "Kanagawa Paper",
+		"addedCommit": {
+			"date": "2023-12-04",
+			"hash": "0293863f598253b595c4900ee4578c415944fc7c"
+		},
+		"initialEntry": {
+			"name": "Kanagawa Paper",
+			"author": "sspaeti",
+			"repo": "sspaeti/obsidian_kanagawa_paper",
+			"screenshot": "dark.jpg",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Kanagawa Paper",
+			"author": "sspaeti",
+			"repo": "sspaeti/obsidian_kanagawa_paper",
+			"screenshot": "dark.jpg",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2023-12-04",
+					"hash": "0293863f598253b595c4900ee4578c415944fc7c"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "885c56b6abdba2885a95f2c8dbfb0a6202326d85"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Readded",
+				"commit": {
+					"date": "2024-05-17",
+					"hash": "b6b1119fb20340cbbfb1fc671d89cd7279dae49b"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "overcast",
+		"name": "OverCast",
+		"addedCommit": {
+			"date": "2024-12-06",
+			"hash": "c78d096ac9c9aadc92714d32382daf5b854c9d2c"
+		},
+		"initialEntry": {
+			"name": "OverCast",
+			"author": "IxBlazarxI",
+			"repo": "IxBlazarxI/Obsidian-Theme-OverCast",
+			"screenshot": "Thumbnail.jpg",
+			"modes": [
+				"dark"
+			]
+		},
+		"currentEntry": {
+			"name": "OverCast",
+			"author": "IxBlazarxI",
+			"repo": "IxBlazarxI/Obsidian-Theme-OverCast",
+			"screenshot": "Thumbnail.jpg",
+			"modes": [
+				"dark"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-12-06",
+					"hash": "c78d096ac9c9aadc92714d32382daf5b854c9d2c"
 				},
 				"oldValue": "",
 				"newValue": ""
