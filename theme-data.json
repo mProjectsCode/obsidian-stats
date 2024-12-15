@@ -17987,7 +17987,7 @@
 			"name": "Vortex",
 			"author": "abhimangs",
 			"repo": "abhimangs/obsidian-vortex",
-			"screenshot": "assets/cover.png",
+			"screenshot": "cover.png",
 			"modes": [
 				"dark",
 				"light"
@@ -18020,6 +18020,15 @@
 				},
 				"oldValue": "",
 				"newValue": ""
+			},
+			{
+				"property": "screenshot",
+				"commit": {
+					"date": "2024-12-07",
+					"hash": "db0946791710c7e530d5cc5ff5dd1c9308bb61dd"
+				},
+				"oldValue": "assets/cover.png",
+				"newValue": "cover.png"
 			}
 		]
 	},
