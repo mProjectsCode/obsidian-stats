@@ -48,9 +48,9 @@ export async function getPluginWarningPercentByReleaseMonth(plugins: PluginDataI
 			};
 
 			for (const plugin of plugins) {
-				const repo = repoDataMap.get(plugin.id)!;
+				const repo = repoDataMap.get(plugin.id);
 
-				for (const warning of repo.warnings) {
+				for (const warning of repo?.warnings ?? []) {
 					warningCounts[warning.id] += 1;
 				}
 			}

@@ -19,7 +19,14 @@ const obsidianHubLink = `https://publish.obsidian.md/hub/02+-+Community+Expansio
 const obsidianAddictLink = `https://obsidianaddict.com/plugin/${plugin.id}/`;
 
 const repoDataUrl = projectRelativeUrl(`../pluginRepos/data/${plugin.id}.json`);
-let repoData: PluginRepoData = JSON.parse(await fs.readFile(repoDataUrl, 'utf-8'));
+let repoData: PluginRepoData | undefined;
+
+try {
+	repoData = JSON.parse(await fs.readFile(repoDataUrl, 'utf-8'));
+} catch (e) {
+	console.error(`Failed to load repository data for plugin ${plugin.id}`);
+	repoData = undefined;
+}
 
 function getFundingLinks(urls: string | Record<string, string>): { text: string; href: string }[] {
 	if (typeof urls === 'string') {
@@ -35,8 +42,8 @@ const external_links: { text: string; href: string }[] = [
 	{ text: 'View in Obsidian', href: obsidianLink },
 	// { text: 'View on ObsidianAddict', href: obsidianAddictLink },
 	{ text: 'View on the Obsidian Hub', href: obsidianHubLink },
-	repoData.repo?.manifest.authorUrl ? { text: 'Author Website', href: repoData.repo.manifest.authorUrl } : undefined,
-	...(repoData.repo?.manifest.fundingUrl ? getFundingLinks(repoData.repo.manifest.fundingUrl) : []),
+	repoData?.repo?.manifest.authorUrl ? { text: 'Author Website', href: repoData.repo.manifest.authorUrl } : undefined,
+	...(repoData?.repo?.manifest.fundingUrl ? getFundingLinks(repoData.repo.manifest.fundingUrl) : []),
 ].filter(x => x !== undefined);
 ---
 
@@ -57,7 +64,7 @@ const external_links: { text: string; href: string }[] = [
 	<p>{plugin.currentEntry.description}</p>
 
 	{
-		repoData.warnings.map(warning => {
+		repoData?.warnings.map(warning => {
 			switch (warning.id) {
 				case 'inactivity-12-months':
 					return (
@@ -158,7 +165,7 @@ const external_links: { text: string; href: string }[] = [
 		})
 	}
 
-	{repoData.warnings.length !== 0 && <p class="muted">The above warnings are based on limited information and might not always be accurate.</p>}
+	{(repoData?.warnings.length ?? 0) > 0 && <p class="muted">The above warnings are based on limited information and might not always be accurate.</p>}
 
 	<h2 id="data">Data</h2>
 
@@ -172,8 +179,8 @@ const external_links: { text: string; href: string }[] = [
 				<td>Author</td>
 				<td
 					>{
-						repoData.repo?.manifest.authorUrl ? (
-							<a href={repoData.repo?.manifest.authorUrl} target="_blank">
+						repoData?.repo?.manifest.authorUrl ? (
+							<a href={repoData.repo.manifest.authorUrl} target="_blank">
 								{plugin.currentEntry.author}
 							</a>
 						) : (
@@ -183,7 +190,7 @@ const external_links: { text: string; href: string }[] = [
 				>
 			</tr>
 			{
-				repoData.repo?.manifest?.fundingUrl && (
+				repoData?.repo?.manifest?.fundingUrl && (
 					<tr>
 						<td>Funding</td>
 						<td>
@@ -197,7 +204,7 @@ const external_links: { text: string; href: string }[] = [
 				)
 			}
 			{
-				repoData.repo && (
+				repoData?.repo && (
 					<tr>
 						<td>Minimum Obsidian Version</td>
 						<td>{repoData.repo.manifest.minAppVersion}</td>
@@ -258,7 +265,7 @@ const external_links: { text: string; href: string }[] = [
 	<h3 id="repository-data">Repository Data</h3>
 
 	{
-		repoData.repo ? (
+		repoData?.repo ? (
 			<>
 				<table class="full-width">
 					<tbody>
@@ -402,7 +409,7 @@ const external_links: { text: string; href: string }[] = [
 					<tr>
 						<td>{version.version}</td>
 						<td>{version.initialReleaseDate}</td>
-						<td>{repoData.deprecatedVersions.includes(version.version) ? <>Blacklisted</> : <span class="muted">None</span>}</td>
+						<td>{repoData?.deprecatedVersions.includes(version.version) ? <>Blacklisted</> : <span class="muted">None</span>}</td>
 					</tr>
 				))
 			}
