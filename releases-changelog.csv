@@ -7311,3 +7311,72 @@ linklist:
 <ul>
 <li><a href=""https://obsidian.md/download"">Installer</a> has been updated to Electron 32.2.5. This includes the fix for Developer Tools not remembering dark mode.</li>
 </ul>",false
+01.08.00,mobile,true,2024-12-18,"<h2>Mobile</h2>
+<ul>
+<li>The file explorer context menu now shows:
+<ul>
+<li>a folder's file and folder count</li>
+<li>a file's creation time and modified time.</li>
+</ul>
+</li>
+<li>We no longer wait for iCloud to finish syncing your configuration files. If a configuration file was offloaded, it will be redownloaded and you will be prompted to reload the app once the file was been synced.</li>
+<li>The active file will always be highlighted in the tab switcher</li>
+<li>Added a command to open the tab switcher. This can be bound to the pull down action.</li>
+<li>Fixed active file sometimes not getting reset when closing sidebar view.</li>
+<li>On iOS, tapping the statusbar now always scrolls to the top of the active file. And scrolls to the top of the sidebar if one is active.</li>
+</ul>",false
+01.08.00,desktop,true,2024-12-18,"<h3>New</h3>
+<ul>
+<li>Web viewer, a new core plugin, lets you open external links within Obsidian. This simplifies reading linked content without leaving the app and makes multitasking on web research projects easier. This plugin is disabled by default, and needs to be enabled manually in settings.</li>
+<li>Added a &quot;hide my changes&quot; button to hide your own file changes from the Sync view in a shared Obsidian Sync vault.</li>
+</ul>
+<h3>Improved</h3>
+<ul>
+<li>New command &quot;Download attachments for current file&quot; downloads all externally embedded images and replaces the external links with internal embeds.</li>
+<li>You can now copy individual values from list properties via the context menu or <code>Command/Ctrl + C</code>.</li>
+<li>Right clicking anywhere in the local properties view now shows property menu.</li>
+<li>File Explorer now displays a context menu when you right-click in the tree view.</li>
+<li>File Explorer now includes a menu option to create a new folder with selected items.</li>
+<li>Dragging a file over a collapsed folder in the file explorer will now automatically expand the folder.</li>
+<li>Sort options are now available in the properties menu.</li>
+<li>Tab close button will now be hidden if the tab is too small.</li>
+<li>In the Sync history view, clicking on an active item now expands its entry.</li>
+<li>The callout context menu now includes the option to remove the callout formatting.</li>
+<li>The &quot;Show backlinks in document&quot; preference is now saved on a per-file basis.</li>
+</ul>
+<h3>Bug fixes</h3>
+<ul>
+<li>Live Preview now renders reference-style links correctly.</li>
+<li>Tab size setting now controls the visual width of the tab/indent.</li>
+<li>Fixed renaming headings and block IDs showing the incorrect number of modified files.</li>
+<li>Graph view will no longer consider Canvas files as &quot;Attachments.&quot;</li>
+<li>Fixed search sort order preference not always being saved.</li>
+<li>Layout and config changes will now always be saved before quitting Obsidian.</li>
+<li>Fixed rare bug where &quot;insert template&quot; fails if cursor is at the start of a file and the template content begins with a horizontal rule.</li>
+<li>Don't allow right-clicking on the property icon if the property name is empty.</li>
+<li>Fixed <code>Alt-Enter</code> not working if cursor overlaps with the embed start <code>![[</code>.</li>
+<li>Fixed issue where the app switched to the default theme after removing an inactive theme.</li>
+<li>Canvas now shows additional context menu options when multiple file cards are selected.</li>
+<li>Fix missing margin on code blocks and callouts inside embeds.</li>
+<li>Fixed &quot;Rename file&quot; not working if sidebar view is active.</li>
+<li>The media selection prompt no longer allows for file creation when no results match the current input.</li>
+<li>Shift-enter in text property input enter should use the current input text value.</li>
+<li>Fix link resolution when filename ends with a Greek character.</li>
+<li>Footnote IDs are now case-insensitive.</li>
+<li>Fix flickering when selecting text in PDFs.</li>
+<li>The Markdown in an embedded heading will now be rendered correctly (e.g. <code>## *Hello*, World</code>).</li>
+<li>Increased the contrast of code color, and added CSS variables for code block borders.</li>
+<li>Clicking the &quot;Copy&quot; button in a callout no longer switches it to source mode.</li>
+<li>Added a &quot;Retry&quot; button when failing to load remote vaults due to poor network connection.</li>
+<li>Fixed issue with some Japanese characters rendering incorrectly when using the default font.</li>
+<li>Fix REM units in pop-out windows not matching main window.</li>
+<li>Fix issue where inline footnotes are not always processed by the metadata cache.</li>
+<li>Fixed CSS specificity of task checkbox position in editable lines to avoid conflicting with rendered checkboxes in source mode (e.g. callouts).</li>
+</ul>
+<h3>Third-party Libraries</h3>
+<ul>
+<li>Upgraded prism.js to 1.29.0.</li>
+<li>Upgraded Turndown to 7.2.0.</li>
+<li>Upgraded Mermaid to 11.3.0.</li>
+<li>Upgraded Codemirror to latest version.</li>
+</ul>",false
