@@ -18175,5 +18175,209 @@
 				"newValue": ""
 			}
 		]
+	},
+	{
+		"id": "simple-color",
+		"name": "Simple Color",
+		"addedCommit": {
+			"date": "2024-12-16",
+			"hash": "e99490c6b981c60847c3f6d753626b41c9ca71de"
+		},
+		"initialEntry": {
+			"name": "Simple Color",
+			"author": "Naya Singhania",
+			"repo": "raspberri05/simple-color",
+			"screenshot": "screenshot.png",
+			"modes": [
+				"dark"
+			]
+		},
+		"currentEntry": {
+			"name": "Simple Color",
+			"author": "Naya Singhania",
+			"repo": "raspberri05/simple-color",
+			"screenshot": "screenshot.png",
+			"modes": [
+				"dark"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-12-16",
+					"hash": "e99490c6b981c60847c3f6d753626b41c9ca71de"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "sakurajima",
+		"name": "Sakurajima",
+		"addedCommit": {
+			"date": "2024-12-21",
+			"hash": "482db9b013179d9f9acb27a8d374ea715c178b3d"
+		},
+		"initialEntry": {
+			"name": "Sakurajima",
+			"author": "Daiki Nakashima",
+			"repo": "Daiki48/sakurajima.obsidian",
+			"screenshot": "screenshots/cover.png",
+			"modes": [
+				"dark"
+			]
+		},
+		"currentEntry": {
+			"name": "Sakurajima",
+			"author": "Daiki Nakashima",
+			"repo": "Daiki48/sakurajima.obsidian",
+			"screenshot": "screenshots/cover.png",
+			"modes": [
+				"dark"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-12-21",
+					"hash": "482db9b013179d9f9acb27a8d374ea715c178b3d"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "cupertino",
+		"name": "Cupertino",
+		"addedCommit": {
+			"date": "2024-12-22",
+			"hash": "3168c0cae4fb1b752c5ce00cf20d5cf7e625048f"
+		},
+		"initialEntry": {
+			"name": "Cupertino",
+			"author": "Alexis C",
+			"repo": "aaaaalexis/obsidian-cupertino",
+			"screenshot": "cupertino.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Cupertino",
+			"author": "Alexis C",
+			"repo": "aaaaalexis/obsidian-cupertino",
+			"screenshot": "cupertino.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-12-22",
+					"hash": "3168c0cae4fb1b752c5ce00cf20d5cf7e625048f"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "emerald-green",
+		"name": "Emerald Green",
+		"addedCommit": {
+			"date": "2024-12-27",
+			"hash": "f08a0151eea8315cc72c78fa76c27a4f5ca7dab2"
+		},
+		"removedCommit": {
+			"date": "2024-12-27",
+			"hash": "18ff4f1d96ff7b78508a0cb3c5da40f68666170c"
+		},
+		"initialEntry": {
+			"name": "Emerald Green",
+			"author": "Malcolm Mielle",
+			"repo": "MalcolmMielle/Emerald-Echo",
+			"screenshot": "screenshot.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Emerald Green",
+			"author": "Malcolm Mielle",
+			"repo": "MalcolmMielle/Emerald-Echo",
+			"screenshot": "screenshot.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-12-27",
+					"hash": "f08a0151eea8315cc72c78fa76c27a4f5ca7dab2"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2024-12-27",
+					"hash": "18ff4f1d96ff7b78508a0cb3c5da40f68666170c"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "emerald-echo",
+		"name": "Emerald Echo",
+		"addedCommit": {
+			"date": "2024-12-27",
+			"hash": "18ff4f1d96ff7b78508a0cb3c5da40f68666170c"
+		},
+		"initialEntry": {
+			"name": "Emerald Echo",
+			"author": "Malcolm Mielle",
+			"repo": "MalcolmMielle/Emerald-Echo",
+			"screenshot": "screenshot.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Emerald Echo",
+			"author": "Malcolm Mielle",
+			"repo": "MalcolmMielle/Emerald-Echo",
+			"screenshot": "screenshot.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2024-12-27",
+					"hash": "18ff4f1d96ff7b78508a0cb3c5da40f68666170c"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
 	}
 ]
