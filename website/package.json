@@ -23,7 +23,7 @@
 		"ml-regression-simple-linear": "3.0.1",
 		"regression": "^2.0.1",
 		"sharp": "^0.33.5",
-		"svelte": "^5.15.0",
+		"svelte": "^5.16.0",
 		"typescript": "^5.7.2",
 		"zod": "^3.24.1"
 	}
