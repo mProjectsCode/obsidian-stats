@@ -7336,6 +7336,10 @@
 			"date": "2022-08-01",
 			"hash": "1e2f5c3da456ead48072f5326bd652cdaca7f982"
 		},
+		"removedCommit": {
+			"date": "2025-01-02",
+			"hash": "c9008844346c3c0a0bdf2efd1fc96744b0871eeb"
+		},
 		"initialEntry": {
 			"name": "Ukiyo",
 			"author": "Kinmury",
@@ -7374,6 +7378,15 @@
 					"hash": "177f1d940bd94b7ba7eb65a96670465638be7782"
 				},
 				"oldValue": "main"
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2025-01-02",
+					"hash": "c9008844346c3c0a0bdf2efd1fc96744b0871eeb"
+				},
+				"oldValue": "",
+				"newValue": ""
 			}
 		]
 	},
