@@ -18392,5 +18392,44 @@
 				"newValue": ""
 			}
 		]
+	},
+	{
+		"id": "playground",
+		"name": "Playground",
+		"addedCommit": {
+			"date": "2025-01-02",
+			"hash": "c28602a8da4678b5a6a28e9e9f243937cfe3f762"
+		},
+		"initialEntry": {
+			"name": "Playground",
+			"author": "Ezben",
+			"repo": "benjaminezequiel/playground-theme",
+			"screenshot": "theme_preview.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Playground",
+			"author": "Ezben",
+			"repo": "benjaminezequiel/playground-theme",
+			"screenshot": "theme_preview.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2025-01-02",
+					"hash": "c28602a8da4678b5a6a28e9e9f243937cfe3f762"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
 	}
 ]
