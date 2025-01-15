@@ -7323,7 +7323,7 @@ linklist:
 <li>The active file will always be highlighted in the tab switcher</li>
 <li>Added a command to open the tab switcher. This can be bound to the pull down action.</li>
 <li>Fixed active file sometimes not getting reset when closing sidebar view.</li>
-<li>On iOS, tapping the statusbar now always scrolls to the top of the active file. And scrolls to the top of the sidebar if one is active.</li>
+<li>On iOS, tapping the status bar now always scrolls to the top of the active file. And scrolls to the top of the sidebar if one is active.</li>
 </ul>",false
 01.08.00,desktop,true,2024-12-18,"<h3>New</h3>
 <ul>
@@ -7379,4 +7379,43 @@ linklist:
 <li>Upgraded Turndown to 7.2.0.</li>
 <li>Upgraded Mermaid to 11.3.0.</li>
 <li>Upgraded Codemirror to latest version.</li>
+</ul>",false
+01.08.01,mobile,true,2025-01-07,"<h2>Shiny new things</h2>
+<p>We've added a new experience when you first install the app. This guided flow should help new mobile users create a vault and understand how to have their notes synced across all their devices according to their needs.</p>
+<h2>No longer broken</h2>
+<ul>
+<li>Long-pressing on tabs in the tab switcher will no longer drag the tab preview image.</li>
+<li>iOS: Fixed rare bug where a folder would be created, but not detected by Obsidian until the app is rebooted.</li>
+</ul>",false
+01.08.01,desktop,true,2025-01-07,"<h2>Improvements</h2>
+<ul>
+<li><code>&lt;img&gt;</code>, <code>&lt;video&gt;</code> and <code>&lt;audio&gt;</code> tags with relative <code>src</code> paths are now rendered in Live Preview and Reading mode.</li>
+<li>The &quot;Show ribbon&quot; setting is now saved in appearance.json instead of app.json.</li>
+<li>Added dedicated context menu item to open external link in web viewer.</li>
+<li>Added page preview to tab headers of notes and attachments.</li>
+<li>Outline view has a new option: &quot;Auto-scroll to current section&quot;</li>
+<li>Publish: New command &quot;Open in live site&quot; to open the current live version of the note.</li>
+<li>Web viewer: New command &quot;Save to vault&quot; to convert the current webpage to Markdown and save it into your vault.</li>
+<li>Web viewer: Added a loading bar.</li>
+<li>The &quot;Download attachment&quot; command now supports <code>data:</code> base64 URIs.</li>
+<li>Improved screen when connecting to Sync remote vault.</li>
+<li>The Sync plugin is now enabled by default to improve its visibility in Settings. Added a new command &quot;Sync: Set up Sync.&quot;</li>
+<li>File Explorer: Files are automatically deselected after being moved into a collapsed folder.</li>
+</ul>
+<h2>No longer broken</h2>
+<ul>
+<li>Fixed issue causing some pages in the web viewer to fail to load.</li>
+<li>Property value inputs now respect your spellcheck setting.</li>
+<li>Fixed web viewer failing to load case-sensitive web-pages.</li>
+<li>Fixed errors in console when navigating in the web viewer while the current page is still loading.</li>
+<li>Search: Fix search sometimes forgetting the sort order after using the &quot;Search in all files&quot; command.</li>
+<li>Fixed &quot;Download attachment&quot; command mischaracterizing SVG images.</li>
+<li>Fixed &quot;Rename heading&quot; and &quot;Rename block ID&quot; not working when fired from an embed.</li>
+<li>Fixed &quot;Excluded files&quot; modal not properly saving.</li>
+<li>Fixed &quot;Duplicate&quot; menu item not working in old installers.</li>
+<li>Updated the description of &quot;Tab indent size&quot; to better match its behavior.</li>
+<li>Fixed bug where editing an embedded heading (e.g. <code>[[file#heading]]</code>) from Page Preview would cause the heading text to be modified.</li>
+<li>Fixed Mathjax not rendering inside embedded heading.</li>
+<li>Fixed bug where commands did not work as expected when navigating from a Markdown view to a non-Markdown view. For example, <code>Control/Command+F</code> would sometimes not work inside a PDF View.</li>
+<li>Fixed PDF View's &quot;copy link to selection&quot; sometimes putting the selection on the wrong text node.</li>
 </ul>",false
