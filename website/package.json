@@ -12,10 +12,10 @@
 	},
 	"dependencies": {
 		"@astrojs/check": "0.9.4",
-		"@astrojs/starlight": "0.31.0",
-		"@astrojs/svelte": "7.0.3",
+		"@astrojs/starlight": "0.31.1",
+		"@astrojs/svelte": "7.0.4",
 		"@types/regression": "^2.0.6",
-		"astro": "5.1.7",
+		"astro": "5.1.8",
 		"chart.js": "^4.4.7",
 		"chartjs-plugin-annotation": "^3.1.0",
 		"chartjs-plugin-datalabels": "^2.2.0",
@@ -23,7 +23,7 @@
 		"ml-regression-simple-linear": "3.0.1",
 		"regression": "^2.0.1",
 		"sharp": "^0.33.5",
-		"svelte": "^5.18.0",
+		"svelte": "^5.19.1",
 		"typescript": "^5.7.3",
 		"zod": "^3.24.1"
 	}

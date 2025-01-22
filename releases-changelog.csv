@@ -7311,7 +7311,8 @@ linklist:
 <ul>
 <li><a href=""https://obsidian.md/download"">Installer</a> has been updated to Electron 32.2.5. This includes the fix for Developer Tools not remembering dark mode.</li>
 </ul>",false
-01.08.00,mobile,true,2024-12-18,"<h2>Mobile</h2>
+01.08.00,mobile,true,2024-12-18,"<p>Includes all new functionality and bug fixes up to <a href=""/changelog/2024-12-18-desktop-v1.8.0/"">Obsidian Desktop v1.8.0</a>.</p>
+<h3>Improved</h3>
 <ul>
 <li>The file explorer context menu now shows:
 <ul>
@@ -7380,7 +7381,8 @@ linklist:
 <li>Upgraded Mermaid to 11.3.0.</li>
 <li>Upgraded Codemirror to latest version.</li>
 </ul>",false
-01.08.01,mobile,true,2025-01-07,"<h2>Shiny new things</h2>
+01.08.01,mobile,true,2025-01-07,"<p>Includes all new functionality and bug fixes up to <a href=""/changelog/2025-01-07-desktop-v1.8.1/"">Obsidian Desktop v1.8.1</a>.</p>
+<h2>Shiny new things</h2>
 <p>We've added a new experience when you first install the app. This guided flow should help new mobile users create a vault and understand how to have their notes synced across all their devices according to their needs.</p>
 <h2>No longer broken</h2>
 <ul>

@@ -7336,10 +7336,6 @@
 			"date": "2022-08-01",
 			"hash": "1e2f5c3da456ead48072f5326bd652cdaca7f982"
 		},
-		"removedCommit": {
-			"date": "2025-01-02",
-			"hash": "c9008844346c3c0a0bdf2efd1fc96744b0871eeb"
-		},
 		"initialEntry": {
 			"name": "Ukiyo",
 			"author": "Kinmury",
@@ -7353,9 +7349,9 @@
 		},
 		"currentEntry": {
 			"name": "Ukiyo",
-			"author": "Kinmury",
-			"repo": "kinmury/obsidian-ukiyo",
-			"screenshot": "Showcase.png",
+			"author": "kinmury, Technerium",
+			"repo": "technerium/obsidian-ukiyo",
+			"screenshot": "screenshot.png",
 			"modes": [
 				"dark",
 				"light"
@@ -7387,6 +7383,51 @@
 				},
 				"oldValue": "",
 				"newValue": ""
+			},
+			{
+				"property": "Theme Readded",
+				"commit": {
+					"date": "2025-01-02",
+					"hash": "3caa1c3c910928c0a43dcb08123a30f7892382f0"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "author",
+				"commit": {
+					"date": "2025-01-02",
+					"hash": "3caa1c3c910928c0a43dcb08123a30f7892382f0"
+				},
+				"oldValue": "Kinmury",
+				"newValue": "Technerium"
+			},
+			{
+				"property": "repo",
+				"commit": {
+					"date": "2025-01-02",
+					"hash": "3caa1c3c910928c0a43dcb08123a30f7892382f0"
+				},
+				"oldValue": "kinmury/obsidian-ukiyo",
+				"newValue": "technerium/obsidian-ukiyo"
+			},
+			{
+				"property": "screenshot",
+				"commit": {
+					"date": "2025-01-02",
+					"hash": "6cd65fdf6d57b6abf502fe7cdb2df0eef9f12c63"
+				},
+				"oldValue": "Showcase.png",
+				"newValue": "screenshot.png"
+			},
+			{
+				"property": "author",
+				"commit": {
+					"date": "2025-01-03",
+					"hash": "d0ed58f6431648aa1559c629e28456396975970c"
+				},
+				"oldValue": "Technerium",
+				"newValue": "kinmury, Technerium"
 			}
 		]
 	},
@@ -18426,6 +18467,45 @@
 				"commit": {
 					"date": "2025-01-02",
 					"hash": "c28602a8da4678b5a6a28e9e9f243937cfe3f762"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "minimal-dracula",
+		"name": "Minimal Dracula",
+		"addedCommit": {
+			"date": "2025-01-06",
+			"hash": "5692a16f074dd0989da85e1337e0e34ed54011dc"
+		},
+		"initialEntry": {
+			"name": "Minimal Dracula",
+			"author": "Druxorey",
+			"repo": "druxorey/minimal-dracula-for-obsidian",
+			"screenshot": "resources/cover.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Minimal Dracula",
+			"author": "Druxorey",
+			"repo": "druxorey/minimal-dracula-for-obsidian",
+			"screenshot": "resources/cover.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2025-01-06",
+					"hash": "5692a16f074dd0989da85e1337e0e34ed54011dc"
 				},
 				"oldValue": "",
 				"newValue": ""
