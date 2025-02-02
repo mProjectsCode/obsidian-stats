@@ -3779,7 +3779,7 @@ version,platform,insider,date,info,major_release
 </ul>",false
 00.15.09,desktop,false,2022-07-26,"<h2>No longer broken</h2>
 <p>Fixed copying and pasting using the context menu.</p>",false
-00.16.00,desktop,true,2022-09-29,"<h2>Note about custom themes</h2>
+00.16.00,desktop,true,2022-08-30,"<h2>Note about custom themes</h2>
 <p>Major changes have been made to Obsidian's styling. If you are using a custom theme, make sure you update the theme to the latest version. If you are still seeing visual anomalies, we recommend switching to the default theme for the time being.</p>
 <h2>Shiny new things</h2>
 <ul>
@@ -4582,7 +4582,30 @@ Some other notable improvements to Canvas:</p>
 <ul>
 <li>You can now share text, links, image, and other attachments directly to the Obsidian app.</li>
 </ul>",false
-01.02.00,desktop,false,2023-03-29,"<p>In this update, we revisited some of our older core plugins and provided more than just a fresh coat of paint. Most notably, the Starred plugin is going away in favor of its successor: Bookmarks.</p>
+01.02.00,desktop,true,2023-03-29,"<h2>Shiny new things</h2>
+<ul>
+<li>Added new Bookmarks core plugin. This core plugin will be the successor to the Starred core plugin. It offers additional functionality such as bookmarked graphs and bookmarked headings. As well as better organization via drag-and-drop and <em>Bookmark groups</em>.</li>
+</ul>
+<h2>Improvements</h2>
+<ul>
+<li>Search: New UI for toggling search options.</li>
+<li>Hotkey settings: Added menu to filter hotkeys by assigned, unassigned. Added button to filter by hotkey.</li>
+<li>Added Editor setting to open new tabs in the background.</li>
+<li>Links with folder paths will now automatically insert an alias to the base filename (e.g. <code>[[folder/file]]</code> will expand to <code>[[folder/file|file]]</code>)</li>
+<li>Added &quot;Close tab group&quot; command.</li>
+<li>Suggest modals now support &quot;page down&quot; and &quot;page up&quot; as well as &quot;home&quot; and &quot;end&quot;  keys for faster keyboard navigation.</li>
+</ul>
+<h2>No longer broken</h2>
+<ul>
+<li>Canvas: Fixed query blocks not rendering in text cards.</li>
+<li>Export to PDF will now always export in &quot;light mode.&quot;</li>
+<li>Fixed slider tooltip overlapping with cursor.</li>
+<li>macOS: Fixed Export to PDF rendering the wrong font.</li>
+<li>Fixed folding arrows being misaligned on list items.</li>
+<li>macOS: double-clicking the sidebar close buttons in the window frame will no longer trigger the window getting fullscreened.</li>
+<li>Fixed &quot;Fold more&quot; command not folding the current line if the cursor is on top of a heading.</li>
+</ul>",false
+01.02.00,desktop,false,2023-05-02,"<p>In this update, we revisited some of our older core plugins and provided more than just a fresh coat of paint. Most notably, the Starred plugin is going away in favor of its successor: Bookmarks.</p>
 <ul>
 <li><a href=""#bookmarks"">Bookmarks</a> — Meet the replacement to the Starred plugin.</li>
 <li><a href=""#search-ui-improvements"">Search UI improvements</a> — The global search UI has undergone a refresh.</li>
@@ -4618,29 +4641,6 @@ Some other notable improvements to Canvas:</p>
 <li>macOS: double-clicking the sidebar close buttons in the window frame will no longer trigger the window getting fullscreened.</li>
 <li>Fixed &quot;Fold more&quot; command not folding the current line if the cursor is on top of a heading.</li>
 </ul>",true
-01.02.00,desktop,true,2023-03-29,"<h2>Shiny new things</h2>
-<ul>
-<li>Added new Bookmarks core plugin. This core plugin will be the successor to the Starred core plugin. It offers additional functionality such as bookmarked graphs and bookmarked headings. As well as better organization via drag-and-drop and <em>Bookmark groups</em>.</li>
-</ul>
-<h2>Improvements</h2>
-<ul>
-<li>Search: New UI for toggling search options.</li>
-<li>Hotkey settings: Added menu to filter hotkeys by assigned, unassigned. Added button to filter by hotkey.</li>
-<li>Added Editor setting to open new tabs in the background.</li>
-<li>Links with folder paths will now automatically insert an alias to the base filename (e.g. <code>[[folder/file]]</code> will expand to <code>[[folder/file|file]]</code>)</li>
-<li>Added &quot;Close tab group&quot; command.</li>
-<li>Suggest modals now support &quot;page down&quot; and &quot;page up&quot; as well as &quot;home&quot; and &quot;end&quot;  keys for faster keyboard navigation.</li>
-</ul>
-<h2>No longer broken</h2>
-<ul>
-<li>Canvas: Fixed query blocks not rendering in text cards.</li>
-<li>Export to PDF will now always export in &quot;light mode.&quot;</li>
-<li>Fixed slider tooltip overlapping with cursor.</li>
-<li>macOS: Fixed Export to PDF rendering the wrong font.</li>
-<li>Fixed folding arrows being misaligned on list items.</li>
-<li>macOS: double-clicking the sidebar close buttons in the window frame will no longer trigger the window getting fullscreened.</li>
-<li>Fixed &quot;Fold more&quot; command not folding the current line if the cursor is on top of a heading.</li>
-</ul>",false
 01.02.01,mobile,true,2022-04-11,"<h2>Core update</h2>
 <ul>
 <li>Includes all new functionality and bug fixes up to Obsidian Desktop v0.14.6.</li>
@@ -7420,4 +7420,223 @@ linklist:
 <li>Fixed Mathjax not rendering inside embedded heading.</li>
 <li>Fixed bug where commands did not work as expected when navigating from a Markdown view to a non-Markdown view. For example, <code>Control/Command+F</code> would sometimes not work inside a PDF View.</li>
 <li>Fixed PDF View's &quot;copy link to selection&quot; sometimes putting the selection on the wrong text node.</li>
+</ul>",false
+01.08.02,mobile,true,2025-01-22,"<p>Includes all new functionality and bug fixes up to <a href=""/changelog/2025-01-22-desktop-v1.8.2/"">Obsidian Desktop v1.8.2</a>.</p>
+<h2>No longer broken</h2>
+<ul>
+<li>Fixed Android devices not being able to create a new vault via the new onboarding flow.</li>
+<li>Fixed Android vault switcher not being able to create a new vault.</li>
+<li>Fixed Android keyboard auto-correction inserting extra text.</li>
+</ul>",false
+01.08.02,desktop,true,2025-01-22,"<h2>Improvements</h2>
+<ul>
+<li>When a numbered list is modified, the numbers are now automatically updated.</li>
+<li>Added a new File Explorer option to auto-reveal the active file.</li>
+<li>Added &quot;Insert footnote&quot; command. The footnote autocomplete also provides a fallback to create a new foot note if there is no match.</li>
+<li>The &quot;Bookmark...&quot; menu item now appears when clicking the &quot;...&quot; (more options) button in the Web Viewer.</li>
+<li>Canvas groups can now have empty labels, which will remain visible during editing.</li>
+<li>Canvas cards will stay mounted while actively being edited, even when zoomed out.</li>
+<li>Sync version history now renders a preview image when viewing a Canvas file.</li>
+<li><code>&lt;source&gt;</code> HTML elements now support relative links.</li>
+<li>The &quot;Search current file&quot; search bar now displays the total number of results.</li>
+<li>Improved rendering of bookmarked URLs in the quick switcher.</li>
+<li>Search: Pressing the &quot;Down&quot; arrow key now removes the cursor from the search bar, making it easier to navigate results using arrow keys.</li>
+<li>Tags view: Added a search filter.</li>
+<li>Templates: The &quot;Insert template&quot; screen now sorts templates by file path and displays folder names.</li>
+</ul>
+<h2>No longer broken</h2>
+<ul>
+<li>Fixed several IME-related issues:
+<ul>
+<li>In Canvas, typing after <code>1.</code> no longer causes extra characters.</li>
+<li>On macOS, the Chinese IME prompt now renders in the correct position.</li>
+</ul>
+</li>
+<li>Fixed the &quot;Copy search results&quot; menu item creating invalid links to <code>.canvas</code> files.</li>
+<li>Fixed errors when rendering HTML media elements without a <code>src</code> attribute.</li>
+<li>Added a &quot;Retry&quot; button for Sync failures when connecting to remote vaults.</li>
+<li>Fixed instances where editor commands failed while editing a card in Canvas.</li>
+<li>Improved the loading experience for Obsidian Sync when connecting to a remote vault.</li>
+<li>Plugin and theme screens now show an error state if there is no internet connection.</li>
+<li>Fixed the &quot;Add property&quot; command not focusing the property input when the Local Properties view was previously closed.</li>
+<li>Fixed the Tags View not updating collapse indicators (<code>&gt;</code> symbols) when pressing &quot;Show nested tags.&quot;</li>
+<li>Fixed an issue where double-clicking PDF highlights caused them to temporarily disappear.</li>
+<li>Fixed an issue where YouTube links with timestamps didn’t play at the correct time.</li>
+<li>Fixed &quot;Download attachments for current file&quot; command mischaracterizing some images file extensions.</li>
+</ul>",false
+01.08.03,mobile,true,2025-01-28,"<p>Includes all new functionality and bug fixes up to <a href=""/changelog/2025-01-28-desktop-v1.8.3/"">Obsidian Desktop v1.8.3</a>.</p>",false
+01.08.03,desktop,true,2025-01-28,"<h2>Improvements</h2>
+<ul>
+<li>Recently used commands now appear at the top of the command palette.</li>
+<li>The editor suggestions now scroll back to the top on input changes.</li>
+<li>Middle-clicking on the tab forward/back navigation buttons now opens the file in a new tab.</li>
+<li>Added a &quot;Comment&quot; option to the editor context menu under the &quot;Format&quot; submenu.</li>
+<li>Improved handling of files with invalid frontmatter:
+<ul>
+<li>Reading mode shows an error message at the top of the file.</li>
+<li>The &quot;Add property&quot; command now shows an error instead of removing invalid frontmatter.</li>
+</ul>
+</li>
+</ul>
+<h2>No longer broken</h2>
+<ul>
+<li>Fixed line renumbering issue when pasting multi-line list items. Subsequent numbers now update correctly.</li>
+<li>Pressing <code>Enter</code> in a multi-line list item now continues the list properly.</li>
+<li>Fixed regression where the &quot;Open in new window&quot; command caused files to fail to open.</li>
+<li>Fixed &quot;Toggle comment&quot; command sometimes placing the cursor in the wrong position.</li>
+<li>Fixed hover preview sometimes appearing in the wrong position.</li>
+<li>Fixed issue where closing a pop-out window at certain times prevented events like saving the workspace from firing.</li>
+<li>Fixed issue where the &quot;Toggle backlinks in document&quot; command threw an error.</li>
+<li>Fixed bug where opening a note with folded headings didn’t restore folds correctly if a heading contained a code block.</li>
+<li>Fixed graph view errors when setting &quot;force&quot; options to <code>0</code>.</li>
+<li>Fixed page preview not working reliably in Graph view:
+<ul>
+<li>Hovering over nodes now reliably opens page previews.</li>
+<li>Hovering then pressing the modifier key also opens the page preview.</li>
+<li>Hovering over multiple nodes in quick succession now properly updates the preview.</li>
+</ul>
+</li>
+<li>Clicking a link in the sidebar (without pressing a modifier) now focuses the tab as expected.</li>
+<li>Canvas: Fixed issue where double-clicking a node label switched the node to edit mode.</li>
+</ul>",false
+01.08.03,mobile,false,2025-01-30,"<p>Includes all new functionality and bug fixes up to <a href=""/changelog/2025-01-30-desktop-v1.8.3/"">Obsidian Desktop v1.8.3</a>.</p>
+<h2>Shiny new things</h2>
+<p>We've added a new experience when you first install the app. This guided flow should help new mobile users create a vault and understand how to have their notes synced across all their devices according to their needs.</p>
+<h2>Improvements</h2>
+<ul>
+<li>The file explorer context menu now shows:
+<ul>
+<li>a folder's file and folder count</li>
+<li>a file's creation time and modified time</li>
+</ul>
+</li>
+<li>We no longer wait for iCloud to finish syncing your configuration files. If a configuration file was offloaded, it will be redownloaded and you will be prompted to reload the app once the file was been synced.</li>
+<li>Added a command to open the tab switcher. This can be bound to the pull down action.</li>
+</ul>
+<h2>No longer broken</h2>
+<ul>
+<li>The active file will always be highlighted in the tab switcher.</li>
+<li>Fixed active file sometimes not getting reset when closing sidebar view.</li>
+<li>On iOS, tapping the status bar now always scrolls to the top of the active file. And scrolls to the top of the sidebar if one is active.</li>
+<li>Long-pressing on tabs in the tab switcher will no longer drag the tab preview image.</li>
+<li>Fixed Android keyboard auto-correction inserting extra text.</li>
+<li>iOS: Fixed rare bug where a folder would be created, but not detected by Obsidian until the app is rebooted.</li>
+</ul>",true
+01.08.03,desktop,false,2025-01-30,"<h2>Highlights</h2>
+<ul>
+<li>Web viewer, a new core plugin, lets you open external links within Obsidian. This makes it easier to read linked content without leaving the app and improves multitasking for web research. The plugin is disabled by default and must be enabled manually in settings.</li>
+<li>Sync now has a new view option, &quot;Hide my changes,&quot; which hides your own file changes in a shared Obsidian sync vault.</li>
+<li>File Explorer now includes an option to automatically reveal the active file.</li>
+<li>Added the &quot;Download attachments for current file&quot; command, which downloads all externally embedded images and replaces the external links with internal embeds.</li>
+<li>Added the &quot;Insert footnote&quot; command. Footnote autocomplete now provides a fallback to create a new footnote if no match is found.</li>
+<li>Tags view now includes a search filter.</li>
+<li>Outline now has an &quot;Auto-scroll to current section&quot; option.</li>
+</ul>
+<h2>Improvements</h2>
+<ul>
+<li>When modifying a numbered list, the numbers are now updated automatically.</li>
+<li>Recently used commands now appear at the top of the command palette.</li>
+<li>Editor suggestions now scroll back to the top when input changes.</li>
+<li>Middle-clicking the tab forward/back navigation buttons now opens the file in a new tab.</li>
+<li>Added a &quot;Comment&quot; option to the editor context menu under the &quot;Format&quot; submenu.</li>
+<li>Improved handling of files with invalid frontmatter:
+<ul>
+<li>Reading mode now shows an error message at the top of the file.</li>
+<li>The &quot;Add property&quot; command now shows an error instead of removing invalid frontmatter.</li>
+</ul>
+</li>
+<li>Canvas groups can now have empty labels, which remain visible while editing.</li>
+<li>Canvas cards now stay mounted while being actively edited, even when zoomed out.</li>
+<li>Sync version history now renders a preview image when viewing a Canvas file.</li>
+<li>The &quot;Search current file&quot; search bar now displays the total number of results.</li>
+<li>Improved rendering of bookmarked URLs in the quick switcher.</li>
+<li>Pressing the <code>Down</code> arrow key in search now removes the cursor from the search bar, making it easier to navigate results.</li>
+<li>The &quot;Insert template&quot; command now sorts templates by file path and displays folder names.</li>
+<li>Right-clicking anywhere in the File Explorer now shows a context menu.</li>
+<li>File Explorer now includes a menu option to create a new folder with the selected items.</li>
+<li>Individual values from list properties can now be copied using the context menu or <code>Command/Ctrl + C</code>.</li>
+<li>Right-clicking anywhere in the Local Properties view now shows the property menu.</li>
+<li>Dragging a file over a collapsed folder in File Explorer now automatically expands the folder.</li>
+<li>Sort options are now available in the properties menu.</li>
+<li><code>&lt;img&gt;</code>, <code>&lt;video&gt;</code>, <code>&lt;audio&gt;</code> and <code>&lt;source&gt;</code> tags with relative <code>src</code> paths are now rendered in Live Preview and Reading mode.</li>
+<li>The tab close button is now hidden if the tab is too small.</li>
+<li>In Sync History, clicking an active item now expands its entry.</li>
+<li>The callout context menu now includes an option to remove callout formatting.</li>
+<li>The &quot;Show backlinks in document&quot; preference is now saved for each tab in the workspace.</li>
+<li>The &quot;Show ribbon&quot; setting is now saved in <code>appearance.json</code> instead of <code>app.json</code>.</li>
+<li>Page previews on hover are now supported in tab headers of notes and attachments.</li>
+<li>Obsidian Publish now includes a new command, &quot;Open in live site,&quot; to open the current live version of a note.</li>
+<li>Improved the screen shown when connecting to a sync remote vault.</li>
+<li>The Sync plugin is now enabled by default to improve visibility in settings. Added a new command, &quot;Sync: Set up sync.&quot;</li>
+<li>File Explorer now automatically deselects files after they are moved into a collapsed folder.</li>
+</ul>
+<h2>No longer broken</h2>
+<ul>
+<li>Live Preview now renders reference-style links correctly.</li>
+<li>The &quot;Tab indent size&quot; setting now controls the visual width of tabs/indents.</li>
+<li>Fixed renaming headings and block IDs showing the incorrect number of modified files.</li>
+<li>Graph view no longer considers Canvas files as attachments.</li>
+<li>Fixed search sort order preference not always being saved.</li>
+<li>Layout and config changes now always save before quitting Obsidian.</li>
+<li>Fixed a rare bug where &quot;Insert template&quot; failed if the cursor was at the start of a file and the template content began with a horizontal rule.</li>
+<li>Fixed a bug where right-clicking the property icon while the property name was empty would hide the entire row.</li>
+<li>Fixed <code>Alt-Enter</code> not working if the cursor overlapped with the embed start <code>![[</code>.</li>
+<li>Fixed an issue where the app switched to the default theme after removing an inactive theme.</li>
+<li>Canvas now shows additional context menu options when multiple file cards are selected.</li>
+<li>Fixed missing margin on code blocks and callouts inside embeds.</li>
+<li>Fixed &quot;Rename file&quot; not working if a sidebar view was active.</li>
+<li>The media selection prompt no longer allows file creation when no results match the input.</li>
+<li>Pressing <code>Shift-Enter</code> in text property input now correctly uses the current input text value.</li>
+<li>Fixed link resolution when a filename ends with a Greek character.</li>
+<li>Footnote IDs are now case-insensitive.</li>
+<li>Fixed flickering when selecting text in PDFs.</li>
+<li>Embedded headings now correctly render Markdown formatting (e.g., <code>## *Hello*, World</code>).</li>
+<li>Increased contrast for code color and added CSS variables for code block borders.</li>
+<li>Clicking the &quot;Copy&quot; button in a callout no longer switches it to source mode.</li>
+<li>Added a &quot;Retry&quot; button when failing to load remote vaults due to a poor network connection.</li>
+<li>Fixed some Japanese characters rendering incorrectly when using the default font.</li>
+<li>Fixed <code>rem</code> units in pop-out windows not matching the main window.</li>
+<li>Fixed an issue where inline footnotes were not always processed by the metadata cache.</li>
+<li>Fixed CSS specificity of task checkbox position in editable lines to avoid conflicting with rendered checkboxes in source mode (e.g. callouts).</li>
+<li>Property value inputs now respect the spellcheck setting.</li>
+<li>Fixed Search sometimes forgetting the sort order after using &quot;Search in all files.&quot;</li>
+<li>Fixed &quot;Rename heading&quot; and &quot;Rename block ID&quot; not working when triggered from an embed.</li>
+<li>Fixed the &quot;Excluded files&quot; screen not properly saving.</li>
+<li>Updated the description of &quot;Tab indent size&quot; to better match its behavior.</li>
+<li>Fixed a bug where editing an embedded heading (e.g., <code>[[file#heading]]</code>) from Page Preview modified the heading text.</li>
+<li>Fixed MathJax not rendering inside embedded headings.</li>
+<li>Fixed a bug where commands did not work correctly when navigating from a note to an attachment. For example, <code>Command/Ctrl + F</code> sometimes did not work in PDF view.</li>
+<li>Fixed PDF view's &quot;Copy link to selection&quot; sometimes applying the selection to the wrong text node.</li>
+<li>Pressing <code>Enter</code> in a multi-line list item now continues the list properly.</li>
+<li>Fixed &quot;Toggle comment&quot; sometimes placing the cursor in the wrong position.</li>
+<li>Fixed an issue where closing a pop-out window at certain times prevented events like saving the workspace from firing.</li>
+<li>Fixed a bug where opening a note with folded headings didn't restore folds correctly if a heading contained a code block.</li>
+<li>Fixed Graph view errors when setting &quot;force&quot; options to <code>0</code>.</li>
+<li>Fixed page previews not working reliably in Graph view:
+<ul>
+<li>Hovering over nodes now reliably opens page previews.</li>
+<li>Hovering then pressing the modifier key also opens the page preview.</li>
+<li>Hovering over multiple nodes in quick succession now properly updates the preview.</li>
+</ul>
+</li>
+<li>Clicking a link in the sidebar (without pressing a modifier) now correctly focuses the tab.</li>
+<li>Fixed an issue where double-clicking a node label in Canvas switched the node to edit mode.</li>
+</ul>
+<h2>Third-party libraries</h2>
+<ul>
+<li>Updated Electron to 33.3.2.</li>
+<li>Upgraded Prism.js to 1.29.0.</li>
+<li>Upgraded Turndown to 7.2.0.</li>
+<li>Upgraded Mermaid to 11.3.0.</li>
+<li>Upgraded CodeMirror to the latest version.</li>
+</ul>",true
+01.08.04,mobile,false,2025-01-31,"<p>Includes all new functionality and bug fixes up to <a href=""/changelog/2025-01-31-desktop-v1.8.4/"">Obsidian Desktop v1.8.4</a>.</p>
+<ul>
+<li>iOS: Fixed bug causing app to show a black screen after install.</li>
+</ul>",false
+01.08.04,desktop,false,2025-01-31,"<h2>No longer broken</h2>
+<ul>
+<li>Fixed bug where pressing <code>Enter</code> inside a blockquote would not continue the blockquote onto the next line.</li>
+<li>Fixed bug where Canvas preview image would sometimes fail to display.</li>
+<li>Fixed bug causing some plugins to not focus the correct tab when they open a file.</li>
 </ul>",false

@@ -17419,6 +17419,10 @@
 			"date": "2024-10-21",
 			"hash": "7e1dba8abab1343e29821c5c6be4e9ecbcefa9a8"
 		},
+		"removedCommit": {
+			"date": "2025-01-26",
+			"hash": "acb5014816874cbcfd8c8007be58b62f24cfdfe8"
+		},
 		"initialEntry": {
 			"name": "Luminex",
 			"author": "abhimangs",
@@ -17480,6 +17484,15 @@
 				"commit": {
 					"date": "2024-05-17",
 					"hash": "b6b1119fb20340cbbfb1fc671d89cd7279dae49b"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2025-01-26",
+					"hash": "acb5014816874cbcfd8c8007be58b62f24cfdfe8"
 				},
 				"oldValue": "",
 				"newValue": ""
@@ -18506,6 +18519,121 @@
 				"commit": {
 					"date": "2025-01-06",
 					"hash": "5692a16f074dd0989da85e1337e0e34ed54011dc"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "zen",
+		"name": "Zen",
+		"addedCommit": {
+			"date": "2025-01-20",
+			"hash": "4145edbc1abf6f2431991c5f0df1f975b5324303"
+		},
+		"initialEntry": {
+			"name": "Zen",
+			"author": "laughmaker",
+			"repo": "laughmaker/Zen",
+			"screenshot": "cover.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Zen",
+			"author": "laughmaker",
+			"repo": "laughmaker/Zen",
+			"screenshot": "cover.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2025-01-20",
+					"hash": "4145edbc1abf6f2431991c5f0df1f975b5324303"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "oledblack",
+		"name": "OLED.Black",
+		"addedCommit": {
+			"date": "2025-01-19",
+			"hash": "0db0b46023a6b27a52d7ae8ad555cb861686c484"
+		},
+		"initialEntry": {
+			"name": "OLED.Black",
+			"author": "Inc44",
+			"repo": "Inc44/OLED.Black",
+			"screenshot": "screenshot.png",
+			"modes": [
+				"dark"
+			]
+		},
+		"currentEntry": {
+			"name": "OLED.Black",
+			"author": "Inc44",
+			"repo": "Inc44/OLED.Black",
+			"screenshot": "screenshot.png",
+			"modes": [
+				"dark"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2025-01-19",
+					"hash": "0db0b46023a6b27a52d7ae8ad555cb861686c484"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "sei",
+		"name": "Sei",
+		"addedCommit": {
+			"date": "2025-01-21",
+			"hash": "95fc9d35b82495680caba426ea4ac814fad653ad"
+		},
+		"initialEntry": {
+			"name": "Sei",
+			"author": "iwa",
+			"repo": "iwa/Sei",
+			"screenshot": "assets/thumbnail.jpg",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Sei",
+			"author": "iwa",
+			"repo": "iwa/Sei",
+			"screenshot": "assets/thumbnail.jpg",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2025-01-21",
+					"hash": "95fc9d35b82495680caba426ea4ac814fad653ad"
 				},
 				"oldValue": "",
 				"newValue": ""
