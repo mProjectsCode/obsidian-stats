@@ -18639,5 +18639,53 @@
 				"newValue": ""
 			}
 		]
+	},
+	{
+		"id": "sunbather",
+		"name": "Sunbather",
+		"addedCommit": {
+			"date": "2025-01-21",
+			"hash": "89303ef5f2b24848e6cf4982457640f8cdccd396"
+		},
+		"initialEntry": {
+			"name": "Sunbather",
+			"author": "babidisrc",
+			"repo": "babidisrc/obsidian-sunbather",
+			"screenshot": "screenshot.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Sunbather",
+			"author": "babidisrc",
+			"repo": "babidisrc/obsidian-sunbather",
+			"screenshot": "thumbnail.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2025-01-21",
+					"hash": "89303ef5f2b24848e6cf4982457640f8cdccd396"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "screenshot",
+				"commit": {
+					"date": "2025-01-21",
+					"hash": "50dff5320e0cf5710416001e173a0e3a5dc6af74"
+				},
+				"oldValue": "screenshot.png",
+				"newValue": "thumbnail.png"
+			}
+		]
 	}
 ]

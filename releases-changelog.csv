@@ -7640,3 +7640,23 @@ linklist:
 <li>Fixed bug where Canvas preview image would sometimes fail to display.</li>
 <li>Fixed bug causing some plugins to not focus the correct tab when they open a file.</li>
 </ul>",false
+01.08.05,mobile,true,2025-02-03,"<p>Includes all new functionality and bug fixes up to <a href=""/changelog/2025-02-03-desktop-v1.8.5/"">Obsidian Desktop v1.8.5</a>.</p>
+<ul>
+<li>Android: The onboarding flow now has the option to use an existing folder as a vault.</li>
+</ul>",false
+01.08.05,desktop,true,2025-02-03,"<h2>No longer broken</h2>
+<ul>
+<li>Fixed issue with adjacent numbered lists being considered part of the same list and having incorrect list numbers applied.</li>
+<li>Fixed issue where <code>Shift-Enter</code> inside a list did not add the correct indentation.</li>
+<li>Fixed missing CSS variable <code>--font-mermaid</code> for setting a custom font in Mermaid graphs.</li>
+<li>Web viewer: Clicking on results in the Web history view will open in the background if &quot;Always focus new tabs&quot; is turned off in Editor settings.</li>
+<li>Web viewer: Fixed issue with &quot;Clear web viewer data&quot; not fully removing the stored session data.</li>
+<li>Web viewer: Fixed issue with built-in Ad blocker not properly capturing web requests.</li>
+<li>Bookmarks: Clicking a bookmarked URL will now open it in your external browser by default, unless you have Web viewer configured to open external links.</li>
+<li>Fixed regression in Mermaid causing some text to get chopped off when the window's zoom level was not 100%.</li>
+<li>Fixed page preview appearing unexpectedly after using Graph view then pressing <code>Command/Ctrl</code>.</li>
+</ul>
+<h2>Third-party libraries</h2>
+<ul>
+<li>Updated Mermaid to 11.4.1.</li>
+</ul>",false
