@@ -7,7 +7,7 @@ const { entry } = Astro.props;
 
 <Default {...Astro.props as any}><slot /></Default>
 {
-	entry.data.links && (
+	entry?.data.links && (
 		<section style="margin-top: 0.5rem">
 			<h2>External Links</h2>
 			<ul style="padding: 0; list-style: none;">

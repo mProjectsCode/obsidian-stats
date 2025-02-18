@@ -14,7 +14,7 @@
 	},
 	"devDependencies": {
 		"@types/bun": "latest",
-		"yaml": "^2.5.1"
+		"yaml": "^2.7.0"
 	},
 	"peerDependencies": {
 		"typescript": "^5.3.3"
@@ -24,16 +24,16 @@
 		"@types/cli-progress": "^3.11.6",
 		"@types/semver": "^7.5.8",
 		"@types/slug": "^5.0.9",
-		"arquero": "^5.4.1",
+		"arquero": "^8.0.1",
 		"cli-progress": "^3.12.0",
 		"fast-dice-coefficient": "^1.0.3",
-		"fast-xml-parser": "^4.5.0",
-		"itertools-ts": "^1.27.1",
-		"prettier": "^3.3.3",
+		"fast-xml-parser": "^4.5.2",
+		"itertools-ts": "^2.2.0",
+		"prettier": "^3.5.1",
 		"prettier-plugin-astro": "^0.14.1",
-		"prettier-plugin-svelte": "^3.2.6",
-		"semver": "^7.6.3",
-		"slug": "^8.2.3",
+		"prettier-plugin-svelte": "^3.3.3",
+		"semver": "^7.7.1",
+		"slug": "^10.0.0",
 		"string-argv": "^0.3.2"
 	}
 }

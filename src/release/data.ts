@@ -1,68 +1,107 @@
-import { addTableMethod, addVerb, escape, op, table } from 'arquero';
-import ColumnTable from 'arquero/dist/types/table/column-table';
+import { ColumnTable, escape, op, table } from 'arquero';
 import { Struct } from 'arquero/dist/types/op/op-api';
 
-addTableMethod(
-	'distinctArray',
-	(table: ColumnTable, columnName: string) => {
-		return table.rollup({ values: op.array_agg_distinct(columnName) }).get('values', 0);
-	},
-	{ override: true },
+Object.assign(
+	ColumnTable.prototype,
+	{
+		distinctArray(this: ColumnTable, columnName: string) {
+			return this.rollup({ values: op.array_agg_distinct(columnName) }).get('values', 0);
+		},
+		normalize(this: ColumnTable, column: string) {
+			const sum = this.rollup({ sum: op.sum(column) }).get('sum', 0);
+			return this.derive({ downloads: escape((d: Struct) => d[column] / sum) });
+		},
+		normalizeBy(this: ColumnTable, column: string, group: string) {
+			const sum = this
+				.groupby(group)
+				.rollup({ sum: op.sum(column) })
+				.orderby(group);
+			return this
+				.join(sum, group)
+				.derive({ [column]: escape((d: Struct) => d[column] / d['sum']) })
+				.select(...this.columnNames())
+				.impute({ [column]: 0 })
+				.orderby(group);
+		},
+		imputeAll(this: ColumnTable, columns: string[], nullable: string[]) {
+			const distinctValues = columns.map(column => table({ [column]: this.distinctArray(column) }));
+			const allCombinations = distinctValues.reduce((acc, curr) => acc.cross(curr));
+
+			return allCombinations
+				.join_left(
+					this,
+					[columns],
+				)
+				.impute(nullable.reduce((acc, curr) => ({ ...acc, [curr]: 0 }), {}))
+				.orderby(...columns);
+		},
+	}
 );
 
-addVerb(
-	'normalize',
-	(table: ColumnTable, column: string) => {
-		const sum = table.rollup({ sum: op.sum(column) }).get('sum', 0);
-		return table.derive({ downloads: escape((d: Struct) => d[column] / sum) });
-	},
-	[{ name: 'column', type: 'Expr' }],
-	{ override: true },
-);
 
-// Normalize by group
-addVerb(
-	'normalizeBy',
-	(table: ColumnTable, column: string, group: string) => {
-		const sum = table
-			.groupby(group)
-			.rollup({ sum: op.sum(column) })
-			.orderby(group);
-		return table
-			.join(sum, [group])
-			.derive({ [column]: escape((d: Struct) => d[column] / d['sum']) })
-			.select(...table.columnNames())
-			.impute({ [column]: 0 })
-			.orderby(group);
-	},
-	[
-		{ name: 'column', type: 'Expr' },
-		{ name: 'group', type: 'Expr' },
-	],
-	{ override: true },
-);
 
-addVerb(
-	'imputeAll',
-	(tab: ColumnTable, columns: string[], nullable: string[]) => {
-		// @ts-ignore
-		const distinctValues = columns.map(column => table({ [column]: tab.distinctArray(column) }));
-		const allCombinations = distinctValues.reduce((acc, curr) => acc.cross(curr));
 
-		return allCombinations
-			.join_left(
-				tab,
-				columns.map(_ => columns),
-			)
-			.impute(nullable.reduce((acc, curr) => ({ ...acc, [curr]: 0 }), {}))
-			.orderby(...columns);
-	},
-	[
-		{ name: 'columns', type: 'ExprList' },
-		{ name: 'nullable', type: 'ExprList' },
-	],
-	{ override: true },
-);
+// addTableMethod(
+// 	'distinctArray',
+// 	(table: ColumnTable, columnName: string) => {
+// 		return table.rollup({ values: op.array_agg_distinct(columnName) }).get('values', 0);
+// 	},
+// 	{ override: true },
+// );
+
+// addVerb(
+// 	'normalize',
+// 	(table: ColumnTable, column: string) => {
+// 		const sum = table.rollup({ sum: op.sum(column) }).get('sum', 0);
+// 		return table.derive({ downloads: escape((d: Struct) => d[column] / sum) });
+// 	},
+// 	[{ name: 'column', type: 'Expr' }],
+// 	{ override: true },
+// );
+
+// // Normalize by group
+// addVerb(
+// 	'normalizeBy',
+// 	(table: ColumnTable, column: string, group: string) => {
+// 		const sum = table
+// 			.groupby(group)
+// 			.rollup({ sum: op.sum(column) })
+// 			.orderby(group);
+// 		return table
+// 			.join(sum, [group])
+// 			.derive({ [column]: escape((d: Struct) => d[column] / d['sum']) })
+// 			.select(...table.columnNames())
+// 			.impute({ [column]: 0 })
+// 			.orderby(group);
+// 	},
+// 	[
+// 		{ name: 'column', type: 'Expr' },
+// 		{ name: 'group', type: 'Expr' },
+// 	],
+// 	{ override: true },
+// );
+
+// addVerb(
+// 	'imputeAll',
+// 	(tab: ColumnTable, columns: string[], nullable: string[]) => {
+// 		// @ts-ignore
+// 		const distinctValues = columns.map(column => table({ [column]: tab.distinctArray(column) }));
+// 		const allCombinations = distinctValues.reduce((acc, curr) => acc.cross(curr));
+
+// 		return allCombinations
+// 			.join_left(
+// 				tab,
+// 				columns.map(_ => columns),
+// 			)
+// 			.impute(nullable.reduce((acc, curr) => ({ ...acc, [curr]: 0 }), {}))
+// 			.orderby(...columns);
+// 	},
+// 	[
+// 		{ name: 'columns', type: 'ExprList' },
+// 		{ name: 'nullable', type: 'ExprList' },
+// 	],
+// 	{ override: true },
+// );
 
 // | Distribution | OS | TYPE | IS | COMMENTS |
 // | ---- | ---- | ---- | ---- | ---- |

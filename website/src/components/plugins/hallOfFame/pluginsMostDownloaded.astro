@@ -77,6 +77,16 @@ let chartData = downloadDataTop.map(x => {
 		data[index] = download.downloads;
 	}
 
+	let firstDownloadData = x.downloads.find(x => x.downloads !== undefined);
+
+	if (firstDownloadData !== undefined && firstDownloadData.downloads !== undefined) {
+		for (let i = 0; i < data.length; i++) {
+			if (data[i] !== undefined) {
+				data[i]! -= firstDownloadData.downloads;
+			}
+		}
+	}
+
 	return data;
 });
 ---

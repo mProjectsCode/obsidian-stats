@@ -18687,5 +18687,196 @@
 				"newValue": "thumbnail.png"
 			}
 		]
+	},
+	{
+		"id": "minimal-red",
+		"name": "Minimal Red",
+		"addedCommit": {
+			"date": "2025-02-06",
+			"hash": "32d7609596e9d4ff9ced2d3e1c16897a4ae59156"
+		},
+		"initialEntry": {
+			"name": "Minimal Red",
+			"author": "AfonsoMiranda02",
+			"repo": "AfonsoMiranda02/Obsidian-MinimalRed",
+			"screenshot": "cover.png",
+			"modes": [
+				"dark"
+			]
+		},
+		"currentEntry": {
+			"name": "Minimal Red",
+			"author": "AfonsoMiranda02",
+			"repo": "AfonsoMiranda02/Obsidian-MinimalRed",
+			"screenshot": "cover.png",
+			"modes": [
+				"dark"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2025-02-06",
+					"hash": "32d7609596e9d4ff9ced2d3e1c16897a4ae59156"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "rose-pine-1",
+		"name": "Rose Pine",
+		"addedCommit": {
+			"date": "2025-02-12",
+			"hash": "33debd1d066b801510e5e975dc1c718a61249aa0"
+		},
+		"initialEntry": {
+			"name": "Rose Pine",
+			"author": "JTrenerry ",
+			"repo": "rose-pine/obsidian",
+			"screenshot": "thumbnail.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Rose Pine",
+			"author": "JTrenerry ",
+			"repo": "rose-pine/obsidian",
+			"screenshot": "thumbnail.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2025-02-12",
+					"hash": "33debd1d066b801510e5e975dc1c718a61249aa0"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "composer",
+		"name": "Composer",
+		"addedCommit": {
+			"date": "2025-02-14",
+			"hash": "8a4cc30ac573e30910d294d602f6fc8fe29d37d2"
+		},
+		"initialEntry": {
+			"name": "Composer",
+			"author": "vran",
+			"repo": "vran-dev/obsidian-composer",
+			"screenshot": "screenshot.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Composer",
+			"author": "vran",
+			"repo": "vran-dev/obsidian-composer",
+			"screenshot": "screenshot.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2025-02-14",
+					"hash": "8a4cc30ac573e30910d294d602f6fc8fe29d37d2"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "old-world",
+		"name": "Old World",
+		"addedCommit": {
+			"date": "2025-02-14",
+			"hash": "8890e9c7862bd78276384932f71230edf58594ea"
+		},
+		"initialEntry": {
+			"name": "Old World",
+			"author": "Double Tilde",
+			"repo": "double-tilde/old-world-obsidian",
+			"screenshot": "images/screenshot.png",
+			"modes": [
+				"dark"
+			]
+		},
+		"currentEntry": {
+			"name": "Old World",
+			"author": "Double Tilde",
+			"repo": "double-tilde/old-world-obsidian",
+			"screenshot": "images/screenshot.png",
+			"modes": [
+				"dark"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2025-02-14",
+					"hash": "8890e9c7862bd78276384932f71230edf58594ea"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "material-3",
+		"name": "Material 3",
+		"addedCommit": {
+			"date": "2025-02-17",
+			"hash": "ac71ab797eb8e1efac8936eb5adb742c4ecf518d"
+		},
+		"initialEntry": {
+			"name": "Material 3",
+			"author": "HarmfulBreeze",
+			"repo": "HarmfulBreeze/obsidian-material-3-theme",
+			"screenshot": "screenshot.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Material 3",
+			"author": "HarmfulBreeze",
+			"repo": "HarmfulBreeze/obsidian-material-3-theme",
+			"screenshot": "screenshot.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2025-02-17",
+					"hash": "ac71ab797eb8e1efac8936eb5adb742c4ecf518d"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
 	}
 ]

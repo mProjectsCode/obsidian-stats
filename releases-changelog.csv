@@ -7660,3 +7660,73 @@ linklist:
 <ul>
 <li>Updated Mermaid to 11.4.1.</li>
 </ul>",false
+01.08.06,mobile,true,2025-02-12,"<p>Includes all new functionality and bug fixes up to <a href=""/changelog/2025-02-12-desktop-v1.8.6/"">Obsidian Desktop v1.8.6</a>.</p>
+<h2>No longer broken</h2>
+<ul>
+<li>Fixed File Recovery and Sync crashing when iOS was in Lockdown Mode.</li>
+<li>&quot;Toggle left sidebar&quot; and &quot;Toggle right sidebar&quot; commands now work on phones.</li>
+</ul>",false
+01.08.06,desktop,true,2025-02-12,"<h2>Improvements</h2>
+<ul>
+<li>Improved the &quot;Insert horizontal rule&quot; command to behave more intuitively when used on a non-empty line.</li>
+<li>The title bar is now visible while the app is loading, allowing the window to be dragged and minimizing, maximizing, and closing on Windows and Linux.</li>
+</ul>
+<h2>No longer broken</h2>
+<ul>
+<li>Fixed issue where dragging and dropping files into a property field caused old values to reappear.</li>
+<li>Web viewer: Fixed bug where &quot;Save to vault&quot; failed without displaying an error.</li>
+<li>Fixed right-clicking on history navigation buttons unintentionally triggering navigation.</li>
+<li>Fixed bug where page preview would immediately hide when opening it from a pop-out window.</li>
+<li>Settings: Fixed issue where the attachment folder field didn’t display the selected folder name.</li>
+<li>Fixed issue where closing a vault with pop-out windows would not reopen when relaunching Obsidian.</li>
+<li>Outline: Fixed scroll position issues when &quot;Auto-reveal current section&quot; was enabled and rapidly clicking different headings.</li>
+<li>Fixed <code>Option-Shift-M</code> hotkey not working.</li>
+<li>Fixed reading mode not properly folding headings when opening a file.</li>
+<li>Fixed changes to the folding API that caused some plugins to malfunction.</li>
+<li>Fixed issue where opening a file in a new split or new window didn’t focus the editor.</li>
+</ul>",false
+01.08.07,mobile,true,2025-02-14,"<h2>No longer broken</h2>
+<ul>
+<li>Fixed regression with sidebar pinning not being available on tablet devices.</li>
+<li>Fixed bug where pressing and holding on results in Global Search and Backlinks did not show the menu.</li>
+</ul>",false
+01.08.07,mobile,false,2025-02-18,"<p>Includes all new functionality and bug fixes up to <a href=""/changelog/2025-02-18-desktop-v1.8.7/"">Obsidian Desktop v1.8.7</a>.</p>
+<h2>No longer broken</h2>
+<ul>
+<li>Android: The onboarding flow now has the option to use an existing folder as a vault.</li>
+<li>Fixed File Recovery and Sync crashing when iOS was in Lockdown Mode.</li>
+<li>&quot;Toggle left sidebar&quot; and &quot;Toggle right sidebar&quot; commands now work on phones.</li>
+<li>Fixed regression with sidebar pinning not being available on tablet devices.</li>
+<li>Fixed bug where pressing and holding on results in Global Search and Backlinks did not show the menu.</li>
+</ul>",false
+01.08.07,desktop,false,2025-02-18,"<h2>Improvements</h2>
+<ul>
+<li>Improved the &quot;Insert horizontal rule&quot; command to behave more intuitively when used on a non-empty line.</li>
+<li>The title bar is now visible while the app is loading, allowing the window to be dragged and minimizing, maximizing, and closing on Windows and Linux.</li>
+<li>Outgoing Links: Right-clicking on links now shows the file menu.</li>
+</ul>
+<h2>No longer broken</h2>
+<ul>
+<li>Fixed issue with adjacent numbered lists being considered part of the same list and having incorrect list numbers applied.</li>
+<li>Fixed issue where <code>Shift-Enter</code> inside a list did not add the correct indentation.</li>
+<li>Fixed missing CSS variable <code>--font-mermaid</code> for setting a custom font in Mermaid graphs.</li>
+<li>Web viewer: Clicking on results in the Web history view will open in the background if &quot;Always focus new tabs&quot; is turned off in Editor settings.</li>
+<li>Web viewer: Fixed issue with &quot;Clear web viewer data&quot; not fully removing the stored session data.</li>
+<li>Web viewer: Fixed issue with built-in Ad blocker not properly capturing web requests.</li>
+<li>Web viewer: Fixed bug where &quot;Save to vault&quot; failed without displaying an error.</li>
+<li>Bookmarks: Clicking a bookmarked URL will now open it in your external browser by default, unless you have Web viewer configured to open external links.</li>
+<li>Fixed regression in Mermaid causing some text to get chopped off when the window's zoom level was not 100%.</li>
+<li>Fixed page preview appearing unexpectedly after using Graph view then pressing <code>Command/Ctrl</code>.</li>
+<li>Fixed issue where dragging and dropping files into a property field caused old values to reappear.</li>
+<li>Fixed right-clicking on history navigation buttons unintentionally triggering navigation.</li>
+<li>Fixed bug where page preview would immediately hide when opening it from a pop-out window.</li>
+<li>Settings: Fixed issue where the attachment folder field didn’t display the selected folder name.</li>
+<li>Fixed issue where closing a vault with pop-out windows would not reopen when relaunching Obsidian.</li>
+<li>Outline: Fixed scroll position issues when &quot;Auto-reveal current section&quot; was enabled and rapidly clicking different headings.</li>
+<li>Fixed <code>Option-Shift-M</code> hotkey not working.</li>
+<li>Fixed reading mode not properly folding headings when opening a file.</li>
+<li>Fixed changes to the folding API that caused some plugins to malfunction.</li>
+<li>Fixed issue where opening a file in a new split or new window didn’t focus the editor.</li>
+<li>Selecting a tab from the tabs menu will now properly focus the tab.</li>
+<li>All Properties: Fixed &quot;Rename&quot; menu item not being available if you select a property with <code>Alt</code> (<code>Option</code> on macOS).</li>
+</ul>",false

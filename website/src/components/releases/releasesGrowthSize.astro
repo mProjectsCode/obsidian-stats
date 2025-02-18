@@ -1,11 +1,10 @@
 ---
 import { Version } from '../../../../src/version';
-import { determineAssetType, determineAssetOS, determineAssetIS, determineAssetArchitecture } from '../../../../src/release/data';
+import { determineAssetType } from '../../../../src/release/data';
 
 import { readFileSync } from 'fs';
-import { escape, fromCSV, op, desc } from 'arquero';
+import { escape, fromCSV, op } from 'arquero';
 
-import PieChart from '../svelte/genericCharts/pieChart.svelte';
 import StackedBarChart from '../svelte/genericCharts/stackedBarChart.svelte';
 
 let ReleaseData = fromCSV(readFileSync('../releases-full-data.csv', 'utf8'));

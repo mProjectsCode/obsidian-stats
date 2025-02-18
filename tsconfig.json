@@ -15,5 +15,5 @@
 		"forceConsistentCasingInFileNames": true,
 		"allowJs": true
 	},
-	"include": ["src/**/*", "tests/**/*"]
+	"include": ["src/**/*", "tests/**/*", "arquero.d.ts"]
 }
