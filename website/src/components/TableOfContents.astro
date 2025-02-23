@@ -2,7 +2,7 @@
 import Default from '@astrojs/starlight/components/TableOfContents.astro';
 import Sponsors from './Sponsors.astro';
 
-const { entry } = Astro.props;
+const { entry } = Astro.locals.starlightRoute;
 ---
 
 <Default {...Astro.props as any}><slot /></Default>

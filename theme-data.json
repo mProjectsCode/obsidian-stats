@@ -11276,8 +11276,8 @@
 		},
 		"currentEntry": {
 			"name": "Neo",
-			"author": "labdo",
-			"repo": "lab-do/obsidian-neo",
+			"author": "ABDO",
+			"repo": "x0aa7i/obsidian-neo",
 			"screenshot": "cover.png",
 			"modes": [
 				"dark",
@@ -11293,6 +11293,24 @@
 				},
 				"oldValue": "",
 				"newValue": ""
+			},
+			{
+				"property": "author",
+				"commit": {
+					"date": "2025-02-03",
+					"hash": "d622f9d010cc1b8c5392bdd9c72639f47b880625"
+				},
+				"oldValue": "labdo",
+				"newValue": "ABDO"
+			},
+			{
+				"property": "repo",
+				"commit": {
+					"date": "2025-02-03",
+					"hash": "d622f9d010cc1b8c5392bdd9c72639f47b880625"
+				},
+				"oldValue": "lab-do/obsidian-neo",
+				"newValue": "x0aa7i/obsidian-neo"
 			}
 		]
 	},
@@ -18873,6 +18891,45 @@
 				"commit": {
 					"date": "2025-02-17",
 					"hash": "ac71ab797eb8e1efac8936eb5adb742c4ecf518d"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "serif",
+		"name": "Serif",
+		"addedCommit": {
+			"date": "2025-02-20",
+			"hash": "050e998ce09a582c5ef74c02320c81cbacb7755a"
+		},
+		"initialEntry": {
+			"name": "Serif",
+			"author": "agodlyman",
+			"repo": "GodlyMan-bit/Serif",
+			"screenshot": "screenshot.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Serif",
+			"author": "agodlyman",
+			"repo": "GodlyMan-bit/Serif",
+			"screenshot": "screenshot.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2025-02-20",
+					"hash": "050e998ce09a582c5ef74c02320c81cbacb7755a"
 				},
 				"oldValue": "",
 				"newValue": ""
