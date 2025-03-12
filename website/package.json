@@ -12,19 +12,19 @@
 	},
 	"dependencies": {
 		"@astrojs/check": "0.9.4",
-		"@astrojs/starlight": "0.32.0",
-		"@astrojs/svelte": "7.0.4",
+		"@astrojs/starlight": "0.32.2",
+		"@astrojs/svelte": "7.0.6",
 		"@types/regression": "^2.0.6",
-		"astro": "5.3.0",
-		"chart.js": "^4.4.7",
+		"astro": "5.4.3",
+		"chart.js": "^4.4.8",
 		"chartjs-plugin-annotation": "^3.1.0",
 		"chartjs-plugin-datalabels": "^2.2.0",
 		"chartjs-plugin-zoom": "^2.2.0",
 		"ml-regression-simple-linear": "3.0.1",
 		"regression": "^2.0.1",
 		"sharp": "^0.33.5",
-		"svelte": "^5.20.2",
-		"typescript": "^5.7.3",
+		"svelte": "^5.23.0",
+		"typescript": "^5.8.2",
 		"zod": "^3.24.2"
 	}
 }

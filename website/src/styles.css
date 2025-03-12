@@ -1,3 +1,9 @@
+@media (min-width: 50rem) {
+	div.page > header.header > div.header.sl-flex {
+		display: grid;
+	}
+}
+
 .muted {
 	color: var(--sl-color-gray-3);
 }

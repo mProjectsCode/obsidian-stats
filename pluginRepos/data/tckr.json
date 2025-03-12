@@ -1,1 +1,1 @@
-{"id":"tckr","warnings":[{"severity":"caution","id":"inactivity-12-months","lastReleaseDate":"2023-12-01"}],"deprecatedVersions":[]}
+{"id":"tckr","warnings":[{"severity":"danger","id":"removed","commit":{"date":"2025-02-25","hash":"0b5c8408cbb3204dff3168f9d55c56aa9009bff8"}}],"removalReason":"Repository deleted","deprecatedVersions":[]}

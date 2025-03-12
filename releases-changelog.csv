@@ -7730,3 +7730,75 @@ linklist:
 <li>Selecting a tab from the tabs menu will now properly focus the tab.</li>
 <li>All Properties: Fixed &quot;Rename&quot; menu item not being available if you select a property with <code>Alt</code> (<code>Option</code> on macOS).</li>
 </ul>",false
+01.08.08,mobile,true,2025-02-25,"<p>Includes all new functionality and bug fixes up to <a href=""/changelog/2025-02-25-desktop-v1.8.8/"">Obsidian Desktop v1.8.8</a>.</p>
+<h2>No longer broken</h2>
+<ul>
+<li>Android: Fixed regression causing large vaults to take significantly longer to load and save the cache (bug since Chromium 130).</li>
+</ul>",false
+01.08.08,desktop,true,2025-02-25,"<h2>Improvements</h2>
+<ul>
+<li>Updated translations.</li>
+<li>Improved app performance when a tree view (e.g. File explorer) is displaying a large number of items.</li>
+<li>Updated app settings to reflect changes to the Commercial license.</li>
+<li>List auto-numbering now preserves custom starting numbers.</li>
+<li>Obsidian Sync: Added a warning before connecting to a remote vault if the vault is already managed by a third-party sync service that could cause conflicts.</li>
+<li>When &quot;Smart indent lists&quot; is disabled, the editor no longer automatically renumbers lists.</li>
+</ul>
+<h2>No longer broken</h2>
+<ul>
+<li>Fixed regression causing large vaults to take significantly longer to load and save the cache (bug since Electron 33).</li>
+<li>Live preview now correctly renders <code>- - -</code> as a horizontal rule.</li>
+<li>Notes with corrupted fold information can now be opened.</li>
+<li>Tables inside embeds will now render full width.</li>
+<li>Checklist items inside loose lists are indented correctly.</li>
+<li>Clicking inside a PDF view now focuses the view.</li>
+<li>Folding a list item in reading mode now persists when switching to edit mode.</li>
+<li>If properties are hidden, pressing <code>Down Arrow</code> from the inline title focuses the editor.</li>
+<li>Creating a new vault via the &quot;Quick start&quot; button now opens <code>welcome.md</code>.</li>
+<li>Link suggestions now include files with extensions registered by plugins.</li>
+</ul>",false
+01.08.09,mobile,true,2025-02-28,"<p>Includes all new functionality and bug fixes up to <a href=""/changelog/2025-02-28-desktop-v1.8.9/"">Obsidian Desktop v1.8.9</a>.</p>
+<h2>No longer broken</h2>
+<ul>
+<li>Onboarding: Improved clarity around managed and self-managed passwords for Obsidian Sync.</li>
+</ul>",false
+01.08.09,desktop,true,2025-02-28,"<h2>No longer broken</h2>
+<ul>
+<li>File changes made shortly after opening the app now properly save to File Recovery.</li>
+<li>Fixed numbered lists getting numbered incorrectly when nested inside a bulleted list.</li>
+<li>Clicking on a stacked tab in reading mode will now properly scroll the tab into view.</li>
+</ul>",false
+01.08.09,mobile,false,2025-03-05,"<p>Includes all new functionality and bug fixes up to <a href=""/changelog/2025-03-05-desktop-v1.8.9/"">Obsidian Desktop v1.8.9</a>.</p>
+<h2>No longer broken</h2>
+<ul>
+<li>Android: Fixed regression causing large vaults to take significantly longer to load and save the cache (bug since Chromium 130).</li>
+<li>Onboarding: Improved clarity around managed and self-managed passwords for Obsidian Sync.</li>
+</ul>",false
+01.08.09,desktop,false,2025-03-05,"<h2>Improvements</h2>
+<ul>
+<li>Updated in-app translations.</li>
+<li>Improved app performance when a tree view (e.g. File explorer) is displaying a large number of items.</li>
+<li>Updated app settings to reflect changes to the Commercial license.</li>
+<li>List auto-numbering now preserves custom starting numbers.</li>
+<li>When &quot;Smart indent lists&quot; is disabled, the editor no longer automatically renumbers lists.</li>
+<li>Obsidian Sync: Added a warning before connecting to a remote vault if the vault is already managed by a third-party sync service that could cause conflicts.</li>
+</ul>
+<h2>No longer broken</h2>
+<ul>
+<li>Fixed regression causing large vaults to take significantly longer to load and save the cache (bug since Electron 33).</li>
+<li>Live preview now correctly renders <code>- - -</code> as a horizontal rule.</li>
+<li>Notes with corrupted fold information can now be opened.</li>
+<li>Tables inside embeds will now render full width.</li>
+<li>Checklist items inside loose lists are indented correctly.</li>
+<li>Clicking inside a PDF view now focuses the view.</li>
+<li>Folding a list item in reading mode now persists when switching to edit mode.</li>
+<li>If properties are hidden, pressing <code>Down Arrow</code> from the inline title focuses the editor.</li>
+<li>Creating a new vault via the &quot;Quick start&quot; button now opens <code>welcome.md</code>.</li>
+<li>Link suggestions now include files with extensions registered by plugins.</li>
+<li>Fixed numbered lists getting numbered incorrectly when nested inside a bulleted list.</li>
+<li>Clicking on a stacked tab in reading mode will now properly scroll the tab into view.</li>
+</ul>
+<h2>Third-party libraries</h2>
+<ul>
+<li>The installer has been updated to Electron 34.3.0. This includes a fix for menus not appearing correctly when right-clicking on macOS.</li>
+</ul>",false

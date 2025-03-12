@@ -13736,6 +13736,10 @@
 			"date": "2024-05-04",
 			"hash": "32c882e92aa0b4bfddffcf0326e7d85e92170c32"
 		},
+		"removedCommit": {
+			"date": "2025-02-25",
+			"hash": "1e6d9d15a2bd77af76612416ea6bc69d69d16d7c"
+		},
 		"initialEntry": {
 			"name": "Midnight",
 			"author": "SemiCirkle",
@@ -13760,6 +13764,15 @@
 				"commit": {
 					"date": "2024-05-04",
 					"hash": "32c882e92aa0b4bfddffcf0326e7d85e92170c32"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2025-02-25",
+					"hash": "1e6d9d15a2bd77af76612416ea6bc69d69d16d7c"
 				},
 				"oldValue": "",
 				"newValue": ""
@@ -16109,6 +16122,10 @@
 			"date": "2024-07-31",
 			"hash": "1f96b8379c83eb2022b7795a118fc74769e3de38"
 		},
+		"removedCommit": {
+			"date": "2025-02-25",
+			"hash": "1e6d9d15a2bd77af76612416ea6bc69d69d16d7c"
+		},
 		"initialEntry": {
 			"name": "Ayu Light & Mirage",
 			"author": "Taro",
@@ -16153,6 +16170,15 @@
 				"commit": {
 					"date": "2024-05-17",
 					"hash": "b6b1119fb20340cbbfb1fc671d89cd7279dae49b"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2025-02-25",
+					"hash": "1e6d9d15a2bd77af76612416ea6bc69d69d16d7c"
 				},
 				"oldValue": "",
 				"newValue": ""
@@ -18933,6 +18959,413 @@
 				},
 				"oldValue": "",
 				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "sad-machine-druid",
+		"name": "Sad Machine Druid",
+		"addedCommit": {
+			"date": "2025-02-20",
+			"hash": "09228b9339531e23ac04b9dd0fb359b1c9ec84ab"
+		},
+		"initialEntry": {
+			"name": "Sad Machine Druid",
+			"author": "Halftroll0",
+			"repo": "Halftroll0/Sad-Machine-Druid",
+			"screenshot": "sad_machine_druid_preview_screenshot.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Sad Machine Druid",
+			"author": "Halftroll0",
+			"repo": "Halftroll0/Sad-Machine-Druid",
+			"screenshot": "sad_machine_druid_screenshot_v1.jpg",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2025-02-20",
+					"hash": "09228b9339531e23ac04b9dd0fb359b1c9ec84ab"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "screenshot",
+				"commit": {
+					"date": "2025-02-23",
+					"hash": "dbf953715f2b809018b86bc05175c2bc9cafc447"
+				},
+				"oldValue": "sad_machine_druid_preview_screenshot.png",
+				"newValue": "sad_machine_druid_screenshot_v1.jpg"
+			}
+		]
+	},
+	{
+		"id": "flexcyon",
+		"name": "Flexcyon",
+		"addedCommit": {
+			"date": "2025-02-25",
+			"hash": "21ec019279429825e0a55b6d69784075956bde03"
+		},
+		"removedCommit": {
+			"date": "2025-02-25",
+			"hash": "ab48bbb41e2fb7fe44d677a045c2f6891995352c"
+		},
+		"initialEntry": {
+			"name": "Flexcyon",
+			"author": "bladeacer",
+			"repo": "bladeacer/flexcyon",
+			"screenshot": "./docs/dark.png",
+			"modes": [
+				"dark"
+			]
+		},
+		"currentEntry": {
+			"name": "Flexcyon",
+			"author": "bladeacer",
+			"repo": "bladeacer/flexcyon",
+			"screenshot": "./docs/dark.png",
+			"modes": [
+				"dark"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2025-02-25",
+					"hash": "21ec019279429825e0a55b6d69784075956bde03"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2025-02-25",
+					"hash": "ab48bbb41e2fb7fe44d677a045c2f6891995352c"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "flexcyon-1",
+		"name": "flexcyon",
+		"addedCommit": {
+			"date": "2025-02-25",
+			"hash": "ab48bbb41e2fb7fe44d677a045c2f6891995352c"
+		},
+		"initialEntry": {
+			"name": "flexcyon",
+			"author": "bladeacer",
+			"repo": "bladeacer/flexcyon",
+			"screenshot": "/docs/dark.png",
+			"modes": [
+				"dark"
+			]
+		},
+		"currentEntry": {
+			"name": "flexcyon",
+			"author": "bladeacer",
+			"repo": "bladeacer/flexcyon",
+			"screenshot": "/docs/dark.png",
+			"modes": [
+				"dark"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2025-02-25",
+					"hash": "ab48bbb41e2fb7fe44d677a045c2f6891995352c"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "retro-windows",
+		"name": "Retro Windows",
+		"addedCommit": {
+			"date": "2025-03-01",
+			"hash": "d2d2d63d909dd6c853c888f472287ed59804f6b3"
+		},
+		"initialEntry": {
+			"name": "Retro Windows",
+			"author": "codeisconfusing",
+			"repo": "codeisconfusing/retro-windows-obsidian",
+			"screenshot": "screenshot.png",
+			"modes": [
+				"dark",
+				"light"
+			],
+			"branch": "main"
+		},
+		"currentEntry": {
+			"name": "Retro Windows",
+			"author": "codeisconfusing",
+			"repo": "codeisconfusing/retro-windows-obsidian",
+			"screenshot": "screenshot.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2025-03-01",
+					"hash": "d2d2d63d909dd6c853c888f472287ed59804f6b3"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "branch",
+				"commit": {
+					"date": "2025-03-01",
+					"hash": "b0a0962044025e80dfb57349ea7bfbc30e8c5988"
+				},
+				"oldValue": "main"
+			}
+		]
+	},
+	{
+		"id": "lesswrong",
+		"name": "LessWrong",
+		"addedCommit": {
+			"date": "2025-03-01",
+			"hash": "3362d67ec5a026df295a69135889d157862535e7"
+		},
+		"initialEntry": {
+			"name": "LessWrong",
+			"author": "henry",
+			"repo": "outsidetext/lesswrong-obsidian",
+			"screenshot": "preview.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "LessWrong",
+			"author": "henry",
+			"repo": "outsidetext/lesswrong-obsidian",
+			"screenshot": "preview.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2025-03-01",
+					"hash": "3362d67ec5a026df295a69135889d157862535e7"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "vercel-obsidian",
+		"name": "Vercel Obsidian",
+		"addedCommit": {
+			"date": "2025-03-02",
+			"hash": "58f84d3c4f1e0e89c9bea42eca9b31be74076bd6"
+		},
+		"removedCommit": {
+			"date": "2025-03-02",
+			"hash": "889678dcb6fe507174570aedfa9941ad63705a41"
+		},
+		"initialEntry": {
+			"name": "Vercel Obsidian",
+			"author": "en3sis",
+			"repo": "en3sis/vercel-obsidian",
+			"screenshot": "assets/vercel-obsidian.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Vercel Obsidian",
+			"author": "en3sis",
+			"repo": "en3sis/vercel-obsidian",
+			"screenshot": "assets/vercel-obsidian.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2025-03-02",
+					"hash": "58f84d3c4f1e0e89c9bea42eca9b31be74076bd6"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2025-03-02",
+					"hash": "889678dcb6fe507174570aedfa9941ad63705a41"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "vercel-geist",
+		"name": "Vercel Geist",
+		"addedCommit": {
+			"date": "2025-03-02",
+			"hash": "889678dcb6fe507174570aedfa9941ad63705a41"
+		},
+		"initialEntry": {
+			"name": "Vercel Geist",
+			"author": "en3sis",
+			"repo": "en3sis/vercel-obsidian",
+			"screenshot": "assets/vercel-obsidian-small.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Vercel Geist",
+			"author": "en3sis",
+			"repo": "en3sis/vercel-obsidian",
+			"screenshot": "assets/vercel-obsidian-small.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2025-03-02",
+					"hash": "889678dcb6fe507174570aedfa9941ad63705a41"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "aged-whisky",
+		"name": "aged whisky",
+		"addedCommit": {
+			"date": "2025-03-03",
+			"hash": "d4d0565e1ef52684c82d66d6a4ae0595fb0f2329"
+		},
+		"initialEntry": {
+			"name": "aged whisky",
+			"author": "incantatem2",
+			"repo": "incantatem2/Obsidian-aged-whisky",
+			"screenshot": "images/aged-whisky-thumbnail.jpg",
+			"modes": [
+				"dark"
+			]
+		},
+		"currentEntry": {
+			"name": "aged whisky",
+			"author": "incantatem2",
+			"repo": "incantatem2/Obsidian-aged-whisky",
+			"screenshot": "images/aged-whisky-thumbnail.jpg",
+			"modes": [
+				"dark"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2025-03-03",
+					"hash": "d4d0565e1ef52684c82d66d6a4ae0595fb0f2329"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "fastppuccin",
+		"name": "FastPpuccin",
+		"addedCommit": {
+			"date": "2025-03-05",
+			"hash": "d7bd002a534f113b120315ef944d20223fb99a03"
+		},
+		"initialEntry": {
+			"name": "FastPpuccin",
+			"author": "LostViking09",
+			"repo": "LostViking09/obsidian-fastppuccin",
+			"screenshot": "theme_image.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "FastPpuccin",
+			"author": "LostViking09",
+			"repo": "LostViking09/obsidian-fastppuccin",
+			"screenshot": "theme_image.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2025-03-05",
+					"hash": "d7bd002a534f113b120315ef944d20223fb99a03"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "screenshot",
+				"commit": {
+					"date": "2025-03-05",
+					"hash": "591b677762774087b255aed16d0e820dc2553349"
+				},
+				"oldValue": "theme_image.png",
+				"newValue": "theme_image_small.png"
+			},
+			{
+				"property": "screenshot",
+				"commit": {
+					"date": "2025-03-05",
+					"hash": "b7f5c36b884fd35e528d8594fdfd100f03d436f2"
+				},
+				"oldValue": "theme_image_small.png",
+				"newValue": "theme_image.png"
 			}
 		]
 	}
