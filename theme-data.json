@@ -16375,8 +16375,8 @@
 		},
 		"currentEntry": {
 			"name": "Lumines",
-			"author": "Avesend",
-			"repo": "Avesend/obsidian-lumines",
+			"author": "Nordwen",
+			"repo": "Nordwen/obsidian-lumines",
 			"screenshot": "obsidian-lumines.png",
 			"modes": [
 				"dark",
@@ -16410,6 +16410,24 @@
 				},
 				"oldValue": "",
 				"newValue": ""
+			},
+			{
+				"property": "author",
+				"commit": {
+					"date": "2025-03-17",
+					"hash": "6c200dda28f4b1f6cbe8262172e65c06d3976534"
+				},
+				"oldValue": "Avesend",
+				"newValue": "Nordwen"
+			},
+			{
+				"property": "repo",
+				"commit": {
+					"date": "2025-03-17",
+					"hash": "6c200dda28f4b1f6cbe8262172e65c06d3976534"
+				},
+				"oldValue": "Avesend/obsidian-lumines",
+				"newValue": "Nordwen/obsidian-lumines"
 			}
 		]
 	},
@@ -19366,6 +19384,43 @@
 				},
 				"oldValue": "theme_image_small.png",
 				"newValue": "theme_image.png"
+			}
+		]
+	},
+	{
+		"id": "minimal-dark-coder",
+		"name": "Minimal-Dark-Coder",
+		"addedCommit": {
+			"date": "2025-03-10",
+			"hash": "0c90ed00a0396bad78e1d8edfed0d1fc78a1a1ea"
+		},
+		"initialEntry": {
+			"name": "Minimal-Dark-Coder",
+			"author": "Krishna Sen",
+			"repo": "Krishna-Sen-Programming-World/Minimal-Dark-Coder",
+			"screenshot": "images/image.jpg",
+			"modes": [
+				"dark"
+			]
+		},
+		"currentEntry": {
+			"name": "Minimal-Dark-Coder",
+			"author": "Krishna Sen",
+			"repo": "Krishna-Sen-Programming-World/Minimal-Dark-Coder",
+			"screenshot": "images/image.jpg",
+			"modes": [
+				"dark"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2025-03-10",
+					"hash": "0c90ed00a0396bad78e1d8edfed0d1fc78a1a1ea"
+				},
+				"oldValue": "",
+				"newValue": ""
 			}
 		]
 	}
