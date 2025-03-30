@@ -8304,10 +8304,6 @@
 			"date": "2022-12-07",
 			"hash": "e3639196d92ddc44827b1f506a8fcccc14656af0"
 		},
-		"removedCommit": {
-			"date": "2024-03-04",
-			"hash": "98085aa0c5e34cf4faa455acf84440dfccc400b9"
-		},
 		"initialEntry": {
 			"name": "Origami",
 			"author": "kneecaps",
@@ -8352,6 +8348,15 @@
 				"commit": {
 					"date": "2024-03-04",
 					"hash": "98085aa0c5e34cf4faa455acf84440dfccc400b9"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Readded",
+				"commit": {
+					"date": "2025-03-24",
+					"hash": "b119188f2fff0022a80dc2826d20690e3ce3b5c5"
 				},
 				"oldValue": "",
 				"newValue": ""
@@ -19421,6 +19426,54 @@
 				},
 				"oldValue": "",
 				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "things-3",
+		"name": "Things 3",
+		"addedCommit": {
+			"date": "2025-03-23",
+			"hash": "25c2700440b0287f5584dfde49c0d75f6e3ea32e"
+		},
+		"initialEntry": {
+			"name": "Things 3",
+			"author": "Paralloid",
+			"repo": "MrParalloid/obsidian-things",
+			"screenshot": "Things-Light.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Things 3",
+			"author": "Paralloid",
+			"repo": "MrParalloid/obsidian-things",
+			"screenshot": "things-screenshot.jpg",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2025-03-23",
+					"hash": "25c2700440b0287f5584dfde49c0d75f6e3ea32e"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "screenshot",
+				"commit": {
+					"date": "2025-03-23",
+					"hash": "1c38e47298b90e0c336043762e35c2db7d11ef3c"
+				},
+				"oldValue": "Things-Light.png",
+				"newValue": "things-screenshot.jpg"
 			}
 		]
 	}
