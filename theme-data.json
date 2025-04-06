@@ -19476,5 +19476,137 @@
 				"newValue": "things-screenshot.jpg"
 			}
 		]
+	},
+	{
+		"id": "enhanced-file-explorer-tree",
+		"name": "Enhanced file explorer tree",
+		"addedCommit": {
+			"date": "2025-03-31",
+			"hash": "dbb4134dafe682d1b535d69099085d4bd8eefed5"
+		},
+		"initialEntry": {
+			"name": "Enhanced file explorer tree",
+			"author": "LennZone",
+			"repo": "LennZone/obsidian-enhanced-file-explorer",
+			"screenshot": "obsidian-enhanced-file-explorer.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Enhanced file explorer tree",
+			"author": "LennZone",
+			"repo": "LennZone/enhanced-file-explorer-tree",
+			"screenshot": "thumbnail.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2025-03-31",
+					"hash": "dbb4134dafe682d1b535d69099085d4bd8eefed5"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "repo",
+				"commit": {
+					"date": "2025-03-31",
+					"hash": "643504b0cb8e20808ba6d7b046c2c89c119b7726"
+				},
+				"oldValue": "LennZone/obsidian-enhanced-file-explorer",
+				"newValue": "LennZone/obsidian-enhanced-file-explorer-tree"
+			},
+			{
+				"property": "screenshot",
+				"commit": {
+					"date": "2025-03-31",
+					"hash": "643504b0cb8e20808ba6d7b046c2c89c119b7726"
+				},
+				"oldValue": "obsidian-enhanced-file-explorer.png",
+				"newValue": "obsidian-enhanced-file-explorer-tree.png"
+			},
+			{
+				"property": "repo",
+				"commit": {
+					"date": "2025-03-31",
+					"hash": "4c0ff113230d6761b0c11ff5f31b94fb010f8c23"
+				},
+				"oldValue": "LennZone/obsidian-enhanced-file-explorer-tree",
+				"newValue": "LennZone/enhanced-file-explorer-tree"
+			},
+			{
+				"property": "screenshot",
+				"commit": {
+					"date": "2025-03-31",
+					"hash": "4c0ff113230d6761b0c11ff5f31b94fb010f8c23"
+				},
+				"oldValue": "obsidian-enhanced-file-explorer-tree.png",
+				"newValue": "enhanced-file-explorer-tree.png"
+			},
+			{
+				"property": "screenshot",
+				"commit": {
+					"date": "2025-03-31",
+					"hash": "4503facbec9c6cce17d15d4e4b3e1be0e0668ff9"
+				},
+				"oldValue": "enhanced-file-explorer-tree.png",
+				"newValue": "thumbnail.png"
+			}
+		]
+	},
+	{
+		"id": "planetary",
+		"name": "Planetary",
+		"addedCommit": {
+			"date": "2025-04-01",
+			"hash": "d14f0b552e53a5372c3738afbfad9615e7fb94c7"
+		},
+		"initialEntry": {
+			"name": "Planetary",
+			"author": "ninetyfive666",
+			"repo": "ninetyfive66/Planetary",
+			"screenshot": "thumbnail.jpg",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Planetary",
+			"author": "ninetyfive666",
+			"repo": "ninetyfive666/Planetary",
+			"screenshot": "thumbnail.jpg",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2025-04-01",
+					"hash": "d14f0b552e53a5372c3738afbfad9615e7fb94c7"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "repo",
+				"commit": {
+					"date": "2025-04-01",
+					"hash": "d585902d5e1020061a4e52ccc7206703deb46d29"
+				},
+				"oldValue": "ninetyfive66/Planetary",
+				"newValue": "ninetyfive666/Planetary"
+			}
+		]
 	}
 ]
