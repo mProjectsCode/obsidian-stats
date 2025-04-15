@@ -3253,8 +3253,8 @@
 		},
 		"currentEntry": {
 			"name": "Cyber Glow",
-			"author": "ArtexJay",
-			"repo": "ArtexJay/Obsidian-CyberGlow",
+			"author": "ThePharaohArt",
+			"repo": "ThePharaohArt/Obsidian-CyberGlow",
 			"screenshot": "Screenshot.png",
 			"modes": [
 				"dark",
@@ -3287,6 +3287,24 @@
 					"hash": "177f1d940bd94b7ba7eb65a96670465638be7782"
 				},
 				"oldValue": "main"
+			},
+			{
+				"property": "author",
+				"commit": {
+					"date": "2025-04-03",
+					"hash": "d9e150c0ced7d74125b48de765b8e21e63da20d9"
+				},
+				"oldValue": "ArtexJay",
+				"newValue": "ThePharaohArt"
+			},
+			{
+				"property": "repo",
+				"commit": {
+					"date": "2025-04-03",
+					"hash": "d9e150c0ced7d74125b48de765b8e21e63da20d9"
+				},
+				"oldValue": "ArtexJay/Obsidian-CyberGlow",
+				"newValue": "ThePharaohArt/Obsidian-CyberGlow"
 			}
 		]
 	},
@@ -19606,6 +19624,233 @@
 				},
 				"oldValue": "ninetyfive66/Planetary",
 				"newValue": "ninetyfive666/Planetary"
+			}
+		]
+	},
+	{
+		"id": "neumorphism",
+		"name": "Neumorphism",
+		"addedCommit": {
+			"date": "2025-04-03",
+			"hash": "beeaac8e30f6185478eebc48a97c5679e2c30db7"
+		},
+		"initialEntry": {
+			"name": "Neumorphism",
+			"author": "LennZone",
+			"repo": "LennZone/neumorphism",
+			"screenshot": "thumbnail.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Neumorphism",
+			"author": "LennZone",
+			"repo": "LennZone/Neumorphism",
+			"screenshot": "thumbnail.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2025-04-03",
+					"hash": "beeaac8e30f6185478eebc48a97c5679e2c30db7"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "repo",
+				"commit": {
+					"date": "2025-04-03",
+					"hash": "6b0203190a6847730ef92a36272171965be77674"
+				},
+				"oldValue": "LennZone/neumorphism",
+				"newValue": "LennZone/Neumorphism"
+			},
+			{
+				"property": "repo",
+				"commit": {
+					"date": "2025-04-03",
+					"hash": "d196d1fcc0d7da30f3375fd56f7a3b68ad8ec451"
+				},
+				"oldValue": "LennZone/Neumorphism",
+				"newValue": "LennZone/neumorphism"
+			},
+			{
+				"property": "repo",
+				"commit": {
+					"date": "2025-04-03",
+					"hash": "21705ded0a49e4bc03717ef3c106344e3b6db049"
+				},
+				"oldValue": "LennZone/neumorphism",
+				"newValue": "LennZone/Neumorphism"
+			}
+		]
+	},
+	{
+		"id": "cocoa",
+		"name": "cocoa",
+		"addedCommit": {
+			"date": "2025-04-05",
+			"hash": "65239dcfb0faccbba4f4fc9348b67ceef9db6f0b"
+		},
+		"initialEntry": {
+			"name": "cocoa",
+			"author": "incantatem2",
+			"repo": "incantatem2/Obsidian-cocoa",
+			"screenshot": "images/cocoa-thumbnail.jpg",
+			"modes": [
+				"dark"
+			]
+		},
+		"currentEntry": {
+			"name": "cocoa",
+			"author": "incantatem2",
+			"repo": "incantatem2/Obsidian-cocoa",
+			"screenshot": "images/cocoa-thumbnail.jpg",
+			"modes": [
+				"dark"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2025-04-05",
+					"hash": "65239dcfb0faccbba4f4fc9348b67ceef9db6f0b"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "parfait",
+		"name": "parfait",
+		"addedCommit": {
+			"date": "2025-04-05",
+			"hash": "7e2133f57dea068d558e47acccd7977dd0905a25"
+		},
+		"initialEntry": {
+			"name": "parfait",
+			"author": "incantatem2",
+			"repo": "incantatem2/Obsidian-parfait",
+			"screenshot": "images/parfait-thumbnail.jpg",
+			"modes": [
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "parfait",
+			"author": "incantatem2",
+			"repo": "incantatem2/Obsidian-parfait",
+			"screenshot": "images/parfait-thumbnail.jpg",
+			"modes": [
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2025-04-05",
+					"hash": "7e2133f57dea068d558e47acccd7977dd0905a25"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "camena",
+		"name": "Camena",
+		"addedCommit": {
+			"date": "2025-04-06",
+			"hash": "b1cc2768c2479b5695b0d2423c27ff0a32690bc6"
+		},
+		"initialEntry": {
+			"name": "Camena",
+			"author": "Bee",
+			"repo": "splendidissimemendax/Camena",
+			"screenshot": "Thumbnail.jpg",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Camena",
+			"author": "Bee",
+			"repo": "splendidissimemendax/Camena",
+			"screenshot": "Thumbnail.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2025-04-06",
+					"hash": "b1cc2768c2479b5695b0d2423c27ff0a32690bc6"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "screenshot",
+				"commit": {
+					"date": "2025-04-07",
+					"hash": "ea9647bba5d663ba66f1acbc7e2b17b1c061af14"
+				},
+				"oldValue": "Thumbnail.jpg",
+				"newValue": "Thumbnail.png"
+			}
+		]
+	},
+	{
+		"id": "pomme-notes",
+		"name": "Pomme Notes",
+		"addedCommit": {
+			"date": "2025-04-09",
+			"hash": "0e3f820e5fc2e72f3edfbe38ef77573df8c0796e"
+		},
+		"initialEntry": {
+			"name": "Pomme Notes",
+			"author": "Paralloid",
+			"repo": "MrParalloid/pomme-notes",
+			"screenshot": "images/screenshot.jpg",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Pomme Notes",
+			"author": "Paralloid",
+			"repo": "MrParalloid/pomme-notes",
+			"screenshot": "images/screenshot.jpg",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2025-04-09",
+					"hash": "0e3f820e5fc2e72f3edfbe38ef77573df8c0796e"
+				},
+				"oldValue": "",
+				"newValue": ""
 			}
 		]
 	}

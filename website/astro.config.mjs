@@ -13,9 +13,9 @@ export default defineConfig({
 				light: './src/assets/logo_complex_light.svg',
 				dark: './src/assets/logo_complex_dark.svg',
 			},
-			social: {
-				github: 'https://github.com/mProjectsCode/obsidian-stats',
-			},
+			social: [
+				{ icon: 'github', label: 'github', href: 'https://github.com/mProjectsCode/obsidian-stats'},
+			],
 			components: {
 				TableOfContents: './src/components/TableOfContents.astro',
 				SocialIcons: './src/components/SocialIcons.astro',

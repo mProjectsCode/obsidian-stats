@@ -7802,3 +7802,21 @@ linklist:
 <ul>
 <li>The installer has been updated to Electron 34.3.0. This includes a fix for menus not appearing correctly when right-clicking on macOS.</li>
 </ul>",false
+01.08.10,mobile,true,2025-04-10,"<h2>Improvements</h2>
+<ul>
+<li>On Android, you can now store vaults inside the app private storage which does not require &quot;All files&quot; permission.</li>
+<li>A small banner requesting feedback may appear at the top of settings. This is only visible for users with significant app usage. Once dismissed, it will never ask you again.</li>
+<li>Improved the onboarding flow to make it more clear that Sync is optional and make it easier to jump directly into vault creation.</li>
+</ul>
+<h2>No longer broken</h2>
+<ul>
+<li>Shared Sync vaults are now included in the list of existing vaults during onboarding.</li>
+<li>Fixed bug where <code>obsidian://</code> URIs would not fire their action if the app was previously closed.</li>
+<li>The navigation bar shows up immediately when keyboard is retracting, instead of waiting for it to finish.</li>
+<li>On Android, using physical keyboards and voice-to-text inputs no longer loses focus.</li>
+</ul>",false
+01.08.10,desktop,true,2025-04-10,"<h2>No longer broken</h2>
+<ul>
+<li>Fixed several issues with numbered lists getting numbered incorrectly, such as when list items have leading spaces, or appear inside neighboring block quotes.</li>
+<li>Desktop-only: Fixed choppiness when resizing the app window.</li>
+</ul>",false
