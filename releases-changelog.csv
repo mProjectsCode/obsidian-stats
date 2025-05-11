@@ -7820,3 +7820,22 @@ linklist:
 <li>Fixed several issues with numbered lists getting numbered incorrectly, such as when list items have leading spaces, or appear inside neighboring block quotes.</li>
 <li>Desktop-only: Fixed choppiness when resizing the app window.</li>
 </ul>",false
+01.08.10,mobile,false,2025-04-22,"<p>Includes all new functionality and bug fixes up to <a href=""/changelog/2025-04-22-desktop-v1.8.10/"">Obsidian Desktop v1.8.10</a>.</p>
+<h2>Improvements</h2>
+<ul>
+<li>On Android, it is now possible to use the app without giving the &quot;All files&quot; permission, however when doing so you can only store vaults inside the app storage.</li>
+<li>A small banner requesting feedback may appear at the top of settings. This is only visible for users with significant app usage. Once dismissed, it will never ask you again.</li>
+<li>Improved the onboarding flow to make it more clear that Sync is optional and make it easier to jump directly into vault creation.</li>
+</ul>
+<h2>No longer broken</h2>
+<ul>
+<li>Shared Sync vaults are now included in the list of existing vaults during onboarding.</li>
+<li>Fixed bug where <code>obsidian://</code> URIs would not fire their action if the app was previously closed.</li>
+<li>The navigation bar now shows up immediately when the keyboard closes.</li>
+<li>On Android, closing the keyboard keeps the editor focused. This fixes some keyboard functions like voice-to-text.</li>
+</ul>",false
+01.08.10,desktop,false,2025-04-22,"<h2>No longer broken</h2>
+<ul>
+<li>Fixed several issues with numbered lists getting numbered incorrectly, such as when list items have leading spaces, or appear inside neighboring block quotes.</li>
+<li>Desktop-only: Fixed choppiness when resizing the app window.</li>
+</ul>",false

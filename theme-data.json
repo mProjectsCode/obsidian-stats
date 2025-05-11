@@ -19853,5 +19853,546 @@
 				"newValue": ""
 			}
 		]
+	},
+	{
+		"id": "dust",
+		"name": "Dust",
+		"addedCommit": {
+			"date": "2025-04-07",
+			"hash": "79991a35c56aa0c3b3fcc034d59a587e2fbb294f"
+		},
+		"initialEntry": {
+			"name": "Dust",
+			"author": "ph17",
+			"repo": "ph17/Dust",
+			"screenshot": "Screenshot_5.png",
+			"modes": [
+				"dark"
+			]
+		},
+		"currentEntry": {
+			"name": "Dust",
+			"author": "ph17",
+			"repo": "ph17/Dust",
+			"screenshot": "theme_screenshot.png",
+			"modes": [
+				"dark"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2025-04-07",
+					"hash": "79991a35c56aa0c3b3fcc034d59a587e2fbb294f"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "screenshot",
+				"commit": {
+					"date": "2025-04-07",
+					"hash": "83f984dc4f929a88a93ef9e8276f831aee665cdf"
+				},
+				"oldValue": "Screenshot_5.png",
+				"newValue": "theme_screenshot.png"
+			}
+		]
+	},
+	{
+		"id": "deep-submerge",
+		"name": "deep submerge",
+		"addedCommit": {
+			"date": "2025-04-12",
+			"hash": "87ce8f691cf90776a32cfed5b1028071720e6fa2"
+		},
+		"initialEntry": {
+			"name": "deep submerge",
+			"author": "incantatem2",
+			"repo": "incantatem2/Obsidian-deep-submerge",
+			"screenshot": "images/deep-submerge-thumbnail.jpg",
+			"modes": [
+				"dark"
+			]
+		},
+		"currentEntry": {
+			"name": "deep submerge",
+			"author": "incantatem2",
+			"repo": "incantatem2/Obsidian-deep-submerge",
+			"screenshot": "images/deep-submerge-thumbnail.jpg",
+			"modes": [
+				"dark"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2025-04-12",
+					"hash": "87ce8f691cf90776a32cfed5b1028071720e6fa2"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "mono-high-contrast",
+		"name": "Mono High Contrast",
+		"addedCommit": {
+			"date": "2025-04-09",
+			"hash": "26be777a9c7b77c981f35b3f0b942f5711b1251d"
+		},
+		"initialEntry": {
+			"name": "Mono High Contrast",
+			"author": "manuelcoca",
+			"repo": "manuelcoca/obsidian-mono-high-contrast-theme",
+			"screenshot": "assets/thumbnail.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Mono High Contrast",
+			"author": "manuelcoca",
+			"repo": "manuelcoca/obsidian-mono-high-contrast-theme",
+			"screenshot": "assets/thumbnail.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2025-04-09",
+					"hash": "26be777a9c7b77c981f35b3f0b942f5711b1251d"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "publisher",
+		"name": "Publisher",
+		"addedCommit": {
+			"date": "2025-04-21",
+			"hash": "a4474f639d671e28fb031a1bbbbfc8302fcbbcc6"
+		},
+		"initialEntry": {
+			"name": "Publisher",
+			"author": "aidanastridge",
+			"repo": "aidanastridge/Publisher",
+			"screenshot": "src/photo.jpg",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Publisher",
+			"author": "aidanastridge",
+			"repo": "aidanastridge/Publisher",
+			"screenshot": "src/thumbnail.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2025-04-21",
+					"hash": "a4474f639d671e28fb031a1bbbbfc8302fcbbcc6"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "screenshot",
+				"commit": {
+					"date": "2025-04-21",
+					"hash": "1e13fd32dd5aba8ada7f50f689ef3650980f4f91"
+				},
+				"oldValue": "src/photo.jpg",
+				"newValue": "src/thumbnail.png"
+			}
+		]
+	},
+	{
+		"id": "ribbons-theme",
+		"name": "Ribbons Theme",
+		"addedCommit": {
+			"date": "2025-04-16",
+			"hash": "3d6a0d5e47c0cb0c3e568b8c1bd9c1df0211a9fc"
+		},
+		"removedCommit": {
+			"date": "2025-04-16",
+			"hash": "5ce1dd6d8dd4c02df63aaaabf8e68a6d6444cafb"
+		},
+		"initialEntry": {
+			"name": "Ribbons Theme",
+			"author": "ddspog",
+			"repo": "ddspog/obsidian-ribbons-theme",
+			"screenshot": "screenshot.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Ribbons Theme",
+			"author": "ddspog",
+			"repo": "ddspog/obsidian-ribbons-theme",
+			"screenshot": "screenshot.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2025-04-16",
+					"hash": "3d6a0d5e47c0cb0c3e568b8c1bd9c1df0211a9fc"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2025-04-16",
+					"hash": "5ce1dd6d8dd4c02df63aaaabf8e68a6d6444cafb"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "ribbons",
+		"name": "Ribbons",
+		"addedCommit": {
+			"date": "2025-04-16",
+			"hash": "5ce1dd6d8dd4c02df63aaaabf8e68a6d6444cafb"
+		},
+		"initialEntry": {
+			"name": "Ribbons",
+			"author": "ddspog",
+			"repo": "ddspog/obsidian-ribbons-theme",
+			"screenshot": "screenshot.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Ribbons",
+			"author": "ddspog",
+			"repo": "ddspog/obsidian-ribbons-theme",
+			"screenshot": "screenshot.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2025-04-16",
+					"hash": "5ce1dd6d8dd4c02df63aaaabf8e68a6d6444cafb"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "terraflow",
+		"name": "TerraFlow",
+		"addedCommit": {
+			"date": "2025-04-23",
+			"hash": "1160797d7377c5a976076946846a619db039d88e"
+		},
+		"initialEntry": {
+			"name": "TerraFlow",
+			"author": "fabdub",
+			"repo": "dubefab/obsidian-TerraFlow",
+			"screenshot": "Terraflow-cover.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "TerraFlow",
+			"author": "fabdub",
+			"repo": "dubefab/obsidian-TerraFlow",
+			"screenshot": "Terraflow-cover.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2025-04-23",
+					"hash": "1160797d7377c5a976076946846a619db039d88e"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "retroos-98",
+		"name": "RetroOS 98",
+		"addedCommit": {
+			"date": "2025-04-25",
+			"hash": "e4161752d4ce932426f8a38b2c2e7040f7dd000f"
+		},
+		"initialEntry": {
+			"name": "RetroOS 98",
+			"author": "ThePharaohArt",
+			"repo": "ThePharaohArt/Obsidian-RetroOS98",
+			"screenshot": "screen.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "RetroOS 98",
+			"author": "ThePharaohArt",
+			"repo": "ThePharaohArt/Obsidian-RetroOS98",
+			"screenshot": "screen.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2025-04-25",
+					"hash": "e4161752d4ce932426f8a38b2c2e7040f7dd000f"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "quillcode",
+		"name": "Quillcode",
+		"addedCommit": {
+			"date": "2025-05-01",
+			"hash": "365b3ec2442fe32cadf5b946f26f4f9ab931f506"
+		},
+		"initialEntry": {
+			"name": "Quillcode",
+			"author": "theaayushpatel",
+			"repo": "theaayushpatel/quillcode",
+			"screenshot": "assets/dark-screenshot.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Quillcode",
+			"author": "theaayushpatel",
+			"repo": "theaayushpatel/quillcode",
+			"screenshot": "assets/dark-screenshot.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2025-05-01",
+					"hash": "365b3ec2442fe32cadf5b946f26f4f9ab931f506"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "myst",
+		"name": "Myst",
+		"addedCommit": {
+			"date": "2025-05-01",
+			"hash": "40601ad1b148bf68b7ecf5d1cb7c5b4d54067aa4"
+		},
+		"initialEntry": {
+			"name": "Myst",
+			"author": "mulder3062",
+			"repo": "mulder3062/Myst",
+			"screenshot": "screenshot.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Myst",
+			"author": "mulder3062",
+			"repo": "mulder3062/Myst",
+			"screenshot": "screenshot.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2025-05-01",
+					"hash": "40601ad1b148bf68b7ecf5d1cb7c5b4d54067aa4"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "soli-deo-gloria",
+		"name": "Soli Deo Gloria",
+		"addedCommit": {
+			"date": "2025-05-04",
+			"hash": "f6074fc02d4f67418736cf3020ecf02caae73a7a"
+		},
+		"initialEntry": {
+			"name": "Soli Deo Gloria",
+			"author": "agodlyman",
+			"repo": "GodlyMan-bit/SoliDeoGloria",
+			"screenshot": "screenshot.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Soli Deo Gloria",
+			"author": "agodlyman",
+			"repo": "GodlyMan-bit/SoliDeoGloria",
+			"screenshot": "screenshot.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2025-05-04",
+					"hash": "f6074fc02d4f67418736cf3020ecf02caae73a7a"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "hojicha",
+		"name": "Hojicha",
+		"addedCommit": {
+			"date": "2025-05-04",
+			"hash": "6dad93570dddb2d3a937a8222132a4ee0e1195ea"
+		},
+		"initialEntry": {
+			"name": "Hojicha",
+			"author": "pr0methevs",
+			"repo": "pr0methevs/Hojicha",
+			"screenshot": "thumbnail.png",
+			"modes": [
+				"dark"
+			]
+		},
+		"currentEntry": {
+			"name": "Hojicha",
+			"author": "pr0methevs",
+			"repo": "pr0methevs/Hojicha",
+			"screenshot": "assets/thumbnail.png",
+			"modes": [
+				"dark"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2025-05-04",
+					"hash": "6dad93570dddb2d3a937a8222132a4ee0e1195ea"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "screenshot",
+				"commit": {
+					"date": "2025-05-04",
+					"hash": "84770a78205cec3cc90c619fc4c289caf1c7cdaf"
+				},
+				"oldValue": "thumbnail.png",
+				"newValue": "assets/thumbnail.png"
+			}
+		]
+	},
+	{
+		"id": "marathon",
+		"name": "Marathon",
+		"addedCommit": {
+			"date": "2025-05-07",
+			"hash": "1c04015fc3dd61e75d4ce579ac6e2b731df7425f"
+		},
+		"initialEntry": {
+			"name": "Marathon",
+			"author": "Spekulucius",
+			"repo": "Spekulucius/obsidian-marathon",
+			"screenshot": "preview.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Marathon",
+			"author": "Spekulucius",
+			"repo": "Spekulucius/obsidian-marathon",
+			"screenshot": "preview.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2025-05-07",
+					"hash": "1c04015fc3dd61e75d4ce579ac6e2b731df7425f"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
 	}
 ]
