@@ -19123,7 +19123,8 @@
 			"repo": "bladeacer/flexcyon",
 			"screenshot": "/docs/dark.png",
 			"modes": [
-				"dark"
+				"dark",
+				"light"
 			]
 		},
 		"changeHistory": [
@@ -19135,6 +19136,15 @@
 				},
 				"oldValue": "",
 				"newValue": ""
+			},
+			{
+				"property": "modes",
+				"commit": {
+					"date": "2025-05-18",
+					"hash": "15248f864f7cc9f4f9e104ba9fff4c5eeeb061b7"
+				},
+				"oldValue": "dark",
+				"newValue": "dark, light"
 			}
 		]
 	},
@@ -20389,6 +20399,208 @@
 				"commit": {
 					"date": "2025-05-07",
 					"hash": "1c04015fc3dd61e75d4ce579ac6e2b731df7425f"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "handwriting-kalam",
+		"name": "Handwriting (Kalam)",
+		"addedCommit": {
+			"date": "2025-05-05",
+			"hash": "0b7b4f6cea65d71599d66028476bdeec25dfe143"
+		},
+		"initialEntry": {
+			"name": "Handwriting (Kalam)",
+			"author": "Kumar Anurag",
+			"repo": "kmranrg/obsidian-handwriting-theme",
+			"screenshot": "screenshot.png",
+			"modes": [
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Handwriting (Kalam)",
+			"author": "Kumar Anurag",
+			"repo": "kmranrg/obsidian-handwriting-theme",
+			"screenshot": "screenshot.png",
+			"modes": [
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2025-05-05",
+					"hash": "0b7b4f6cea65d71599d66028476bdeec25dfe143"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "vesper",
+		"name": "Vesper",
+		"addedCommit": {
+			"date": "2025-05-11",
+			"hash": "6c6552325482d0a860fd4ec766acefe3a3015a28"
+		},
+		"initialEntry": {
+			"name": "Vesper",
+			"author": "omarrashad",
+			"repo": "omarrashad/obsidian-vesper",
+			"screenshot": "assets/cover.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Vesper",
+			"author": "omarrashad",
+			"repo": "omarrashad/obsidian-vesper",
+			"screenshot": "assets/cover.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2025-05-11",
+					"hash": "6c6552325482d0a860fd4ec766acefe3a3015a28"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "powered-by-lancer",
+		"name": "Powered by Lancer",
+		"addedCommit": {
+			"date": "2025-05-10",
+			"hash": "6ebbf30fb51cfcd337e6dc45142af546be9431df"
+		},
+		"initialEntry": {
+			"name": "Powered by Lancer",
+			"author": "SourTarte",
+			"repo": "SourTarte/Powered-By-Lancer",
+			"screenshot": "PoweredByLancer-Icon.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Powered by Lancer",
+			"author": "SourTarte",
+			"repo": "SourTarte/Powered-By-Lancer",
+			"screenshot": "PoweredByLancer-Icon.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2025-05-10",
+					"hash": "6ebbf30fb51cfcd337e6dc45142af546be9431df"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "terminal2k",
+		"name": "Terminal2K",
+		"addedCommit": {
+			"date": "2025-05-15",
+			"hash": "f8052d0f2591744a90a221e55e7592d26bc826ad"
+		},
+		"initialEntry": {
+			"name": "Terminal2K",
+			"author": "isax785",
+			"repo": "isax785/Terminal2K",
+			"screenshot": "./img/screenshot.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Terminal2K",
+			"author": "isax785",
+			"repo": "isax785/Terminal2K",
+			"screenshot": "img/screenshot.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2025-05-15",
+					"hash": "f8052d0f2591744a90a221e55e7592d26bc826ad"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "screenshot",
+				"commit": {
+					"date": "2025-05-15",
+					"hash": "67a5c97a7086ffe5f60d7186eeda4933420b700f"
+				},
+				"oldValue": "./img/screenshot.png",
+				"newValue": "img/screenshot.png"
+			}
+		]
+	},
+	{
+		"id": "meridian",
+		"name": "Meridian",
+		"addedCommit": {
+			"date": "2025-05-15",
+			"hash": "0e620d4ca1aa76b7f991999d48ae98e55b737a2e"
+		},
+		"initialEntry": {
+			"name": "Meridian",
+			"author": "mvahaste",
+			"repo": "mvahaste/meridian",
+			"screenshot": "preview.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Meridian",
+			"author": "mvahaste",
+			"repo": "mvahaste/meridian",
+			"screenshot": "preview.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2025-05-15",
+					"hash": "0e620d4ca1aa76b7f991999d48ae98e55b737a2e"
 				},
 				"oldValue": "",
 				"newValue": ""
