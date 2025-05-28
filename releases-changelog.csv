@@ -7839,3 +7839,121 @@ linklist:
 <li>Fixed several issues with numbered lists getting numbered incorrectly, such as when list items have leading spaces, or appear inside neighboring block quotes.</li>
 <li>Desktop-only: Fixed choppiness when resizing the app window.</li>
 </ul>",false
+01.09.00,mobile,true,2025-05-21,"<p>Includes all new functionality and bug fixes up to Obsidian Desktop v1.9.0.</p>
+<h2>Improvements</h2>
+<ul>
+<li>The app now smoothly resizes when the on-screen keyboard appears and disappears.</li>
+<li>Two-finger swipe to navigate forward and backwards in tab history will now be more responsive.</li>
+<li>Updated the default layout for the navigation bar.</li>
+<li>The default toolbar now shows undo and redo at the start of the row.</li>
+<li>The app now better adapts to landscape mode.</li>
+<li>It is now possible to reset your Obsidian account password from the initial onboarding flow.</li>
+<li>You can now open the file context menu by pressing and holding on the file name in the Search view.</li>
+</ul>
+<h2>No longer broken</h2>
+<ul>
+<li>Ensure the sidebar collapses after opening a file from the file explorer.</li>
+<li>Minor fixes to the layout when sidebars are pinned on tablet.</li>
+<li>Ensure that popovers appear within the device insets, avoiding OS elements such as the Dynamic Island and navigation bar.</li>
+</ul>
+<h2>iOS</h2>
+<ul>
+<li>Added <code>Ctrl-Tab</code> and <code>Shift-Ctrl-Tab</code> to switch between tabs on iPad.</li>
+<li>Fixed toolbar placement on iPad when using Stage Manager or the floating keyboard.</li>
+<li>Disabled two-finger swipe navigation when the on-screen keyboard is visible. This gesture interfered with the built-in gesture for moving the cursor.</li>
+</ul>
+<h2>Android</h2>
+<ul>
+<li>The app is now edge-to-edge, meaning the status bar and navigation bar will always fit in with the rest of the app.</li>
+<li>Improved how the app layout adapts to the on-screen keyboard.</li>
+<li>App now resizes correctly in split-screen mode.</li>
+<li>Added missing 500 font weight for Inter.</li>
+</ul>",false
+01.09.00,desktop,true,2025-05-21,"<p>Introducing <a href=""https://help.obsidian.md/bases"">Bases</a>, a new core plugin that lets you turn any set of notes into a powerful database. With Bases you can organize everything from projects to travel plans, reading lists, and more.</p>
+<p><img src=""/images/changelog/2025-05-21-bases.png"" alt=""Bases table showing a list of books""></p>
+<p>Bases lets you create custom table views to visualize and interact with data in your vault. You can filter your notes by properties and create formulas to derive your own dynamic properties.</p>
+<p>All the data in a base is backed by your local Markdown files and properties stored in YAML. To support Bases, we're introducing the <code>.base</code> file format and <a href=""https://help.obsidian.md/bases/syntax"">syntax</a>.</p>
+<p><strong>Important:</strong> This is an early beta. We expect many changes and improvements to Bases over the coming months, and a longer than usual early access phase. Some planned features include more view types, plugin API, and Publish support. See <a href=""https://help.obsidian.md/bases/roadmap"">Bases Roadmap</a>.</p>
+<h2>New shiny features</h2>
+<ul>
+<li>New <strong>Footnotes view</strong> core plugin adds a new sidebar tab that helps you manage footnotes for the current file without losing your place in the note.</li>
+</ul>
+<h2>Breaking changes</h2>
+<ul>
+<li>We have officially removed support for the properties <code>tag</code>, <code>alias</code>, <code>cssclass</code> in favor of <code>tags</code>, <code>aliases</code> and <code>cssclasses</code>. In addition, the values of these properties <em>must</em> be a list. If the current value is a text property, it will no longer be recognized by Obsidian.</li>
+</ul>
+<h2>Improvements</h2>
+<ul>
+<li>Hover preview no longer hides or switches to edit mode when the fold icon is clicked.</li>
+<li>In the &quot;Export PDF&quot; flow, the export button now receives initial keyboard focus.</li>
+<li>Settings that show file or folder suggestions now use fuzzy search for better matching.</li>
+<li>Whitespace is now correctly shown in Sync history and file recovery diffs.</li>
+<li>Text selection contrast has been increased in dark mode.</li>
+<li>Sync history view now includes a button to open affected files in File Recovery.</li>
+<li>The Sync history view now shows the file name before and after it was renamed.</li>
+<li>File Recovery now displays file extensions in titles and suggestions for non-Markdown files.</li>
+<li>If the current tab is pinned, the &quot;Close current tab&quot; command will unpin the tab instead of closing it. Repeat the command to close the tab.</li>
+<li>The &quot;Move file to...&quot; option remains available even when the Files plugin is disabled.</li>
+<li>The &quot;Save file&quot; command now only appears in the Command Palette when a file is active.</li>
+<li>The Unique Note Prefix plugin now includes an &quot;Add unique internal link&quot; command for linking selected text.</li>
+</ul>
+<h2>No longer broken</h2>
+<ul>
+<li>Improved how results in the command palette are sorted. By default, results are now sorted alphabetically. And more recently used commands will rank higher in the search results.</li>
+<li>Editing a file no longer resets folded sections in the Outline view.</li>
+<li>Canvas cards now support callouts without generating internal errors.</li>
+<li>Pressing <code>Shift-Enter</code> inside a text property no longer creates an empty input.</li>
+<li>Cursor placement is now accurate when navigating table cells after searching.</li>
+<li>When using the &quot;Obsidian frame&quot; window frame style, the Window title will now properly update to show the currently open file in pop-out windows.</li>
+<li>List numbering remains consistent when editing inside callouts.</li>
+<li>PDF view no longer steals focus when opened in the background.</li>
+<li>Strict line breaks now render properly in the first paragraph of a callout.</li>
+<li>Outline view now highlights the correct line when the note includes footnotes.</li>
+<li>Markdown tables containing partially complete HTML now render correctly.</li>
+<li>Tab history buttons, Web viewer history entries, bookmarked URLs, and ribbon items that open notes now respect modifier keys and honor the &quot;Focus new tab&quot; preference.</li>
+<li>Canvas now consistently copies selected notes when pressing <code>Ctrl-C</code>.</li>
+<li>The Tags view now updates correctly when clearing the search filter.</li>
+<li>Autocompleting a codeblock now properly accounts for indentation and if the cursor is inside a list item.</li>
+</ul>
+<h2>Developers</h2>
+<ul>
+<li>CSS properties added to <code>document.body</code> are now mirrored across all pop-out windows.</li>
+<li><code>ButtonComponent</code> now automatically shows a loading spinner if the <code>onClick</code> event is async.</li>
+<li>You can now bypass the Web viewer and specify that a URL is opened in the user's default browser using <code>window.open(url, 'external')</code>.</li>
+<li><code>idb</code> has been updated to version 8.0.2.</li>
+<li><code>yaml</code> has been updated to version 2.7.0.</li>
+<li>YAML aliasing has been disabled to prevent unintended references when assigning the same object to multiple keys.</li>
+<li>Assigning the same object to multiple keys via <code>processFrontmatter</code> will no longer create a YAML alias.</li>
+</ul>",false
+01.09.01,mobile,true,2025-05-22,<p>Includes all new functionality and bug fixes up to Obsidian Desktop v1.9.1.</p>,false
+01.09.01,desktop,true,2025-05-22,"<h2>Breaking Changes</h2>
+<ul>
+<li>We've renamed the built-in functions for Bases from <code>snake_case</code> to <code>camelCase</code>. We believe this naming schema is more consistent with the Obsidian API and therefore better adapted for plugin authors to extend. This will impact all your existing filters and formulas so please be sure to go through your existing <code>.base</code> files and correct them.</li>
+<li>We've made a change to how Bases files are stored in the workspace.json. After updating, if you have any open Bases files, Obsidian will say &quot;plugin not found.&quot; Your data is still there and you just need to reopen the file.</li>
+</ul>
+<h2>Improvements</h2>
+<ul>
+<li>Bases: Uneditable cells are now grayed out.</li>
+<li>Bases: Added new <code>date</code> and <code>time</code> functions for extracting date or time out of a datetime. (e.g. <code>date(now())</code>).</li>
+<li>Bases: Added new <code>split</code> function to split a string.</li>
+</ul>
+<h2>No longer broken</h2>
+<ul>
+<li>Bases: Properties menu shows all relevant properties in the list by default.</li>
+<li>Bases: Minor improvements to how formula cells render complex values.</li>
+<li>Bases: Property menu properly refreshs after deleting a formula property.</li>
+<li>Bases: Filter and formula syntax now handles non-Latin characters in property names.</li>
+<li>Bases: Fix filter menu closing automatically when Base file is inside a pop-out window.</li>
+<li>Bases: &quot;Copy table to clipboard&quot; handles more complex values without showing <code>[object Object]</code>.</li>
+<li>Bases: You can now choose in settings if you want Page preview to require the modifier key for Bases files.</li>
+<li>Bases: Fixed <code>floor(0)</code> function showing an empty cell.</li>
+<li>Bases: Fixed <code>min</code> function returning the maximum value by mistake.</li>
+<li>Bases: Fixed <code>max</code> function showing an error.</li>
+<li>Bases: <code>contains</code> function is now case-insensitive.</li>
+<li>Bases: <code>inFolder</code> function no longer shows an error when no folder is specified.</li>
+<li>Bases: Fixed the &quot;New base&quot; menu item not giving input focus to the filename.</li>
+<li>Bases: Fixed Bases file not fully rendering when placed inside a sidebar and the sidebar toggles open.</li>
+<li>Bases: Fixed app layout shifting when typing in the Property menu.</li>
+<li>Quick Switcher: &quot;.base&quot; files are now shown by default.</li>
+<li>&quot;Open linked view&quot; menu only shows views that are applicable to the current file type.</li>
+</ul>",false
