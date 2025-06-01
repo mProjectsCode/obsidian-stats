@@ -4486,6 +4486,10 @@
 			"date": "2021-10-16",
 			"hash": "d14075e22ed296a07dd30595816656d83536cecd"
 		},
+		"removedCommit": {
+			"date": "2025-05-26",
+			"hash": "223241192ea1db1b60d377d13aa321e300fd1e75"
+		},
 		"initialEntry": {
 			"name": "Creature",
 			"author": "Marcus Olsson",
@@ -4529,6 +4533,15 @@
 					"hash": "177f1d940bd94b7ba7eb65a96670465638be7782"
 				},
 				"oldValue": "main"
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2025-05-26",
+					"hash": "223241192ea1db1b60d377d13aa321e300fd1e75"
+				},
+				"oldValue": "",
+				"newValue": ""
 			}
 		]
 	},
@@ -20604,6 +20617,54 @@
 				},
 				"oldValue": "",
 				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "modern-genz-vibedose",
+		"name": "Modern GenZ Vibedose",
+		"addedCommit": {
+			"date": "2025-05-25",
+			"hash": "67d563d417206f5c2f1b4008c6af9ed5cd445701"
+		},
+		"initialEntry": {
+			"name": "Modern GenZ Vibedose",
+			"author": "Omkar Iyer",
+			"repo": "https://github.com/omkar-4/Modern-GenZ-Vibedose",
+			"screenshot": "screenshot.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Modern GenZ Vibedose",
+			"author": "Omkar Iyer",
+			"repo": "omkar-4/Modern-GenZ-Vibedose",
+			"screenshot": "screenshot.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2025-05-25",
+					"hash": "67d563d417206f5c2f1b4008c6af9ed5cd445701"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "repo",
+				"commit": {
+					"date": "2025-05-25",
+					"hash": "66c0709f9fe62f086078536bec3b37002d3d009e"
+				},
+				"oldValue": "https://github.com/omkar-4/Modern-GenZ-Vibedose",
+				"newValue": "omkar-4/Modern-GenZ-Vibedose"
 			}
 		]
 	}
