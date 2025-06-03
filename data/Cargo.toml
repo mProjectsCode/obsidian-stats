@@ -1,0 +1,16 @@
+[package]
+name = "data"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+chrono = "0.4.41"
+chumsky = {version = "0.10.1", features = ["unstable"]}
+hashbrown = {version = "0.15.3", features = ["serde"]}
+itertools = "0.14.0"
+rayon = "1.10.0"
+regex = "1.11.1"
+serde = {version = "1.0.219", features = ["derive"]}
+serde_json = {version = "1.0.140", features = ["raw_value"]}
+serde_yaml = "0.9.34"
+strsim = "0.11.1"

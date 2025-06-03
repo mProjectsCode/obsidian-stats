@@ -1,1 +1,1 @@
-{"id":"relay-md","warnings":[{"severity":"danger","id":"removed","commit":{"date":"2025-04-20","hash":"dc04f46e7366485df8e5a735fbfb51f856feadbc"}}],"removalReason":"Replaced by Relay by System 3","deprecatedVersions":[]}
+{"id":"relay-md","repo":null,"warnings":[],"removal_reason":"Replaced by Relay by System 3","deprecated_versions":[]}

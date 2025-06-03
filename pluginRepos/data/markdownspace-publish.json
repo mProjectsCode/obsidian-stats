@@ -1,1 +1,1 @@
-{"id":"markdownspace-publish","warnings":[{"severity":"danger","id":"removed","commit":{"date":"2024-04-15","hash":"09ae06a19de2644cea691b2504e3f6deeb0166f4"}}],"removalReason":"Cannot be installed due to wrong release name","deprecatedVersions":[]}
+{"id":"markdownspace-publish","repo":null,"warnings":[],"removal_reason":"Cannot be installed due to wrong release name","deprecated_versions":[]}
