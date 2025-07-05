@@ -7957,3 +7957,129 @@ linklist:
 <li>Quick Switcher: &quot;.base&quot; files are now shown by default.</li>
 <li>&quot;Open linked view&quot; menu only shows views that are applicable to the current file type.</li>
 </ul>",false
+01.09.02,mobile,true,2025-06-05,"<p>Includes all new functionality and bug fixes up to Obsidian Desktop v1.9.2.</p>
+<ul>
+<li>We've added the &quot;Forward&quot; button back to the bottom navigation bar.</li>
+<li>Android: Fix app crash on font selection for Android 9 or earlier.</li>
+</ul>",false
+01.09.02,desktop,true,2025-06-05,"<h2>Breaking changes</h2>
+<p>This release has major breaking changes to Bases. We have updated the Bases formula syntax and the file format to make formulas and filters more expressive and powerful.</p>
+<p>If you use Obsidian on multiple devices, we recommend upgrading all devices at the same time to avoid issues syncing base files with different syntax.</p>
+<h3>The new formula syntax</h3>
+<p>The new formula syntax is more flexible, easier to use, and better suited to extensibility. For those familiar with Javascript, the new syntax should feel familiar. New functions and types are described in <a href=""https://help.obsidian.md/bases/functions"">our docs</a>.</p>
+<p>Some highlights include:</p>
+<ul>
+<li>Functions are now object-oriented. Instead of <code>contains(file.name, &quot;Books&quot;)</code>, the formula would be <code>file.name.contains(&quot;Books&quot;)</code>.</li>
+<li>Functions can now be chained. e.g. <code>property.split(' ').sort()[0].lower()</code></li>
+<li>Property names are no longer wrapped in backticks (`). Instead, to reference properties with spaces or special characters, the syntax is <code>note[&quot;Property Name&quot;]</code></li>
+<li>There is a new type system which provides greater control when writing formulas.</li>
+<li>New functions, such as <code>link</code>, <code>date</code> and <code>list</code> for converting a value to a different type.</li>
+<li>New file properties: <code>file.path</code>, <code>file.links</code> (a list of all internal links in this file), and <code>file.tags</code> (a list of all tags in this file, including frontmatter).</li>
+<li>Some functions have been replaced by comparison operators. For example, <code>dateBefore(date1, date2)</code> is now <code>date1 &lt; date2</code>.</li>
+<li>Date modifications are now much simpler. Instead of <code>dateModify(date, string)</code>, you can use <code>date + string</code>, for example, <code>date(&quot;01/01/2025&quot;) + &quot;1 year&quot;</code></li>
+</ul>
+<p>For help migrating existing Bases to the new syntax, take a look at the <a href=""https://forum.obsidian.md/t/bases-migration-quick-start-guide/101571"">migration guide</a>.</p>
+<h3>File format changes</h3>
+<p>The Bases (<code>.base</code>) file format has been updated for greater extensibility. There is a new <code>properties</code> section for all property configurations, such as <code>displayName</code>. Learn about the full syntax in <a href=""https://help.obsidian.md/bases/syntax"">our docs</a>.</p>
+<h2>Improvements</h2>
+<ul>
+<li>Bases Shows number of results in the current view.</li>
+<li>Bases: Operator dropdown for filters is now searchable.</li>
+<li>Bases: Table cells with long text now expand to show the entire content when selected.</li>
+</ul>
+<h2>No longer broken</h2>
+<ul>
+<li>Tags view: Fixed &quot;Show nested tags&quot; showing the full tag name (e.g. <code>#parent/child</code>)</li>
+<li>File explorer: Fixed &quot;Move folder to...&quot; menu item not showing in context menu.</li>
+<li>Bases: Fixed view not closing after deleting the file.</li>
+<li>Bases: Fixed codeblock not rendering when &quot;Indent with tabs&quot; is enabled.</li>
+</ul>",false
+01.09.03,mobile,true,2025-06-26,"<p>Includes all new functionality and bug fixes up to Obsidian Desktop v1.9.3.</p>
+<ul>
+<li>Graph view: Dragging force sliders will no longer cause sidebars to slide open.</li>
+</ul>",false
+01.09.03,desktop,true,2025-06-26,"<h2>Improvements</h2>
+<ul>
+<li>Changes to <code>cssclasses</code>, <code>aliases</code>, and <code>tags</code> properties:
+<ul>
+<li>Invalid values will no longer be hidden in Bases and the property editor.</li>
+<li>String values are now accepted as valid values for these properties. For example: <code>tags: 'my-tag'</code> is no longer marked as invalid. Invalid property values, such as <code>tags: 'tag1, tag2'</code> will now be visible in the property editor and marked as invalid.</li>
+<li>In the &quot;Format converter&quot; core plugin, there is a new option to fix any incorrectly formatted <code>aliases</code>, <code>tags</code>, and <code>cssclasses</code> in your vault. It will also migrate your old <code>alias</code>, <code>tag</code>, and <code>cssclass</code> properties to the new format.</li>
+</ul>
+</li>
+<li>Property editor is now available inside page preview and Canvas.</li>
+<li>Right-clicking a folder in the file titlebar now shows the folder menu.</li>
+<li>Improvements to the display of an &quot;unknown&quot; tab. Added option to close all unknown tabs.</li>
+<li>Page preview: Added button to open preview in current tab.</li>
+<li>When there is not enough room to display the whole path in the titlebar, the folders will be truncated before the file name.</li>
+</ul>
+<h3>Bases</h3>
+<ul>
+<li>Added a new &quot;Cards&quot; view layout. Display your files in a grid, and optionally assign a cover image to each file.</li>
+<li>Added &quot;New item&quot; toolbar button to automatically create a file that matches the filters of the current view.</li>
+<li>Added &quot;Sort&quot; toolbar menu. Views can now be sorted by properties not visible in the current view.</li>
+<li>Added a new &quot;duration&quot; type. You can use this to display the difference between dates (e.g. <code>note.release_date - today()</code>).</li>
+<li>Added <code>Date#relative()</code> to see when a date was relative to now.</li>
+<li><code>date()</code> now handles timestamps in the format <code>YYYYMMDD</code> and <code>YYYYMMDDHHmm</code>.</li>
+<li>Formulas: Fixed bug where multiple divisions would not work (e.g. <code>10 / 5 / 2</code>).</li>
+<li>Formulas now support inequality comparisons with strings (e.g. <code>date &gt; &quot;YYYY-MM-DD&quot;</code>)</li>
+<li>Formulas: <code>link()</code> can now be used with external links.</li>
+<li>Formulas: Fixed <code>hasLink()</code> not resolving links with subpaths (e.g. <code>file#heading</code>)</li>
+<li>Infinity is now rendered as ∞.</li>
+<li>Fixed issues with reading and writing properties when they have different cases in different files (e.g. <code>Property</code> vs <code>property</code>).</li>
+<li>Bases now respects &quot;Excluded files&quot; setting.</li>
+<li>Table: Fixed sort arrows appearing in the wrong direction.</li>
+<li>Table: Improved support for RTL languages.</li>
+<li>Table: Improved sort behavior of links, URLs, durations, and dates.</li>
+<li>Table: Right-click on the file name now shows &quot;Delete file&quot; menu option.</li>
+<li><code>group_by</code> has been renamed to <code>groupBy</code>. This is still a placeholder for grouping functionality that will be added later.</li>
+</ul>
+<h2>No longer broken</h2>
+<ul>
+<li>Search: Fixed &quot;tag:&quot; results not appearing if the &quot;tags&quot; property has any capital letters in the property name (e.g. &quot;Tags&quot;)</li>
+<li>PDF: Fixed regression in PDF view where some text selections cannot be copied.</li>
+<li>Fixed regression where property editor would display unknown property values as &quot;text&quot; properties.</li>
+<li>Fixed bug where closing a tab while hovering over the &quot;link&quot; icon would not cause the link highlight to get removed.</li>
+<li>Canvas: Fixed &quot;New group&quot; not selecting the label text by default.</li>
+<li>&quot;Export to PDF&quot; no longer causes the screen to briefly flash white in dark mode.</li>
+<li>Improved the rendering of codeblocks inside quoteblocks.</li>
+</ul>",false
+01.09.04,mobile,true,2025-06-27,"<h2>Improvements</h2>
+<ul>
+<li>Improvements to the card layout on mobile.</li>
+<li>The &quot;+&quot; button in the navbar now opens a new tab.</li>
+</ul>
+<h2>No longer broken</h2>
+<ul>
+<li>Scrubbing the timeline on an audio embed no longer triggers the sidebars opening.</li>
+</ul>",false
+01.09.04,desktop,true,2025-06-27,"<h2>Improvements</h2>
+<h3>Bases</h3>
+<ul>
+<li>Cards: Added new &quot;Card size&quot; slider to view options.</li>
+<li>Table: Added new &quot;Row height&quot; selection to view options.</li>
+<li>Added new <code>file.embeds</code> property which returns a list of all embeds (i.e. <code>![[file]]</code>) found in the file.</li>
+<li>Boolean values now always render as a checkbox. The <code>checkbox()</code> function has been removed.</li>
+<li>&quot;Copy to clipboard&quot; and &quot;Export CSV&quot; are now available for all view formats.</li>
+<li>New <code>image()</code> function for rendering images inline.</li>
+</ul>
+<h2>No longer broken</h2>
+<ul>
+<li>Page preview no longer hides when interacting with a context menu inside it.</li>
+<li>Fixed issue where properties would show as their assigned property type even if the underlying data is not compatible.</li>
+<li>Fixed bug where &quot;Export PDF&quot; would only display the first page.</li>
+</ul>
+<h3>Bases</h3>
+<ul>
+<li>Fixed issue with Image property not working if file path contained any special characters (e.g. apostrophe).</li>
+<li>View menu and Filter menu now scroll if there is not enough room on screen.</li>
+<li>Fixed Card view crashing when hiding all properties from view.</li>
+<li>Disabling Bases plugin and re-enabling it no longer reports errors.</li>
+<li>&quot;New item&quot; menu now automatically adds a property if there is a filter designating that the property is not empty.</li>
+<li>Fixed bug where formulas would silently fail if the formula had trailing whitespace.</li>
+<li>Links now display header or block ID if there is one.</li>
+<li>Cards: Fixed links not working on click.</li>
+<li>Improved layout of the results menu.</li>
+<li>Files created from the toolbar now respect the default file location.</li>
+<li><code>Date.relative()</code> is now sorted according to time.</li>
+</ul>",false

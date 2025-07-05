@@ -497,6 +497,10 @@
 			"date": "2020-11-24",
 			"hash": "1633756ea63351eaf300d54d43cc1a6e27bdc147"
 		},
+		"removedCommit": {
+			"date": "2025-06-06",
+			"hash": "8e886e244396864410a3eed3f0846af666dce3be"
+		},
 		"initialEntry": {
 			"name": "Christmas",
 			"author": "deathau",
@@ -523,6 +527,15 @@
 				"commit": {
 					"date": "2020-11-24",
 					"hash": "1633756ea63351eaf300d54d43cc1a6e27bdc147"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2025-06-06",
+					"hash": "8e886e244396864410a3eed3f0846af666dce3be"
 				},
 				"oldValue": "",
 				"newValue": ""
@@ -2543,6 +2556,10 @@
 			"date": "2021-02-18",
 			"hash": "3438bc305736d84d4a59e3f1871c8f6a0fef455e"
 		},
+		"removedCommit": {
+			"date": "2025-06-06",
+			"hash": "8e886e244396864410a3eed3f0846af666dce3be"
+		},
 		"initialEntry": {
 			"name": "Spectrum",
 			"author": "Wiktoria Mielcarek",
@@ -2620,6 +2637,15 @@
 					"hash": "177f1d940bd94b7ba7eb65a96670465638be7782"
 				},
 				"oldValue": "main"
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2025-06-06",
+					"hash": "8e886e244396864410a3eed3f0846af666dce3be"
+				},
+				"oldValue": "",
+				"newValue": ""
 			}
 		]
 	},
@@ -5622,6 +5648,24 @@
 					"hash": "177f1d940bd94b7ba7eb65a96670465638be7782"
 				},
 				"oldValue": "main"
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2025-06-06",
+					"hash": "8e886e244396864410a3eed3f0846af666dce3be"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Readded",
+				"commit": {
+					"date": "2025-06-11",
+					"hash": "e3ab238aa147ca220418ae22fb345151e10f6fcd"
+				},
+				"oldValue": "",
+				"newValue": ""
 			}
 		]
 	},
@@ -5696,6 +5740,10 @@
 			"date": "2021-12-07",
 			"hash": "6b0599dda5d84626656d3db9b5cb5f7c2a760d9c"
 		},
+		"removedCommit": {
+			"date": "2025-06-05",
+			"hash": "cd81ae011f3df0ade20f7a6290f7d28bee3817df"
+		},
 		"initialEntry": {
 			"name": "WilcoxOne",
 			"author": "MattWilcox",
@@ -5732,6 +5780,15 @@
 					"hash": "177f1d940bd94b7ba7eb65a96670465638be7782"
 				},
 				"oldValue": "main"
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2025-06-05",
+					"hash": "cd81ae011f3df0ade20f7a6290f7d28bee3817df"
+				},
+				"oldValue": "",
+				"newValue": ""
 			}
 		]
 	},
@@ -5924,6 +5981,10 @@
 			"date": "2021-12-21",
 			"hash": "48198d4bdc5d540b67f7a932a3577fb9e01c34c2"
 		},
+		"removedCommit": {
+			"date": "2025-06-06",
+			"hash": "8e886e244396864410a3eed3f0846af666dce3be"
+		},
 		"initialEntry": {
 			"name": "Nebula",
 			"author": "dlccyes",
@@ -5976,6 +6037,15 @@
 				},
 				"oldValue": "showcase1.png",
 				"newValue": "thumbnail.png"
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2025-06-06",
+					"hash": "8e886e244396864410a3eed3f0846af666dce3be"
+				},
+				"oldValue": "",
+				"newValue": ""
 			}
 		]
 	},
@@ -6428,6 +6498,10 @@
 			"date": "2022-02-13",
 			"hash": "40d34ef32e3223425c1ed49a6c1aef5239bff32f"
 		},
+		"removedCommit": {
+			"date": "2025-06-11",
+			"hash": "e3ab238aa147ca220418ae22fb345151e10f6fcd"
+		},
 		"initialEntry": {
 			"name": "Sparkling Wisdom",
 			"author": "Learner fvs",
@@ -6475,6 +6549,15 @@
 					"hash": "177f1d940bd94b7ba7eb65a96670465638be7782"
 				},
 				"oldValue": "master"
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2025-06-11",
+					"hash": "e3ab238aa147ca220418ae22fb345151e10f6fcd"
+				},
+				"oldValue": "",
+				"newValue": ""
 			}
 		]
 	},
@@ -7076,6 +7159,10 @@
 			"date": "2022-05-30",
 			"hash": "7d5de60ab69c87a23d514af7c663667daabd2cc7"
 		},
+		"removedCommit": {
+			"date": "2025-06-06",
+			"hash": "8e886e244396864410a3eed3f0846af666dce3be"
+		},
 		"initialEntry": {
 			"name": "WiseLight",
 			"author": "Learnerfvs",
@@ -7112,6 +7199,15 @@
 					"hash": "177f1d940bd94b7ba7eb65a96670465638be7782"
 				},
 				"oldValue": "main"
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2025-06-06",
+					"hash": "8e886e244396864410a3eed3f0846af666dce3be"
+				},
+				"oldValue": "",
+				"newValue": ""
 			}
 		]
 	},
@@ -8961,6 +9057,10 @@
 			"date": "2023-01-13",
 			"hash": "358fc86cbfd3763dd69388f0c595c35298fba9e2"
 		},
+		"removedCommit": {
+			"date": "2025-06-05",
+			"hash": "cd81ae011f3df0ade20f7a6290f7d28bee3817df"
+		},
 		"initialEntry": {
 			"name": "🔔 Chime",
 			"author": "Ha'ani Whitlock",
@@ -8987,6 +9087,15 @@
 				"commit": {
 					"date": "2023-01-13",
 					"hash": "358fc86cbfd3763dd69388f0c595c35298fba9e2"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2025-06-05",
+					"hash": "cd81ae011f3df0ade20f7a6290f7d28bee3817df"
 				},
 				"oldValue": "",
 				"newValue": ""
@@ -9712,6 +9821,10 @@
 			"date": "2023-02-21",
 			"hash": "6f30e407e553eed648317112f00a24339585c675"
 		},
+		"removedCommit": {
+			"date": "2025-06-05",
+			"hash": "cd81ae011f3df0ade20f7a6290f7d28bee3817df"
+		},
 		"initialEntry": {
 			"name": "Big & Bold",
 			"author": "Ha'ani Whitlock",
@@ -9738,6 +9851,15 @@
 				"commit": {
 					"date": "2023-02-21",
 					"hash": "6f30e407e553eed648317112f00a24339585c675"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2025-06-05",
+					"hash": "cd81ae011f3df0ade20f7a6290f7d28bee3817df"
 				},
 				"oldValue": "",
 				"newValue": ""
@@ -9790,6 +9912,10 @@
 			"date": "2023-02-28",
 			"hash": "91d84d16dd69918e7035f26a4a0fb6cb220d2c09"
 		},
+		"removedCommit": {
+			"date": "2025-06-05",
+			"hash": "cd81ae011f3df0ade20f7a6290f7d28bee3817df"
+		},
 		"initialEntry": {
 			"name": "Elegance",
 			"author": "Victologo",
@@ -9816,6 +9942,15 @@
 				"commit": {
 					"date": "2023-02-28",
 					"hash": "91d84d16dd69918e7035f26a4a0fb6cb220d2c09"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2025-06-05",
+					"hash": "cd81ae011f3df0ade20f7a6290f7d28bee3817df"
 				},
 				"oldValue": "",
 				"newValue": ""
@@ -11470,6 +11605,10 @@
 			"date": "2023-08-31",
 			"hash": "30529db02455a19e1feae18ae0b415f73f029363"
 		},
+		"removedCommit": {
+			"date": "2025-06-06",
+			"hash": "8e886e244396864410a3eed3f0846af666dce3be"
+		},
 		"initialEntry": {
 			"name": "Venom",
 			"author": "Fatiger",
@@ -11494,6 +11633,15 @@
 				"commit": {
 					"date": "2023-08-31",
 					"hash": "30529db02455a19e1feae18ae0b415f73f029363"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2025-06-06",
+					"hash": "8e886e244396864410a3eed3f0846af666dce3be"
 				},
 				"oldValue": "",
 				"newValue": ""
@@ -16411,8 +16559,8 @@
 		},
 		"currentEntry": {
 			"name": "Lumines",
-			"author": "Nordwen",
-			"repo": "Nordwen/obsidian-lumines",
+			"author": "Daniel Khmara",
+			"repo": "danielkhmara/obsidian-lumines",
 			"screenshot": "obsidian-lumines.png",
 			"modes": [
 				"dark",
@@ -16464,6 +16612,24 @@
 				},
 				"oldValue": "Avesend/obsidian-lumines",
 				"newValue": "Nordwen/obsidian-lumines"
+			},
+			{
+				"property": "author",
+				"commit": {
+					"date": "2025-06-01",
+					"hash": "b47a168e8181860e4a6a8e453735768730b14744"
+				},
+				"oldValue": "Nordwen",
+				"newValue": "Daniel Khmara"
+			},
+			{
+				"property": "repo",
+				"commit": {
+					"date": "2025-06-01",
+					"hash": "b47a168e8181860e4a6a8e453735768730b14744"
+				},
+				"oldValue": "Nordwen/obsidian-lumines",
+				"newValue": "danielkhmara/obsidian-lumines"
 			}
 		]
 	},
@@ -20665,6 +20831,263 @@
 				},
 				"oldValue": "https://github.com/omkar-4/Modern-GenZ-Vibedose",
 				"newValue": "omkar-4/Modern-GenZ-Vibedose"
+			}
+		]
+	},
+	{
+		"id": "duality",
+		"name": "Duality",
+		"addedCommit": {
+			"date": "2025-06-01",
+			"hash": "a997b83458a36eac5c884d613e720348992e2ab4"
+		},
+		"initialEntry": {
+			"name": "Duality",
+			"author": "CacadeThemes",
+			"repo": "CascadeThemes/Duality",
+			"screenshot": "screenshot.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Duality",
+			"author": "CacadeThemes",
+			"repo": "CascadeThemes/Duality",
+			"screenshot": "screenshot.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2025-06-01",
+					"hash": "a997b83458a36eac5c884d613e720348992e2ab4"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "minimalists-paradise",
+		"name": "Minimalists Paradise",
+		"addedCommit": {
+			"date": "2025-06-07",
+			"hash": "cb591b4eeed8c61983ccc3139e47ce881725cf1e"
+		},
+		"initialEntry": {
+			"name": "Minimalists Paradise",
+			"author": "Isabelle Basso",
+			"repo": "BelleBasso/MinimalistsParadise",
+			"screenshot": "dark mode preview.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Minimalists Paradise",
+			"author": "Isabelle Basso",
+			"repo": "BelleBasso/Minimalists-Paradise",
+			"screenshot": "screenshot.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2025-06-07",
+					"hash": "cb591b4eeed8c61983ccc3139e47ce881725cf1e"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "screenshot",
+				"commit": {
+					"date": "2025-06-08",
+					"hash": "5a5d0a525546999d5787a75bb98804bcc3f9acfe"
+				},
+				"oldValue": "dark mode preview.png",
+				"newValue": "screenshot.png"
+			},
+			{
+				"property": "repo",
+				"commit": {
+					"date": "2025-07-01",
+					"hash": "d1cf8b49b9d9cac04dbe7ae743504cf9675dffda"
+				},
+				"oldValue": "BelleBasso/MinimalistsParadise",
+				"newValue": "BelleBasso/Minimalists-Paradise"
+			}
+		]
+	},
+	{
+		"id": "dashboard",
+		"name": "dashboard",
+		"addedCommit": {
+			"date": "2025-06-08",
+			"hash": "9a07cb996cf80537b8a843d290a7d032502001fb"
+		},
+		"initialEntry": {
+			"name": "dashboard",
+			"author": "incantatem2",
+			"repo": "incantatem2/Obsidian-dashboard",
+			"screenshot": "images/thumbnail.jpg",
+			"modes": [
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "dashboard",
+			"author": "incantatem2",
+			"repo": "incantatem2/Obsidian-dashboard",
+			"screenshot": "images/thumbnail.jpg",
+			"modes": [
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2025-06-08",
+					"hash": "9a07cb996cf80537b8a843d290a7d032502001fb"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "spectrumplus",
+		"name": "SpectrumPlus",
+		"addedCommit": {
+			"date": "2025-06-13",
+			"hash": "bca907cc77fcfa566f198dbe9a9c7ac04c7cfeec"
+		},
+		"initialEntry": {
+			"name": "SpectrumPlus",
+			"author": "João Ribeiro",
+			"repo": "anotherlusitano/SpectrumPlus",
+			"screenshot": "SpectrumPlusStorePreview.png",
+			"modes": [
+				"dark"
+			]
+		},
+		"currentEntry": {
+			"name": "SpectrumPlus",
+			"author": "João Ribeiro",
+			"repo": "anotherlusitano/SpectrumPlus",
+			"screenshot": "SpectrumPlusStorePreview.png",
+			"modes": [
+				"dark"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2025-06-13",
+					"hash": "bca907cc77fcfa566f198dbe9a9c7ac04c7cfeec"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "radiance",
+		"name": "Radiance",
+		"addedCommit": {
+			"date": "2025-06-19",
+			"hash": "d454c204a41c92e02f6cb4e0ccd1715f7e2d9765"
+		},
+		"initialEntry": {
+			"name": "Radiance",
+			"author": "JabariD",
+			"repo": "JabariD/obsidian-radiance",
+			"screenshot": "preview.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Radiance",
+			"author": "JabariD",
+			"repo": "JabariD/obsidian-radiance",
+			"screenshot": "cover.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2025-06-19",
+					"hash": "d454c204a41c92e02f6cb4e0ccd1715f7e2d9765"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "screenshot",
+				"commit": {
+					"date": "2025-06-19",
+					"hash": "aa38753fa1b338f86e8c7dd96efe1a723724c7b6"
+				},
+				"oldValue": "preview.png",
+				"newValue": "cover.png"
+			}
+		]
+	},
+	{
+		"id": "iridium",
+		"name": "Iridium",
+		"addedCommit": {
+			"date": "2025-06-20",
+			"hash": "8a315e2c23db92a1e8e74fe76e16177fac247ee2"
+		},
+		"initialEntry": {
+			"name": "Iridium",
+			"author": "kyffa",
+			"repo": "kyffa/Iridium",
+			"screenshot": "screenshot.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Iridium",
+			"author": "kyffa",
+			"repo": "kyffa/Iridium",
+			"screenshot": "screenshot.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2025-06-20",
+					"hash": "8a315e2c23db92a1e8e74fe76e16177fac247ee2"
+				},
+				"oldValue": "",
+				"newValue": ""
 			}
 		]
 	}
