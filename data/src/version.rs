@@ -11,7 +11,7 @@ fn version_parser<'a>() -> impl Parser<'a, &'a str, Version> {
         .then(text::ident())
         .map(|(_, s): (_, &str)| s.to_string());
 
-    let version = group((
+    group((
         number,
         just('.'),
         number,
@@ -24,9 +24,7 @@ fn version_parser<'a>() -> impl Parser<'a, &'a str, Version> {
         minor,
         patch,
         pre_release: pre,
-    });
-
-    version
+    })
 }
 
 #[derive(Default)]
@@ -69,10 +67,10 @@ impl Version {
         VERSION_PARSER.with(|parser| parser.get().parse(input).has_output())
     }
 
-    pub fn to_string(&self) -> String {
+    pub fn to_fancy_string(&self) -> String {
         let mut version = format!("{}.{}.{}", self.major, self.minor, self.patch);
         if let Some(ref pre) = self.pre_release {
-            version.push_str(&format!("-{}", pre));
+            version.push_str(&format!("-{pre}"));
         }
         version
     }

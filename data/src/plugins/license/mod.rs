@@ -94,7 +94,7 @@ fn process_licenses() {
         permissions: all_permissions.into_iter().collect(),
         conditions: all_conditions.into_iter().collect(),
         limitations: all_limitations.into_iter().collect(),
-        descriptions: descriptions,
+        descriptions,
     };
 
     let licenses_json = serde_json::to_string_pretty(&licenses_data)

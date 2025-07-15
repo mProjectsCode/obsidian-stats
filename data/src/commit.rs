@@ -18,7 +18,7 @@ impl Commit {
                         date: parts[0]
                             .split('T')
                             .next()
-                            .and_then(|str| Date::from_string(str))
+                            .and_then(Date::from_string)
                             .expect("Failed to parse date"),
                         hash: parts[1].to_string(),
                     })

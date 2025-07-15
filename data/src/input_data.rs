@@ -1,6 +1,7 @@
 use hashbrown::HashMap;
 
 use serde::{Deserialize, Serialize};
+use serde_deserialize_duplicates::DeserializeLastDuplicate;
 use serde_json::value;
 
 use crate::{commit::Commit, common::EntryChange};
@@ -12,7 +13,7 @@ pub struct ObsCommunityPluginRemoved {
     pub reason: String,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, DeserializeLastDuplicate)]
 pub struct ObsCommunityPlugin {
     pub id: String,
     pub name: String,

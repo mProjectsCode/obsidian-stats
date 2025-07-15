@@ -42,9 +42,7 @@ impl Bundler {
     }
 
     pub fn matches_dependency(&self, dependency: &str) -> bool {
-        self.get_package_name()
-            .iter()
-            .any(|name| dependency == *name)
+        self.get_package_name().contains(&dependency)
     }
 
     pub fn iter_variants() -> impl Iterator<Item = Bundler> {
@@ -64,10 +62,8 @@ impl Bundler {
 
         for dependency in dependencies {
             for tf in Bundler::iter_variants() {
-                if tf.matches_dependency(dependency) {
-                    if !package_managers.contains(&tf) {
-                        package_managers.push(tf);
-                    }
+                if tf.matches_dependency(dependency) && !package_managers.contains(&tf) {
+                    package_managers.push(tf);
                 }
             }
         }
@@ -93,7 +89,7 @@ impl<'de> Deserialize<'de> for Bundler {
     {
         let identifier = String::deserialize(deserializer)?;
         Bundler::from_identifier(&identifier).ok_or_else(|| {
-            serde::de::Error::custom(format!("Unknown bundler identifier: {}", identifier))
+            serde::de::Error::custom(format!("Unknown bundler identifier: {identifier}"))
         })
     }
 }

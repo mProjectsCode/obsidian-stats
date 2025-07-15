@@ -3,7 +3,7 @@
 // Apologies in advance to any botanical-based lifeforms reading this code
 
 use serde_yaml;
-use strsim::normalized_levenshtein;
+use strsim::jaro;
 
 use crate::plugins::license::LicenseData;
 
@@ -23,6 +23,12 @@ pub struct LicenseComparer {
     agpl_3_re: Regex,
 }
 
+impl Default for LicenseComparer {
+    fn default() -> Self {
+        LicenseComparer::new()
+    }
+}
+
 impl LicenseComparer {
     pub fn new() -> Self {
         LicenseComparer {
@@ -33,8 +39,10 @@ impl LicenseComparer {
             .unwrap(),
             mit_re: Regex::new(r"^\s+mit\s+license").unwrap(),
             gpl_3_re: Regex::new(r"^\s+gnu\s+general\s+public\s+license\s+version\s+3").unwrap(),
-            lgpl_3_re: Regex::new(r"^\s+gnu\s+lesser\s+general\s+public\s+license\s+version\s+3").unwrap(),
-            agpl_3_re: Regex::new(r"^\s+gnu\s+affero\s+general\s+public\s+license\s+version\s+3").unwrap(),
+            lgpl_3_re: Regex::new(r"^\s+gnu\s+lesser\s+general\s+public\s+license\s+version\s+3")
+                .unwrap(),
+            agpl_3_re: Regex::new(r"^\s+gnu\s+affero\s+general\s+public\s+license\s+version\s+3")
+                .unwrap(),
         }
     }
 
@@ -73,25 +81,25 @@ impl LicenseComparer {
         let lower_case_license = license.to_lowercase();
         let lower_case_license = lower_case_license.trim();
 
-        if self.mit_re.is_match(&lower_case_license) {
+        if self.mit_re.is_match(lower_case_license) {
             return Some("MIT".to_string());
         }
 
-        if self.gpl_3_re.is_match(&lower_case_license) {
+        if self.gpl_3_re.is_match(lower_case_license) {
             return Some("GPL-3.0".to_string());
         }
 
-        if self.lgpl_3_re.is_match(&lower_case_license) {
+        if self.lgpl_3_re.is_match(lower_case_license) {
             return Some("LGPL-3.0".to_string());
         }
 
-        if self.agpl_3_re.is_match(&lower_case_license) {
+        if self.agpl_3_re.is_match(lower_case_license) {
             return Some("AGPL-3.0".to_string());
         }
 
         // we test if the license contains only a copyright notice like "Copyright (c) 2024 Moritz Jung"
-        if self.copyright_re.is_match(&lower_case_license) {
-            println!("explicitly unlicensed: {}", license);
+        if self.copyright_re.is_match(lower_case_license) {
+            println!("explicitly unlicensed: {license}");
             // if so we assume that the author reserves all rights
             return Some("explicitly unlicensed".to_string());
         }
@@ -105,17 +113,18 @@ impl LicenseComparer {
             .licenses
             .iter()
             .map(|l| {
-                let score = normalized_levenshtein(&lower_case_license, &l.text);
+                // jaro seems faster than normalized_levenshtein
+                let score = jaro(lower_case_license, &l.text);
                 (score, l.name.clone())
             })
             .collect::<Vec<_>>();
 
         scores.sort_by(|a, b| a.0.total_cmp(&b.0));
 
-        if let Some((score, name)) = scores.first() {
-            if *score > 0.95 {
-                return Some(name.clone());
-            }
+        if let Some((score, name)) = scores.first()
+            && score > &0.95
+        {
+            return Some(name.clone());
         }
 
         None

@@ -6,6 +6,7 @@ use crate::{
     commit::Commit,
     constants::{OBS_RELEASES_REPO_PATH, PLUGIN_DATA_PATH, PLUGIN_LIST_PATH, PLUGIN_STATS_PATH},
     date::Date,
+    file_utils::{empty_dir, read_chunked_data, write_in_chunks},
     input_data::{ObsDownloadStats, ObsPluginList},
     plugins::{PluginData, PluginDownloadStats, PluginList, SerializedPluginData},
 };
@@ -85,7 +86,7 @@ fn get_plugin_lists() -> Vec<PluginList> {
                     commit: commit.clone(),
                 }),
                 Err(e) => {
-                    eprintln!("Error parsing plugin list: {}", e);
+                    eprintln!("Error parsing plugin list: {e}");
                     None
                 }
             }
@@ -94,7 +95,7 @@ fn get_plugin_lists() -> Vec<PluginList> {
         .collect()
 }
 
-fn build_plugin_data(plugin_lists: &[PluginList]) -> Vec<PluginData> {
+fn build_plugin_data(plugin_lists: &[PluginList]) -> Vec<PluginData<'_>> {
     println!("Building plugin data...");
 
     let mut plugin_data_map = HashMap::new();
@@ -125,7 +126,7 @@ fn build_plugin_data(plugin_lists: &[PluginList]) -> Vec<PluginData> {
         }
     }
 
-    return plugin_data_map.into_iter().map(|(_, data)| data).collect();
+    plugin_data_map.into_iter().map(|(_, data)| data).collect()
 }
 
 fn update_weekly_download_stats(
@@ -205,7 +206,7 @@ fn get_plugin_download_stats() -> Vec<PluginDownloadStats> {
             match stats {
                 Ok(stats) => Some(PluginDownloadStats::from_obs_data(stats, commit.clone())),
                 Err(e) => {
-                    eprintln!("Error parsing plugin download stats: {}", e);
+                    eprintln!("Error parsing plugin download stats: {e}");
                     None
                 }
             }
@@ -236,7 +237,7 @@ fn filter_plugins(plugin_data: Vec<PluginData>) -> Vec<PluginData> {
         .collect()
 }
 
-pub fn build_plugin_stats() {
+pub fn build_plugin_stats() -> Result<(), Box<dyn std::error::Error>> {
     let time = std::time::Instant::now();
     let mut time2 = std::time::Instant::now();
 
@@ -267,21 +268,24 @@ pub fn build_plugin_stats() {
 
     plugin_data = filter_plugins(plugin_data);
 
-    std::fs::write(
-        Path::new(PLUGIN_DATA_PATH),
-        serde_json::to_string_pretty(&plugin_data)
-            .expect("Failed to serialize plugin data to JSON"),
-    )
-    .expect("Failed to write plugin data to file");
+    // std::fs::write(
+    //     Path::new(PLUGIN_DATA_PATH),
+    //     serde_json::to_string_pretty(&plugin_data)
+    //         .expect("Failed to serialize plugin data to JSON"),
+    // )
+    // .expect("Failed to write plugin data to file");
+
+    empty_dir(Path::new(PLUGIN_DATA_PATH))?;
+
+    write_in_chunks(Path::new(PLUGIN_DATA_PATH), &plugin_data, 50)?;
 
     println!("Filtered and write plugin data: {:#?}", time2.elapsed());
 
     println!("Plugin stats built in {:#?}", time.elapsed());
+
+    Ok(())
 }
 
-pub fn read_plugin_data() -> Vec<SerializedPluginData> {
-    let data = std::fs::read_to_string(Path::new(PLUGIN_DATA_PATH))
-        .expect("Failed to read plugin data file");
-
-    serde_json::from_str(&data).expect("Failed to parse plugin data JSON")
+pub fn read_plugin_data() -> Result<Vec<SerializedPluginData>, Box<dyn std::error::Error>> {
+    read_chunked_data(Path::new(PLUGIN_DATA_PATH))
 }

@@ -90,7 +90,7 @@ pub struct PluginManifest {
     pub description: String,
     pub id: String,
     #[serde(rename = "isDesktopOnly")]
-    pub is_desktop_only: bool,
+    pub is_desktop_only: Option<bool>,
 
     // Non-standard fields
     #[serde(rename = "helpUrl")]
@@ -117,7 +117,7 @@ pub struct PluginRepoExtractedData {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PluginRepoData {
     pub id: String,
-    pub repo: Option<PluginRepoExtractedData>,
+    pub repo: Result<PluginRepoExtractedData, String>,
     pub warnings: Vec<PluginWarning>,
     pub removal_reason: Option<String>,
     pub deprecated_versions: Vec<String>,

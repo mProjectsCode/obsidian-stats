@@ -12,8 +12,9 @@ pub const RELEASE_STATS_URL: &str =
     "https://api.github.com/repos/obsidianmd/obsidian-releases/releases?page=1";
 pub const RELEASE_INFO_URL: &str = "https://obsidian.md/changelog.xml";
 
-pub const PLUGIN_DATA_PATH: &str = "./out/plugin-data.json";
-pub const THEME_DATA_PATH: &str = "./out/theme-data.json";
+pub const PLUGIN_DATA_PATH: &str = "./out/plugin-data";
+pub const PLUGIN_REPO_DATA_PATH: &str = "./out/plugin-repo-data";
+pub const THEME_DATA_PATH: &str = "./out/theme-data";
 pub const RELEASE_FULL_DATA_PATH: &str = "./out/releases-full-data.csv";
 pub const RELEASE_WEEKLY_DATA_PATH: &str = "./out/releases-weekly-data.csv";
 pub const RELEASE_CHANGELOG_PATH: &str = "./out/releases-changelog.csv";

@@ -31,12 +31,12 @@ impl<'a> From<HashMap<String, &'a value::RawValue>> for PluginDownloadStat {
     fn from(value: HashMap<String, &'a value::RawValue>) -> Self {
         let downloads = value
             .get("downloads")
-            .and_then(|v| u32::from_str_radix(v.get(), 10).ok())
+            .and_then(|v| v.get().parse::<u32>().ok())
             .unwrap_or(0);
 
         let versions = value
             .into_keys()
-            .filter(|k| k != &"downloads" && k != &"latest" && k != &"updated")
+            .filter(|k| k != "downloads" && k != "latest" && k != "updated")
             .collect();
 
         Self {
@@ -108,9 +108,9 @@ impl<'a> PluginData<'a> {
 
         Self {
             id,
-            added_commit: added_commit,
+            added_commit,
             removed_commit: None,
-            initial_entry: initial_entry,
+            initial_entry,
             current_entry: initial_entry,
             change_history: vec![EntryChange {
                 property: "Plugin Added".to_string(),
@@ -161,20 +161,10 @@ impl<'a> PluginData<'a> {
         self.change_history
             .extend(self.current_entry.compare(new_entry, &plugin_list.commit));
 
-        self.current_entry = &new_entry;
+        self.current_entry = new_entry;
     }
 
     pub fn update_download_history(&mut self, stats: &PluginDownloadStats) {
-        // if let Some(entry) = stats.entries.get(&self.id) {
-        //     self.download_history.0.insert(date, entry.downloads);
-
-        //     if entry.downloads > self.download_count {
-        //         self.download_count = entry.downloads;
-        //     }
-        //     true
-        // } else {
-        //     false
-        // }
         match stats.entries.get(&self.id) {
             Some(entry) => {
                 self.download_history.0.push(entry.downloads);

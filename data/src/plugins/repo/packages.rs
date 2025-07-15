@@ -64,10 +64,8 @@ impl PackageManager {
 
         for file_path in file_paths {
             for pm in PackageManager::iter_variants() {
-                if pm.matches_lock_file(file_path) {
-                    if !package_managers.contains(&pm) {
-                        package_managers.push(pm);
-                    }
+                if pm.matches_lock_file(file_path) && !package_managers.contains(&pm) {
+                    package_managers.push(pm);
                 }
             }
         }
@@ -92,10 +90,7 @@ impl<'de> Deserialize<'de> for PackageManager {
     {
         let identifier = String::deserialize(deserializer)?;
         PackageManager::from_identifier(&identifier).ok_or_else(|| {
-            serde::de::Error::custom(format!(
-                "Unknown package manager identifier: {}",
-                identifier
-            ))
+            serde::de::Error::custom(format!("Unknown package manager identifier: {identifier}"))
         })
     }
 }

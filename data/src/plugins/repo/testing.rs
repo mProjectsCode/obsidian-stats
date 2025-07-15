@@ -38,9 +38,7 @@ impl TestingFramework {
     }
 
     pub fn matches_dependency(&self, dependency: &str) -> bool {
-        self.get_package_name()
-            .iter()
-            .any(|name| dependency == *name)
+        self.get_package_name().contains(&dependency)
     }
 
     pub fn iter_variants() -> impl Iterator<Item = TestingFramework> {
@@ -59,10 +57,8 @@ impl TestingFramework {
 
         for dependency in dependencies {
             for tf in TestingFramework::iter_variants() {
-                if tf.matches_dependency(dependency) {
-                    if !package_managers.contains(&tf) {
-                        package_managers.push(tf);
-                    }
+                if tf.matches_dependency(dependency) && !package_managers.contains(&tf) {
+                    package_managers.push(tf);
                 }
             }
         }
@@ -87,7 +83,7 @@ impl<'de> serde::Deserialize<'de> for TestingFramework {
     {
         let identifier = String::deserialize(deserializer)?;
         TestingFramework::from_identifier(&identifier).ok_or_else(|| {
-            serde::de::Error::custom(format!("Unknown testing framework: {}", identifier))
+            serde::de::Error::custom(format!("Unknown testing framework: {identifier}"))
         })
     }
 }

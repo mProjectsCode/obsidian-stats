@@ -15,24 +15,25 @@ impl Date {
 
     pub fn from_string(date_str: &str) -> Option<Self> {
         let parts: Vec<&str> = date_str.split('-').collect();
-        if parts.len() == 3 {
-            if let (Ok(year), Ok(month), Ok(day)) = (
+        if parts.len() == 3
+            && let (Ok(year), Ok(month), Ok(day)) = (
                 parts[0].parse::<u32>(),
                 parts[1].parse::<u32>(),
                 parts[2].parse::<u32>(),
-            ) {
-                return Some(Date::new(year, month, day));
-            }
+            )
+        {
+            return Some(Date::new(year, month, day));
         }
+
         None
     }
 
     pub fn now() -> Self {
         let now = chrono::Utc::now();
-        Date::new(now.year() as u32, now.month() as u32, now.day() as u32)
+        Date::new(now.year() as u32, now.month(), now.day())
     }
 
-    pub fn to_string(&self) -> String {
+    pub fn to_fancy_string(&self) -> String {
         format!("{:04}-{:02}-{:02}", self.year, self.month, self.day)
     }
 
@@ -76,7 +77,7 @@ impl Date {
 
     pub fn week_day(&self) -> u32 {
         let days = self.days_since_epoch();
-        (((days + 4) % 7) + 1) as u32 // 1970-01-01 was a Thursday, so we adjust to make it 1-based
+        ((days + 4) % 7) + 1 // 1970-01-01 was a Thursday, so we adjust to make it 1-based
     }
 
     pub fn advance_days(&mut self, days: u32) {
@@ -239,18 +240,18 @@ fn date_to_string() {
     let date2 = Date::new(2023, 10, 2);
     let date3 = Date::new(2024, 1, 1);
 
-    assert_eq!(date1.to_string(), "2023-10-01");
-    assert_eq!(date2.to_string(), "2023-10-02");
-    assert_eq!(date3.to_string(), "2024-01-01");
+    assert_eq!(date1.to_fancy_string(), "2023-10-01");
+    assert_eq!(date2.to_fancy_string(), "2023-10-02");
+    assert_eq!(date3.to_fancy_string(), "2024-01-01");
 }
 
 #[test]
 fn date_advance() {
     let mut date4 = Date::new(2023, 10, 31);
     date4.advance_day();
-    assert_eq!(date4.to_string(), "2023-11-01");
+    assert_eq!(date4.to_fancy_string(), "2023-11-01");
 
     let mut date5 = Date::new(2023, 12, 31);
     date5.advance_month();
-    assert_eq!(date5.to_string(), "2024-01-01");
+    assert_eq!(date5.to_fancy_string(), "2024-01-01");
 }
