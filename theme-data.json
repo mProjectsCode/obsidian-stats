@@ -21090,5 +21090,248 @@
 				"newValue": ""
 			}
 		]
+	},
+	{
+		"id": "flatcap",
+		"name": "FlatCap",
+		"addedCommit": {
+			"date": "2025-07-05",
+			"hash": "fb5a25cadee3e2748ac38834b42c6ef62f56ee90"
+		},
+		"initialEntry": {
+			"name": "FlatCap",
+			"author": "cheycron",
+			"repo": "cheycron/flat-cap-obsidian",
+			"screenshot": "images/screenshot.png",
+			"modes": [
+				"dark"
+			]
+		},
+		"currentEntry": {
+			"name": "FlatCap",
+			"author": "cheycron",
+			"repo": "cheycron/flat-cap-obsidian",
+			"screenshot": "images/screenshot.png",
+			"modes": [
+				"dark"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2025-07-05",
+					"hash": "fb5a25cadee3e2748ac38834b42c6ef62f56ee90"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "mushin",
+		"name": "Mushin",
+		"addedCommit": {
+			"date": "2025-07-07",
+			"hash": "bec9361bef7f64a90a953f099106ff4d5851642f"
+		},
+		"initialEntry": {
+			"name": "Mushin",
+			"author": "Vlad 3Design",
+			"repo": "Vlad3Design/Mushin",
+			"screenshot": "Mushin.jpg",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Mushin",
+			"author": "Vlad 3Design",
+			"repo": "Vlad3Design/Mushin",
+			"screenshot": "Mushin.jpg",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2025-07-07",
+					"hash": "bec9361bef7f64a90a953f099106ff4d5851642f"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "avatar",
+		"name": "Avatar",
+		"addedCommit": {
+			"date": "2025-07-01",
+			"hash": "93eec7770bf5f818631f29a139dd1c839b5ecdab"
+		},
+		"initialEntry": {
+			"name": "Avatar",
+			"repo": "cxj05h/obsidian-avatar",
+			"author": "cxj05h",
+			"modes": [
+				"dark"
+			],
+			"screenshot": "Avatar_Theme.png"
+		},
+		"currentEntry": {
+			"name": "Avatar",
+			"repo": "cxj05h/obsidian-avatar",
+			"author": "cxj05h",
+			"modes": [
+				"dark"
+			],
+			"screenshot": "Avatar_Theme.png"
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2025-07-01",
+					"hash": "93eec7770bf5f818631f29a139dd1c839b5ecdab"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "robsi",
+		"name": "Robsi",
+		"addedCommit": {
+			"date": "2025-07-09",
+			"hash": "2e61cb6f5b561d3956d2e4c34d8353576820dceb"
+		},
+		"initialEntry": {
+			"name": "Robsi",
+			"author": "Riffaells",
+			"repo": "Riffaells/Robsi",
+			"screenshot": "screenshot.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Robsi",
+			"author": "Riffaells",
+			"repo": "Riffaells/Robsi",
+			"screenshot": "screenshot.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2025-07-09",
+					"hash": "2e61cb6f5b561d3956d2e4c34d8353576820dceb"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "obsidian-coffee-theme",
+		"name": "Obsidian Coffee Theme",
+		"addedCommit": {
+			"date": "2025-07-11",
+			"hash": "9e1b67453bdf51a19b451ecc5c973bb7b9eee301"
+		},
+		"removedCommit": {
+			"date": "2025-07-11",
+			"hash": "75b4b7fc85b4c4b7e447f9a0a4b2e43efa7e494f"
+		},
+		"initialEntry": {
+			"name": "Obsidian Coffee Theme",
+			"author": "@regawaras",
+			"repo": "regawaras/Obsidian-Coffee-Theme",
+			"screenshot": "coffee.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Obsidian Coffee Theme",
+			"author": "@regawaras",
+			"repo": "regawaras/Obsidian-Coffee-Theme",
+			"screenshot": "coffee.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2025-07-11",
+					"hash": "9e1b67453bdf51a19b451ecc5c973bb7b9eee301"
+				},
+				"oldValue": "",
+				"newValue": ""
+			},
+			{
+				"property": "Theme Removed",
+				"commit": {
+					"date": "2025-07-11",
+					"hash": "75b4b7fc85b4c4b7e447f9a0a4b2e43efa7e494f"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
+	},
+	{
+		"id": "coffee",
+		"name": "Coffee",
+		"addedCommit": {
+			"date": "2025-07-11",
+			"hash": "75b4b7fc85b4c4b7e447f9a0a4b2e43efa7e494f"
+		},
+		"initialEntry": {
+			"name": "Coffee",
+			"author": "@regawaras",
+			"repo": "regawaras/Coffee",
+			"screenshot": "coffee.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"currentEntry": {
+			"name": "Coffee",
+			"author": "@regawaras",
+			"repo": "regawaras/Coffee",
+			"screenshot": "coffee.png",
+			"modes": [
+				"dark",
+				"light"
+			]
+		},
+		"changeHistory": [
+			{
+				"property": "Theme Added",
+				"commit": {
+					"date": "2025-07-11",
+					"hash": "75b4b7fc85b4c4b7e447f9a0a4b2e43efa7e494f"
+				},
+				"oldValue": "",
+				"newValue": ""
+			}
+		]
 	}
 ]
