@@ -1,14 +1,12 @@
+use data_lib::{commit::Commit, date::Date, input_data::{ObsDownloadStats, ObsPluginList}, plugin::PluginData};
 use hashbrown::HashMap;
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 use std::{path::Path, process::Command};
 
 use crate::{
-    commit::Commit,
     constants::{OBS_RELEASES_REPO_PATH, PLUGIN_DATA_PATH, PLUGIN_LIST_PATH, PLUGIN_STATS_PATH},
-    date::Date,
     file_utils::{empty_dir, read_chunked_data, write_in_chunks},
-    input_data::{ObsDownloadStats, ObsPluginList},
-    plugins::{PluginData, PluginDownloadStats, PluginList, SerializedPluginData},
+    plugins::{BorrowedPluginData, PluginDownloadStats, PluginList},
 };
 
 fn get_plugin_list_changes() -> Vec<Commit> {
@@ -95,7 +93,7 @@ fn get_plugin_lists() -> Vec<PluginList> {
         .collect()
 }
 
-fn build_plugin_data(plugin_lists: &[PluginList]) -> Vec<PluginData<'_>> {
+fn build_plugin_data(plugin_lists: &[PluginList]) -> Vec<BorrowedPluginData<'_>> {
     println!("Building plugin data...");
 
     let mut plugin_data_map = HashMap::new();
@@ -105,7 +103,7 @@ fn build_plugin_data(plugin_lists: &[PluginList]) -> Vec<PluginData<'_>> {
     for (id, entry) in &plugin_lists[0].entries {
         plugin_data_map.insert(
             id.clone(),
-            PluginData::new(id.clone(), &plugin_lists[0].commit, entry),
+            BorrowedPluginData::new(id.clone(), &plugin_lists[0].commit, entry),
         );
     }
 
@@ -120,7 +118,7 @@ fn build_plugin_data(plugin_lists: &[PluginList]) -> Vec<PluginData<'_>> {
             if !plugin_data_map.contains_key(id) {
                 plugin_data_map.insert(
                     id.clone(),
-                    PluginData::new(id.clone(), &plugin_list.commit, entry),
+                    BorrowedPluginData::new(id.clone(), &plugin_list.commit, entry),
                 );
             }
         }
@@ -130,7 +128,7 @@ fn build_plugin_data(plugin_lists: &[PluginList]) -> Vec<PluginData<'_>> {
 }
 
 fn update_weekly_download_stats(
-    plugin_data: &mut [PluginData],
+    plugin_data: &mut [BorrowedPluginData],
     download_stats: &[PluginDownloadStats],
 ) {
     println!("Updating weekly download stats...");
@@ -164,7 +162,7 @@ fn update_weekly_download_stats(
     }
 }
 
-fn update_version_history(plugin_data: &mut [PluginData], download_stats: &[PluginDownloadStats]) {
+fn update_version_history(plugin_data: &mut [BorrowedPluginData], download_stats: &[PluginDownloadStats]) {
     println!("Updating version history...");
 
     for stat in download_stats {
@@ -215,7 +213,7 @@ fn get_plugin_download_stats() -> Vec<PluginDownloadStats> {
         .collect()
 }
 
-fn filter_plugins(plugin_data: Vec<PluginData>) -> Vec<PluginData> {
+fn filter_plugins(plugin_data: Vec<BorrowedPluginData>) -> Vec<BorrowedPluginData> {
     let now = Date::now();
 
     plugin_data
@@ -286,6 +284,6 @@ pub fn build_plugin_stats() -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 
-pub fn read_plugin_data() -> Result<Vec<SerializedPluginData>, Box<dyn std::error::Error>> {
+pub fn read_plugin_data() -> Result<Vec<PluginData>, Box<dyn std::error::Error>> {
     read_chunked_data(Path::new(PLUGIN_DATA_PATH))
 }

@@ -1,5 +1,5 @@
 [package]
-name = "data"
+name = "data-lib"
 version = "0.1.0"
 edition = "2024"
 
@@ -13,7 +13,4 @@ regex = "1.11.1"
 serde = {version = "1.0.219", features = ["derive"]}
 serde-deserialize-duplicates = "0.1.2"
 serde_json = {version = "1.0.140", features = ["raw_value"]}
-serde_yaml = "0.9.34"
-strsim = "0.11.1"
-indicatif = {version = "0.18.0", features = ["rayon"]}
-data-lib = { version = "*", path = "../data-lib" }
+wasm-bindgen = "0.2.84"

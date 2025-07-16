@@ -1,5 +1,7 @@
 use std::{fs, path::Path};
 
+use data_lib::{input_data::{ObsCommunityPluginDeprecations, ObsCommunityPluginRemoved}, plugin::{bundlers::Bundler, packages::PackageManager, testing::TestingFramework, PluginRepoData, PluginRepoExtractedData, PluginData}};
+use hashbrown::HashMap;
 use indicatif::ParallelProgressIterator;
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 
@@ -9,15 +11,9 @@ use crate::{
         PLUGIN_REPO_DATA_PATH,
     },
     file_utils::{empty_dir, write_in_chunks},
-    input_data::{ObsCommunityPluginDeprecations, ObsCommunityPluginRemoved},
     plugins::{
-        SerializedPluginData,
         data::read_plugin_data,
         license::license_compare::LicenseComparer,
-        repo::{
-            PluginRepoData, PluginRepoExtractedData, bundlers::Bundler, packages::PackageManager,
-            testing::TestingFramework,
-        },
     },
 };
 
@@ -79,7 +75,7 @@ pub fn extract_repo_data() -> Result<(), Box<dyn std::error::Error>> {
 }
 
 pub fn extract_data_from_repo(
-    plugin: &SerializedPluginData,
+    plugin: &PluginData,
     license_comparer: &LicenseComparer,
 ) -> Result<PluginRepoExtractedData, String> {
     let repo_path = format!("../pluginRepos/repos/{}", plugin.id);
@@ -194,8 +190,8 @@ pub fn extract_data_from_repo(
     })
 }
 
-fn count_file_types(files: &[String]) -> std::collections::HashMap<String, usize> {
-    let mut file_types = std::collections::HashMap::new();
+fn count_file_types(files: &[String]) -> HashMap<String, usize> {
+    let mut file_types = HashMap::new();
     for file in files {
         if let Some(ext) = file.split('.').next_back() {
             *file_types.entry(ext.to_string()).or_insert(0) += 1;

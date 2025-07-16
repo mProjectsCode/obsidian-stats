@@ -10,7 +10,6 @@ pub struct EntryChange {
     pub new_value: String,
 }
 
-/// Map of date string to download count.
 #[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize)]
 pub struct DownloadHistory(pub Vec<u32>);
 

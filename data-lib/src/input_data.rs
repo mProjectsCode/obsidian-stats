@@ -93,9 +93,3 @@ impl ObsPluginList {
 pub struct ObsDownloadStats<'a>(
     #[serde(borrow)] pub HashMap<String, HashMap<String, &'a value::RawValue>>,
 );
-
-// impl<'a> Into<HashMap<String, HashMap<String, value::Value>>> for ObsDownloadStats {
-//     fn into(self) -> HashMap<String, HashMap<String, value::Value>> {
-//         self.0
-//     }
-// }

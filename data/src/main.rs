@@ -1,13 +1,8 @@
-use crate::plugins::{data::build_plugin_stats, repo::data::extract_repo_data};
+use crate::plugins::{data::build_plugin_stats, repo::extract_repo_data};
 
-pub mod commit;
-pub mod common;
 pub mod constants;
-pub mod date;
 pub mod file_utils;
-pub mod input_data;
 pub mod plugins;
-pub mod version;
 
 fn main() {
     build_plugin_stats().expect("Failed to build plugin stats");

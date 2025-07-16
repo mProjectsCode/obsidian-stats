@@ -1,15 +1,8 @@
+use data_lib::{commit::Commit, common::{DownloadHistory, EntryChange, VersionHistory}, date::Date, input_data::{ObsCommunityPlugin, ObsDownloadStats}, version::Version};
 use hashbrown::HashMap;
 
-use serde::{Deserialize, Serialize};
+use serde::{Serialize};
 use serde_json::value;
-
-use crate::{
-    commit::Commit,
-    common::{DownloadHistory, EntryChange, VersionHistory},
-    date::Date,
-    input_data::{ObsCommunityPlugin, ObsDownloadStats},
-    version::Version,
-};
 
 pub mod data;
 pub mod license;
@@ -68,21 +61,8 @@ impl PluginDownloadStats {
     }
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct SerializedPluginData {
-    pub id: String,
-    pub added_commit: Commit,
-    pub removed_commit: Option<Commit>,
-    pub initial_entry: ObsCommunityPlugin,
-    pub current_entry: ObsCommunityPlugin,
-    pub change_history: Vec<EntryChange>,
-    pub download_history: DownloadHistory,
-    pub download_count: u32,
-    pub version_history: Vec<VersionHistory>,
-}
-
 #[derive(Debug, Clone, Serialize)]
-pub struct PluginData<'a> {
+pub struct BorrowedPluginData<'a> {
     pub id: String,
     pub added_commit: &'a Commit,
     pub removed_commit: Option<&'a Commit>,
@@ -97,7 +77,7 @@ pub struct PluginData<'a> {
     version_history_map: HashMap<String, Date>,
 }
 
-impl<'a> PluginData<'a> {
+impl<'a> BorrowedPluginData<'a> {
     pub fn new(
         id: String,
         added_commit: &'a Commit,

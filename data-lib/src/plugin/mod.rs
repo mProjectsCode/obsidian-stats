@@ -1,15 +1,25 @@
-use std::collections::HashMap;
-
+use hashbrown::HashMap;
 use serde::{Deserialize, Serialize};
 
-use crate::plugins::repo::{
-    bundlers::Bundler, packages::PackageManager, testing::TestingFramework,
-};
+use crate::{commit::Commit, common::{DownloadHistory, EntryChange, VersionHistory}, input_data::ObsCommunityPlugin, plugin::{bundlers::Bundler, packages::PackageManager, testing::TestingFramework}};
 
 pub mod bundlers;
-pub mod data;
 pub mod packages;
 pub mod testing;
+pub mod analysis;
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct PluginData {
+    pub id: String,
+    pub added_commit: Commit,
+    pub removed_commit: Option<Commit>,
+    pub initial_entry: ObsCommunityPlugin,
+    pub current_entry: ObsCommunityPlugin,
+    pub change_history: Vec<EntryChange>,
+    pub download_history: DownloadHistory,
+    pub download_count: u32,
+    pub version_history: Vec<VersionHistory>,
+}
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
