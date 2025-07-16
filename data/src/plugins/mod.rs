@@ -145,16 +145,11 @@ impl<'a> BorrowedPluginData<'a> {
     }
 
     pub fn update_download_history(&mut self, stats: &PluginDownloadStats) {
-        match stats.entries.get(&self.id) {
-            Some(entry) => {
-                self.download_history.0.push(entry.downloads);
+        if let Some(entry) = stats.entries.get(&self.id) {
+            self.download_history.0.insert(stats.commit.date.to_fancy_string(), entry.downloads);
 
-                if entry.downloads > self.download_count {
-                    self.download_count = entry.downloads;
-                }
-            }
-            None => {
-                self.download_history.0.push(0);
+            if entry.downloads > self.download_count {
+                self.download_count = entry.downloads;
             }
         }
     }

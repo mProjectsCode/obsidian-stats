@@ -1,34 +1,30 @@
 ---
-import { projectRelativeUrl } from '../utils/base';
 import Commit from './commit.astro';
-import Aside from './aside.astro';
-import PluginDownloadChart from './svelte/pluginDownloadChart.svelte';
-import { getPluginDownloadsWeekly } from '../../../src/plugin/data';
-import type { PluginDataInterface } from '../../../src/plugin/plugin';
-import fs from 'node:fs/promises';
-import type { PluginRepoData } from '../../../src/pluginRepo/types';
+import DownloadChart from './newSvelte/charts/DownloadChart.svelte';
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import { getPluginDataArray } from '../utils/data';
 
-const { plugin } = Astro.props as { plugin: PluginDataInterface };
-const pluginDownloadData = getPluginDownloadsWeekly([plugin]);
-
-const latestReleaseDateString = plugin.versionHistory.at(-1)?.initialReleaseDate ?? plugin.addedCommit.date;
-
-const obsidianLink = `obsidian://show-plugin?id=${plugin.id}`;
-const obsidianHubLink = `https://publish.obsidian.md/hub/02+-+Community+Expansions/02.05+All+Community+Expansions/Plugins/${plugin.id}`;
-const obsidianAddictLink = `https://obsidianaddict.com/plugin/${plugin.id}/`;
-
-const repoDataUrl = projectRelativeUrl(`../pluginRepos/data/${plugin.id}.json`);
-let repoData: PluginRepoData | undefined;
-
-try {
-	repoData = JSON.parse(await fs.readFile(repoDataUrl, 'utf-8'));
-} catch (e) {
-	console.error(`Failed to load repository data for plugin ${plugin.id}`);
-	repoData = undefined;
+const { pluginId } = Astro.props as { pluginId: string };
+if (!pluginId) {
+	throw new Error('Plugin ID is required');
 }
 
-function getFundingLinks(urls: string | Record<string, string>): { text: string; href: string }[] {
+const data = await getPluginDataArray();
+const view = data.view();
+const plugin = view.get_by_id(data, pluginId);
+if (!plugin) {
+	throw new Error(`Plugin with ID ${pluginId} not found.`);
+}
+
+const pluginDownloadData = plugin.download_data_points();
+console.log('Plugin download data:', pluginDownloadData);
+
+
+function getFundingLinks(urls: string | Record<string, string> | undefined): { text: string; href: string }[] {
+	if (!urls) {
+		return [];
+	}
+
 	if (typeof urls === 'string') {
 		return [{ text: 'Support the Author', href: urls }];
 	}
@@ -36,21 +32,26 @@ function getFundingLinks(urls: string | Record<string, string>): { text: string;
 	return Object.entries(urls).map(([text, href]) => ({ text: `Support the Author via ${text}`, href }));
 }
 
+const helpUrl = plugin.help_url();
+const obsidianUrl = plugin.obsidian_url();
+const obsidianHubUrl = plugin.obsidian_hub_url();
+const authorUrl = plugin.author_url();
+const fundingUrl = plugin.funding_url();
+
 const external_links: { text: string; href: string }[] = [
-	repoData?.repo?.manifest?.helpUrl ? { text: 'Plugin Docs', href: repoData.repo.manifest.helpUrl } : undefined,
-	{ text: 'GitHub Repo', href: `https://github.com/${plugin.currentEntry.repo}` },
-	{ text: 'View in Obsidian', href: obsidianLink },
-	// { text: 'View on ObsidianAddict', href: obsidianAddictLink },
-	{ text: 'View on the Obsidian Hub', href: obsidianHubLink },
-	repoData?.repo?.manifest.authorUrl ? { text: 'Author Website', href: repoData.repo.manifest.authorUrl } : undefined,
-	...(repoData?.repo?.manifest.fundingUrl ? getFundingLinks(repoData.repo.manifest.fundingUrl) : []),
+	helpUrl ? { text: 'Plugin Docs', href: helpUrl } : undefined,
+	{ text: 'GitHub Repo', href: plugin.repo_url() },
+	obsidianUrl ? { text: 'View in Obsidian', href: obsidianUrl } : undefined,
+	obsidianHubUrl ? { text: 'View on the Obsidian Hub', href: obsidianHubUrl } : undefined,
+	authorUrl ? { text: 'Author Website', href: authorUrl } : undefined,
+	...getFundingLinks(plugin.funding_url()),
 ].filter(x => x !== undefined);
 ---
 
 <StarlightPage
 	frontmatter={{
-		title: plugin.currentEntry.name,
-		description: `Page for the ${plugin.currentEntry.name} plugin.`,
+		title: plugin.name(),
+		description: `Page for the ${plugin.name()} plugin.`,
 		links: external_links,
 	}}
 	headings={[
@@ -61,9 +62,9 @@ const external_links: { text: string; href: string }[] = [
 		{ depth: 2, text: 'Version History', slug: 'version-history' },
 	]}
 >
-	<p>{plugin.currentEntry.description}</p>
+	<p>{plugin.description()}</p>
 
-	{
+	<!-- {
 		repoData?.warnings.map(warning => {
 			switch (warning.id) {
 				case 'inactivity-12-months':
@@ -163,9 +164,9 @@ const external_links: { text: string; href: string }[] = [
 					);
 			}
 		})
-	}
+	} -->
 
-	{(repoData?.warnings.length ?? 0) > 0 && <p class="muted">The above warnings are based on limited information and might not always be accurate.</p>}
+	<!-- {(repoData?.warnings.length ?? 0) > 0 && <p class="muted">The above warnings are based on limited information and might not always be accurate.</p>} -->
 
 	<h2 id="data">Data</h2>
 
@@ -173,28 +174,28 @@ const external_links: { text: string; href: string }[] = [
 		<tbody>
 			<tr>
 				<td>ID</td>
-				<td>{plugin.id}</td>
+				<td>{plugin.id()}</td>
 			</tr>
 			<tr>
 				<td>Author</td>
 				<td
 					>{
-						repoData?.repo?.manifest.authorUrl ? (
-							<a href={repoData.repo.manifest.authorUrl} target="_blank">
-								{plugin.currentEntry.author}
+						authorUrl ? (
+							<a href={authorUrl} target="_blank">
+								{plugin.author()}
 							</a>
 						) : (
-							plugin.currentEntry.author
+							plugin.author()
 						)
 					}</td
 				>
 			</tr>
 			{
-				repoData?.repo?.manifest?.fundingUrl && (
+				fundingUrl && (
 					<tr>
 						<td>Funding</td>
 						<td>
-							{getFundingLinks(repoData.repo.manifest.fundingUrl).map(link => (
+							{getFundingLinks(fundingUrl).map(link => (
 								<>
 									<a href={link.href}>{link.text}</a> <br />
 								</>
@@ -204,20 +205,20 @@ const external_links: { text: string; href: string }[] = [
 				)
 			}
 			{
-				repoData?.repo && (
+				plugin.min_app_version() && (
 					<tr>
 						<td>Minimum Obsidian Version</td>
-						<td>{repoData.repo.manifest.minAppVersion}</td>
+						<td>{plugin.min_app_version()}</td>
 					</tr>
 				)
 			}
 			<tr>
 				<td>Official Release Date</td>
-				<td><Commit commit={plugin.addedCommit} /></td>
+				<td><Commit date={plugin.release_date()} hash={plugin.added_commit_hash()} /></td>
 			</tr>
 			<tr>
 				<td>Last update</td>
-				<td>{latestReleaseDateString}</td>
+				<td>{plugin.last_updated_date()}</td>
 			</tr>
 		</tbody>
 	</table>
@@ -237,7 +238,7 @@ const external_links: { text: string; href: string }[] = [
 
 	<h3 id="changes">Changes</h3>
 
-	<table class="full-width">
+	<!-- <table class="full-width">
 		<thead>
 			<tr>
 				<th>Date</th>
@@ -260,29 +261,30 @@ const external_links: { text: string; href: string }[] = [
 				))
 			}
 		</tbody>
-	</table>
+	</table> -->
 
 	<h3 id="repository-data">Repository Data</h3>
 
 	{
-		repoData?.repo ? (
+		plugin.has_repo_data() ? (
 			<>
 				<table class="full-width">
 					<tbody>
 						<tr>
 							<td>License</td>
 							<td>
-								<code>{repoData.repo.license}</code> in <code>package.json</code>, <code>{repoData.repo.licenseFile}</code> in <code>LICENSE</code> file
+								<code>{plugin.license_package_json()}</code> in <code>package.json</code> <br /> <code>{plugin.license_file()}</code> in{' '}
+								<code>LICENSE</code> file
 							</td>
 						</tr>
 						<tr>
 							<td>Package Manager</td>
-							<td>{repoData.repo.packageManager ?? 'Unknown (no lock file found)'}</td>
+							<td>{plugin.package_managers() ?? 'Unknown (no lock file found)'}</td>
 						</tr>
 						<tr>
 							<td>Uses Typescript</td>
 							<td>
-								{repoData.repo.usesTypescript ? (
+								{plugin.uses_typescript() ? (
 									'true'
 								) : (
 									<>
@@ -294,60 +296,38 @@ const external_links: { text: string; href: string }[] = [
 						<tr>
 							<td>Installed Bundlers</td>
 							<td>
-								{repoData.repo.hasPackageJson ? (
-									repoData.repo.installedBundlers.length === 0 ? (
-										'none'
-									) : (
-										repoData.repo.installedBundlers.join(', ')
-									)
+								{plugin.bundlers() ? (
+									plugin.bundlers()!.join(', ')
 								) : (
-									<>
-										No <code>package.json</code> found
-									</>
+									'None found'
 								)}
 							</td>
 						</tr>
 						<tr>
 							<td>Installed Testing Frameworks</td>
 							<td>
-								{repoData.repo.hasPackageJson ? (
-									repoData.repo.installedTestingFrameworks.length === 0 ? (
-										'none'
-									) : (
-										repoData.repo.installedTestingFrameworks.join(', ')
-									)
+								{plugin.testing_frameworks() ? (
+									plugin.testing_frameworks()!.join(', ')
 								) : (
-									<>
-										No <code>package.json</code> found
-									</>
+									'None found'
 								)}
 							</td>
 						</tr>
 						<tr>
 							<td>Has Test Files</td>
 							<td>
-								{repoData.repo.hasPackageJson ? (
-									repoData.repo.hasTestFiles ? (
-										'true'
-									) : (
-										'false'
-									)
-								) : (
-									<>
-										No <code>package.json</code> found
-									</>
-								)}
+								{plugin.has_test_files() ? 'Yes' : 'No'}
 							</td>
 						</tr>
 						<tr>
 							<td>Uses BRAT beta releases</td>
-							<td>{repoData.repo.hasBetaManifest ? 'true' : 'false'}</td>
+							<td>{plugin.has_beta_manifest() ? 'Yes' : 'No'}</td>
 						</tr>
 						<tr>
 							<td>Dependencies</td>
 							<td>
-								{repoData.repo.hasPackageJson ? (
-									repoData.repo.dependencies.sort().join(', ')
+								{plugin.has_package_json() ? (
+									plugin.dependencies()?.sort().join(', ') ?? ''
 								) : (
 									<>
 										No <code>package.json</code> found
@@ -358,8 +338,8 @@ const external_links: { text: string; href: string }[] = [
 						<tr>
 							<td>Dev Dependencies</td>
 							<td>
-								{repoData.repo.hasPackageJson ? (
-									repoData.repo.devDependencies.sort().join(', ')
+								{plugin.has_package_json() ? (
+									plugin.dev_dependencies()?.sort().join(', ') ?? ''
 								) : (
 									<>
 										No <code>package.json</code> found
@@ -375,27 +355,29 @@ const external_links: { text: string; href: string }[] = [
 					<code>unknown</code>, or say <code>not found</code>, please check the repository or contact the author for clarification.
 				</p>
 				<p class="muted">
-					<i>Has Test Files</i> looks for files ending in <code>.test.js</code>, <code>.test.ts</code>, <code>.spec.js</code> or <code>.spec.ts</code>.
+					<i>Has Test Files</i> looks for files ending in <code>.test.js</code>, <code>.test.ts</code>, <code>.spec.js</code> or <code>.spec.ts</code>
+					.
 				</p>
 				<p class="muted">
-					<i>Installed Testing Frameworks</i> looks at installed dependencies. This does not mean that a plugin is actually using the testing framework.
+					<i>Installed Testing Frameworks</i> looks at installed dependencies. This does not mean that a plugin is actually using the testing
+					framework.
 				</p>
 				<p class="muted">
 					<i>Dependencies</i> and <i>Dev Dependencies</i> only list the direct dependencies of the plugin.
 				</p>
 			</>
 		) : (
-			<p>No data available.</p>
+			<p class="muted">No repository data available.</p>
 		)
 	}
 
 	<h2 id="downloads">Downloads</h2>
 
-	<PluginDownloadChart dataPoints={pluginDownloadData} client:only="svelte" />
+	<DownloadChart dataPoints={pluginDownloadData} client:only="svelte" />
 
 	<h2 id="version-history">Version History</h2>
 
-	<table class="full-width">
+	<!-- <table class="full-width">
 		<thead>
 			<tr>
 				<th>Version</th>
@@ -414,10 +396,10 @@ const external_links: { text: string; href: string }[] = [
 				))
 			}
 		</tbody>
-	</table>
+	</table> -->
 
 	<p class="muted">
-		<i>Blacklisted</i> versions are versions that are known to cause major issues or contain security concerns and have thus been blacklisted by the Obsidian team.
-		Obsidian will disable plugins on startup whose installed verion is blacklisted. It is strongly recommended to update to a newer version.
+		<i>Blacklisted</i> versions are versions that are known to cause major issues or contain security concerns and have thus been blacklisted by the Obsidian
+		team. Obsidian will disable plugins on startup whose installed verion is blacklisted. It is strongly recommended to update to a newer version.
 	</p>
 </StarlightPage>

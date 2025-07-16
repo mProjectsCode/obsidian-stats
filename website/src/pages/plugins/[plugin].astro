@@ -1,22 +1,26 @@
 ---
+import { getCollection } from 'astro:content';
 import PluginComponent from '../../components/plugin.astro';
-import { getPluginData } from '../../../../src/utils';
 
-export function getStaticPaths() {
-	const pluginData = getPluginData();
-	return pluginData.map(plugin => {
+export async function getStaticPaths() {
+	console.log('Generating static paths for plugin pages...');
+
+	const plugins = await getCollection('plugins');
+	
+	return plugins.map(plugin => {
 		return {
 			params: {
 				plugin: plugin.id,
 			},
 			props: {
-				pluginDatum: plugin,
+				pluginId: plugin.id,
 			},
 		};
 	});
 }
 
-const { pluginDatum } = Astro.props;
+const { pluginId } = Astro.props;
+
 ---
 
-<PluginComponent plugin={pluginDatum} />
+<PluginComponent pluginId={pluginId} />

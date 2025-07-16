@@ -1,6 +1,8 @@
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 import svelte from '@astrojs/svelte';
+import wasm from 'vite-plugin-wasm';
+import topLevelAwait from 'vite-plugin-top-level-await';
 
 // https://astro.build/config
 export default defineConfig({
@@ -94,4 +96,7 @@ export default defineConfig({
 		'/pluginstats/halloffame/': '/obsidian-stats/pluginstats/hall-of-fame/',
 		'/pluginstats/repodata/': '/obsidian-stats/pluginstats/repo-data/',
 	},
+	// vite: {
+	// 	plugins: [wasm(), topLevelAwait()]
+	// }
 });

@@ -19,7 +19,7 @@ fn get_plugin_list_changes() -> Vec<Commit> {
             "--reverse",
             "--format=\"%ad %H\"",
             "--date=iso-strict",
-            "--grep=plugin stats",
+            "--grep=stats",
         ])
         .current_dir(
             Path::new(OBS_RELEASES_REPO_PATH)
@@ -41,7 +41,7 @@ fn get_plugin_download_changes() -> Vec<Commit> {
             "--reverse",
             "--format=\"%ad %H\"",
             "--date=iso-strict",
-            "--grep=plugin stats",
+            "--grep=stats",
         ])
         .current_dir(
             Path::new(OBS_RELEASES_REPO_PATH)
@@ -141,7 +141,16 @@ fn update_weekly_download_stats(
     let start_date = Date::new(2020, 1, 1);
     let end_date = Date::now();
 
+    let excluded_dates = [
+        Date::new(2024, 5, 18),
+        Date::new(2024, 5, 19),
+    ];
+
     for date in start_date.iterate_daily_to(&end_date) {
+        if excluded_dates.contains(&date) {
+            continue;
+        }
+
         for entry in plugin_data.iter_mut() {
             // Don't update downloads for plugins that were not yet released
             if entry.added_commit.date > date {

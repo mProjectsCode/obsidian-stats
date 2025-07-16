@@ -1,5 +1,6 @@
 use std::ops::Index;
 
+use itertools::Itertools;
 use wasm_bindgen::{JsValue, prelude::wasm_bindgen};
 
 use crate::{
@@ -28,10 +29,31 @@ impl FullPluginData {
     pub fn repo_data(&self) -> Option<&PluginRepoExtractedData> {
         self.extended().and_then(|r| r.repo.as_ref().ok())
     }
+
+    pub fn get_downloads_at(&self, date: &Date) -> Option<u32> {
+        self.data.download_history.0.get(&date.to_fancy_string())
+            .copied()
+    }
+
+    pub fn find_downloads_in_week(&self, date: &Date) -> Option<u32> {
+        for i in 0..7 {
+            let mut d = date.clone();
+            d.reverse_days(i);
+            if let Some(downloads) = self.get_downloads_at(&d) {
+                return Some(downloads);
+            }
+        }
+
+        None
+    }
 }
 
 #[wasm_bindgen]
 impl FullPluginData {
+    pub fn has_repo_data(&self) -> bool {
+        self.repo_data().is_some()
+    }
+
     pub fn id(&self) -> String {
         self.data.id.clone()
     }
@@ -62,8 +84,43 @@ impl FullPluginData {
             })
     }
 
+    pub fn author_url(&self) -> Option<String> {
+        self.repo_data().and_then(|r| r.manifest.author_url.clone())   
+    }
+
+    pub fn help_url(&self) -> Option<String> {
+        self.repo_data().and_then(|r| r.manifest.help_url.clone())   
+    }
+
+    pub fn min_app_version(&self) -> Option<String> {
+        self.repo_data().map(|r| r.manifest.min_app_version.clone())
+    }
+
+    pub fn is_desktop_only(&self) -> Option<bool> {
+        self.repo_data()
+            .and_then(|r| r.manifest.is_desktop_only.clone())
+    }
+
+    pub fn obsidian_url(&self) -> Option<String> {
+        match self.data.removed_commit {
+            Some(_) => None, // If the plugin is removed, we don't provide an Obsidian URL
+            None => Some(format!("obsidian://show-plugin?id={}", self.data.id)),
+        }
+    }
+
+    pub fn obsidian_hub_url(&self) -> Option<String> {
+        match self.data.removed_commit {
+            Some(_) => None, // If the plugin is removed, we don't provide an Obsidian Hub URL
+            None => Some(format!("https://publish.obsidian.md/hub/02+-+Community+Expansions/02.05+All+Community+Expansions/Plugins/{}", self.data.id)),
+        }
+    }
+
     pub fn release_date(&self) -> String {
         self.data.added_commit.date.to_fancy_string()
+    }
+
+    pub fn added_commit_hash(&self) -> String {
+        self.data.added_commit.hash.clone()
     }
 
     pub fn removed_date(&self) -> Option<String> {
@@ -71,6 +128,13 @@ impl FullPluginData {
             .removed_commit
             .as_ref()
             .map(|c| c.date.to_fancy_string())
+    }
+
+    pub fn removed_commit_hash(&self) -> Option<String> {
+        self.data
+            .removed_commit
+            .as_ref()
+            .map(|c| c.hash.clone())
     }
 
     pub fn last_updated_date(&self) -> Option<String> {
@@ -119,6 +183,26 @@ impl FullPluginData {
         self.repo_data().map(|r| r.uses_typescript)
     }
 
+    pub fn has_beta_manifest(&self) -> Option<bool> {
+        self.repo_data().map(|r| r.has_beta_manifest)
+    }
+
+    pub fn has_package_json(&self) -> Option<bool> {
+        self.repo_data().map(|r| r.has_package_json)
+    }
+
+    pub fn has_test_files(&self) -> Option<bool> {
+        self.repo_data().map(|r| r.has_test_files)
+    }
+
+    pub fn dev_dependencies(&self) -> Option<Vec<String>> {
+        self.repo_data().map(|r| r.dev_dependencies.clone())
+    }
+
+    pub fn dependencies(&self) -> Option<Vec<String>> {
+        self.repo_data().map(|r| r.dependencies.clone())
+    }
+
     pub fn download_count(&self) -> u32 {
         self.data.download_count
     }
@@ -127,8 +211,8 @@ impl FullPluginData {
     /// ```ts
     /// interface DownloadDataPoint {
     ///     date: string; // e.g. "2023-10-01"
-    ///     downloads: number; // e.g. 100
-    ///     delta: number; // e.g. 10 (change from previous data point)
+    ///     downloads: number | undefined; // e.g. 100
+    ///     delta: number | undefined; // e.g. 10 (change from previous data point)
     /// }
     /// ```
     pub fn download_data_points(&self) -> JsValue {
@@ -138,13 +222,39 @@ impl FullPluginData {
             .as_ref()
             .map_or_else(|| Date::now(), |c| c.date.clone());
 
-        let weekly_iterator = self.data.added_commit.date.iterate_weekly_to(&end_date);
+        let data = self.data.added_commit.date.iterate_daily_to(&end_date).map(|date| {
+            let mut prev_date = date.clone();
+            prev_date.reverse_days(1);
 
-        let data_iterator = self.data.download_history.0.iter().zip(weekly_iterator);
+            let downloads = self.get_downloads_at(&date).and_then(|d| {
+                if d > 0 {
+                    Some(d)
+                } else {
+                    None
+                }
+            });
+            let previous_downloads = self.get_downloads_at(&prev_date).and_then(|d| {
+                if d > 0 {
+                    Some(d)
+                } else {
+                    None
+                }
+            });
 
-        // TODO
+            let delta = match (downloads, previous_downloads) {
+                (Some(d), Some(pd)) if d >= pd => Some(d - pd),
+                _ => None,
+            };
 
-        JsValue::null()
+            let obj = js_sys::Object::new();
+            js_sys::Reflect::set(&obj, &"date".into(), &date.to_string().into()).unwrap();
+            js_sys::Reflect::set(&obj, &"downloads".into(), &downloads.into()).unwrap();
+            js_sys::Reflect::set(&obj, &"delta".into(), &delta.into()).unwrap();
+
+            JsValue::from(obj)
+        }).collect_vec();
+
+        JsValue::from(data)
     }
 }
 
@@ -205,6 +315,21 @@ impl FullPluginDataArrayView {
         data[self.data[index]].clone()
     }
 
+    pub fn get_ids(&self, data: &FullPluginDataArray) -> Vec<String> {
+        self.data.iter().map(|&index| data[index].id()).collect()
+    }
+
+    pub fn get_by_id(&self, data: &FullPluginDataArray, id: &str) -> Option<FullPluginData> {
+        self.data.iter().find_map(|&index| {
+            let item = &data[index];
+            if item.id() == id {
+                Some(item.clone())
+            } else {
+                None
+            }
+        })
+    }
+
     pub fn to_vec(&self, data: &FullPluginDataArray) -> Vec<FullPluginData> {
         self.data.iter().map(|&index| data[index].clone()).collect()
     }
@@ -229,6 +354,59 @@ impl FullPluginDataArrayView {
         if count < self.data.len() {
             self.data.drain(0..self.data.len() - count);
         }
+    }
+
+    /// Get the total downloads (sum of all plugins in the view).
+    /// 
+    /// The data is in the form:
+    /// ```ts
+    /// interface DownloadDataPoint {
+    ///     date: string; // e.g. "2023-10-01"
+    ///     downloads: number; // e.g. 100
+    ///     delta: number; // e.g. 10 (change from previous data point)
+    /// }
+    /// ```
+    pub fn total_download_data(&self, data: &FullPluginDataArray) -> JsValue {
+        let start_date = Date::new(2020, 1, 1);
+        let end_date = Date::now();
+
+        let data = start_date.iterate_weekly_to(&end_date).map(|date| {
+            let mut prev_date = date.clone();
+            prev_date.reverse_days(7);
+
+            let downloads = self.data.iter().fold(0, |acc, index| {
+                acc + data[*index].find_downloads_in_week(&date).unwrap_or(0)
+            });
+            let previous_downloads = self.data.iter().fold(0, |acc, index| {
+                acc + data[*index].find_downloads_in_week(&prev_date).unwrap_or(0)
+            });
+
+            let downloads = if downloads > 0 {
+                Some(downloads)
+            } else {
+                None
+            };
+
+            let previous_downloads = if previous_downloads > 0 {
+                Some(previous_downloads)
+            } else {
+                None
+            };
+
+            let delta = match (downloads, previous_downloads) {
+                (Some(d), Some(pd)) if d >= pd => Some(d - pd),
+                _ => None,
+            };
+
+            let obj = js_sys::Object::new();
+            js_sys::Reflect::set(&obj, &"date".into(), &date.to_string().into()).unwrap();
+            js_sys::Reflect::set(&obj, &"downloads".into(), &downloads.into()).unwrap();
+            js_sys::Reflect::set(&obj, &"delta".into(), &delta.into()).unwrap();
+
+            JsValue::from(obj)
+        }).collect_vec();
+
+        JsValue::from(data)
     }
 }
 

@@ -1,3 +1,4 @@
+use hashbrown::HashMap;
 use serde::{Deserialize, Serialize};
 
 use crate::{commit::Commit, date::Date, version::Version};
@@ -11,7 +12,7 @@ pub struct EntryChange {
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize)]
-pub struct DownloadHistory(pub Vec<u32>);
+pub struct DownloadHistory(pub HashMap<String, u32>);
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct VersionHistory {
