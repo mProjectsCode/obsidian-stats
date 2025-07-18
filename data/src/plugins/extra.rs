@@ -1,6 +1,6 @@
 use std::{fs, path::Path};
 
-use data_lib::{input_data::{ObsCommunityPluginDeprecations, ObsCommunityPluginRemoved}, plugin::{bundlers::Bundler, packages::PackageManager, testing::TestingFramework, PluginRepoData, PluginRepoExtractedData, PluginData}};
+use data_lib::{input_data::{ObsCommunityPluginDeprecations, ObsCommunityPluginRemoved}, plugin::{bundlers::Bundler, packages::PackageManager, testing::TestingFramework, PluginExtraData, PluginRepoData, PluginData}};
 use hashbrown::HashMap;
 use indicatif::ParallelProgressIterator;
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
@@ -17,31 +17,22 @@ use crate::{
     },
 };
 
-pub fn extract_repo_data() -> Result<(), Box<dyn std::error::Error>> {
-    let plugin_removed_list = fs::read_to_string(Path::new(&format!(
-        "{OBS_RELEASES_REPO_PATH}/{PLUGIN_REMOVED_PATH}",
-    )))?;
-    let plugin_removed_list: Vec<ObsCommunityPluginRemoved> =
-        serde_json::from_str(&plugin_removed_list).expect("Failed to parse plugin removed list");
-
-    let plugin_deprecations = fs::read_to_string(Path::new(&format!(
-        "{OBS_RELEASES_REPO_PATH}/{PLUGIN_DEPRECATIONS_PATH}",
-    )))?;
-    let plugin_deprecations: ObsCommunityPluginDeprecations =
-        serde_json::from_str(&plugin_deprecations).expect("Failed to parse plugin deprecations");
+pub fn extract_extra_data() -> Result<(), Box<dyn std::error::Error>> {
+    let plugin_removed_list = get_removed_plugins()?;
+    let plugin_version_deprecations = get_plugin_version_deprecations()?;
 
     let plugin_data = read_plugin_data()?;
     let mut license_comparer = LicenseComparer::new();
     license_comparer.init();
 
-    let repo_data = plugin_data
+    let extra_data = plugin_data
         .par_iter()
         .progress_count(plugin_data.len() as u64)
         .map(|plugin| {
             let removed_entry = plugin_removed_list.iter().find(|r| r.id == plugin.id);
             let removal_reason = removed_entry.map(|r| r.reason.clone());
 
-            let deprecated_versions = plugin_deprecations
+            let deprecated_versions = plugin_version_deprecations
                 .0
                 .get(&plugin.id)
                 .map_or_else(Vec::new, |d| d.clone());
@@ -57,19 +48,18 @@ pub fn extract_repo_data() -> Result<(), Box<dyn std::error::Error>> {
 
             // TODO: warnings
 
-            PluginRepoData {
+            PluginExtraData {
                 id: plugin.id.clone(),
                 repo,
-                warnings: Vec::new(),
                 removal_reason,
                 deprecated_versions,
             }
         })
-        .collect::<Vec<PluginRepoData>>();
+        .collect::<Vec<PluginExtraData>>();
 
     empty_dir(Path::new(PLUGIN_REPO_DATA_PATH))?;
 
-    write_in_chunks(Path::new(PLUGIN_REPO_DATA_PATH), &repo_data, 50)?;
+    write_in_chunks(Path::new(PLUGIN_REPO_DATA_PATH), &extra_data, 50)?;
 
     Ok(())
 }
@@ -77,7 +67,7 @@ pub fn extract_repo_data() -> Result<(), Box<dyn std::error::Error>> {
 pub fn extract_data_from_repo(
     plugin: &PluginData,
     license_comparer: &LicenseComparer,
-) -> Result<PluginRepoExtractedData, String> {
+) -> Result<PluginRepoData, String> {
     let repo_path = format!("../pluginRepos/repos/{}", plugin.id);
     if !std::path::Path::new(&repo_path).exists() {
         return Err(format!(
@@ -173,7 +163,7 @@ pub fn extract_data_from_repo(
 
     let license_file = license_file.unwrap_or_else(|| "unknown".to_string());
 
-    Ok(PluginRepoExtractedData {
+    Ok(PluginRepoData {
         uses_typescript,
         has_package_json,
         package_managers,
@@ -235,4 +225,20 @@ fn list_files_rec(path: &str, files: &mut Vec<String>) {
             }
         }
     }
+}
+
+fn get_removed_plugins() -> Result<Vec<ObsCommunityPluginRemoved>, Box<dyn std::error::Error>> {
+    let plugin_removed_list = fs::read_to_string(Path::new(&format!(
+        "{OBS_RELEASES_REPO_PATH}/{PLUGIN_REMOVED_PATH}",
+    ))).expect("Failed to read plugin removed list");
+
+    Ok(serde_json::from_str(&plugin_removed_list)?)
+}
+
+fn get_plugin_version_deprecations() -> Result<ObsCommunityPluginDeprecations, Box<dyn std::error::Error>> {
+    let plugin_deprecations = fs::read_to_string(Path::new(&format!(
+        "{OBS_RELEASES_REPO_PATH}/{PLUGIN_DEPRECATIONS_PATH}",
+    ))).expect("Failed to read plugin deprecations");
+
+    Ok(serde_json::from_str(&plugin_deprecations)?)
 }

@@ -1,4 +1,5 @@
 use serde::{Deserialize, Serialize};
+use tsify::Tsify;
 
 use crate::date::Date;
 
@@ -28,4 +29,18 @@ impl Commit {
             })
             .collect()
     }
+
+    pub fn to_string_commit(&self) -> StringCommit {
+        StringCommit {
+            date: self.date.to_fancy_string(),
+            hash: self.hash.clone(),
+        }
+    }
+}
+
+#[derive(Tsify, Debug, Clone, Serialize)]
+#[tsify(into_wasm_abi)]
+pub struct StringCommit {
+    pub date: String,
+    pub hash: String,
 }

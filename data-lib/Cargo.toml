@@ -14,4 +14,5 @@ regex = "1.11.1"
 serde = {version = "1.0.219", features = ["derive"]}
 serde-deserialize-duplicates = "0.1.2"
 serde_json = {version = "1.0.140", features = ["raw_value"]}
+tsify = "0.5.5"
 wasm-bindgen = "0.2.84"

@@ -1,7 +1,7 @@
 use hashbrown::HashMap;
 use serde::{Deserialize, Serialize};
 
-use crate::{commit::Commit, date::Date, version::Version};
+use crate::{commit::Commit, date::Date, plugin::EntryChangeDataPoint, version::Version};
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct EntryChange {
@@ -9,6 +9,17 @@ pub struct EntryChange {
     pub commit: Commit,
     pub old_value: String,
     pub new_value: String,
+}
+
+impl EntryChange {
+    pub fn to_data_point(&self) -> EntryChangeDataPoint {
+        EntryChangeDataPoint {
+            property: self.property.clone(),
+            commit: self.commit.to_string_commit(),
+            old_value: self.old_value.clone(),
+            new_value: self.new_value.clone(),
+        }
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize)]
@@ -20,27 +31,4 @@ pub struct VersionHistory {
     #[serde(skip)]
     pub version_object: Option<Version>,
     pub initial_release_date: Date,
-}
-
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
-pub struct DownloadDataPoint {
-    pub date: String,
-    pub downloads: Option<u32>,
-    pub growth: Option<u32>,
-}
-
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
-pub struct PerMonthDataPoint {
-    pub year: String,
-    pub month: String,
-    pub value: u32,
-}
-
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
-pub struct DownloadReleaseCorrelationDataPoint {
-    pub id: String,
-    pub name: String,
-    pub downloads: u32,
-    pub releases: u32,
-    pub initial_release_date: String,
 }

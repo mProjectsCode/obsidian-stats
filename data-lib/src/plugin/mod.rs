@@ -1,12 +1,14 @@
 use hashbrown::HashMap;
 use serde::{Deserialize, Serialize};
+use tsify::Tsify;
 
-use crate::{commit::Commit, common::{DownloadHistory, EntryChange, VersionHistory}, input_data::ObsCommunityPlugin, plugin::{bundlers::Bundler, packages::PackageManager, testing::TestingFramework}};
+use crate::{commit::{Commit, StringCommit}, common::{DownloadHistory, EntryChange, VersionHistory}, input_data::ObsCommunityPlugin, plugin::{bundlers::Bundler, packages::PackageManager, testing::TestingFramework}};
 
 pub mod bundlers;
 pub mod packages;
 pub mod testing;
 pub mod analysis;
+pub mod warnings;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PluginData {
@@ -26,63 +28,6 @@ pub struct PluginData {
 pub enum FundingUrl {
     String(String),
     Object(HashMap<String, String>),
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub enum PluginWarningSeverity {
-    CAUTION,
-    DANGER,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize)]
-#[serde(tag = "id")]
-pub enum PluginWarning {
-    Inactivity12Months(PluginWarningInactivity12Months),
-    Inactivity24Months(PluginWarningInactivity24Months),
-    MismatchedManifestData(PluginWarningMismatchedManifestData),
-    Unlicensed(PluginWarningUnlicensed),
-    NoLicense(PluginWarningNoLicense),
-    MismatchedLicense(PluginWarningMismatchedLicense),
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct PluginWarningInactivity12Months {
-    pub severity: PluginWarningSeverity,
-    pub last_release_date: String,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct PluginWarningInactivity24Months {
-    pub severity: PluginWarningSeverity,
-    pub last_release_date: String,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct PluginWarningMismatchedManifestDataField {
-    pub field: String,
-    pub manifest_value: String,
-    pub community_list_value: String,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct PluginWarningMismatchedManifestData {
-    pub severity: PluginWarningSeverity,
-    pub data: Vec<PluginWarningMismatchedManifestDataField>,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct PluginWarningUnlicensed {
-    pub severity: PluginWarningSeverity,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct PluginWarningNoLicense {
-    pub severity: PluginWarningSeverity,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct PluginWarningMismatchedLicense {
-    pub severity: PluginWarningSeverity,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -108,7 +53,7 @@ pub struct PluginManifest {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct PluginRepoExtractedData {
+pub struct PluginRepoData {
     pub uses_typescript: bool,
     pub has_package_json: bool,
     pub package_managers: Vec<PackageManager>,
@@ -125,10 +70,56 @@ pub struct PluginRepoExtractedData {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct PluginRepoData {
+pub struct PluginExtraData {
     pub id: String,
-    pub repo: Result<PluginRepoExtractedData, String>,
-    pub warnings: Vec<PluginWarning>,
+    pub repo: Result<PluginRepoData, String>,
     pub removal_reason: Option<String>,
     pub deprecated_versions: Vec<String>,
+}
+
+#[derive(Tsify, Debug, Clone, Serialize, Deserialize)]
+#[tsify(into_wasm_abi)]
+pub struct DownloadDataPoint {
+    pub date: String,
+    pub downloads: Option<u32>,
+    pub delta: Option<u32>,
+}
+
+#[derive(Tsify, Debug, Clone, Serialize, Deserialize)]
+#[tsify(into_wasm_abi)]
+pub struct VersionDataPoint {
+    pub version: String,
+    pub date: String,
+    pub deprecated: bool,
+}
+
+#[derive(Tsify, Debug, Clone, Serialize)]
+#[tsify(into_wasm_abi)]
+pub struct EntryChangeDataPoint {
+    pub property: String,
+    pub commit: StringCommit,
+    pub old_value: String,
+    pub new_value: String,
+}
+
+#[derive(Tsify, Debug, Clone, Serialize)]
+#[tsify(into_wasm_abi)]
+pub struct IndividualDownloadDataPoint {
+    pub id: String,
+    pub name: String,
+    pub date: String,
+    pub downloads: u32,
+    pub version_count: u32,
+}
+
+#[derive(Tsify, Debug, Clone, Serialize)]
+#[tsify(into_wasm_abi)]
+pub struct PluginOverviewDataPoint {
+    pub id: String,
+    pub name: String,
+    pub author: String,
+    pub repo: String,
+    pub repo_url: String,
+    pub added_commit: StringCommit,
+    pub removed_commit: Option<StringCommit>,
 }

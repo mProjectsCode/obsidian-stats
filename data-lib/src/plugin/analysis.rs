@@ -1,11 +1,9 @@
 use std::ops::Index;
 
-use itertools::Itertools;
-use wasm_bindgen::{JsValue, prelude::wasm_bindgen};
+use wasm_bindgen::prelude::wasm_bindgen;
 
 use crate::{
-    date::Date,
-    plugin::{FundingUrl, PluginData, PluginRepoData, PluginRepoExtractedData},
+    commit::StringCommit, date::Date, plugin::{warnings::{get_plugin_warnings, PluginWarning}, DownloadDataPoint, EntryChangeDataPoint, FundingUrl, IndividualDownloadDataPoint, PluginData, PluginExtraData, PluginOverviewDataPoint, PluginRepoData, VersionDataPoint}
 };
 
 #[derive(Debug, Clone)]
@@ -14,19 +12,19 @@ pub struct FullPluginData {
     #[wasm_bindgen(skip)]
     pub data: PluginData,
     #[wasm_bindgen(skip)]
-    pub extended: Option<PluginRepoData>,
+    pub extended: Option<PluginExtraData>,
 }
 
 impl FullPluginData {
-    pub fn new(data: PluginData, extended: Option<PluginRepoData>) -> Self {
+    pub fn new(data: PluginData, extended: Option<PluginExtraData>) -> Self {
         Self { data, extended }
     }
 
-    pub fn extended(&self) -> Option<&PluginRepoData> {
+    pub fn extended(&self) -> Option<&PluginExtraData> {
         self.extended.as_ref()
     }
 
-    pub fn repo_data(&self) -> Option<&PluginRepoExtractedData> {
+    pub fn repo_data(&self) -> Option<&PluginRepoData> {
         self.extended().and_then(|r| r.repo.as_ref().ok())
     }
 
@@ -115,26 +113,12 @@ impl FullPluginData {
         }
     }
 
-    pub fn release_date(&self) -> String {
-        self.data.added_commit.date.to_fancy_string()
+    pub fn added_commit(&self) -> StringCommit {
+        self.data.added_commit.to_string_commit()
     }
 
-    pub fn added_commit_hash(&self) -> String {
-        self.data.added_commit.hash.clone()
-    }
-
-    pub fn removed_date(&self) -> Option<String> {
-        self.data
-            .removed_commit
-            .as_ref()
-            .map(|c| c.date.to_fancy_string())
-    }
-
-    pub fn removed_commit_hash(&self) -> Option<String> {
-        self.data
-            .removed_commit
-            .as_ref()
-            .map(|c| c.hash.clone())
+    pub fn removed_commit(&self) -> Option<StringCommit> {
+        self.data.removed_commit.as_ref().map(|c| c.to_string_commit())
     }
 
     pub fn last_updated_date(&self) -> Option<String> {
@@ -215,25 +199,25 @@ impl FullPluginData {
     ///     delta: number | undefined; // e.g. 10 (change from previous data point)
     /// }
     /// ```
-    pub fn download_data_points(&self) -> JsValue {
+    pub fn download_data_points(&self) -> Vec<DownloadDataPoint> {
         let end_date = self
             .data
             .removed_commit
             .as_ref()
             .map_or_else(|| Date::now(), |c| c.date.clone());
 
-        let data = self.data.added_commit.date.iterate_daily_to(&end_date).map(|date| {
+        self.data.added_commit.date.iterate_weekly_to(&end_date).map(|date| {
             let mut prev_date = date.clone();
-            prev_date.reverse_days(1);
+            prev_date.reverse_days(7);
 
-            let downloads = self.get_downloads_at(&date).and_then(|d| {
+            let downloads = self.find_downloads_in_week(&date).and_then(|d| {
                 if d > 0 {
                     Some(d)
                 } else {
                     None
                 }
             });
-            let previous_downloads = self.get_downloads_at(&prev_date).and_then(|d| {
+            let previous_downloads = self.find_downloads_in_week(&prev_date).and_then(|d| {
                 if d > 0 {
                     Some(d)
                 } else {
@@ -246,15 +230,35 @@ impl FullPluginData {
                 _ => None,
             };
 
-            let obj = js_sys::Object::new();
-            js_sys::Reflect::set(&obj, &"date".into(), &date.to_string().into()).unwrap();
-            js_sys::Reflect::set(&obj, &"downloads".into(), &downloads.into()).unwrap();
-            js_sys::Reflect::set(&obj, &"delta".into(), &delta.into()).unwrap();
+            DownloadDataPoint {
+                date: date.to_fancy_string(),
+                downloads,
+                delta,
+            }
+        }).collect()
+    }
 
-            JsValue::from(obj)
-        }).collect_vec();
+    pub fn warnings(&self) -> Vec<PluginWarning> {
+        get_plugin_warnings(&self)
+    }
 
-        JsValue::from(data)
+    pub fn versions(&self) -> Vec<VersionDataPoint> {
+        self.data.version_history.iter().map(|v| {
+            VersionDataPoint {
+                version: v.version.clone(),
+                date: v.initial_release_date.to_fancy_string(),
+                deprecated: self.extended
+                    .as_ref()
+                    .map(|e| e.deprecated_versions.contains(&v.version))
+                    .unwrap_or(false),
+            }
+        }).collect()
+    }
+
+    pub fn changes(&self) -> Vec<EntryChangeDataPoint> {
+        self.data.change_history.iter().map(|change| {
+            change.to_data_point()
+        }).collect()
     }
 }
 
@@ -266,7 +270,7 @@ pub struct FullPluginDataArray {
 }
 
 impl FullPluginDataArray {
-    pub fn new(data: Vec<PluginData>, extended: Vec<PluginRepoData>) -> Self {
+    pub fn new(data: Vec<PluginData>, extended: Vec<PluginExtraData>) -> Self {
         let data = data
             .into_iter()
             .map(|d| FullPluginData {
@@ -366,11 +370,11 @@ impl FullPluginDataArrayView {
     ///     delta: number; // e.g. 10 (change from previous data point)
     /// }
     /// ```
-    pub fn total_download_data(&self, data: &FullPluginDataArray) -> JsValue {
+    pub fn total_download_data(&self, data: &FullPluginDataArray) -> Vec<DownloadDataPoint> {
         let start_date = Date::new(2020, 1, 1);
         let end_date = Date::now();
 
-        let data = start_date.iterate_weekly_to(&end_date).map(|date| {
+        start_date.iterate_weekly_to(&end_date).map(|date| {
             let mut prev_date = date.clone();
             prev_date.reverse_days(7);
 
@@ -398,15 +402,52 @@ impl FullPluginDataArrayView {
                 _ => None,
             };
 
-            let obj = js_sys::Object::new();
-            js_sys::Reflect::set(&obj, &"date".into(), &date.to_string().into()).unwrap();
-            js_sys::Reflect::set(&obj, &"downloads".into(), &downloads.into()).unwrap();
-            js_sys::Reflect::set(&obj, &"delta".into(), &delta.into()).unwrap();
+            DownloadDataPoint {
+                date: date.to_fancy_string(),
+                downloads,
+                delta,
+            }
+        }).collect()
+    }
 
-            JsValue::from(obj)
-        }).collect_vec();
+    pub fn individual_download_data(
+        &self,
+        data: &FullPluginDataArray,
+    ) -> Vec<IndividualDownloadDataPoint> {
+        self.data.iter().map(|&index| {
+            let plugin_data = &data[index];
+            let id = plugin_data.id();
+            let name = plugin_data.name();
+            let date = plugin_data.added_commit().date;
+            let downloads = plugin_data.download_count();
+            let version_count = plugin_data.data.version_history.len() as u32;
 
-        JsValue::from(data)
+            IndividualDownloadDataPoint {
+                id,
+                name,
+                date,
+                downloads,
+                version_count,
+            }
+        }).collect()
+    }
+
+    pub fn overview(
+        &self,
+        data: &FullPluginDataArray,
+    ) -> Vec<PluginOverviewDataPoint> {
+        self.data.iter().map(|&index| {
+            let plugin_data = &data[index];
+            PluginOverviewDataPoint {
+                id: plugin_data.id(),
+                name: plugin_data.name(),
+                author: plugin_data.author(),
+                repo: plugin_data.data.current_entry.repo.clone(),
+                repo_url: plugin_data.repo_url(),
+                added_commit: plugin_data.added_commit(),
+                removed_commit: plugin_data.removed_commit(),
+            }
+        }).collect()
     }
 }
 

@@ -1,4 +1,4 @@
-use crate::plugins::{data::build_plugin_stats, repo::extract_repo_data};
+use crate::plugins::{data::build_plugin_stats, extra::extract_extra_data};
 
 pub mod constants;
 pub mod file_utils;
@@ -10,7 +10,7 @@ fn main() {
     println!();
     println!("Extracting repository data...");
 
-    extract_repo_data().expect("Failed to extract repository data");
+    extract_extra_data().expect("Failed to extract repository data");
 
     println!();
     println!("Done!");
