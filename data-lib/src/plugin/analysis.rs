@@ -1,9 +1,10 @@
 use std::ops::Index;
 
+use itertools::Itertools;
 use wasm_bindgen::prelude::wasm_bindgen;
 
 use crate::{
-    commit::StringCommit, date::Date, plugin::{warnings::{get_plugin_warnings, PluginWarning}, DownloadDataPoint, EntryChangeDataPoint, FundingUrl, IndividualDownloadDataPoint, PluginData, PluginExtraData, PluginOverviewDataPoint, PluginRepoData, VersionDataPoint}
+    commit::StringCommit, date::Date, plugin::{warnings::{get_plugin_warnings, PluginWarning}, DownloadDataPoint, EntryChangeDataPoint, FundingUrl, IndividualDownloadDataPoint, PluginData, PluginExtraData, PluginOverviewDataPoint, PluginRepoData, PluginYearlyDataPoint, VersionDataPoint}
 };
 
 #[derive(Debug, Clone)]
@@ -36,13 +37,31 @@ impl FullPluginData {
     pub fn find_downloads_in_week(&self, date: &Date) -> Option<u32> {
         for i in 0..7 {
             let mut d = date.clone();
-            d.reverse_days(i);
+            d.advance_days(i);
             if let Some(downloads) = self.get_downloads_at(&d) {
                 return Some(downloads);
             }
         }
 
         None
+    }
+
+    pub fn find_downloads_after_date(&self, date: &Date) -> Option<u32> {
+        let end_date = self.data.removed_commit
+            .as_ref()
+            .map_or_else(Date::now, |c| c.date.clone());
+
+        date.iterate_daily_to(&end_date).find_map(|d| {
+            self.get_downloads_at(&d)
+        })
+    }
+
+    pub fn find_downloads_before_date(&self, date: &Date) -> Option<u32> {
+        let start_date = self.data.added_commit.date.clone();
+
+        date.iterate_daily_backwards(&start_date).find_map(|d| {
+            self.get_downloads_at(&d)
+        })
     }
 }
 
@@ -448,6 +467,66 @@ impl FullPluginDataArrayView {
                 removed_commit: plugin_data.removed_commit(),
             }
         }).collect()
+    }
+
+    pub fn most_downloaded(
+        &self,
+        data: &FullPluginDataArray,
+        count: usize,
+        year: Option<u32>,
+        restrict_release_date: bool,
+    ) -> Vec<PluginYearlyDataPoint> {
+        let (start_date, end_date) = match year {
+            Some(y) => (Date::new(y, 1, 1), Date::new(y + 1, 1, 1)),
+            None => (Date::new(2020, 1, 1), Date::now()),
+        };
+
+        let mut tmp = self.data.iter().filter_map(|&index| {
+            let plugin_data = &data[index];
+            if restrict_release_date && (plugin_data.data.added_commit.date < start_date || plugin_data.data.added_commit.date > end_date) {
+                return None;
+            }
+
+            let downloads_start_date = plugin_data.find_downloads_after_date(&start_date)?;
+            let downloads_end_date = plugin_data.find_downloads_before_date(&end_date)?;
+
+            let downloads_new = downloads_end_date as i64 - downloads_start_date as i64;
+
+            if downloads_new < 0 {
+                return None;
+            }
+
+            Some(
+                (index, downloads_new as u32, downloads_start_date)
+            )
+        }).collect_vec();
+        tmp.sort_by(|a, b| b.1.cmp(&a.1)); // Sort by downloads_new in descending order
+        tmp.truncate(count);
+
+        tmp.into_iter().map(|(index, downloads_new, downloads_start_date)| {
+            let plugin_data = &data[index];
+
+            let data = start_date.iterate_weekly_to(&end_date).filter_map(|date| {
+                let downloads = plugin_data.find_downloads_in_week(&date)? as i64 - downloads_start_date as i64;
+                if downloads >= 0 {
+                    Some(DownloadDataPoint {
+                        date: date.to_fancy_string(),
+                        downloads: Some(downloads as u32),
+                        delta: None, // Delta is not calculated here
+                    })
+                } else {
+                    None
+                }
+            }).collect();
+
+            PluginYearlyDataPoint {
+                id: plugin_data.id(),
+                name: plugin_data.name(),
+                downloads_new,
+                downloads_start: downloads_start_date,
+                data,
+            }
+        }).collect_vec()
     }
 }
 

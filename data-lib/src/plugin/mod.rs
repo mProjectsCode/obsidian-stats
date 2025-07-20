@@ -123,3 +123,13 @@ pub struct PluginOverviewDataPoint {
     pub added_commit: StringCommit,
     pub removed_commit: Option<StringCommit>,
 }
+
+#[derive(Tsify, Debug, Clone, Serialize)]
+#[tsify(into_wasm_abi)]
+pub struct PluginYearlyDataPoint {
+    pub id: String,
+    pub name: String,
+    pub downloads_new: u32,
+    pub downloads_start: u32,
+    pub data: Vec<DownloadDataPoint>,
+}

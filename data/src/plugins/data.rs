@@ -141,9 +141,19 @@ fn update_weekly_download_stats(
     let start_date = Date::new(2020, 1, 1);
     let end_date = Date::now();
 
+    // something in may 2024 is messed up, e.g. advanced-canvas
     let excluded_dates = [
         Date::new(2024, 5, 18),
         Date::new(2024, 5, 19),
+        Date::new(2024, 5, 20),
+        Date::new(2024, 5, 21),
+        Date::new(2024, 5, 22),
+        Date::new(2024, 5, 23),
+        Date::new(2024, 5, 24),
+        Date::new(2024, 5, 25),
+        Date::new(2024, 5, 26),
+        Date::new(2024, 5, 27),
+        Date::new(2024, 5, 28),
     ];
 
     for date in start_date.iterate_daily_to(&end_date) {

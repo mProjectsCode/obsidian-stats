@@ -1,6 +1,11 @@
 ---
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
 import PluginsMostDownloaded from '../../components/plugins/hallOfFame/pluginsMostDownloaded.astro';
+import { getPluginDataArray } from '../../utils/data';
+import HallOfFameChart from '../../components/newSvelte/charts/HallOfFameChart.svelte';
+
+let dataArray = await getPluginDataArray();
+let view = dataArray.view();
 ---
 
 <StarlightPage
@@ -19,65 +24,65 @@ import PluginsMostDownloaded from '../../components/plugins/hallOfFame/pluginsMo
 >
 	<h3>Most Downloaded</h3>
 
-	<PluginsMostDownloaded />
+	<HallOfFameChart data={view.most_downloaded(dataArray, 10, null, false)} client:only="svelte" />
 
 	<h2 id="2024">2025 (Preliminary)</h2>
 
 	<h3>Most Downloaded</h3>
 
-	<PluginsMostDownloaded year={2025} />
+	<HallOfFameChart data={view.most_downloaded(dataArray, 10, 2025, false)} showDots={true} client:only="svelte" />
 
 	<h3>Most Downloaded New Plugins of 2025</h3>
 
-	<PluginsMostDownloaded year={2025} releaseYear={2025} />
+	<HallOfFameChart data={view.most_downloaded(dataArray, 10, 2025, true)} showDots={true} client:only="svelte" />
 
 	<h2 id="2024">2024</h2>
 
 	<h3>Most Downloaded</h3>
 
-	<PluginsMostDownloaded year={2024} />
+	<HallOfFameChart data={view.most_downloaded(dataArray, 10, 2024, false)} showDots={true} client:only="svelte" />
 
 	<h3>Most Downloaded New Plugins of 2024</h3>
 
-	<PluginsMostDownloaded year={2024} releaseYear={2024} />
+	<HallOfFameChart data={view.most_downloaded(dataArray, 10, 2024, true)} showDots={true} client:only="svelte" />
 
 	<h2 id="2023">2023</h2>
 
 	<h3>Most Downloaded</h3>
 
-	<PluginsMostDownloaded year={2023} />
+	<HallOfFameChart data={view.most_downloaded(dataArray, 10, 2023, false)} showDots={true} client:only="svelte" />
 
 	<h3>Most Downloaded New Plugins of 2023</h3>
 
-	<PluginsMostDownloaded year={2023} releaseYear={2023} />
+	<HallOfFameChart data={view.most_downloaded(dataArray, 10, 2023, true)} showDots={true} client:only="svelte" />
 
 	<h2 id="2022">2022</h2>
 
 	<h3>Most Downloaded</h3>
 
-	<PluginsMostDownloaded year={2022} />
+	<HallOfFameChart data={view.most_downloaded(dataArray, 10, 2022, false)} showDots={true} client:only="svelte" />
 
 	<h3>Most Downloaded New Plugins of 2022</h3>
 
-	<PluginsMostDownloaded year={2022} releaseYear={2022} />
+	<HallOfFameChart data={view.most_downloaded(dataArray, 10, 2022, true)} showDots={true} client:only="svelte" />
 
 	<h2 id="2021">2021</h2>
 
 	<h3>Most Downloaded</h3>
 
-	<PluginsMostDownloaded year={2021} />
+	<HallOfFameChart data={view.most_downloaded(dataArray, 10, 2021, false)} showDots={true} client:only="svelte" />
 
 	<h3>Most Downloaded New Plugins of 2021</h3>
 
-	<PluginsMostDownloaded year={2021} releaseYear={2021} />
+	<HallOfFameChart data={view.most_downloaded(dataArray, 10, 2021, true)} showDots={true} client:only="svelte" />
 
 	<h2 id="2020">2020</h2>
 
 	<h3>Most Downloaded</h3>
 
-	<PluginsMostDownloaded year={2020} />
+	<HallOfFameChart data={view.most_downloaded(dataArray, 10, 2020, false)} showDots={true} client:only="svelte" />
 
 	<h3>Most Downloaded New Plugins of 2020</h3>
 
-	<PluginsMostDownloaded year={2020} releaseYear={2020} />
+	<HallOfFameChart data={view.most_downloaded(dataArray, 10, 2020, true)} showDots={true} client:only="svelte" />
 </StarlightPage>

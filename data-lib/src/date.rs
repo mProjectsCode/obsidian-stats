@@ -169,6 +169,19 @@ impl Date {
         })
     }
 
+    pub fn iterate_daily_backwards<'a>(&'a self, start: &'a Date) -> impl Iterator<Item = Date> + 'a {
+        let mut current = self.clone();
+        std::iter::from_fn(move || {
+            if &current >= start {
+                let next = current.clone();
+                current.reverse_days(1);
+                Some(next)
+            } else {
+                None
+            }
+        })
+    }
+
     pub fn iterate_weekly_to<'a>(&'a self, end: &'a Date) -> impl Iterator<Item = Date> + 'a {
         let mut current = self.clone();
         std::iter::from_fn(move || {
