@@ -15,22 +15,34 @@ import PluginLink from '../../components/pluginLink.astro';
 import Commit from '../../components/commit.astro';
 import { getPluginWarningPercentByReleaseMonth } from '../../utils/base';
 import BarChart from '../../components/svelte/genericCharts/barChart.svelte';
+import { getPluginDataArray } from '../../utils/data';
+import PluginCountChart from '../../components/newSvelte/charts/pluginCount/PluginCountChart.svelte';
+import PluginCountNewChart from '../../components/newSvelte/charts/pluginCount/PluginCountNewChart.svelte';
+import PluginCountRemovedChart from '../../components/newSvelte/charts/pluginCount/PluginCountRemovedChart.svelte';
+import PluginRemovedByReleaseChart from '../../components/newSvelte/charts/pluginCount/PluginRemovedByReleaseChart.svelte';
 
-const pluginData = getPluginData();
+// const pluginData = getPluginData();
 
-const pluginCountAddedMonthly = getPluginCountAddedMonthly(pluginData);
+// const pluginCountAddedMonthly = getPluginCountAddedMonthly(pluginData);
 
-const pluginCountRemovedMonthly = getPluginCountRemovedMonthly(pluginData);
+// const pluginCountRemovedMonthly = getPluginCountRemovedMonthly(pluginData);
 
-const pluginPercentageRemovedByReleaseMonth = getPluginPercentageRemovedByReleaseMonth(pluginData);
+// const pluginPercentageRemovedByReleaseMonth = getPluginPercentageRemovedByReleaseMonth(pluginData);
 
-const pluginRemovedRecentList = getPluginRemovedRecentList(pluginData);
-const pluginAddedRecentList = getPluginAddedRecentList(pluginData);
+// const pluginRemovedRecentList = getPluginRemovedRecentList(pluginData);
+// const pluginAddedRecentList = getPluginAddedRecentList(pluginData);
 
-const pluginCountMonthly = getPluginCountMonthly(pluginData);
-const pluginCountWoRetiredMonthly = getPluginCountWoRetiredMonthly(pluginData);
+// const pluginCountMonthly = getPluginCountMonthly(pluginData);
+// const pluginCountWoRetiredMonthly = getPluginCountWoRetiredMonthly(pluginData);
 
-const warningsByReleaseMonth = await getPluginWarningPercentByReleaseMonth(pluginData);
+// const warningsByReleaseMonth = await getPluginWarningPercentByReleaseMonth(pluginData);
+
+const data = await getPluginDataArray();
+const view = data.view();
+
+const countDataPoints = view.monthly_plugin_count(data);
+const retiredByMonthDataPoints = view.removed_by_release_month(data);
+
 ---
 
 <StarlightPage
@@ -52,19 +64,19 @@ const warningsByReleaseMonth = await getPluginWarningPercentByReleaseMonth(plugi
 
 	<h2 id="plugin-count">Plugin Count</h2>
 
-	<DataPerMonthChart dataPoints={pluginCountWoRetiredMonthly} title="Total Plugin Count" type="line" client:only="svelte" />
-	
-	<DataPerMonthChart dataPoints={pluginCountMonthly} title="Total Plugin Count with Retired Plugins" type="line" client:only="svelte" />
+	<p>The following chart shows the total number of plugins available in the community plugin list.</p>
+
+	<PluginCountChart dataPoints={countDataPoints} client:only="svelte" />
 
 	<h2 id="new-plugins">New Plugins</h2>
 
-	<p>This shows how many new plugins have been added to the community plugin list each month.</p>
+	<p>This shows how many new plugins have been added to the community plugin list each month. The dashed gray line is the raw data and the blue line has been smoothed.</p>
 
-	<DataPerMonthChart dataPoints={pluginCountAddedMonthly} title="New Plugins per Month" client:only="svelte" />
+	<PluginCountNewChart dataPoints={countDataPoints} client:only="svelte" />
 
-	<p>This is a list of the most recently added plugins.</p>
+	<!-- <p>This is a list of the most recently added plugins.</p> -->
 
-	<table>
+	<!-- <table>
 		<thead>
 			<tr>
 				<th>Plugin</th>
@@ -85,21 +97,23 @@ const warningsByReleaseMonth = await getPluginWarningPercentByReleaseMonth(plugi
 				))
 			}
 		</tbody>
-	</table>
+	</table> -->
 
 	<h2 id="removed-plugins">Removed Plugins</h2>
 
-	<p>This shows how many plugins have been removed from the community plugin list each month.</p>
+	<p>This shows how many plugins have been removed from the community plugin list each month. The dashed gray line is the raw data and the blue line has been smoothed.</p>
 
-	<DataPerMonthChart dataPoints={pluginCountRemovedMonthly} title="Total Retired Plugin Count" type="line" client:only="svelte" />
+	<PluginCountRemovedChart dataPoints={countDataPoints} client:only="svelte" />
 
 	<p>This shows what percentage of plugins, sorted by their release month, have been removed from the community plugin list.</p>
 
-	<DataPerMonthChart dataPoints={pluginPercentageRemovedByReleaseMonth} max={100} title="Percentage of Retired Plugins by Release Month" client:only="svelte" />
+	<PluginRemovedByReleaseChart dataPoints={retiredByMonthDataPoints} client:only="svelte" />
 
-	<p>This is a list of the most recently removed plugins.</p>
+	<!-- <DataPerMonthChart dataPoints={pluginPercentageRemovedByReleaseMonth} max={100} title="Percentage of Retired Plugins by Release Month" client:only="svelte" /> -->
 
-	<table>
+	<!-- <p>This is a list of the most recently removed plugins.</p> -->
+
+	<!-- <table>
 		<thead>
 			<tr>
 				<th>Plugin</th>
@@ -120,7 +134,7 @@ const warningsByReleaseMonth = await getPluginWarningPercentByReleaseMonth(plugi
 				))
 			}
 		</tbody>
-	</table>
+	</table> -->
 
 	<h2 id="mismatched-data">Mismatched Data</h2>
 
@@ -129,7 +143,7 @@ const warningsByReleaseMonth = await getPluginWarningPercentByReleaseMonth(plugi
 		data. It seems like forgetting to update the other when updating one is a common mistake.
 	</p>
 
-	<div>
+	<!-- <div>
 		<BarChart
 			dataPoints={warningsByReleaseMonth.map(x => x.warningPercent['mismatched-manifest-data'])}
 			labels={warningsByReleaseMonth.map(x => x.month)}
@@ -139,5 +153,5 @@ const warningsByReleaseMonth = await getPluginWarningPercentByReleaseMonth(plugi
 			showXLabels={true}
 			client:only="svelte"
 		/>
-	</div>
+	</div> -->
 </StarlightPage>

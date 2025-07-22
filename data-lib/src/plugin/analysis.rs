@@ -4,7 +4,7 @@ use itertools::Itertools;
 use wasm_bindgen::prelude::wasm_bindgen;
 
 use crate::{
-    commit::StringCommit, date::Date, plugin::{warnings::{get_plugin_warnings, PluginWarning}, DownloadDataPoint, EntryChangeDataPoint, FundingUrl, IndividualDownloadDataPoint, PluginData, PluginExtraData, PluginOverviewDataPoint, PluginRepoData, PluginYearlyDataPoint, VersionDataPoint}
+    commit::StringCommit, date::Date, plugin::{warnings::{get_plugin_warnings, PluginWarning}, DownloadDataPoint, EntryChangeDataPoint, FundingUrl, IndividualDownloadDataPoint, PluginCountMonthlyDataPoint, PluginData, PluginExtraData, PluginOverviewDataPoint, PluginRemovedByReleaseDataPoint, PluginRepoData, PluginYearlyDataPoint, VersionDataPoint}
 };
 
 #[derive(Debug, Clone)]
@@ -390,7 +390,7 @@ impl FullPluginDataArrayView {
     /// }
     /// ```
     pub fn total_download_data(&self, data: &FullPluginDataArray) -> Vec<DownloadDataPoint> {
-        let start_date = Date::new(2020, 1, 1);
+        let start_date = Date::new(2020, 11, 1);
         let end_date = Date::now();
 
         start_date.iterate_weekly_to(&end_date).map(|date| {
@@ -478,7 +478,7 @@ impl FullPluginDataArrayView {
     ) -> Vec<PluginYearlyDataPoint> {
         let (start_date, end_date) = match year {
             Some(y) => (Date::new(y, 1, 1), Date::new(y + 1, 1, 1)),
-            None => (Date::new(2020, 1, 1), Date::now()),
+            None => (Date::new(2020, 11, 1), Date::now()),
         };
 
         let mut tmp = self.data.iter().filter_map(|&index| {
@@ -527,6 +527,79 @@ impl FullPluginDataArrayView {
                 data,
             }
         }).collect_vec()
+    }
+
+    pub fn monthly_plugin_count(&self, data: &FullPluginDataArray) -> Vec<PluginCountMonthlyDataPoint> {
+        let mut plugin_count: i32 = 0;
+        let mut plugin_count_with_removed: i32 = 0;
+
+        let start_date = Date::new(2020, 11, 1);
+        let end_date = Date::now();
+
+        start_date.iterate_monthly_to(&end_date).map(|date| {
+            let next_month = {
+                let mut next = date.clone();
+                next.advance_month();
+                next
+            };
+
+            let mut new_plugins = 0;
+            let mut removed_plugins = 0;
+
+            for index in &self.data {
+                let plugin_data = &data[*index];
+                if plugin_data.data.added_commit.date >= date && plugin_data.data.added_commit.date < next_month {
+                    new_plugins += 1;
+                }
+                if let Some(removed_date) = plugin_data.data.removed_commit.as_ref() && removed_date.date >= date && removed_date.date < next_month {
+                    removed_plugins += 1;
+                }
+            }
+
+            plugin_count += new_plugins - removed_plugins;
+            plugin_count_with_removed += new_plugins;
+
+            PluginCountMonthlyDataPoint {
+                date: date.to_fancy_string(),
+                total: plugin_count.max(0) as u32,
+                total_with_removed: plugin_count_with_removed.max(0) as u32,
+                new: new_plugins.max(0) as u32,
+                new_removed: removed_plugins.max(0) as u32,
+            }
+        }).collect()
+    }
+
+    pub fn removed_by_release_month(
+        &self,
+        data: &FullPluginDataArray,
+    ) -> Vec<PluginRemovedByReleaseDataPoint> {
+        let start_date = Date::new(2020, 11, 1);
+        let end_date = Date::now();
+
+        start_date.iterate_monthly_to(&end_date).map(|date| {
+            let mut removed_count = 0;
+            let mut count = 0;
+
+            self.data.iter().for_each(|&index| {
+                let plugin_data = &data[index];
+                if plugin_data.data.added_commit.date.month == date.month &&
+                   plugin_data.data.added_commit.date.year == date.year {
+                    count += 1;
+                    if plugin_data.data.removed_commit.is_some() {
+                        removed_count += 1;
+                    }
+                }
+            });
+
+            PluginRemovedByReleaseDataPoint {
+                date: date.to_fancy_string(),
+                percentage: if count > 0 {
+                    (removed_count as f64 / count as f64) * 100.0
+                } else {
+                    0.0
+                },
+            }
+        }).collect()
     }
 }
 

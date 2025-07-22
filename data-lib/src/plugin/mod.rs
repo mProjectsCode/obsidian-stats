@@ -133,3 +133,20 @@ pub struct PluginYearlyDataPoint {
     pub downloads_start: u32,
     pub data: Vec<DownloadDataPoint>,
 }
+
+#[derive(Tsify, Debug, Clone, Serialize)]
+#[tsify(into_wasm_abi)]
+pub struct PluginCountMonthlyDataPoint {
+    pub date: String,
+    pub total: u32,
+    pub total_with_removed: u32,
+    pub new: u32,
+    pub new_removed: u32,
+}
+
+#[derive(Tsify, Debug, Clone, Serialize)]
+#[tsify(into_wasm_abi)]
+pub struct PluginRemovedByReleaseDataPoint {
+    pub date: String,
+    pub percentage: f64,
+}

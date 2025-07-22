@@ -285,13 +285,6 @@ pub fn build_plugin_stats() -> Result<(), Box<dyn std::error::Error>> {
 
     plugin_data = filter_plugins(plugin_data);
 
-    // std::fs::write(
-    //     Path::new(PLUGIN_DATA_PATH),
-    //     serde_json::to_string_pretty(&plugin_data)
-    //         .expect("Failed to serialize plugin data to JSON"),
-    // )
-    // .expect("Failed to write plugin data to file");
-
     empty_dir(Path::new(PLUGIN_DATA_PATH))?;
 
     write_in_chunks(Path::new(PLUGIN_DATA_PATH), &plugin_data, 50)?;

@@ -8,7 +8,7 @@ use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 use crate::{
     constants::{
         OBS_RELEASES_REPO_PATH, PLUGIN_DEPRECATIONS_PATH, PLUGIN_REMOVED_PATH,
-        PLUGIN_REPO_DATA_PATH,
+        PLUGIN_REPO_DATA_PATH, PLUGIN_REPO_PATH,
     },
     file_utils::{empty_dir, write_in_chunks},
     plugins::{
@@ -68,7 +68,7 @@ pub fn extract_data_from_repo(
     plugin: &PluginData,
     license_comparer: &LicenseComparer,
 ) -> Result<PluginRepoData, String> {
-    let repo_path = format!("../pluginRepos/repos/{}", plugin.id);
+    let repo_path = format!("{}/{}", PLUGIN_REPO_PATH, plugin.id);
     if !std::path::Path::new(&repo_path).exists() {
         return Err(format!(
             "Repository for plugin {} does not exist at {}",

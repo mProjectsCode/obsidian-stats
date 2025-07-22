@@ -7,6 +7,7 @@ use serde_json::value;
 pub mod data;
 pub mod license;
 pub mod extra;
+pub mod clone_repos;
 
 #[derive(Debug, Clone)]
 pub struct PluginList {

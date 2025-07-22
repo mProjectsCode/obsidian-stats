@@ -2,6 +2,8 @@
 	"files.exclude": {
 		"obsidian-releases": true,
 		"choosealicense.com": false,
-		"pluginRepos": true
-	}
+		"pluginRepos": true,
+		"data/out/plugin-repos/**": true,
+	},
+	"rust-analyzer.files.exclude": ["data/out/**"]
 }

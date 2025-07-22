@@ -1,6 +1,7 @@
 <script lang="ts">
     import { Plot, Line, Frame, RectX, BrushX, GridX, RuleX, Dot, BarY, Pointer, RuleY, AxisX, AxisY } from 'svelteplot';
-    import type { VersionDataPoint } from '../../../../../data-wasm/pkg/data_wasm';
+    import type { VersionDataPoint } from '../../../../../../data-wasm/pkg/data_wasm';
+    import { smooth } from '../chartUtils';
 
     interface Props {
         dataPoints: {
@@ -24,30 +25,7 @@
         };
     });
 
-    const smoothFactor = 2;
-    const smoothedDelta = mappedData.map((point, index) => {
-        if (point.delta == null) {
-            return point;
-        }
-
-        let smoothedDelta = 0;
-        let dataPoints = 0;
-        for (let i = -smoothFactor; i <= smoothFactor; i++) {
-            let j = index + i;
-
-            if (j >= 0 && j < mappedData.length) {
-                const value = mappedData[j].delta;
-                if (value != null) {
-                    smoothedDelta += value;
-                    dataPoints++;
-                }
-            }
-        }
-        return {
-            ...point,
-            delta: smoothedDelta / dataPoints
-        };
-    });
+    const smoothedDelta = smooth(mappedData, 'delta', 2);
 
     let brush = $state({
         enabled: false,
@@ -98,6 +76,8 @@
             : mappedVersions
     );
 
+    const undefinedData = undefined as unknown as [];
+
 </script>
 
 <div style="touch-action: none">
@@ -113,7 +93,7 @@
             opacity={0.3} />
         {#if brush.enabled}
             <RectX
-                data={undefined as unknown as []}
+                data={undefinedData}
                 {...brush}
                 fill="#33aaee"
                 opacity={0.2} />

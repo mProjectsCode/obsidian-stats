@@ -28,7 +28,7 @@ export async function clonePluginRepos() {
 			continue;
 		}
 
-		const res = await $(`git clone https://github.com/${plugin.currentEntry.repo}.git pluginRepos/repos/${plugin.id} --depth 1`, undefined, Verboseness.QUITET);
+		const res = await $(`git clone https://github.com/${plugin.currentEntry.repo}.git pluginRepos/repos/${plugin.id} --depth 1 --no-tags`, undefined, Verboseness.QUITET);
 
 		progress.increment();
 

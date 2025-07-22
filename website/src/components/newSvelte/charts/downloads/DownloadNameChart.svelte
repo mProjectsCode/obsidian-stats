@@ -1,6 +1,6 @@
 <script lang="ts">
     import { Dot, GridY, Plot, RegressionY } from 'svelteplot';
-    import type { IndividualDownloadDataPoint } from '../../../../../data-wasm/pkg/data_wasm';
+    import type { IndividualDownloadDataPoint } from '../../../../../../data-wasm/pkg/data_wasm';
 
     interface Props {
         dataPoints: IndividualDownloadDataPoint[];

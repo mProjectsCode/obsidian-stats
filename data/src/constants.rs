@@ -13,6 +13,7 @@ pub const RELEASE_STATS_URL: &str =
 pub const RELEASE_INFO_URL: &str = "https://obsidian.md/changelog.xml";
 
 pub const PLUGIN_DATA_PATH: &str = "./out/plugin-data";
+pub const PLUGIN_REPO_PATH: &str = "./out/plugin-repos";
 pub const PLUGIN_REPO_DATA_PATH: &str = "./out/plugin-repo-data";
 pub const THEME_DATA_PATH: &str = "./out/theme-data";
 pub const RELEASE_FULL_DATA_PATH: &str = "./out/releases-full-data.csv";

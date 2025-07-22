@@ -1,5 +1,5 @@
 @media (min-width: 50rem) {
-	div.page > header.header > div.header.sl-flex {
+	div.page>header.header>div.header.sl-flex {
 		display: grid;
 	}
 }
@@ -74,7 +74,7 @@ a.right-sidebar-link {
 	border: none;
 }
 
-.content-panel + .content-panel {
+.content-panel+.content-panel {
 	border: none;
 }
 
@@ -128,11 +128,11 @@ aside.starlight-aside {
 	--timeline-background-color: var(--sl-color-bg);
 }
 
-.timeline > .timeline-group:first-child {
+.timeline>.timeline-group:first-child {
 	--timeline-group-spacing: 0px;
 }
 
-.timeline > .timeline-group {
+.timeline>.timeline-group {
 	position: relative;
 	margin-top: 0;
 	margin-left: var(--timeline-guide-spacing);
@@ -141,7 +141,7 @@ aside.starlight-aside {
 	padding-top: var(--timeline-group-spacing);
 }
 
-.timeline > .timeline-group > .timeline-group-heading {
+.timeline>.timeline-group>.timeline-group-heading {
 	font-size: var(--sl-text-xl);
 }
 
@@ -156,7 +156,7 @@ aside.starlight-aside {
 	background-color: var(--sl-color-text-accent);
 }
 
-.timeline-element > .timeline-element-heading {
+.timeline-element>.timeline-element-heading {
 	font-size: var(--sl-text-base);
 
 }
@@ -177,6 +177,10 @@ aside.starlight-aside {
 	border: 1px solid var(--sl-color-text-accent);
 } */
 
-.timeline-element > p {
+.timeline-element>p {
 	margin-top: 0.5rem !important;
+}
+
+.no-overflow>div>svg {
+	overflow: visible;
 }
