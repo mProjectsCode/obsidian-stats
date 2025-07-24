@@ -7,7 +7,7 @@ pub mod file_utils;
 pub mod plugins;
 
 fn main() {
-    build_plugin_stats().expect("Failed to build plugin stats");
+    // build_plugin_stats().expect("Failed to build plugin stats");
 
     // println!();
     // println!("Cloning plugin repositories...");

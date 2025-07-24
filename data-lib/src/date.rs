@@ -169,7 +169,10 @@ impl Date {
         })
     }
 
-    pub fn iterate_daily_backwards<'a>(&'a self, start: &'a Date) -> impl Iterator<Item = Date> + 'a {
+    pub fn iterate_daily_backwards<'a>(
+        &'a self,
+        start: &'a Date,
+    ) -> impl Iterator<Item = Date> + 'a {
         let mut current = self.clone();
         std::iter::from_fn(move || {
             if &current >= start {

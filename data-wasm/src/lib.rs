@@ -12,18 +12,22 @@ pub fn load_data_from_chunks(
 ) -> Result<FullPluginDataArray, JsValue> {
     set_panic_hook();
 
-    let data = data_chunks.iter()
+    let data = data_chunks
+        .iter()
         .map(|chunk| serde_json::from_str::<Vec<PluginData>>(chunk))
         .collect::<Result<Vec<_>, _>>()
         .map_err(|e| JsValue::from_str(&format!("Failed to parse data chunks: {}", e)))?;
     let data = data.into_iter().flatten().collect::<Vec<PluginData>>();
 
-    let extended_data = extended_data_chunks.iter()
+    let extended_data = extended_data_chunks
+        .iter()
         .map(|chunk| serde_json::from_str::<Vec<PluginExtraData>>(chunk))
         .collect::<Result<Vec<_>, _>>()
         .map_err(|e| JsValue::from_str(&format!("Failed to parse repo data chunks: {}", e)))?;
-    let extended_data = extended_data.into_iter().flatten().collect::<Vec<PluginExtraData>>();
-
+    let extended_data = extended_data
+        .into_iter()
+        .flatten()
+        .collect::<Vec<PluginExtraData>>();
 
     Ok(FullPluginDataArray::new(data, extended_data))
 }

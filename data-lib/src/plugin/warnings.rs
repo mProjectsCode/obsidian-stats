@@ -1,7 +1,7 @@
 use serde::Serialize;
 use tsify::Tsify;
 
-use crate::{commit::{Commit, StringCommit}, date::Date, plugin::analysis::FullPluginData};
+use crate::{commit::StringCommit, date::Date, plugin::analysis::FullPluginData};
 
 #[derive(Tsify, Debug, Clone, Serialize)]
 #[tsify(into_wasm_abi)]
@@ -111,11 +111,13 @@ fn get_inactivity_warnings(data: &FullPluginData, warnings: &mut Vec<PluginWarni
         warnings.push(PluginWarning::Removed(PluginWarningRemoved {
             severity: PluginWarningSeverity::DANGER,
             removed_commit: commit.to_string_commit(),
-            removed_reason: data.extended.as_ref().and_then(|e| e.removal_reason.clone()),
+            removed_reason: data
+                .extended
+                .as_ref()
+                .and_then(|e| e.removal_reason.clone()),
         }));
         return;
     }
-
 
     let latest_release_date = data
         .data

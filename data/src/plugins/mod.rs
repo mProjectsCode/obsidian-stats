@@ -1,13 +1,19 @@
-use data_lib::{commit::Commit, common::{DownloadHistory, EntryChange, VersionHistory}, date::Date, input_data::{ObsCommunityPlugin, ObsDownloadStats}, version::Version};
+use data_lib::{
+    commit::Commit,
+    common::{DownloadHistory, EntryChange, VersionHistory},
+    date::Date,
+    input_data::{ObsCommunityPlugin, ObsDownloadStats},
+    version::Version,
+};
 use hashbrown::HashMap;
 
-use serde::{Serialize};
+use serde::Serialize;
 use serde_json::value;
 
-pub mod data;
-pub mod license;
-pub mod extra;
 pub mod clone_repos;
+pub mod data;
+pub mod extra;
+pub mod license;
 
 #[derive(Debug, Clone)]
 pub struct PluginList {
@@ -147,7 +153,9 @@ impl<'a> BorrowedPluginData<'a> {
 
     pub fn update_download_history(&mut self, stats: &PluginDownloadStats) {
         if let Some(entry) = stats.entries.get(&self.id) {
-            self.download_history.0.insert(stats.commit.date.to_fancy_string(), entry.downloads);
+            self.download_history
+                .0
+                .insert(stats.commit.date.to_fancy_string(), entry.downloads);
 
             if entry.downloads > self.download_count {
                 self.download_count = entry.downloads;

@@ -1,41 +1,10 @@
 ---
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
-import { getPluginData } from '../../../../src/utils';
-import {
-	getPluginAddedRecentList,
-	getPluginCountAddedMonthly,
-	getPluginCountMonthly,
-	getPluginCountRemovedMonthly,
-	getPluginCountWoRetiredMonthly,
-	getPluginPercentageRemovedByReleaseMonth,
-	getPluginRemovedRecentList,
-} from '../../../../src/plugin/data';
-import DataPerMonthChart from '../../components/svelte/genericCharts/dataPerMonthChart.svelte';
-import PluginLink from '../../components/pluginLink.astro';
-import Commit from '../../components/commit.astro';
-import { getPluginWarningPercentByReleaseMonth } from '../../utils/base';
-import BarChart from '../../components/svelte/genericCharts/barChart.svelte';
 import { getPluginDataArray } from '../../utils/data';
 import PluginCountChart from '../../components/newSvelte/charts/pluginCount/PluginCountChart.svelte';
 import PluginCountNewChart from '../../components/newSvelte/charts/pluginCount/PluginCountNewChart.svelte';
 import PluginCountRemovedChart from '../../components/newSvelte/charts/pluginCount/PluginCountRemovedChart.svelte';
 import PluginRemovedByReleaseChart from '../../components/newSvelte/charts/pluginCount/PluginRemovedByReleaseChart.svelte';
-
-// const pluginData = getPluginData();
-
-// const pluginCountAddedMonthly = getPluginCountAddedMonthly(pluginData);
-
-// const pluginCountRemovedMonthly = getPluginCountRemovedMonthly(pluginData);
-
-// const pluginPercentageRemovedByReleaseMonth = getPluginPercentageRemovedByReleaseMonth(pluginData);
-
-// const pluginRemovedRecentList = getPluginRemovedRecentList(pluginData);
-// const pluginAddedRecentList = getPluginAddedRecentList(pluginData);
-
-// const pluginCountMonthly = getPluginCountMonthly(pluginData);
-// const pluginCountWoRetiredMonthly = getPluginCountWoRetiredMonthly(pluginData);
-
-// const warningsByReleaseMonth = await getPluginWarningPercentByReleaseMonth(pluginData);
 
 const data = await getPluginDataArray();
 const view = data.view();
@@ -66,13 +35,13 @@ const retiredByMonthDataPoints = view.removed_by_release_month(data);
 
 	<p>The following chart shows the total number of plugins available in the community plugin list.</p>
 
-	<PluginCountChart dataPoints={countDataPoints} client:only="svelte" />
+	<p><PluginCountChart dataPoints={countDataPoints} client:only="svelte" /></p>
 
 	<h2 id="new-plugins">New Plugins</h2>
 
 	<p>This shows how many new plugins have been added to the community plugin list each month. The dashed gray line is the raw data and the blue line has been smoothed.</p>
 
-	<PluginCountNewChart dataPoints={countDataPoints} client:only="svelte" />
+	<p><PluginCountNewChart dataPoints={countDataPoints} client:only="svelte" /></p>
 
 	<!-- <p>This is a list of the most recently added plugins.</p> -->
 
@@ -103,13 +72,11 @@ const retiredByMonthDataPoints = view.removed_by_release_month(data);
 
 	<p>This shows how many plugins have been removed from the community plugin list each month. The dashed gray line is the raw data and the blue line has been smoothed.</p>
 
-	<PluginCountRemovedChart dataPoints={countDataPoints} client:only="svelte" />
+	<p><PluginCountRemovedChart dataPoints={countDataPoints} client:only="svelte" /></p>
 
 	<p>This shows what percentage of plugins, sorted by their release month, have been removed from the community plugin list.</p>
 
-	<PluginRemovedByReleaseChart dataPoints={retiredByMonthDataPoints} client:only="svelte" />
-
-	<!-- <DataPerMonthChart dataPoints={pluginPercentageRemovedByReleaseMonth} max={100} title="Percentage of Retired Plugins by Release Month" client:only="svelte" /> -->
+	<p><PluginRemovedByReleaseChart dataPoints={retiredByMonthDataPoints} client:only="svelte" /></p>
 
 	<!-- <p>This is a list of the most recently removed plugins.</p> -->
 

@@ -52,9 +52,9 @@ const versions = plugin.versions();
 const changes = plugin.changes();
 
 function getAsideVariant(warning: PluginWarning): 'note' | 'tip' | 'caution' | 'danger' {
-	if (warning.severity === "CAUTION") {
+	if (warning.severity === 'CAUTION') {
 		return 'caution';
-	} else if (warning.severity === "DANGER") {
+	} else if (warning.severity === 'DANGER') {
 		return 'danger';
 	}
 
@@ -84,13 +84,19 @@ function getAsideVariant(warning: PluginWarning): 'note' | 'tip' | 'caution' | '
 				case 'Inactivity12Months':
 					return (
 						<Aside variant={getAsideVariant(warning)} title="Inactivity Warning">
-							<p>The latest version <code>{warning.latest_version}</code> of this plugin was released on the {warning.last_release_date} and is thus more than one year old.</p>
+							<p>
+								The latest version <code>{warning.latest_version}</code> of this plugin was released on the {warning.last_release_date} and is
+								thus more than one year old.
+							</p>
 						</Aside>
 					);
 				case 'Inactivity24Months':
 					return (
 						<Aside variant={getAsideVariant(warning)} title="Inactivity Warning">
-							<p>The latest version <code>{warning.latest_version}</code> of this plugin was released on the {warning.last_release_date} and is thus more than two years old.</p>
+							<p>
+								The latest version <code>{warning.latest_version}</code> of this plugin was released on the {warning.last_release_date} and is
+								thus more than two years old.
+							</p>
 						</Aside>
 					);
 				case 'Removed':
@@ -99,12 +105,13 @@ function getAsideVariant(warning: PluginWarning): 'note' | 'tip' | 'caution' | '
 							<p>
 								{warning.removed_reason ? (
 									<>
-										This plugin has been removed from the community list on <Commit commit={warning.removed_commit} /> with reason <i>{warning.removed_reason}</i> and
-										can no longer be installed.
+										This plugin has been removed from the community list on <Commit commit={warning.removed_commit} /> with reason{' '}
+										<i>{warning.removed_reason}</i> and can no longer be installed.
 									</>
 								) : (
 									<>
-										This plugin has been removed from the community list on <Commit commit={warning.removed_commit} /> and can no longer be installed.
+										This plugin has been removed from the community list on <Commit commit={warning.removed_commit} /> and can no longer be
+										installed.
 									</>
 								)}
 							</p>
@@ -138,11 +145,12 @@ function getAsideVariant(warning: PluginWarning): 'note' | 'tip' | 'caution' | '
 					return (
 						<Aside variant={getAsideVariant(warning)} title="Unlicensed Plugin">
 							<p>
-								This plugin is explicitly not licensed, thus the author has all rights reserved. This means that it can not be forked or maintained by another
-								developer without explicit approval be the current author.
+								This plugin is explicitly not licensed, thus the author has all rights reserved. This means that it can not be forked or
+								maintained by another developer without explicit approval be the current author.
 							</p>
 							<p>
-								This information is based on the <code>LICENSE</code> file in the plugin's repository. Identification of said file may not be accurate.
+								This information is based on the <code>LICENSE</code> file in the plugin's repository. Identification of said file may not be
+								accurate.
 							</p>
 						</Aside>
 					);
@@ -150,16 +158,16 @@ function getAsideVariant(warning: PluginWarning): 'note' | 'tip' | 'caution' | '
 					return (
 						<Aside variant={getAsideVariant(warning)} title="Unlicensed Plugin">
 							<p>
-								This plugin intentionally or unintentionally specified no license. This means that it can not be forked or maintained by another developer
-								without explicit approval be the current author. Please consider asking the developer to add a license to{' '}
+								This plugin intentionally or unintentionally specified no license. This means that it can not be forked or maintained by another
+								developer without explicit approval be the current author. Please consider asking the developer to add a license to{' '}
 								<a href={`https://github.com/${plugin.repo_url()}`} target="_blank">
 									their repository
 								</a>
 								.
 							</p>
 							<p>
-								This information is based on the absence of a <code>LICENSE</code>, <code>LICENSE.md</code>, or <code>LICENSE.txt</code> file in the plugin's
-								repository.
+								This information is based on the absence of a <code>LICENSE</code>, <code>LICENSE.md</code>, or <code>LICENSE.txt</code> file in
+								the plugin's repository.
 							</p>
 						</Aside>
 					);
@@ -167,29 +175,26 @@ function getAsideVariant(warning: PluginWarning): 'note' | 'tip' | 'caution' | '
 					return (
 						<Aside variant={getAsideVariant(warning)} title="Mismatched License">
 							<p>
-								The license information in the plugin's <code>package.json</code> file (<code>{warning.package_json_license}</code>) does not match the{' '}
-								<code>LICENSE</code> file (<code>{warning.license_file}</code>) in the repository. The <code>LICENSE</code> file takes precedence, but
-								please consider asking the developer to clarify the license of the plugin.
+								The license information in the plugin's <code>package.json</code> file (<code>{warning.package_json_license}</code>) does not
+								match the <code>LICENSE</code> file (<code>{warning.license_file}</code>) in the repository. The <code>LICENSE</code> file takes
+								precedence, but please consider asking the developer to clarify the license of the plugin.
 							</p>
 							<p>
-								This information is based on the <code>LICENSE</code> file in the plugin's repository. Identification of said file may not be accurate.
+								This information is based on the <code>LICENSE</code> file in the plugin's repository. Identification of said file may not be
+								accurate.
 							</p>
 						</Aside>
 					);
 				case 'MissingExtendedData':
 					return (
 						<Aside variant={getAsideVariant(warning)} title="Data Analysis Failed">
-							<p>
-								Something went wrong while analyzing the plugin's repository.
-							</p>
+							<p>Something went wrong while analyzing the plugin's repository.</p>
 						</Aside>
 					);
 				case 'MissingRepoData':
 					return (
 						<Aside variant={getAsideVariant(warning)} title="Data Analysis Failed">
-							<p>
-								Something went wrong while analyzing the plugin's repository. The reason for the error is displayed below.
-							</p>
+							<p>Something went wrong while analyzing the plugin's repository. The reason for the error is displayed below.</p>
 							<p>
 								<code>{warning.message}</code>
 							</p>
@@ -328,29 +333,15 @@ function getAsideVariant(warning: PluginWarning): 'note' | 'tip' | 'caution' | '
 						</tr>
 						<tr>
 							<td>Installed Bundlers</td>
-							<td>
-								{plugin.bundlers() ? (
-									plugin.bundlers()!.join(', ')
-								) : (
-									'None found'
-								)}
-							</td>
+							<td>{plugin.bundlers() ? plugin.bundlers()!.join(', ') : 'None found'}</td>
 						</tr>
 						<tr>
 							<td>Installed Testing Frameworks</td>
-							<td>
-								{plugin.testing_frameworks() ? (
-									plugin.testing_frameworks()!.join(', ')
-								) : (
-									'None found'
-								)}
-							</td>
+							<td>{plugin.testing_frameworks() ? plugin.testing_frameworks()!.join(', ') : 'None found'}</td>
 						</tr>
 						<tr>
 							<td>Has Test Files</td>
-							<td>
-								{plugin.has_test_files() ? 'Yes' : 'No'}
-							</td>
+							<td>{plugin.has_test_files() ? 'Yes' : 'No'}</td>
 						</tr>
 						<tr>
 							<td>Uses BRAT beta releases</td>
@@ -360,7 +351,7 @@ function getAsideVariant(warning: PluginWarning): 'note' | 'tip' | 'caution' | '
 							<td>Dependencies</td>
 							<td>
 								{plugin.has_package_json() ? (
-									plugin.dependencies()?.sort().join(', ') ?? ''
+									(plugin.dependencies()?.sort().join(', ') ?? '')
 								) : (
 									<>
 										No <code>package.json</code> found
@@ -372,7 +363,7 @@ function getAsideVariant(warning: PluginWarning): 'note' | 'tip' | 'caution' | '
 							<td>Dev Dependencies</td>
 							<td>
 								{plugin.has_package_json() ? (
-									plugin.dev_dependencies()?.sort().join(', ') ?? ''
+									(plugin.dev_dependencies()?.sort().join(', ') ?? '')
 								) : (
 									<>
 										No <code>package.json</code> found
@@ -406,11 +397,12 @@ function getAsideVariant(warning: PluginWarning): 'note' | 'tip' | 'caution' | '
 
 	<h2 id="downloads">Downloads</h2>
 
-	The following chart shows the total number of downloads of the plugin over time.
-	The second chart shows the delta of downloads per week, which is the number of new downloads per week.
-	New version releases are marked with vertical lines.
+	<p>
+		The following chart shows the total number of downloads of the plugin over time. The second chart shows the delta of downloads per week, which is the
+		number of new downloads per week. New version releases are marked with vertical lines.
+	</p>
 
-	<DownloadChart dataPoints={pluginDownloadData} versions={versions} client:only="svelte" />
+	<p><DownloadChart dataPoints={pluginDownloadData} versions={versions} client:only="svelte" /></p>
 
 	<h2 id="version-history">Version History</h2>
 

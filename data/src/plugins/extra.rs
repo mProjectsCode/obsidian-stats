@@ -1,6 +1,12 @@
 use std::{fs, path::Path};
 
-use data_lib::{input_data::{ObsCommunityPluginDeprecations, ObsCommunityPluginRemoved}, plugin::{bundlers::Bundler, packages::PackageManager, testing::TestingFramework, PluginExtraData, PluginRepoData, PluginData}};
+use data_lib::{
+    input_data::{ObsCommunityPluginDeprecations, ObsCommunityPluginRemoved},
+    plugin::{
+        PluginData, PluginExtraData, PluginRepoData, bundlers::Bundler, packages::PackageManager,
+        testing::TestingFramework,
+    },
+};
 use hashbrown::HashMap;
 use indicatif::ParallelProgressIterator;
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
@@ -11,10 +17,7 @@ use crate::{
         PLUGIN_REPO_DATA_PATH, PLUGIN_REPO_PATH,
     },
     file_utils::{empty_dir, write_in_chunks},
-    plugins::{
-        data::read_plugin_data,
-        license::license_compare::LicenseComparer,
-    },
+    plugins::{data::read_plugin_data, license::license_compare::LicenseComparer},
 };
 
 pub fn extract_extra_data() -> Result<(), Box<dyn std::error::Error>> {
@@ -230,15 +233,18 @@ fn list_files_rec(path: &str, files: &mut Vec<String>) {
 fn get_removed_plugins() -> Result<Vec<ObsCommunityPluginRemoved>, Box<dyn std::error::Error>> {
     let plugin_removed_list = fs::read_to_string(Path::new(&format!(
         "{OBS_RELEASES_REPO_PATH}/{PLUGIN_REMOVED_PATH}",
-    ))).expect("Failed to read plugin removed list");
+    )))
+    .expect("Failed to read plugin removed list");
 
     Ok(serde_json::from_str(&plugin_removed_list)?)
 }
 
-fn get_plugin_version_deprecations() -> Result<ObsCommunityPluginDeprecations, Box<dyn std::error::Error>> {
+fn get_plugin_version_deprecations()
+-> Result<ObsCommunityPluginDeprecations, Box<dyn std::error::Error>> {
     let plugin_deprecations = fs::read_to_string(Path::new(&format!(
         "{OBS_RELEASES_REPO_PATH}/{PLUGIN_DEPRECATIONS_PATH}",
-    ))).expect("Failed to read plugin deprecations");
+    )))
+    .expect("Failed to read plugin deprecations");
 
     Ok(serde_json::from_str(&plugin_deprecations)?)
 }

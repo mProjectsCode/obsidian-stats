@@ -23,7 +23,7 @@
 
 </script>
 
-<Plot grid>
+<Plot grid y={{label: '↑ New Plugin Releases per Month'}}>
     <Line data={smoothedData} x="date" y="new" stroke="var(--sl-color-text-accent)" />
     <Line data={mappedDataPoints} x="date" y="new" strokeDasharray={"5"} opacity={0.3} />
     <Dot data={mappedDataPoints} x="date" y="new" opacity={0.3} />

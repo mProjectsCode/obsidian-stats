@@ -2,12 +2,17 @@ use hashbrown::HashMap;
 use serde::{Deserialize, Serialize};
 use tsify::Tsify;
 
-use crate::{commit::{Commit, StringCommit}, common::{DownloadHistory, EntryChange, VersionHistory}, input_data::ObsCommunityPlugin, plugin::{bundlers::Bundler, packages::PackageManager, testing::TestingFramework}};
+use crate::{
+    commit::{Commit, StringCommit},
+    common::{DownloadHistory, EntryChange, VersionHistory},
+    input_data::ObsCommunityPlugin,
+    plugin::{bundlers::Bundler, packages::PackageManager, testing::TestingFramework},
+};
 
+pub mod analysis;
 pub mod bundlers;
 pub mod packages;
 pub mod testing;
-pub mod analysis;
 pub mod warnings;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -149,4 +154,36 @@ pub struct PluginCountMonthlyDataPoint {
 pub struct PluginRemovedByReleaseDataPoint {
     pub date: String,
     pub percentage: f64,
+}
+
+#[derive(Tsify, Debug, Clone, Serialize)]
+#[tsify(into_wasm_abi)]
+pub struct PluginInactivityByReleaseDataPoint {
+    pub date: String,
+    pub inactive_one_year: f64,
+    pub inactive_two_years: f64,
+    pub inactive_three_years: f64,
+    pub inactive_four_years: f64,
+    pub inactive_five_years: f64,
+}
+
+#[derive(Tsify, Debug, Clone, Serialize)]
+#[tsify(into_wasm_abi)]
+pub struct NamedDataPoint {
+    pub name: String,
+    pub value: f64,
+}
+
+#[derive(Tsify, Debug, Clone, Serialize, Default)]
+#[tsify(into_wasm_abi)]
+pub struct PluginRepoDataPoints {
+    bundlers: Vec<NamedDataPoint>,
+    no_bundlers: f64,
+    package_managers: Vec<NamedDataPoint>,
+    no_package_managers: f64,
+    testing_frameworks: Vec<NamedDataPoint>,
+    no_testing_frameworks: f64,
+    dependencies: Vec<NamedDataPoint>,
+    beta_manifest: f64,
+    typescript: f64,
 }

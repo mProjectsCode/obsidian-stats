@@ -5,6 +5,24 @@ let data: wasm.FullPluginDataArray | null = null;
 let loadingPromise: Promise<wasm.FullPluginDataArray> | null = null;
 
 export async function getPluginDataArray(): Promise<wasm.FullPluginDataArray> {
+    // if (data) {
+    //     return data;
+    // }
+
+    // if (loadingPromise) {
+    //     return loadingPromise;
+    // }
+
+    // loadingPromise = loadData()
+    //     .then(loadedData => {
+    //         data = loadedData;
+    //         return data;
+    //     })
+    //     .finally(() => {
+    //         loadingPromise = null;
+    //     });
+
+    // return loadingPromise;
     return loadData();
 }
 

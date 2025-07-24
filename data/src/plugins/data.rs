@@ -1,4 +1,9 @@
-use data_lib::{commit::Commit, date::Date, input_data::{ObsDownloadStats, ObsPluginList}, plugin::PluginData};
+use data_lib::{
+    commit::Commit,
+    date::Date,
+    input_data::{ObsDownloadStats, ObsPluginList},
+    plugin::PluginData,
+};
 use hashbrown::HashMap;
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 use std::{path::Path, process::Command};
@@ -181,7 +186,10 @@ fn update_weekly_download_stats(
     }
 }
 
-fn update_version_history(plugin_data: &mut [BorrowedPluginData], download_stats: &[PluginDownloadStats]) {
+fn update_version_history(
+    plugin_data: &mut [BorrowedPluginData],
+    download_stats: &[PluginDownloadStats],
+) {
     println!("Updating version history...");
 
     for stat in download_stats {

@@ -23,7 +23,7 @@
 
 </script>
 
-<Plot grid>
+<Plot grid y={{label: '↑ Plugins Removed per Month'}}>
     <Line data={smoothedData} x="date" y="new_removed" stroke="var(--sl-color-text-accent)" />
     <Line data={mappedDataPoints} x="date" y="new_removed" strokeDasharray={"5"} opacity={0.3} />
     <Dot data={mappedDataPoints} x="date" y="new_removed" opacity={0.3} />

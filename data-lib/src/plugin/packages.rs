@@ -42,9 +42,13 @@ impl PackageManager {
     }
 
     pub fn matches_lock_file(&self, file_name: &str) -> bool {
-        self.get_lock_file_name()
-            .iter()
-            .any(|name| file_name.ends_with(name))
+        self.get_lock_file_name().iter().any(|name| {
+            if file_name.contains("/") {
+                file_name.ends_with(format!("/{}", name).as_str())
+            } else {
+                file_name == *name
+            }
+        })
     }
 
     pub fn iter_variants() -> impl Iterator<Item = PackageManager> {
