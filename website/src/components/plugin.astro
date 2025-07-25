@@ -85,8 +85,8 @@ function getAsideVariant(warning: PluginWarning): 'note' | 'tip' | 'caution' | '
 					return (
 						<Aside variant={getAsideVariant(warning)} title="Inactivity Warning">
 							<p>
-								The latest version <code>{warning.latest_version}</code> of this plugin was released on the {warning.last_release_date} and is
-								thus more than one year old.
+								The latest version <code>{warning.latest_version}</code> of this plugin was released on the {warning.last_release_date} and is thus more than
+								one year old.
 							</p>
 						</Aside>
 					);
@@ -94,8 +94,8 @@ function getAsideVariant(warning: PluginWarning): 'note' | 'tip' | 'caution' | '
 					return (
 						<Aside variant={getAsideVariant(warning)} title="Inactivity Warning">
 							<p>
-								The latest version <code>{warning.latest_version}</code> of this plugin was released on the {warning.last_release_date} and is
-								thus more than two years old.
+								The latest version <code>{warning.latest_version}</code> of this plugin was released on the {warning.last_release_date} and is thus more than
+								two years old.
 							</p>
 						</Aside>
 					);
@@ -110,8 +110,7 @@ function getAsideVariant(warning: PluginWarning): 'note' | 'tip' | 'caution' | '
 									</>
 								) : (
 									<>
-										This plugin has been removed from the community list on <Commit commit={warning.removed_commit} /> and can no longer be
-										installed.
+										This plugin has been removed from the community list on <Commit commit={warning.removed_commit} /> and can no longer be installed.
 									</>
 								)}
 							</p>
@@ -145,12 +144,11 @@ function getAsideVariant(warning: PluginWarning): 'note' | 'tip' | 'caution' | '
 					return (
 						<Aside variant={getAsideVariant(warning)} title="Unlicensed Plugin">
 							<p>
-								This plugin is explicitly not licensed, thus the author has all rights reserved. This means that it can not be forked or
-								maintained by another developer without explicit approval be the current author.
+								This plugin is explicitly not licensed, thus the author has all rights reserved. This means that it can not be forked or maintained by another
+								developer without explicit approval be the current author.
 							</p>
 							<p>
-								This information is based on the <code>LICENSE</code> file in the plugin's repository. Identification of said file may not be
-								accurate.
+								This information is based on the <code>LICENSE</code> file in the plugin's repository. Identification of said file may not be accurate.
 							</p>
 						</Aside>
 					);
@@ -158,16 +156,16 @@ function getAsideVariant(warning: PluginWarning): 'note' | 'tip' | 'caution' | '
 					return (
 						<Aside variant={getAsideVariant(warning)} title="Unlicensed Plugin">
 							<p>
-								This plugin intentionally or unintentionally specified no license. This means that it can not be forked or maintained by another
-								developer without explicit approval be the current author. Please consider asking the developer to add a license to{' '}
+								This plugin intentionally or unintentionally specified no license. This means that it can not be forked or maintained by another developer
+								without explicit approval be the current author. Please consider asking the developer to add a license to{' '}
 								<a href={`https://github.com/${plugin.repo_url()}`} target="_blank">
 									their repository
 								</a>
 								.
 							</p>
 							<p>
-								This information is based on the absence of a <code>LICENSE</code>, <code>LICENSE.md</code>, or <code>LICENSE.txt</code> file in
-								the plugin's repository.
+								This information is based on the absence of a <code>LICENSE</code>, <code>LICENSE.md</code>, or <code>LICENSE.txt</code> file in the plugin's
+								repository.
 							</p>
 						</Aside>
 					);
@@ -175,13 +173,12 @@ function getAsideVariant(warning: PluginWarning): 'note' | 'tip' | 'caution' | '
 					return (
 						<Aside variant={getAsideVariant(warning)} title="Mismatched License">
 							<p>
-								The license information in the plugin's <code>package.json</code> file (<code>{warning.package_json_license}</code>) does not
-								match the <code>LICENSE</code> file (<code>{warning.license_file}</code>) in the repository. The <code>LICENSE</code> file takes
-								precedence, but please consider asking the developer to clarify the license of the plugin.
+								The license information in the plugin's <code>package.json</code> file (<code>{warning.package_json_license}</code>) does not match the{' '}
+								<code>LICENSE</code> file (<code>{warning.license_file}</code>) in the repository. The <code>LICENSE</code> file takes precedence, but please
+								consider asking the developer to clarify the license of the plugin.
 							</p>
 							<p>
-								This information is based on the <code>LICENSE</code> file in the plugin's repository. Identification of said file may not be
-								accurate.
+								This information is based on the <code>LICENSE</code> file in the plugin's repository. Identification of said file may not be accurate.
 							</p>
 						</Aside>
 					);
@@ -311,8 +308,8 @@ function getAsideVariant(warning: PluginWarning): 'note' | 'tip' | 'caution' | '
 						<tr>
 							<td>License</td>
 							<td>
-								<code>{plugin.license_package_json()}</code> in <code>package.json</code> <br /> <code>{plugin.license_file()}</code> in{' '}
-								<code>LICENSE</code> file
+								<code>{plugin.license_package_json()}</code> in <code>package.json</code> <br /> <code>{plugin.license_file()}</code> in <code>LICENSE</code>{' '}
+								file
 							</td>
 						</tr>
 						<tr>
@@ -379,12 +376,10 @@ function getAsideVariant(warning: PluginWarning): 'note' | 'tip' | 'caution' | '
 					<code>unknown</code>, or say <code>not found</code>, please check the repository or contact the author for clarification.
 				</p>
 				<p class="muted">
-					<i>Has Test Files</i> looks for files ending in <code>.test.js</code>, <code>.test.ts</code>, <code>.spec.js</code> or <code>.spec.ts</code>
-					.
+					<i>Has Test Files</i> looks for files ending in <code>.test.js</code>, <code>.test.ts</code>, <code>.spec.js</code> or <code>.spec.ts</code>.
 				</p>
 				<p class="muted">
-					<i>Installed Testing Frameworks</i> looks at installed dependencies. This does not mean that a plugin is actually using the testing
-					framework.
+					<i>Installed Testing Frameworks</i> looks at installed dependencies. This does not mean that a plugin is actually using the testing framework.
 				</p>
 				<p class="muted">
 					<i>Dependencies</i> and <i>Dev Dependencies</i> only list the direct dependencies of the plugin.
@@ -398,8 +393,8 @@ function getAsideVariant(warning: PluginWarning): 'note' | 'tip' | 'caution' | '
 	<h2 id="downloads">Downloads</h2>
 
 	<p>
-		The following chart shows the total number of downloads of the plugin over time. The second chart shows the delta of downloads per week, which is the
-		number of new downloads per week. New version releases are marked with vertical lines.
+		The following chart shows the total number of downloads of the plugin over time. The second chart shows the delta of downloads per week, which is the number
+		of new downloads per week. New version releases are marked with vertical lines.
 	</p>
 
 	<p><DownloadChart dataPoints={pluginDownloadData} versions={versions} client:only="svelte" /></p>
@@ -428,7 +423,7 @@ function getAsideVariant(warning: PluginWarning): 'note' | 'tip' | 'caution' | '
 	</table>
 
 	<p class="muted">
-		<i>Blacklisted</i> versions are versions that are known to cause major issues or contain security concerns and have thus been blacklisted by the Obsidian
-		team. Obsidian will disable plugins on startup whose installed version is blacklisted. It is strongly recommended to update to a newer version.
+		<i>Blacklisted</i> versions are versions that are known to cause major issues or contain security concerns and have thus been blacklisted by the Obsidian team.
+		Obsidian will disable plugins on startup whose installed version is blacklisted. It is strongly recommended to update to a newer version.
 	</p>
 </StarlightPage>

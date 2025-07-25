@@ -6,24 +6,25 @@
 		dataPoints: NamedDataPoint[];
 		xLabel: string;
 		yLabel: string;
+		skewLabels?: boolean;
 		yDomain?: [number, number];
 	}
 
-	const { dataPoints, xLabel, yLabel, yDomain }: Props = $props();
+	const { dataPoints, xLabel, yLabel, yDomain, skewLabels = false }: Props = $props();
 
 	const mappedDataPoints = dataPoints.map((point, index) => {
-	    return {
-	        index: index,
-	        label: point.name,
-	        value: point.value,
-	    };
+		return {
+			index: index,
+			label: point.name,
+			value: point.value,
+		};
 	});
 
-    function sortData(a: any, b: any) {
-        return b.value - a.value; // Sort in descending order
-    }
+	function sortData(a: any, b: any) {
+		return b.value - a.value; // Sort in descending order
+	}
 </script>
 
-<Plot grid x={{ type: 'band', label: `${xLabel} →` }} y={{ label: `↑ ${yLabel}`, domain: yDomain }} class="no-overflow">
-	<BarY data={mappedDataPoints} x="label" y="value" fill="white" sort={sortData} />
+<Plot grid x={{ type: 'band', label: `${xLabel} →`, tickRotate: skewLabels ? 45 : 0 }} y={{ label: `↑ ${yLabel}`, domain: yDomain }} class="no-overflow">
+	<BarY data={mappedDataPoints} x="label" y="value" fill="var(--sl-color-text-accent)" sort={sortData} />
 </Plot>

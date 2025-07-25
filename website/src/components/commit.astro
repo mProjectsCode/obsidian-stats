@@ -1,22 +1,22 @@
 ---
 import { type Commit } from '../../../src/types';
 
-const props = Astro.props as { commit: Commit } | { date: string, hash: string };
+const props = Astro.props as { commit: Commit } | { date: string; hash: string };
 
 function getHash(): string {
-    if ('commit' in props) {
-        return props.commit.hash;
-    } else {
-        return props.hash;
-    }
+	if ('commit' in props) {
+		return props.commit.hash;
+	} else {
+		return props.hash;
+	}
 }
 
 function getDate(): string {
-    if ('commit' in props) {
-        return props.commit.date;
-    } else {
-        return props.date;
-    }
+	if ('commit' in props) {
+		return props.commit.date;
+	} else {
+		return props.date;
+	}
 }
 
 const url = 'https://github.com/obsidianmd/obsidian-releases/commit/' + getHash();

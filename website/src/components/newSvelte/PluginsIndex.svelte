@@ -3,7 +3,7 @@
 	import GithubLink from '../svelte/helpers/githubLink.svelte';
 	import Commit from '../svelte/helpers/commit.svelte';
 	import { onMount } from 'svelte';
-    import type { PluginOverviewDataPoint } from '../../../../data-wasm/pkg/data_wasm';
+	import type { PluginOverviewDataPoint } from '../../../../data-wasm/pkg/data_wasm';
 
 	interface Props {
 		data?: PluginOverviewDataPoint[];
@@ -71,7 +71,9 @@
 				<td>{plugin.author}</td>
 				<td><GithubLink repo={plugin.repo}></GithubLink></td>
 				<td><Commit commit={plugin.added_commit}></Commit></td>
-				<td>{#if plugin.removed_commit}<Commit commit={plugin.removed_commit}></Commit>{/if}</td>
+				<td
+					>{#if plugin.removed_commit}<Commit commit={plugin.removed_commit}></Commit>{/if}</td
+				>
 			</tr>
 		{/each}
 	</tbody>

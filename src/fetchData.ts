@@ -1,22 +1,9 @@
-import { buildPluginStats } from './plugin';
 import { buildThemeStats } from './theme';
 import { buildReleaseStats } from './release';
 import { $ } from './shellUtils.ts';
 
 export async function buildStats() {
 	await $('git submodule update --remote');
-
-	console.log('');
-	console.log('=================');
-	console.log('   PLUGIN DATA   ');
-	console.log('=================');
-	console.log('');
-
-	try {
-		await buildPluginStats();
-	} catch (e) {
-		console.error(e);
-	}
 
 	console.log('');
 	console.log('================');

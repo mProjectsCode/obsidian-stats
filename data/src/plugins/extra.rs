@@ -49,8 +49,6 @@ pub fn extract_extra_data() -> Result<(), Box<dyn std::error::Error>> {
                 ))
             };
 
-            // TODO: warnings
-
             PluginExtraData {
                 id: plugin.id.clone(),
                 repo,
@@ -161,7 +159,7 @@ pub fn extract_data_from_repo(
 
     let license_file = license_file.and_then(|file| {
         let license_text = fs::read_to_string(format!("{repo_path}/{file}")).ok()?;
-        license_comparer.compare(&license_text)
+        license_comparer.compare(&plugin.id, &license_text)
     });
 
     let license_file = license_file.unwrap_or_else(|| "unknown".to_string());

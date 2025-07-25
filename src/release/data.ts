@@ -1,45 +1,34 @@
 import { ColumnTable, escape, op, table } from 'arquero';
 import { Struct } from 'arquero/dist/types/op/op-api';
 
-Object.assign(
-	ColumnTable.prototype,
-	{
-		distinctArray(this: ColumnTable, columnName: string) {
-			return this.rollup({ values: op.array_agg_distinct(columnName) }).get('values', 0);
-		},
-		normalize(this: ColumnTable, column: string) {
-			const sum = this.rollup({ sum: op.sum(column) }).get('sum', 0);
-			return this.derive({ downloads: escape((d: Struct) => d[column] / sum) });
-		},
-		normalizeBy(this: ColumnTable, column: string, group: string) {
-			const sum = this
-				.groupby(group)
-				.rollup({ sum: op.sum(column) })
-				.orderby(group);
-			return this
-				.join(sum, group)
-				.derive({ [column]: escape((d: Struct) => d[column] / d['sum']) })
-				.select(...this.columnNames())
-				.impute({ [column]: 0 })
-				.orderby(group);
-		},
-		imputeAll(this: ColumnTable, columns: string[], nullable: string[]) {
-			const distinctValues = columns.map(column => table({ [column]: this.distinctArray(column) }));
-			const allCombinations = distinctValues.reduce((acc, curr) => acc.cross(curr));
+Object.assign(ColumnTable.prototype, {
+	distinctArray(this: ColumnTable, columnName: string) {
+		return this.rollup({ values: op.array_agg_distinct(columnName) }).get('values', 0);
+	},
+	normalize(this: ColumnTable, column: string) {
+		const sum = this.rollup({ sum: op.sum(column) }).get('sum', 0);
+		return this.derive({ downloads: escape((d: Struct) => d[column] / sum) });
+	},
+	normalizeBy(this: ColumnTable, column: string, group: string) {
+		const sum = this.groupby(group)
+			.rollup({ sum: op.sum(column) })
+			.orderby(group);
+		return this.join(sum, group)
+			.derive({ [column]: escape((d: Struct) => d[column] / d['sum']) })
+			.select(...this.columnNames())
+			.impute({ [column]: 0 })
+			.orderby(group);
+	},
+	imputeAll(this: ColumnTable, columns: string[], nullable: string[]) {
+		const distinctValues = columns.map(column => table({ [column]: this.distinctArray(column) }));
+		const allCombinations = distinctValues.reduce((acc, curr) => acc.cross(curr));
 
-			return allCombinations
-				.join_left(
-					this,
-					[columns],
-				)
-				.impute(nullable.reduce((acc, curr) => ({ ...acc, [curr]: 0 }), {}))
-				.orderby(...columns);
-		},
-	}
-);
-
-
-
+		return allCombinations
+			.join_left(this, [columns])
+			.impute(nullable.reduce((acc, curr) => ({ ...acc, [curr]: 0 }), {}))
+			.orderby(...columns);
+	},
+});
 
 // addTableMethod(
 // 	'distinctArray',

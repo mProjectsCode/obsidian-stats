@@ -1,5 +1,6 @@
 use crate::plugins::{
     clone_repos::clone_plugin_repos, data::build_plugin_stats, extra::extract_extra_data,
+    license::process_licenses,
 };
 
 pub mod constants;
@@ -14,10 +15,12 @@ fn main() {
 
     // clone_plugin_repos().expect("Failed to clone plugin repositories");
 
-    println!();
-    println!("Extracting repository data...");
+    // println!();
+    // println!("Extracting repository data...");
 
-    extract_extra_data().expect("Failed to extract repository data");
+    // extract_extra_data().expect("Failed to extract repository data");
+
+    process_licenses();
 
     println!();
     println!("Done!");

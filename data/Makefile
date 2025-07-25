@@ -1,7 +1,7 @@
 default: build
 
 build:
-	wasm-pack build --target web
+	cargo run --release
 clean:
 	cargo clean
 format:

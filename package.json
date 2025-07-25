@@ -10,7 +10,14 @@
 		"data:plugin:clone-repos": "bun run src/pluginRepo/cloneRepos.ts",
 		"data:plugin:process": "bun run src/pluginRepo/collectData.ts",
 		"data": "bun run data:fetch && bun run data:plugin:clone-repos && bun run data:plugin:process",
-		"format": "prettier --write ."
+		"format": "prettier --write . && bun run data:format && bun run data-lib:format && bun run data-wasm:format",
+		"clean": "bun run data:clean && bun run data-lib:clean && bun run data-wasm:clean",
+		"data:format": "cd data && make format",
+		"data-lib:format": "cd data-lib && make format",
+		"data-wasm:format": "cd data-wasm && make format",
+		"data:clean": "cd data && make clean",
+		"data-lib:clean": "cd data-lib && make clean",
+		"data-wasm:clean": "cd data-wasm && make clean"
 	},
 	"devDependencies": {
 		"@types/bun": "latest",

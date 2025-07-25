@@ -1,9 +1,6 @@
 ---
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
-import type { PluginRepoDataNonNull } from '../../../../src/pluginRepo/types';
 import BarChart from '../../components/newSvelte/charts/BarChart.svelte';
-import { arrayIntersect, groupBy, multiGroupBy } from '../../../../src/utils';
-import { getRepoData } from '../../utils/base';
 import { getPluginDataArray } from '../../utils/data';
 
 // const repoData = await getRepoData();
@@ -160,7 +157,6 @@ mostUsedDependencies.sort((a, b) => b.value - a.value);
 		{ depth: 3, text: 'Most Used Dependencies', slug: 'most-used-dependencies' },
 	]}
 >
-
 	<!-- <p><strong>Beta Manifest</strong>: {dataPoints.beta_manifest.toFixed(1)}% of plugins have a BRAT beta manifest.</p> -->
 
 	<!-- <h2 id="dependencies">Dependencies</h2> -->
@@ -169,13 +165,7 @@ mostUsedDependencies.sort((a, b) => b.value - a.value);
 
 	<p>The distribution of package managers used in plugins. The package manager is determined by the presence of a lockfile in the plugin repository.</p>
 
-	<p><BarChart 
-		dataPoints={dataPoints.package_managers}
-		xLabel="Package Managers"
-		yLabel="Percent of Plugins"
-		yDomain={[0, 100]}
-		client:only="svelte"
-	/></p>
+	<p><BarChart dataPoints={dataPoints.package_managers} xLabel="Package Managers" yLabel="Percent of Plugins" yDomain={[0, 100]} client:only="svelte" /></p>
 
 	<p>
 		{dataPoints.no_package_managers.toFixed(1)}% of plugins have no lockfile.
@@ -187,13 +177,7 @@ mostUsedDependencies.sort((a, b) => b.value - a.value);
 		The distribution of code bundlers used in plugins. The bundler is determined by the presence of dependencies in the plugins <code>package.json</code>.
 	</p>
 
-	<p><BarChart 
-		dataPoints={dataPoints.bundlers}
-		xLabel="Code Bundlers"
-		yLabel="Percent of Plugins"
-		yDomain={[0, 100]}
-		client:only="svelte"
-	/></p>
+	<p><BarChart dataPoints={dataPoints.bundlers} xLabel="Code Bundlers" yLabel="Percent of Plugins" yDomain={[0, 100]} client:only="svelte" /></p>
 
 	<p>
 		{dataPoints.no_bundlers.toFixed(1)}% of plugins use no code bundler.
@@ -203,13 +187,7 @@ mostUsedDependencies.sort((a, b) => b.value - a.value);
 
 	<p>The distribution of developer tooling used in plugins.</p>
 
-	<p><BarChart 
-		dataPoints={toolingDataPoints}
-		xLabel="Tooling Dependencies"
-		yLabel="Percent of Plugins"
-		yDomain={[0, 100]}
-		client:only="svelte"
-	/></p>
+	<p><BarChart dataPoints={toolingDataPoints} xLabel="Tooling Dependencies" yLabel="Percent of Plugins" yDomain={[0, 100]} client:only="svelte" /></p>
 
 	<h3 id="testing-framework-usage">Testing Framework Usage</h3>
 
@@ -219,13 +197,7 @@ mostUsedDependencies.sort((a, b) => b.value - a.value);
 		>.
 	</p>
 
-	<p><BarChart 
-		dataPoints={dataPoints.testing_frameworks}
-		xLabel="Testing Frameworks"
-		yLabel="Percent of Plugins"
-		yDomain={[0, 100]}
-		client:only="svelte"
-	/></p>
+	<p><BarChart dataPoints={dataPoints.testing_frameworks} xLabel="Testing Frameworks" yLabel="Percent of Plugins" yDomain={[0, 100]} client:only="svelte" /></p>
 
 	<p>
 		{dataPoints.no_testing_frameworks.toFixed(1)}% of plugins use no testing framework.
@@ -239,13 +211,7 @@ mostUsedDependencies.sort((a, b) => b.value - a.value);
 		>.
 	</p>
 
-	<p><BarChart 
-		dataPoints={frontEndFrameworksDataPoints}
-		xLabel="Frontend Frameworks"
-		yLabel="Percent of Plugins"
-		yDomain={[0, 100]}
-		client:only="svelte"
-	/></p>
+	<p><BarChart dataPoints={frontEndFrameworksDataPoints} xLabel="Frontend Frameworks" yLabel="Percent of Plugins" yDomain={[0, 100]} client:only="svelte" /></p>
 
 	<h3 id="most-used-dependencies">Most Used Dependencies</h3>
 

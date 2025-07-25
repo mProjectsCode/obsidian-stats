@@ -31,8 +31,8 @@ const individualDownloadDataPoints = view.individual_download_data(data);
 	<h2 id="plugin-downloads-correlations">Plugin Downloads Correlations</h2>
 
 	<p>
-		The first figure shows the correlation between the number of downloads and the number of releases. This shows that plugins with more downloads tend to have more
-		releases. The second figure shows the correlation between the number of downloads and the initial release time.
+		The first figure shows the correlation between the number of downloads and the number of releases. This shows that plugins with more downloads tend to have
+		more releases. The second figure shows the correlation between the number of downloads and the initial release time.
 	</p>
 
 	<DownloadRelationChart dataPoints={individualDownloadDataPoints} client:only="svelte" />
@@ -50,5 +50,4 @@ const individualDownloadDataPoints = view.individual_download_data(data);
 	</p>
 
 	<DownloadDistributionChart dataPoints={individualDownloadDataPoints} client:only="svelte" />
-
 </StarlightPage>

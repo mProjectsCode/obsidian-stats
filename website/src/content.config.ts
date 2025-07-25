@@ -1,5 +1,5 @@
 import { defineCollection, z } from 'astro:content';
-import { docsLoader } from "@astrojs/starlight/loaders";
+import { docsLoader } from '@astrojs/starlight/loaders';
 import { docsSchema } from '@astrojs/starlight/schema';
 import { getPluginDataArray } from './utils/data';
 
@@ -31,5 +31,5 @@ export const collections = {
 		schema: z.object({
 			id: z.string(),
 		}),
-	})
+	}),
 };

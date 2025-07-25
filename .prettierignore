@@ -1,10 +1,9 @@
-website/src/content/docs/plugins/*
-website/src/content/docs/themes/*
-
 node_modules/
 obsidian-releases/
 choosealicense.com/
-pluginRepos/
+data/
+data-lib/
+data-wasm/
 
 LICENSE
 

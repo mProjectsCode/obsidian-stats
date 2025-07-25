@@ -1,162 +1,159 @@
 ---
-import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
-import { CDate } from "../../../../src/date";
-import { getPluginData } from "../../../../src/utils";
-import { getPluginCountMonthly, getPluginCountWoRetiredMonthly, getPluginDownloadsWeekly } from "../../../../src/plugin/data";
-import Aside from "../../components/aside.astro";
-import PluginLink from "../../components/pluginLink.astro";
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import { CDate } from '../../../../src/date';
+import { getPluginData } from '../../../../src/utils';
+import PluginLink from '../../components/pluginLink.astro';
 
-enum MilestoneType {
-    PLUGIN_COUNT = 'plugin-count',
-    TOTAL_DOWNLOADS = 'total-downloads',
-    RELEASE_COUNT = 'release-count',
-    DOWNLOAD_COUNT = 'download-count',
-}
+// enum MilestoneType {
+//     PLUGIN_COUNT = 'plugin-count',
+//     TOTAL_DOWNLOADS = 'total-downloads',
+//     RELEASE_COUNT = 'release-count',
+//     DOWNLOAD_COUNT = 'download-count',
+// }
 
-const MILESTONE_STEPS = [1, 2, 5];
+// const MILESTONE_STEPS = [1, 2, 5];
 
-function milestonesFromPotentials(potentials: number[], steps: number[]): number[] {
-    return potentials.flatMap((potential) => {
-        return steps.map((step) => {
-            return Math.pow(10, potential) * step;
-        });
-    });
-}
+// function milestonesFromPotentials(potentials: number[], steps: number[]): number[] {
+//     return potentials.flatMap((potential) => {
+//         return steps.map((step) => {
+//             return Math.pow(10, potential) * step;
+//         });
+//     });
+// }
 
-// 0: 1
-// 1: 10
-// 2: 100
-// 3: 1_000
-// 4: 10_000
-// 5: 100_000
-// 6: 1_000_000
-// 7: 10_000_000
-// 8: 100_000_000
-// 9: 1_000_000_000
+// // 0: 1
+// // 1: 10
+// // 2: 100
+// // 3: 1_000
+// // 4: 10_000
+// // 5: 100_000
+// // 6: 1_000_000
+// // 7: 10_000_000
+// // 8: 100_000_000
+// // 9: 1_000_000_000
 
-const milestones: Record<MilestoneType, number[]> = {
-    [MilestoneType.PLUGIN_COUNT]: milestonesFromPotentials([1, 2, 3, 4, 5], MILESTONE_STEPS),
-    [MilestoneType.TOTAL_DOWNLOADS]: milestonesFromPotentials([3, 4, 5, 6, 7, 8], MILESTONE_STEPS),
-    [MilestoneType.RELEASE_COUNT]: milestonesFromPotentials([1, 2, 3, 4], MILESTONE_STEPS),
-    [MilestoneType.DOWNLOAD_COUNT]: milestonesFromPotentials([3, 4, 5, 6, 7, 8], MILESTONE_STEPS),
-}
+// const milestones: Record<MilestoneType, number[]> = {
+//     [MilestoneType.PLUGIN_COUNT]: milestonesFromPotentials([1, 2, 3, 4, 5], MILESTONE_STEPS),
+//     [MilestoneType.TOTAL_DOWNLOADS]: milestonesFromPotentials([3, 4, 5, 6, 7, 8], MILESTONE_STEPS),
+//     [MilestoneType.RELEASE_COUNT]: milestonesFromPotentials([1, 2, 3, 4], MILESTONE_STEPS),
+//     [MilestoneType.DOWNLOAD_COUNT]: milestonesFromPotentials([3, 4, 5, 6, 7, 8], MILESTONE_STEPS),
+// }
 
-const reachedMilestones: Record<MilestoneType, number> = {
-    [MilestoneType.PLUGIN_COUNT]: -1,
-    [MilestoneType.TOTAL_DOWNLOADS]: -1,
-    [MilestoneType.RELEASE_COUNT]: -1,
-    [MilestoneType.DOWNLOAD_COUNT]: -1,
-};
+// const reachedMilestones: Record<MilestoneType, number> = {
+//     [MilestoneType.PLUGIN_COUNT]: -1,
+//     [MilestoneType.TOTAL_DOWNLOADS]: -1,
+//     [MilestoneType.RELEASE_COUNT]: -1,
+//     [MilestoneType.DOWNLOAD_COUNT]: -1,
+// };
 
-interface MilestoneData {
-    type: MilestoneType;
-    milestone: number;
-    date: CDate;
-    data: string;
-}
+// interface MilestoneData {
+//     type: MilestoneType;
+//     milestone: number;
+//     date: CDate;
+//     data: string;
+// }
 
-const pluginData = getPluginData();
-const pluginCountMonthly = getPluginCountWoRetiredMonthly(pluginData);
-const pluginDownloadCountWeekly = getPluginDownloadsWeekly(pluginData);
+// const pluginData = getPluginData();
+// const pluginCountMonthly = getPluginCountWoRetiredMonthly(pluginData);
+// const pluginDownloadCountWeekly = getPluginDownloadsWeekly(pluginData);
 
-const milestoneData: Map<string, MilestoneData[]> = new Map();
+// const milestoneData: Map<string, MilestoneData[]> = new Map();
 
-function reachedMilestone(type: MilestoneType, value: number): boolean {
-    const target = milestones[type][reachedMilestones[type] + 1];
-    if (value >= target) {
-        reachedMilestones[type] += 1;
-        return true;
-    }
+// function reachedMilestone(type: MilestoneType, value: number): boolean {
+//     const target = milestones[type][reachedMilestones[type] + 1];
+//     if (value >= target) {
+//         reachedMilestones[type] += 1;
+//         return true;
+//     }
 
-    return false;
-}
+//     return false;
+// }
 
-function checkMilestones(type: MilestoneType, value: number, date: CDate, getMilestoneData: (milestone: number) => string): void {
-    const monthString = date.toMonthString();
-    while (reachedMilestone(type, value)) {
-        const milestone = milestones[type][reachedMilestones[type]];
-        const data = getMilestoneData(milestone);
-        if (!milestoneData.has(monthString)) {
-            milestoneData.set(monthString, []);
-        }
+// function checkMilestones(type: MilestoneType, value: number, date: CDate, getMilestoneData: (milestone: number) => string): void {
+//     const monthString = date.toMonthString();
+//     while (reachedMilestone(type, value)) {
+//         const milestone = milestones[type][reachedMilestones[type]];
+//         const data = getMilestoneData(milestone);
+//         if (!milestoneData.has(monthString)) {
+//             milestoneData.set(monthString, []);
+//         }
 
-        milestoneData.get(monthString)!.push({ type, milestone, data, date });
-    }
-}
+//         milestoneData.get(monthString)!.push({ type, milestone, data, date });
+//     }
+// }
 
-const milestoneCheckers: Record<MilestoneType, (date: CDate) => void> = {
-    [MilestoneType.PLUGIN_COUNT]: (date: CDate) => {
-        const year = date.yearString();
-        const month = date.monthString();
-        const dataPoint = pluginCountMonthly.find(x => x.year === year && x.month === month);
+// const milestoneCheckers: Record<MilestoneType, (date: CDate) => void> = {
+//     [MilestoneType.PLUGIN_COUNT]: (date: CDate) => {
+//         const year = date.yearString();
+//         const month = date.monthString();
+//         const dataPoint = pluginCountMonthly.find(x => x.year === year && x.month === month);
 
-        if (dataPoint) {
-            checkMilestones(MilestoneType.PLUGIN_COUNT, dataPoint.value, date, (_) => '');
-        }
-    },
-    [MilestoneType.TOTAL_DOWNLOADS]: (date: CDate) => {
-        const dateString = date.toMonthString();
-        const dataPoint = pluginDownloadCountWeekly.findLast(x => x.date.startsWith(dateString));
+//         if (dataPoint) {
+//             checkMilestones(MilestoneType.PLUGIN_COUNT, dataPoint.value, date, (_) => '');
+//         }
+//     },
+//     [MilestoneType.TOTAL_DOWNLOADS]: (date: CDate) => {
+//         const dateString = date.toMonthString();
+//         const dataPoint = pluginDownloadCountWeekly.findLast(x => x.date.startsWith(dateString));
 
-        if (dataPoint) {
-            checkMilestones(MilestoneType.TOTAL_DOWNLOADS, dataPoint.downloads ?? 0, date, (_) => '');
-        }
-    },
-    [MilestoneType.RELEASE_COUNT]: (date: CDate) => {
-        const dateString = date.toString();
-        const releaseCountData = pluginData.map(x => {
-            const releaseCount = x.versionHistory.filter(v => v.initialReleaseDate <= dateString).length;
-            return {
-                data: x,
-                releaseCount,
-            }
-        });
-        let maxEntry = releaseCountData[0];
-        for (const entry of releaseCountData) {
-            if (entry.releaseCount > maxEntry.releaseCount) {
-                maxEntry = entry;
-            }
-        }
-        checkMilestones(MilestoneType.RELEASE_COUNT, maxEntry.releaseCount, date, (milestone) => {
-            return maxEntry.data.id;
-        });
-    },
-    [MilestoneType.DOWNLOAD_COUNT]: (date: CDate) => {
-        const dateString = date.toString();
-        const downloadCountData = pluginData.map(x => {
-            // this relies on the odering of download data
-            const downloadCount = Object.entries(x.downloadHistory).findLast(([date, _]) => date <= dateString)?.[1] ?? 0;
-            return {
-                data: x,
-                downloadCount,
-            }
-        });
-        let maxEntry = downloadCountData[0];
-        for (const entry of downloadCountData) {
-            if (entry.downloadCount > maxEntry.downloadCount) {
-                maxEntry = entry;
-            }
-        }
-        checkMilestones(MilestoneType.DOWNLOAD_COUNT, maxEntry.downloadCount, date, (milestone) => {
-            return maxEntry.data.id;
-        });
-    },
-};
+//         if (dataPoint) {
+//             checkMilestones(MilestoneType.TOTAL_DOWNLOADS, dataPoint.downloads ?? 0, date, (_) => '');
+//         }
+//     },
+//     [MilestoneType.RELEASE_COUNT]: (date: CDate) => {
+//         const dateString = date.toString();
+//         const releaseCountData = pluginData.map(x => {
+//             const releaseCount = x.versionHistory.filter(v => v.initialReleaseDate <= dateString).length;
+//             return {
+//                 data: x,
+//                 releaseCount,
+//             }
+//         });
+//         let maxEntry = releaseCountData[0];
+//         for (const entry of releaseCountData) {
+//             if (entry.releaseCount > maxEntry.releaseCount) {
+//                 maxEntry = entry;
+//             }
+//         }
+//         checkMilestones(MilestoneType.RELEASE_COUNT, maxEntry.releaseCount, date, (milestone) => {
+//             return maxEntry.data.id;
+//         });
+//     },
+//     [MilestoneType.DOWNLOAD_COUNT]: (date: CDate) => {
+//         const dateString = date.toString();
+//         const downloadCountData = pluginData.map(x => {
+//             // this relies on the odering of download data
+//             const downloadCount = Object.entries(x.downloadHistory).findLast(([date, _]) => date <= dateString)?.[1] ?? 0;
+//             return {
+//                 data: x,
+//                 downloadCount,
+//             }
+//         });
+//         let maxEntry = downloadCountData[0];
+//         for (const entry of downloadCountData) {
+//             if (entry.downloadCount > maxEntry.downloadCount) {
+//                 maxEntry = entry;
+//             }
+//         }
+//         checkMilestones(MilestoneType.DOWNLOAD_COUNT, maxEntry.downloadCount, date, (milestone) => {
+//             return maxEntry.data.id;
+//         });
+//     },
+// };
 
-CDate.iterateMonthly(CDate.fromString('2020-01-01'), CDate.fromNow(), (date) => {
-    for (const type of Object.values(MilestoneType)) {
-        milestoneCheckers[type](date);
-    }   
-});
+// CDate.iterateMonthly(CDate.fromString('2020-01-01'), CDate.fromNow(), (date) => {
+//     for (const type of Object.values(MilestoneType)) {
+//         milestoneCheckers[type](date);
+//     }
+// });
 
-const milestoneDataArray = Array.from(milestoneData.entries()).sort((a, b) => {
-    return b[0].localeCompare(a[0]);
-});
+// const milestoneDataArray = Array.from(milestoneData.entries()).sort((a, b) => {
+//     return b[0].localeCompare(a[0]);
+// });
 
-for (const [_, data] of milestoneDataArray) {
-    data.reverse();
-}
-
+// for (const [_, data] of milestoneDataArray) {
+//     data.reverse();
+// }
 ---
 
 <StarlightPage
@@ -165,13 +162,13 @@ for (const [_, data] of milestoneDataArray) {
 		description: `Major milestones in the plugin ecosystem.`,
 	}}
 >
-    <p>
-        This page tracks major milestones in the Obsidian plugin ecosystem. 
-        This includes the number of plugins listed on the community plugin list, the total number of downloads for all plugins, and the number of releases and downloads for individual plugins.
-        Milestones are attributed to the months in which they are reached, as not all data is available on a daily basis.
-    </p>
+	<p>
+		This page tracks major milestones in the Obsidian plugin ecosystem. This includes the number of plugins listed on the community plugin list, the total
+		number of downloads for all plugins, and the number of releases and downloads for individual plugins. Milestones are attributed to the months in which they
+		are reached, as not all data is available on a daily basis.
+	</p>
 
-    <div class="timeline">
+	<!-- <div class="timeline">
         {milestoneDataArray.map(e => <div class="timeline-group">
             <h3 class="timeline-group-heading">{e[0]}</h3>
             <div class="timeline-group-content">
@@ -216,5 +213,5 @@ for (const [_, data] of milestoneDataArray) {
                 })}
             </div>
         </div>)}
-    </div>
+    </div> -->
 </StarlightPage>

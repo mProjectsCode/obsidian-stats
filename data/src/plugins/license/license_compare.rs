@@ -1,11 +1,6 @@
-// This file has been partially writen by Crustacean newbie Fevol,
-// and could be very - very - very - very - bad
-// Apologies in advance to any botanical-based lifeforms reading this code
-
+use data_lib::license::LicenseData;
 use serde_yaml;
 use strsim::jaro;
-
-use crate::plugins::license::LicenseData;
 
 use regex::Regex;
 
@@ -37,11 +32,11 @@ impl LicenseComparer {
                 r"^(?:copyright)\s*?(?:&copy;|\(c\)|&#(?:169|xa9;)|©)\s*[0-9]{4}.*$",
             )
             .unwrap(),
-            mit_re: Regex::new(r"^\s+mit\s+license").unwrap(),
-            gpl_3_re: Regex::new(r"^\s+gnu\s+general\s+public\s+license\s+version\s+3").unwrap(),
-            lgpl_3_re: Regex::new(r"^\s+gnu\s+lesser\s+general\s+public\s+license\s+version\s+3")
+            mit_re: Regex::new(r"^mit\s+license").unwrap(),
+            gpl_3_re: Regex::new(r"^gnu\s+general\s+public\s+license\s+version\s+3").unwrap(),
+            lgpl_3_re: Regex::new(r"^gnu\s+lesser\s+general\s+public\s+license\s+version\s+3")
                 .unwrap(),
-            agpl_3_re: Regex::new(r"^\s+gnu\s+affero\s+general\s+public\s+license\s+version\s+3")
+            agpl_3_re: Regex::new(r"^gnu\s+affero\s+general\s+public\s+license\s+version\s+3")
                 .unwrap(),
         }
     }
@@ -53,12 +48,8 @@ impl LicenseComparer {
         self.licenses = dir
             .filter_map(|entry| {
                 let entry = entry.ok()?;
-                let path = entry.path();
-                if !path.is_file() {
-                    return None;
-                }
 
-                let data = std::fs::read_to_string(&path).ok()?;
+                let data = std::fs::read_to_string(&entry.path()).ok()?;
                 let parts: Vec<&str> = data.split("---").collect();
                 if parts.len() <= 2 {
                     return None;
@@ -68,18 +59,22 @@ impl LicenseComparer {
 
                 Some(LicenseCleaned {
                     name: frontmatter.spdx_id,
-                    text: parts[2].trim().to_string(),
+                    text: parts[2].trim().to_lowercase().to_string(),
                 })
             })
             .collect();
+
+        println!("Loaded {} licenses", self.licenses.len());
     }
 
     /**
      * Returns the spdx-id of the best matching license or undefined if no match is found.
      */
-    pub fn compare(&self, license: &str) -> Option<String> {
+    pub fn compare(&self, plugin_id: &str, license: &str) -> Option<String> {
         let lower_case_license = license.to_lowercase();
         let lower_case_license = lower_case_license.trim();
+
+        // println!("Comparing license: {}", lower_case_license);
 
         if self.mit_re.is_match(lower_case_license) {
             return Some("MIT".to_string());
@@ -119,10 +114,12 @@ impl LicenseComparer {
             })
             .collect::<Vec<_>>();
 
-        scores.sort_by(|a, b| a.0.total_cmp(&b.0));
+        scores.sort_by(|a, b| b.0.total_cmp(&a.0));
+
+        // dbg!(plugin_id, &scores);
 
         if let Some((score, name)) = scores.first()
-            && score > &0.95
+            && score > &0.85
         {
             return Some(name.clone());
         }

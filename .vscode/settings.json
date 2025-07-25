@@ -3,7 +3,7 @@
 		"obsidian-releases": true,
 		"choosealicense.com": false,
 		"pluginRepos": true,
-		"data/out/plugin-repos/**": true,
+		"data/out/plugin-repos/**": true
 	},
 	"rust-analyzer.files.exclude": ["data/out/**"]
 }

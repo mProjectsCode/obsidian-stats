@@ -6,10 +6,11 @@ use wasm_bindgen::prelude::wasm_bindgen;
 use crate::{
     commit::StringCommit,
     date::Date,
+    license::{LicenseDescriptionNested, Licenses},
     plugin::{
         DownloadDataPoint, EntryChangeDataPoint, FundingUrl, IndividualDownloadDataPoint,
         NamedDataPoint, PluginCountMonthlyDataPoint, PluginData, PluginExtraData,
-        PluginInactivityByReleaseDataPoint, PluginOverviewDataPoint,
+        PluginInactivityByReleaseDataPoint, PluginLicenseDataPoints, PluginOverviewDataPoint,
         PluginRemovedByReleaseDataPoint, PluginRepoData, PluginRepoDataPoints,
         PluginYearlyDataPoint, VersionDataPoint,
         warnings::{PluginWarning, get_plugin_warnings},
@@ -779,24 +780,69 @@ impl FullPluginDataArrayView {
         // now turn everything into percentages
         let total_plugins = self.data.len() as f64;
         points.package_managers.iter_mut().for_each(|point| {
-            point.value = (point.value / total_plugins) * 100.0;
+            to_percentage(&mut point.value, total_plugins);
         });
         points.bundlers.iter_mut().for_each(|point| {
-            point.value = (point.value / total_plugins) * 100.0;
+            to_percentage(&mut point.value, total_plugins);
         });
         points.testing_frameworks.iter_mut().for_each(|point| {
-            point.value = (point.value / total_plugins) * 100.0;
+            to_percentage(&mut point.value, total_plugins);
         });
         points.dependencies.iter_mut().for_each(|point| {
-            point.value = (point.value / total_plugins) * 100.0;
+            to_percentage(&mut point.value, total_plugins);
         });
-        points.no_package_managers = (points.no_package_managers / total_plugins) * 100.0;
-        points.no_bundlers = (points.no_bundlers / total_plugins) * 100.0;
-        points.no_testing_frameworks = (points.no_testing_frameworks / total_plugins) * 100.0;
-        points.typescript = (points.typescript / total_plugins) * 100.0;
-        points.beta_manifest = (points.beta_manifest / total_plugins) * 100.0;
+        to_percentage(&mut points.no_package_managers, total_plugins);
+        to_percentage(&mut points.no_bundlers, total_plugins);
+        to_percentage(&mut points.no_testing_frameworks, total_plugins);
+        to_percentage(&mut points.typescript, total_plugins);
+        to_percentage(&mut points.beta_manifest, total_plugins);
 
         points
+    }
+
+    pub fn license_data_points(
+        &self,
+        data: &FullPluginDataArray,
+        license_data_string: String,
+    ) -> Result<PluginLicenseDataPoints, String> {
+        let licenses: Licenses = serde_json::from_str(&license_data_string)
+            .map_err(|e| format!("Failed to parse license data: {}", e))?;
+
+        let mut points = PluginLicenseDataPoints {
+            licenses: Vec::new(),
+            permissions: Vec::new(),
+            conditions: Vec::new(),
+            limitations: Vec::new(),
+            descriptions: licenses.descriptions,
+        };
+
+        self.data.iter().for_each(|&index| {
+            let plugin_data = &data[index];
+            let Some(repo_data) = plugin_data.repo_data() else {
+                return;
+            };
+
+            let license_data = licenses
+                .licenses
+                .iter()
+                .find(|l| l.spdx_id == repo_data.license_file);
+
+            if let Some(license_data) = license_data {
+                increment_named_data_points(&mut points.licenses, &license_data.spdx_id, 1.0);
+
+                for permission in &license_data.permissions {
+                    increment_named_data_points(&mut points.permissions, permission, 1.0);
+                }
+                for condition in &license_data.conditions {
+                    increment_named_data_points(&mut points.conditions, condition, 1.0);
+                }
+                for limitation in &license_data.limitations {
+                    increment_named_data_points(&mut points.limitations, limitation, 1.0);
+                }
+            }
+        });
+
+        Ok(points)
     }
 }
 
@@ -808,6 +854,14 @@ fn increment_named_data_points(points: &mut Vec<NamedDataPoint>, name: &str, val
             name: name.to_string(),
             value,
         });
+    }
+}
+
+fn to_percentage(value: &mut f64, total: f64) {
+    if total == 0.0 {
+        *value = 0.0;
+    } else {
+        *value = (*value / total) * 100.0;
     }
 }
 

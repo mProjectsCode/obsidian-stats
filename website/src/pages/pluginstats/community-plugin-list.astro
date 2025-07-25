@@ -11,7 +11,6 @@ const view = data.view();
 
 const countDataPoints = view.monthly_plugin_count(data);
 const retiredByMonthDataPoints = view.removed_by_release_month(data);
-
 ---
 
 <StarlightPage
@@ -39,7 +38,10 @@ const retiredByMonthDataPoints = view.removed_by_release_month(data);
 
 	<h2 id="new-plugins">New Plugins</h2>
 
-	<p>This shows how many new plugins have been added to the community plugin list each month. The dashed gray line is the raw data and the blue line has been smoothed.</p>
+	<p>
+		This shows how many new plugins have been added to the community plugin list each month. The dashed gray line is the raw data and the blue line has been
+		smoothed.
+	</p>
 
 	<p><PluginCountNewChart dataPoints={countDataPoints} client:only="svelte" /></p>
 
@@ -70,7 +72,10 @@ const retiredByMonthDataPoints = view.removed_by_release_month(data);
 
 	<h2 id="removed-plugins">Removed Plugins</h2>
 
-	<p>This shows how many plugins have been removed from the community plugin list each month. The dashed gray line is the raw data and the blue line has been smoothed.</p>
+	<p>
+		This shows how many plugins have been removed from the community plugin list each month. The dashed gray line is the raw data and the blue line has been
+		smoothed.
+	</p>
 
 	<p><PluginCountRemovedChart dataPoints={countDataPoints} client:only="svelte" /></p>
 

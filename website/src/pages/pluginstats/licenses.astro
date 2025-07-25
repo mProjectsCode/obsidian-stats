@@ -1,80 +1,14 @@
 ---
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
-import { getRepoData, projectRelativeUrl } from '../../utils/base';
-import { groupBy } from '../../../../src/utils';
-import type { PluginRepoDataNonNull } from '../../../../src/pluginRepo/types';
+import { projectRelativeUrl } from '../../utils/base';
 import { promises as fs } from 'fs';
-import type { Licenses } from '../../../../src/license';
-import BarChart from '../../components/svelte/genericCharts/barChart.svelte';
+import BarChart from '../../components/newSvelte/charts/BarChart.svelte';
+import { getPluginDataArray } from '../../utils/data';
 
-const repoData = await getRepoData();
-
-const repoDataWithRepos = repoData.filter(x => x.repo !== undefined) as PluginRepoDataNonNull[];
-
-const totalPluginCount = repoDataWithRepos.length;
-
-const licenceInfo = groupBy(repoDataWithRepos, x => x.repo.licenseFile);
-
-const licenceChartInfo = Object.entries(licenceInfo)
-	.map(([key, value]) => {
-		return {
-			label: key,
-			value: value.length,
-		};
-	})
-	.sort((a, b) => b.value - a.value);
-
-const licenceChartSmallInfo = Object.entries(licenceInfo)
-	.map(([key, value]) => {
-		if (value.length < 100) {
-			return {
-				label: key,
-				value: value.length,
-			};
-		}
-		return undefined;
-	})
-	.filter(x => x !== undefined)
-	.sort((a, b) => b.value - a.value);
-
-const licensePermissions: Record<string, number> = {};
-const licenseConditions: Record<string, number> = {};
-const licenseLimitations: Record<string, number> = {};
-
-const licenses: Licenses = JSON.parse(await fs.readFile(projectRelativeUrl('../licenses.json'), 'utf-8'));
-
-for (const permission of licenses.permissions) {
-	licensePermissions[permission] = 0;
-}
-
-for (const condition of licenses.conditions) {
-	licenseConditions[condition] = 0;
-}
-
-for (const limitation of licenses.limitations) {
-	licenseLimitations[limitation] = 0;
-}
-
-for (const li of licenceChartInfo) {
-	const license = licenses.licenses.find(x => x['spdx-id'] === li.label);
-	if (license !== undefined) {
-		for (const permission of license.permissions) {
-			licensePermissions[permission] += li.value;
-		}
-
-		for (const condition of license.conditions) {
-			licenseConditions[condition] += li.value;
-		}
-
-		for (const limitation of license.limitations) {
-			licenseLimitations[limitation] += li.value;
-		}
-	}
-}
-
-const permissionsLabels = Object.keys(licensePermissions).map(x => licenses.descriptions.permissions.find(y => y.tag === x)!.label);
-const conditionsLabels = Object.keys(licenseConditions).map(x => licenses.descriptions.conditions.find(y => y.tag === x)!.label);
-const limitaionsLabels = Object.keys(licenseLimitations).map(x => licenses.descriptions.limitations.find(y => y.tag === x)!.label);
+const dataArray = await getPluginDataArray();
+const view = dataArray.view();
+const licenseDataFile = await fs.readFile(projectRelativeUrl('../data/out/licenses.json'), 'utf-8');
+const licenseDataPoints = view.license_data_points(dataArray, licenseDataFile);
 ---
 
 <StarlightPage
@@ -116,27 +50,11 @@ const limitaionsLabels = Object.keys(licenseLimitations).map(x => licenses.descr
 		<code>unknown</code> means that a license file was found, but the license could not be identified.
 	</p>
 
-	<BarChart
-		dataPoints={licenceChartInfo.map(x => x.value)}
-		labels={licenceChartInfo.map(x => x.label)}
-		logScale={false}
-		seriesName="Number of Plugins with a specific license"
-		calculatePrecentages={true}
-		percent100={totalPluginCount}
-		client:only="svelte"
-	/>
+	<BarChart dataPoints={licenseDataPoints.licenses} xLabel="License" yLabel="Number of Plugins" skewLabels client:only="svelte" />
 
 	<p>Licenses that are used by more than 100 plugins are excluded from the chart below.</p>
 
-	<BarChart
-		dataPoints={licenceChartSmallInfo.map(x => x.value)}
-		labels={licenceChartSmallInfo.map(x => x.label)}
-		logScale={false}
-		seriesName="Number of Plugins with a specific license"
-		calculatePrecentages={true}
-		percent100={totalPluginCount}
-		client:only="svelte"
-	/>
+	<BarChart dataPoints={licenseDataPoints.licenses.filter(x => x.value <= 100)} xLabel="License" yLabel="Number of Plugins" skewLabels client:only="svelte" />
 
 	<h2 id="license-terms">License Terms</h2>
 
@@ -146,19 +64,10 @@ const limitaionsLabels = Object.keys(licenseLimitations).map(x => licenses.descr
 
 	<p>A number of plugins give the following permissions.</p>
 
-	<BarChart
-		dataPoints={Object.values(licensePermissions)}
-		labels={permissionsLabels}
-		aspectRatio={2}
-		logScale={false}
-		seriesName="Number of Plugins that give permission"
-		calculatePrecentages={true}
-		percent100={totalPluginCount}
-		client:only="svelte"
-	/>
+	<BarChart dataPoints={licenseDataPoints.permissions} xLabel="Permission" yLabel="Number of Plugins" skewLabels client:only="svelte" />
 
 	{
-		licenses.descriptions.permissions.map(x => (
+		licenseDataPoints.descriptions.permissions.map(x => (
 			<p>
 				<strong>{x.label}</strong>: {x.description}
 			</p>
@@ -169,19 +78,10 @@ const limitaionsLabels = Object.keys(licenseLimitations).map(x => licenses.descr
 
 	<p>A number of plugins impose the following conditions.</p>
 
-	<BarChart
-		dataPoints={Object.values(licenseConditions)}
-		labels={conditionsLabels}
-		aspectRatio={2}
-		logScale={false}
-		seriesName="Number of Plugins that impose the condition"
-		calculatePrecentages={true}
-		percent100={totalPluginCount}
-		client:only="svelte"
-	/>
+	<BarChart dataPoints={licenseDataPoints.conditions} xLabel="Condition" yLabel="Number of Plugins" skewLabels client:only="svelte" />
 
 	{
-		licenses.descriptions.conditions.map(x => (
+		licenseDataPoints.descriptions.conditions.map(x => (
 			<p>
 				<strong>{x.label}</strong>: {x.description}
 			</p>
@@ -192,19 +92,10 @@ const limitaionsLabels = Object.keys(licenseLimitations).map(x => licenses.descr
 
 	<p>A number of plugins impose the following limitations.</p>
 
-	<BarChart
-		dataPoints={Object.values(licenseLimitations)}
-		labels={limitaionsLabels}
-		aspectRatio={2}
-		logScale={false}
-		seriesName="Number of Plugins that impose the limitation"
-		calculatePrecentages={true}
-		percent100={totalPluginCount}
-		client:only="svelte"
-	/>
+	<BarChart dataPoints={licenseDataPoints.limitations} xLabel="Limitation" yLabel="Number of Plugins" skewLabels client:only="svelte" />
 
 	{
-		licenses.descriptions.limitations.map(x => (
+		licenseDataPoints.descriptions.limitations.map(x => (
 			<p>
 				<strong>{x.label}</strong>: {x.description}
 			</p>

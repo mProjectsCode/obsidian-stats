@@ -6,6 +6,7 @@ use crate::{
     commit::{Commit, StringCommit},
     common::{DownloadHistory, EntryChange, VersionHistory},
     input_data::ObsCommunityPlugin,
+    license::LicenseDescriptionNested,
     plugin::{bundlers::Bundler, packages::PackageManager, testing::TestingFramework},
 };
 
@@ -186,4 +187,14 @@ pub struct PluginRepoDataPoints {
     dependencies: Vec<NamedDataPoint>,
     beta_manifest: f64,
     typescript: f64,
+}
+
+#[derive(Tsify, Debug, Clone, Serialize)]
+#[tsify(into_wasm_abi)]
+pub struct PluginLicenseDataPoints {
+    licenses: Vec<NamedDataPoint>,
+    permissions: Vec<NamedDataPoint>,
+    conditions: Vec<NamedDataPoint>,
+    limitations: Vec<NamedDataPoint>,
+    descriptions: LicenseDescriptionNested,
 }
