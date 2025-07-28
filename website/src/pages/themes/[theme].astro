@@ -1,22 +1,23 @@
 ---
-import ThemeComponent from '../../components/theme.astro';
-import { getThemeData } from '../../../../src/utils';
+import ThemeComponent from '../../components/Theme.astro';
+import { getCollection } from 'astro:content';
 
-export function getStaticPaths() {
-	const themeData = getThemeData();
-	return themeData.map(plugin => {
+export async function getStaticPaths() {
+	const themes = await getCollection('themes');
+
+	return themes.map(theme => {
 		return {
 			params: {
-				theme: plugin.id,
+				theme: theme.id,
 			},
 			props: {
-				themeDatum: plugin,
+				themeId: theme.id,
 			},
 		};
 	});
 }
 
-const { themeDatum } = Astro.props;
+const { themeId } = Astro.props;
 ---
 
-<ThemeComponent theme={themeDatum} />
+<ThemeComponent themeId={themeId} />

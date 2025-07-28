@@ -49,7 +49,7 @@ impl LicenseComparer {
             .filter_map(|entry| {
                 let entry = entry.ok()?;
 
-                let data = std::fs::read_to_string(&entry.path()).ok()?;
+                let data = std::fs::read_to_string(entry.path()).ok()?;
                 let parts: Vec<&str> = data.split("---").collect();
                 if parts.len() <= 2 {
                     return None;
@@ -70,7 +70,7 @@ impl LicenseComparer {
     /**
      * Returns the spdx-id of the best matching license or undefined if no match is found.
      */
-    pub fn compare(&self, plugin_id: &str, license: &str) -> Option<String> {
+    pub fn compare(&self, _plugin_id: &str, license: &str) -> Option<String> {
         let lower_case_license = license.to_lowercase();
         let lower_case_license = lower_case_license.trim();
 

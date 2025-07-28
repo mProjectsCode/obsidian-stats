@@ -3,15 +3,16 @@ use serde::{Deserialize, Serialize};
 use tsify::Tsify;
 
 use crate::{
-    commit::{Commit, StringCommit},
-    common::{DownloadHistory, EntryChange, VersionHistory},
+    commit::Commit,
+    common::{DownloadHistory, EntryChange, NamedDataPoint, VersionHistory},
     input_data::ObsCommunityPlugin,
     license::LicenseDescriptionNested,
     plugin::{bundlers::Bundler, packages::PackageManager, testing::TestingFramework},
 };
 
-pub mod analysis;
 pub mod bundlers;
+pub mod data_array;
+pub mod full;
 pub mod packages;
 pub mod testing;
 pub mod warnings;
@@ -29,8 +30,9 @@ pub struct PluginData {
     pub version_history: Vec<VersionHistory>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Tsify, Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
+#[tsify(into_wasm_abi)]
 pub enum FundingUrl {
     String(String),
     Object(HashMap<String, String>),
@@ -83,100 +85,9 @@ pub struct PluginExtraData {
     pub deprecated_versions: Vec<String>,
 }
 
-#[derive(Tsify, Debug, Clone, Serialize, Deserialize)]
-#[tsify(into_wasm_abi)]
-pub struct DownloadDataPoint {
-    pub date: String,
-    pub downloads: Option<u32>,
-    pub delta: Option<u32>,
-}
-
-#[derive(Tsify, Debug, Clone, Serialize, Deserialize)]
-#[tsify(into_wasm_abi)]
-pub struct VersionDataPoint {
-    pub version: String,
-    pub date: String,
-    pub deprecated: bool,
-}
-
-#[derive(Tsify, Debug, Clone, Serialize)]
-#[tsify(into_wasm_abi)]
-pub struct EntryChangeDataPoint {
-    pub property: String,
-    pub commit: StringCommit,
-    pub old_value: String,
-    pub new_value: String,
-}
-
-#[derive(Tsify, Debug, Clone, Serialize)]
-#[tsify(into_wasm_abi)]
-pub struct IndividualDownloadDataPoint {
-    pub id: String,
-    pub name: String,
-    pub date: String,
-    pub downloads: u32,
-    pub version_count: u32,
-}
-
-#[derive(Tsify, Debug, Clone, Serialize)]
-#[tsify(into_wasm_abi)]
-pub struct PluginOverviewDataPoint {
-    pub id: String,
-    pub name: String,
-    pub author: String,
-    pub repo: String,
-    pub repo_url: String,
-    pub added_commit: StringCommit,
-    pub removed_commit: Option<StringCommit>,
-}
-
-#[derive(Tsify, Debug, Clone, Serialize)]
-#[tsify(into_wasm_abi)]
-pub struct PluginYearlyDataPoint {
-    pub id: String,
-    pub name: String,
-    pub downloads_new: u32,
-    pub downloads_start: u32,
-    pub data: Vec<DownloadDataPoint>,
-}
-
-#[derive(Tsify, Debug, Clone, Serialize)]
-#[tsify(into_wasm_abi)]
-pub struct PluginCountMonthlyDataPoint {
-    pub date: String,
-    pub total: u32,
-    pub total_with_removed: u32,
-    pub new: u32,
-    pub new_removed: u32,
-}
-
-#[derive(Tsify, Debug, Clone, Serialize)]
-#[tsify(into_wasm_abi)]
-pub struct PluginRemovedByReleaseDataPoint {
-    pub date: String,
-    pub percentage: f64,
-}
-
-#[derive(Tsify, Debug, Clone, Serialize)]
-#[tsify(into_wasm_abi)]
-pub struct PluginInactivityByReleaseDataPoint {
-    pub date: String,
-    pub inactive_one_year: f64,
-    pub inactive_two_years: f64,
-    pub inactive_three_years: f64,
-    pub inactive_four_years: f64,
-    pub inactive_five_years: f64,
-}
-
-#[derive(Tsify, Debug, Clone, Serialize)]
-#[tsify(into_wasm_abi)]
-pub struct NamedDataPoint {
-    pub name: String,
-    pub value: f64,
-}
-
 #[derive(Tsify, Debug, Clone, Serialize, Default)]
 #[tsify(into_wasm_abi)]
+/// All data is in percentages.
 pub struct PluginRepoDataPoints {
     bundlers: Vec<NamedDataPoint>,
     no_bundlers: f64,

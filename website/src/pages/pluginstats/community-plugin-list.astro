@@ -1,15 +1,16 @@
 ---
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
 import { getPluginDataArray } from '../../utils/data';
-import PluginCountChart from '../../components/newSvelte/charts/pluginCount/PluginCountChart.svelte';
-import PluginCountNewChart from '../../components/newSvelte/charts/pluginCount/PluginCountNewChart.svelte';
-import PluginCountRemovedChart from '../../components/newSvelte/charts/pluginCount/PluginCountRemovedChart.svelte';
-import PluginRemovedByReleaseChart from '../../components/newSvelte/charts/pluginCount/PluginRemovedByReleaseChart.svelte';
+import CountChart from '../../components/newSvelte/charts/count/CountChart.svelte';
+import CountNewChart from '../../components/newSvelte/charts/count/CountNewChart.svelte';
+import CountRemovedChart from '../../components/newSvelte/charts/count/CountRemovedChart.svelte';
+import RemovedByReleaseChart from '../../components/newSvelte/charts/count/RemovedByReleaseChart.svelte';
+import { ItemType } from '../../utils/misc';
 
 const data = await getPluginDataArray();
 const view = data.view();
 
-const countDataPoints = view.monthly_plugin_count(data);
+const countDataPoints = view.monthly_count(data);
 const retiredByMonthDataPoints = view.removed_by_release_month(data);
 ---
 
@@ -22,7 +23,6 @@ const retiredByMonthDataPoints = view.removed_by_release_month(data);
 		{ depth: 2, text: 'Plugin Count', slug: 'plugin-count' },
 		{ depth: 2, text: 'New Plugins', slug: 'new-plugins' },
 		{ depth: 2, text: 'Removed Plugins', slug: 'removed-plugins' },
-		{ depth: 2, text: 'Mismatched Data', slug: 'mismatched-data' },
 	]}
 >
 	<p>
@@ -34,7 +34,7 @@ const retiredByMonthDataPoints = view.removed_by_release_month(data);
 
 	<p>The following chart shows the total number of plugins available in the community plugin list.</p>
 
-	<p><PluginCountChart dataPoints={countDataPoints} client:only="svelte" /></p>
+	<p><CountChart dataPoints={countDataPoints} type={ItemType.Plugin} client:only="svelte" /></p>
 
 	<h2 id="new-plugins">New Plugins</h2>
 
@@ -43,32 +43,7 @@ const retiredByMonthDataPoints = view.removed_by_release_month(data);
 		smoothed.
 	</p>
 
-	<p><PluginCountNewChart dataPoints={countDataPoints} client:only="svelte" /></p>
-
-	<!-- <p>This is a list of the most recently added plugins.</p> -->
-
-	<!-- <table>
-		<thead>
-			<tr>
-				<th>Plugin</th>
-				<th>Release Date</th>
-			</tr>
-		</thead>
-		<tbody>
-			{
-				pluginAddedRecentList.map(x => (
-					<tr>
-						<td>
-							<PluginLink id={x.id} />
-						</td>
-						<td>
-							<Commit commit={x.addedCommit} />
-						</td>
-					</tr>
-				))
-			}
-		</tbody>
-	</table> -->
+	<p><CountNewChart dataPoints={countDataPoints} type={ItemType.Plugin} client:only="svelte" /></p>
 
 	<h2 id="removed-plugins">Removed Plugins</h2>
 
@@ -77,53 +52,9 @@ const retiredByMonthDataPoints = view.removed_by_release_month(data);
 		smoothed.
 	</p>
 
-	<p><PluginCountRemovedChart dataPoints={countDataPoints} client:only="svelte" /></p>
+	<p><CountRemovedChart dataPoints={countDataPoints} type={ItemType.Plugin} client:only="svelte" /></p>
 
 	<p>This shows what percentage of plugins, sorted by their release month, have been removed from the community plugin list.</p>
 
-	<p><PluginRemovedByReleaseChart dataPoints={retiredByMonthDataPoints} client:only="svelte" /></p>
-
-	<!-- <p>This is a list of the most recently removed plugins.</p> -->
-
-	<!-- <table>
-		<thead>
-			<tr>
-				<th>Plugin</th>
-				<th>Removed Date</th>
-			</tr>
-		</thead>
-		<tbody>
-			{
-				pluginRemovedRecentList.map(x => (
-					<tr>
-						<td>
-							<PluginLink id={x.id} />
-						</td>
-						<td>
-							<Commit commit={x.removedCommit} />
-						</td>
-					</tr>
-				))
-			}
-		</tbody>
-	</table> -->
-
-	<h2 id="mismatched-data">Mismatched Data</h2>
-
-	<p>
-		Mismatched manifest and community listing data by release month. It seems that <strong>a lot</strong> of plugins have mismatched manifest and community listing
-		data. It seems like forgetting to update the other when updating one is a common mistake.
-	</p>
-
-	<!-- <div>
-		<BarChart
-			dataPoints={warningsByReleaseMonth.map(x => x.warningPercent['mismatched-manifest-data'])}
-			labels={warningsByReleaseMonth.map(x => x.month)}
-			logScale={false}
-			calculatePrecentages={true}
-			seriesName="missmatched data"
-			showXLabels={true}
-			client:only="svelte"
-		/>
-	</div> -->
+	<p><RemovedByReleaseChart dataPoints={retiredByMonthDataPoints} type={ItemType.Plugin} client:only="svelte" /></p>
 </StarlightPage>

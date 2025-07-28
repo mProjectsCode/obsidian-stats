@@ -5,8 +5,8 @@ pub const PLUGIN_STATS_PATH: &str = "community-plugin-stats.json";
 pub const PLUGIN_DEPRECATIONS_PATH: &str = "community-plugin-deprecation.json";
 pub const PLUGIN_REMOVED_PATH: &str = "community-plugins-removed.json";
 
-pub const THEME_LIST_PATH: &str = "community-themes.json";
-pub const THEME_REMOVED_PATH: &str = "community-themes-removed.json";
+pub const THEME_LIST_PATH: &str = "community-css-themes.json";
+pub const THEME_REMOVED_PATH: &str = "community-css-themes-removed.json";
 
 pub const RELEASE_STATS_URL: &str =
     "https://api.github.com/repos/obsidianmd/obsidian-releases/releases?page=1";

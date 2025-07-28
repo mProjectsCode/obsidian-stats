@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { BarY, Plot } from 'svelteplot';
-	import type { PluginInactivityByReleaseDataPoint } from '../../../../../../data-wasm/pkg/data_wasm';
+	import type { InactivityByReleaseDataPoint } from '../../../../../../data-wasm/pkg/data_wasm';
 
 	interface Props {
-		dataPoints: PluginInactivityByReleaseDataPoint[];
+		dataPoints: InactivityByReleaseDataPoint[];
 	}
 
 	const { dataPoints }: Props = $props();
@@ -44,9 +44,9 @@
 <Plot
 	grid
 	x={{ type: 'band', label: 'Release Date →', tickRotate: 45 }}
-	y={{ label: '↑ Plugin Percentage', domain: [0, 100] }}
+	y={{ label: '↑ Plugin Percentage', domain: [0, 100], tickFormat: d => `${String(d)}%` }}
 	color={{ legend: true, scheme: 'tableau10' }}
-	class="no-overflow"
+	class="no-overflow-clip"
 >
 	<BarY data={mappedDataPoints} x="date" y="count" fill="type" />
 </Plot>

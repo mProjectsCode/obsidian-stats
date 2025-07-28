@@ -4,332 +4,27 @@ use itertools::Itertools;
 use wasm_bindgen::prelude::wasm_bindgen;
 
 use crate::{
-    commit::StringCommit,
+    common::{
+        CountMonthlyDataPoint, DownloadDataPoint, HallOfFameDataPoint,
+        InactivityByReleaseDataPoint, IndividualDownloadDataPoint, OverviewDataPoint,
+        RemovedByReleaseDataPoint, increment_named_data_points, to_percentage,
+    },
     date::Date,
-    license::{LicenseDescriptionNested, Licenses},
+    license::Licenses,
     plugin::{
-        DownloadDataPoint, EntryChangeDataPoint, FundingUrl, IndividualDownloadDataPoint,
-        NamedDataPoint, PluginCountMonthlyDataPoint, PluginData, PluginExtraData,
-        PluginInactivityByReleaseDataPoint, PluginLicenseDataPoints, PluginOverviewDataPoint,
-        PluginRemovedByReleaseDataPoint, PluginRepoData, PluginRepoDataPoints,
-        PluginYearlyDataPoint, VersionDataPoint,
-        warnings::{PluginWarning, get_plugin_warnings},
+        NamedDataPoint, PluginData, PluginExtraData, PluginLicenseDataPoints, PluginRepoDataPoints,
+        full::FullPluginData,
     },
 };
 
 #[derive(Debug, Clone)]
 #[wasm_bindgen]
-pub struct FullPluginData {
-    #[wasm_bindgen(skip)]
-    pub data: PluginData,
-    #[wasm_bindgen(skip)]
-    pub extended: Option<PluginExtraData>,
-}
-
-impl FullPluginData {
-    pub fn new(data: PluginData, extended: Option<PluginExtraData>) -> Self {
-        Self { data, extended }
-    }
-
-    pub fn extended(&self) -> Option<&PluginExtraData> {
-        self.extended.as_ref()
-    }
-
-    pub fn repo_data(&self) -> Option<&PluginRepoData> {
-        self.extended().and_then(|r| r.repo.as_ref().ok())
-    }
-
-    pub fn get_downloads_at(&self, date: &Date) -> Option<u32> {
-        self.data
-            .download_history
-            .0
-            .get(&date.to_fancy_string())
-            .copied()
-    }
-
-    pub fn find_downloads_in_week(&self, date: &Date) -> Option<u32> {
-        for i in 0..7 {
-            let mut d = date.clone();
-            d.advance_days(i);
-            if let Some(downloads) = self.get_downloads_at(&d) {
-                return Some(downloads);
-            }
-        }
-
-        None
-    }
-
-    pub fn find_downloads_after_date(&self, date: &Date) -> Option<u32> {
-        let end_date = self
-            .data
-            .removed_commit
-            .as_ref()
-            .map_or_else(Date::now, |c| c.date.clone());
-
-        date.iterate_daily_to(&end_date)
-            .find_map(|d| self.get_downloads_at(&d))
-    }
-
-    pub fn find_downloads_before_date(&self, date: &Date) -> Option<u32> {
-        let start_date = self.data.added_commit.date.clone();
-
-        date.iterate_daily_backwards(&start_date)
-            .find_map(|d| self.get_downloads_at(&d))
-    }
-
-    pub fn released_in_month(&self, date: &Date) -> bool {
-        self.data.added_commit.date.month == date.month
-            && self.data.added_commit.date.year == date.year
-    }
-
-    pub fn removed_in_month(&self, date: &Date) -> bool {
-        if let Some(removed_commit) = &self.data.removed_commit {
-            removed_commit.date.month == date.month && removed_commit.date.year == date.year
-        } else {
-            false
-        }
-    }
-
-    pub fn last_updated(&self) -> &Date {
-        self.data
-            .version_history
-            .last()
-            .map_or_else(|| &self.data.added_commit.date, |v| &v.initial_release_date)
-    }
-}
-
-#[wasm_bindgen]
-impl FullPluginData {
-    pub fn has_repo_data(&self) -> bool {
-        self.repo_data().is_some()
-    }
-
-    pub fn id(&self) -> String {
-        self.data.id.clone()
-    }
-
-    pub fn name(&self) -> String {
-        self.data.current_entry.name.clone()
-    }
-
-    pub fn author(&self) -> String {
-        self.data.current_entry.author.clone()
-    }
-
-    pub fn description(&self) -> String {
-        self.data.current_entry.description.clone()
-    }
-
-    pub fn repo_url(&self) -> String {
-        self.data.current_entry.repo.clone()
-    }
-
-    pub fn funding_url(&self) -> Option<String> {
-        // TODO: support FundingUrl::Object
-        self.repo_data()
-            .and_then(|r| r.manifest.funding_url.as_ref())
-            .and_then(|f| match f {
-                FundingUrl::String(url) => Some(url.clone()),
-                FundingUrl::Object(_) => None,
-            })
-    }
-
-    pub fn author_url(&self) -> Option<String> {
-        self.repo_data().and_then(|r| r.manifest.author_url.clone())
-    }
-
-    pub fn help_url(&self) -> Option<String> {
-        self.repo_data().and_then(|r| r.manifest.help_url.clone())
-    }
-
-    pub fn min_app_version(&self) -> Option<String> {
-        self.repo_data().map(|r| r.manifest.min_app_version.clone())
-    }
-
-    pub fn is_desktop_only(&self) -> Option<bool> {
-        self.repo_data()
-            .and_then(|r| r.manifest.is_desktop_only.clone())
-    }
-
-    pub fn obsidian_url(&self) -> Option<String> {
-        match self.data.removed_commit {
-            Some(_) => None, // If the plugin is removed, we don't provide an Obsidian URL
-            None => Some(format!("obsidian://show-plugin?id={}", self.data.id)),
-        }
-    }
-
-    pub fn obsidian_hub_url(&self) -> Option<String> {
-        match self.data.removed_commit {
-            Some(_) => None, // If the plugin is removed, we don't provide an Obsidian Hub URL
-            None => Some(format!(
-                "https://publish.obsidian.md/hub/02+-+Community+Expansions/02.05+All+Community+Expansions/Plugins/{}",
-                self.data.id
-            )),
-        }
-    }
-
-    pub fn added_commit(&self) -> StringCommit {
-        self.data.added_commit.to_string_commit()
-    }
-
-    pub fn removed_commit(&self) -> Option<StringCommit> {
-        self.data
-            .removed_commit
-            .as_ref()
-            .map(|c| c.to_string_commit())
-    }
-
-    pub fn last_updated_date(&self) -> Option<String> {
-        self.data
-            .version_history
-            .last()
-            .map(|v| v.initial_release_date.to_fancy_string())
-    }
-
-    pub fn license_package_json(&self) -> Option<String> {
-        self.repo_data().map(|r| r.package_json_license.clone())
-    }
-
-    pub fn license_file(&self) -> Option<String> {
-        self.repo_data().map(|r| r.license_file.clone())
-    }
-
-    pub fn package_managers(&self) -> Option<Vec<String>> {
-        self.repo_data().map(|r| {
-            r.package_managers
-                .iter()
-                .map(|pm| pm.get_identifier().to_string())
-                .collect()
-        })
-    }
-
-    pub fn bundlers(&self) -> Option<Vec<String>> {
-        self.repo_data().map(|r| {
-            r.bundlers
-                .iter()
-                .map(|b| b.get_identifier().to_string())
-                .collect()
-        })
-    }
-
-    pub fn testing_frameworks(&self) -> Option<Vec<String>> {
-        self.repo_data().map(|r| {
-            r.testing_frameworks
-                .iter()
-                .map(|tf| tf.get_identifier().to_string())
-                .collect()
-        })
-    }
-
-    pub fn uses_typescript(&self) -> Option<bool> {
-        self.repo_data().map(|r| r.uses_typescript)
-    }
-
-    pub fn has_beta_manifest(&self) -> Option<bool> {
-        self.repo_data().map(|r| r.has_beta_manifest)
-    }
-
-    pub fn has_package_json(&self) -> Option<bool> {
-        self.repo_data().map(|r| r.has_package_json)
-    }
-
-    pub fn has_test_files(&self) -> Option<bool> {
-        self.repo_data().map(|r| r.has_test_files)
-    }
-
-    pub fn dev_dependencies(&self) -> Option<Vec<String>> {
-        self.repo_data().map(|r| r.dev_dependencies.clone())
-    }
-
-    pub fn dependencies(&self) -> Option<Vec<String>> {
-        self.repo_data().map(|r| r.dependencies.clone())
-    }
-
-    pub fn download_count(&self) -> u32 {
-        self.data.download_count
-    }
-
-    /// Get the download data points in the form
-    /// ```ts
-    /// interface DownloadDataPoint {
-    ///     date: string; // e.g. "2023-10-01"
-    ///     downloads: number | undefined; // e.g. 100
-    ///     delta: number | undefined; // e.g. 10 (change from previous data point)
-    /// }
-    /// ```
-    pub fn download_data_points(&self) -> Vec<DownloadDataPoint> {
-        let end_date = self
-            .data
-            .removed_commit
-            .as_ref()
-            .map_or_else(|| Date::now(), |c| c.date.clone());
-
-        self.data
-            .added_commit
-            .date
-            .iterate_weekly_to(&end_date)
-            .map(|date| {
-                let mut prev_date = date.clone();
-                prev_date.reverse_days(7);
-
-                let downloads = self
-                    .find_downloads_in_week(&date)
-                    .and_then(|d| if d > 0 { Some(d) } else { None });
-                let previous_downloads = self
-                    .find_downloads_in_week(&prev_date)
-                    .and_then(|d| if d > 0 { Some(d) } else { None });
-
-                let delta = match (downloads, previous_downloads) {
-                    (Some(d), Some(pd)) if d >= pd => Some(d - pd),
-                    _ => None,
-                };
-
-                DownloadDataPoint {
-                    date: date.to_fancy_string(),
-                    downloads,
-                    delta,
-                }
-            })
-            .collect()
-    }
-
-    pub fn warnings(&self) -> Vec<PluginWarning> {
-        get_plugin_warnings(&self)
-    }
-
-    pub fn versions(&self) -> Vec<VersionDataPoint> {
-        self.data
-            .version_history
-            .iter()
-            .map(|v| VersionDataPoint {
-                version: v.version.clone(),
-                date: v.initial_release_date.to_fancy_string(),
-                deprecated: self
-                    .extended
-                    .as_ref()
-                    .map(|e| e.deprecated_versions.contains(&v.version))
-                    .unwrap_or(false),
-            })
-            .collect()
-    }
-
-    pub fn changes(&self) -> Vec<EntryChangeDataPoint> {
-        self.data
-            .change_history
-            .iter()
-            .map(|change| change.to_data_point())
-            .collect()
-    }
-}
-
-#[derive(Debug, Clone)]
-#[wasm_bindgen]
-pub struct FullPluginDataArray {
+pub struct PluginDataArray {
     #[wasm_bindgen(skip)]
     pub data: Vec<FullPluginData>,
 }
 
-impl FullPluginDataArray {
+impl PluginDataArray {
     pub fn new(data: Vec<PluginData>, extended: Vec<PluginExtraData>) -> Self {
         let data = data
             .into_iter()
@@ -342,7 +37,7 @@ impl FullPluginDataArray {
     }
 }
 
-impl Index<usize> for FullPluginDataArray {
+impl Index<usize> for PluginDataArray {
     type Output = FullPluginData;
 
     fn index(&self, index: usize) -> &Self::Output {
@@ -351,21 +46,21 @@ impl Index<usize> for FullPluginDataArray {
 }
 
 #[wasm_bindgen]
-impl FullPluginDataArray {
-    pub fn view(&self) -> FullPluginDataArrayView {
-        FullPluginDataArrayView::new(self.data.len())
+impl PluginDataArray {
+    pub fn view(&self) -> PluginDataArrayView {
+        PluginDataArrayView::new(self.data.len())
     }
 }
 
-/// A view into a `FullPluginDataArray` that allows access to the underlying data without cloning.
+/// A view into a `PluginDataArray` that allows access to the underlying data without cloning.
 #[derive(Debug, Clone)]
 #[wasm_bindgen]
-pub struct FullPluginDataArrayView {
+pub struct PluginDataArrayView {
     #[wasm_bindgen(skip)]
     pub data: Vec<usize>,
 }
 
-impl FullPluginDataArrayView {
+impl PluginDataArrayView {
     pub fn new(len: usize) -> Self {
         Self {
             data: (0..len).collect(),
@@ -374,7 +69,7 @@ impl FullPluginDataArrayView {
 }
 
 #[wasm_bindgen]
-impl FullPluginDataArrayView {
+impl PluginDataArrayView {
     pub fn len(&self) -> usize {
         self.data.len()
     }
@@ -383,15 +78,15 @@ impl FullPluginDataArrayView {
         self.data.is_empty()
     }
 
-    pub fn get(&self, data: &FullPluginDataArray, index: usize) -> FullPluginData {
+    pub fn get(&self, data: &PluginDataArray, index: usize) -> FullPluginData {
         data[self.data[index]].clone()
     }
 
-    pub fn get_ids(&self, data: &FullPluginDataArray) -> Vec<String> {
+    pub fn get_ids(&self, data: &PluginDataArray) -> Vec<String> {
         self.data.iter().map(|&index| data[index].id()).collect()
     }
 
-    pub fn get_by_id(&self, data: &FullPluginDataArray, id: &str) -> Option<FullPluginData> {
+    pub fn get_by_id(&self, data: &PluginDataArray, id: &str) -> Option<FullPluginData> {
         self.data.iter().find_map(|&index| {
             let item = &data[index];
             if item.id() == id {
@@ -402,15 +97,15 @@ impl FullPluginDataArrayView {
         })
     }
 
-    pub fn to_vec(&self, data: &FullPluginDataArray) -> Vec<FullPluginData> {
+    pub fn to_vec(&self, data: &PluginDataArray) -> Vec<FullPluginData> {
         self.data.iter().map(|&index| data[index].clone()).collect()
     }
 
-    pub fn sort_asc(&mut self, data: &FullPluginDataArray, spec: PluginDataSortSpec) {
+    pub fn sort_asc(&mut self, data: &PluginDataArray, spec: PluginDataSortSpec) {
         self.data.sort_by(|&a, &b| spec.cmp(&data[a], &data[b]));
     }
 
-    pub fn sort_desc(&mut self, data: &FullPluginDataArray, spec: PluginDataSortSpec) {
+    pub fn sort_desc(&mut self, data: &PluginDataArray, spec: PluginDataSortSpec) {
         self.data.sort_by(|&a, &b| spec.cmp(&data[b], &data[a]));
     }
 
@@ -438,7 +133,7 @@ impl FullPluginDataArrayView {
     ///     delta: number; // e.g. 10 (change from previous data point)
     /// }
     /// ```
-    pub fn total_download_data(&self, data: &FullPluginDataArray) -> Vec<DownloadDataPoint> {
+    pub fn total_download_data(&self, data: &PluginDataArray) -> Vec<DownloadDataPoint> {
         let start_date = Date::new(2020, 11, 1);
         let end_date = Date::now();
 
@@ -479,7 +174,7 @@ impl FullPluginDataArrayView {
 
     pub fn individual_download_data(
         &self,
-        data: &FullPluginDataArray,
+        data: &PluginDataArray,
     ) -> Vec<IndividualDownloadDataPoint> {
         self.data
             .iter()
@@ -502,12 +197,12 @@ impl FullPluginDataArrayView {
             .collect()
     }
 
-    pub fn overview(&self, data: &FullPluginDataArray) -> Vec<PluginOverviewDataPoint> {
+    pub fn overview(&self, data: &PluginDataArray) -> Vec<OverviewDataPoint> {
         self.data
             .iter()
             .map(|&index| {
                 let plugin_data = &data[index];
-                PluginOverviewDataPoint {
+                OverviewDataPoint {
                     id: plugin_data.id(),
                     name: plugin_data.name(),
                     author: plugin_data.author(),
@@ -522,11 +217,11 @@ impl FullPluginDataArrayView {
 
     pub fn most_downloaded(
         &self,
-        data: &FullPluginDataArray,
+        data: &PluginDataArray,
         count: usize,
         year: Option<u32>,
         restrict_release_date: bool,
-    ) -> Vec<PluginYearlyDataPoint> {
+    ) -> Vec<HallOfFameDataPoint> {
         let (start_date, end_date) = match year {
             Some(y) => (Date::new(y, 1, 1), Date::new(y + 1, 1, 1)),
             None => (Date::new(2020, 11, 1), Date::now()),
@@ -580,7 +275,7 @@ impl FullPluginDataArrayView {
                     })
                     .collect();
 
-                PluginYearlyDataPoint {
+                HallOfFameDataPoint {
                     id: plugin_data.id(),
                     name: plugin_data.name(),
                     downloads_new,
@@ -591,10 +286,7 @@ impl FullPluginDataArrayView {
             .collect_vec()
     }
 
-    pub fn monthly_plugin_count(
-        &self,
-        data: &FullPluginDataArray,
-    ) -> Vec<PluginCountMonthlyDataPoint> {
+    pub fn monthly_count(&self, data: &PluginDataArray) -> Vec<CountMonthlyDataPoint> {
         let mut plugin_count: i32 = 0;
         let mut plugin_count_with_removed: i32 = 0;
 
@@ -620,7 +312,7 @@ impl FullPluginDataArrayView {
                 plugin_count += new_plugins - removed_plugins;
                 plugin_count_with_removed += new_plugins;
 
-                PluginCountMonthlyDataPoint {
+                CountMonthlyDataPoint {
                     date: date.to_fancy_string(),
                     total: plugin_count.max(0) as u32,
                     total_with_removed: plugin_count_with_removed.max(0) as u32,
@@ -633,8 +325,8 @@ impl FullPluginDataArrayView {
 
     pub fn removed_by_release_month(
         &self,
-        data: &FullPluginDataArray,
-    ) -> Vec<PluginRemovedByReleaseDataPoint> {
+        data: &PluginDataArray,
+    ) -> Vec<RemovedByReleaseDataPoint> {
         let start_date = Date::new(2020, 11, 1);
         let end_date = Date::now();
 
@@ -654,7 +346,7 @@ impl FullPluginDataArrayView {
                     }
                 });
 
-                PluginRemovedByReleaseDataPoint {
+                RemovedByReleaseDataPoint {
                     date: date.to_fancy_string(),
                     percentage: if count > 0 {
                         (removed_count as f64 / count as f64) * 100.0
@@ -668,8 +360,8 @@ impl FullPluginDataArrayView {
 
     pub fn inactivity_by_release_month(
         &self,
-        data: &FullPluginDataArray,
-    ) -> Vec<PluginInactivityByReleaseDataPoint> {
+        data: &PluginDataArray,
+    ) -> Vec<InactivityByReleaseDataPoint> {
         let start_date = Date::new(2020, 11, 1);
         let end_date = Date::now();
 
@@ -696,7 +388,7 @@ impl FullPluginDataArrayView {
                     }
                 });
 
-                PluginInactivityByReleaseDataPoint {
+                InactivityByReleaseDataPoint {
                     date: date.to_fancy_string(),
                     inactive_one_year: inactive[0] as f64 / released_in_month as f64 * 100.0,
                     inactive_two_years: inactive[1] as f64 / released_in_month as f64 * 100.0,
@@ -708,7 +400,7 @@ impl FullPluginDataArrayView {
             .collect()
     }
 
-    pub fn inactivity_distribution(&self, data: &FullPluginDataArray) -> Vec<i32> {
+    pub fn inactivity_distribution(&self, data: &PluginDataArray) -> Vec<i32> {
         let mut tmp: Vec<_> = self
             .data
             .iter()
@@ -724,7 +416,7 @@ impl FullPluginDataArrayView {
         tmp
     }
 
-    pub fn repo_data_points(&self, data: &FullPluginDataArray) -> PluginRepoDataPoints {
+    pub fn repo_data_points(&self, data: &PluginDataArray) -> PluginRepoDataPoints {
         let mut points = PluginRepoDataPoints::default();
 
         self.data.iter().for_each(|&index| {
@@ -802,11 +494,11 @@ impl FullPluginDataArrayView {
 
     pub fn license_data_points(
         &self,
-        data: &FullPluginDataArray,
+        data: &PluginDataArray,
         license_data_string: String,
     ) -> Result<PluginLicenseDataPoints, String> {
         let licenses: Licenses = serde_json::from_str(&license_data_string)
-            .map_err(|e| format!("Failed to parse license data: {}", e))?;
+            .map_err(|e| format!("Failed to parse license data: {e}"))?;
 
         let mut points = PluginLicenseDataPoints {
             licenses: Vec::new(),
@@ -844,24 +536,91 @@ impl FullPluginDataArrayView {
 
         Ok(points)
     }
-}
 
-fn increment_named_data_points(points: &mut Vec<NamedDataPoint>, name: &str, value: f64) {
-    if let Some(point) = points.iter_mut().find(|p| p.name == name) {
-        point.value += value;
-    } else {
-        points.push(NamedDataPoint {
-            name: name.to_string(),
-            value,
+    /// Named data points for mismatched data between the plugin's repo data and the current entry in the community list.
+    /// The data is in percentage form.
+    pub fn mismatched_data(&self, data: &PluginDataArray) -> Vec<NamedDataPoint> {
+        let mut points = Vec::new();
+        self.data.iter().for_each(|&index| {
+            let plugin_data = &data[index];
+            let Some(repo_data) = plugin_data.repo_data() else {
+                return;
+            };
+
+            if repo_data.manifest.description != plugin_data.data.current_entry.description {
+                increment_named_data_points(&mut points, "Description mismatch", 1.0);
+            }
+
+            if repo_data.manifest.name != plugin_data.data.current_entry.name {
+                increment_named_data_points(&mut points, "Name mismatch", 1.0);
+            }
+
+            if repo_data.manifest.author != plugin_data.data.current_entry.author {
+                increment_named_data_points(&mut points, "Author mismatch", 1.0);
+            }
         });
-    }
-}
 
-fn to_percentage(value: &mut f64, total: f64) {
-    if total == 0.0 {
-        *value = 0.0;
-    } else {
-        *value = (*value / total) * 100.0;
+        points.iter_mut().for_each(|point| {
+            to_percentage(&mut point.value, self.data.len() as f64);
+        });
+
+        points
+    }
+
+    /// Usage percentages of optional manifest fields across all plugins in the view.
+    pub fn optional_manifest_fields(&self, data: &PluginDataArray) -> Vec<NamedDataPoint> {
+        let mut points = Vec::new();
+        self.data.iter().for_each(|&index| {
+            let plugin_data = &data[index];
+            let Some(repo_data) = plugin_data.repo_data() else {
+                return;
+            };
+
+            if repo_data.manifest.funding_url.is_some() {
+                increment_named_data_points(&mut points, "Has funding URL", 1.0);
+            }
+            if repo_data.manifest.author_url.is_some() {
+                increment_named_data_points(&mut points, "Has author URL", 1.0);
+            }
+            if repo_data.manifest.help_url.is_some() {
+                increment_named_data_points(&mut points, "Has help URL", 1.0);
+            }
+        });
+
+        points.iter_mut().for_each(|point| {
+            to_percentage(&mut point.value, self.data.len() as f64);
+        });
+
+        points
+    }
+
+    pub fn desktop_only_data(&self, data: &PluginDataArray) -> Vec<NamedDataPoint> {
+        let mut points = Vec::new();
+        self.data.iter().for_each(|&index| {
+            let plugin_data = &data[index];
+            let Some(repo_data) = plugin_data.repo_data() else {
+                increment_named_data_points(&mut points, "Unknown", 1.0);
+                return;
+            };
+
+            match repo_data.manifest.is_desktop_only {
+                Some(true) => {
+                    increment_named_data_points(&mut points, "Desktop only", 1.0);
+                }
+                Some(false) => {
+                    increment_named_data_points(&mut points, "Mobile compatible", 1.0);
+                }
+                None => {
+                    increment_named_data_points(&mut points, "Not specified", 1.0);
+                }
+            }
+        });
+
+        points.iter_mut().for_each(|point| {
+            to_percentage(&mut point.value, self.data.len() as f64);
+        });
+
+        points
     }
 }
 

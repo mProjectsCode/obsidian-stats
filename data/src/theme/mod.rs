@@ -1,6 +1,9 @@
-use hashbrown::{HashMap, HashSet};
+use data_lib::{commit::Commit, common::EntryChange, input_data::ObsCommunityTheme};
+use hashbrown::HashMap;
+use serde::Serialize;
+use slug::slugify;
 
-use crate::{commit::Commit, common::EntryChange, input_data::ObsCommunityTheme};
+pub mod data;
 
 #[derive(Debug, Clone)]
 pub struct ThemeList {
@@ -8,20 +11,8 @@ pub struct ThemeList {
     pub commit: Commit,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct SerializedThemeData {
-    pub id: String,
-    pub name: String,
-    pub added_commit: Commit,
-    pub removed_commit: Option<Commit>,
-    pub initial_entry: ObsCommunityTheme,
-    pub current_entry: ObsCommunityTheme,
-    pub change_history: Vec<EntryChange>,
-}
-
-// TODO: Identical to ThemeDataInterface, probably used for type import?
 #[derive(Debug, Clone, Serialize)]
-pub struct ThemeData<'a> {
+pub struct BorrowedThemeData<'a> {
     pub id: String,
     pub name: String,
     pub added_commit: &'a Commit,
@@ -31,35 +22,38 @@ pub struct ThemeData<'a> {
     pub change_history: Vec<EntryChange>,
 }
 
+#[derive(Debug, Clone, Default)]
 pub struct ThemeIdCounter(pub HashMap<String, usize>);
-pub impl ThemeIdCounter {
+
+impl ThemeIdCounter {
     pub fn new() -> Self {
-        Self(HashMap::new())
+        Self::default()
     }
 
     pub fn get_id(&mut self, name: &str) -> String {
-        let mut id = name.to_string();
+        let mut id = slugify(name);
         let count = self.0.entry(id.clone()).or_insert(0);
         if *count > 0 {
-            id.push_str(&format!("-{}", count));
+            id.push_str(&format!("-{count}"));
         }
         *count += 1;
         id
     }
 }
 
-impl<'a>  ThemeData<'a> {
+impl<'a> BorrowedThemeData<'a> {
     pub fn new(
         name: String,
         added_commit: &'a Commit,
         initial_entry: &'a ObsCommunityTheme,
+        id_counter: &mut ThemeIdCounter,
     ) -> Self {
         Self {
-            id: theme_id_mapper.get_id(&id),
+            id: id_counter.get_id(&name),
             name,
-            added_commit: added_commit,
+            added_commit,
             removed_commit: None,
-            initial_entry: initial_entry,
+            initial_entry,
             current_entry: initial_entry,
             change_history: vec![EntryChange {
                 property: "Theme Added".to_string(),
@@ -71,10 +65,10 @@ impl<'a>  ThemeData<'a> {
     }
 
     pub fn find_changes(&mut self, theme_list: &'a ThemeList) {
-        let new_entry = theme_list.entries.get(&self.id);
+        let new_entry = theme_list.entries.get(&self.name);
         let Some(new_entry) = new_entry else {
             if self.removed_commit.is_none() {
-                self.removed_commit = Some(theme_list.commit.clone());
+                self.removed_commit = Some(&theme_list.commit);
                 self.change_history.push(EntryChange {
                     property: "Theme Removed".to_string(),
                     commit: theme_list.commit.clone(),
@@ -98,7 +92,7 @@ impl<'a>  ThemeData<'a> {
 
         self.change_history
             .extend(self.current_entry.compare(new_entry, &theme_list.commit));
-        
-        self.current_entry = &new_entry;
+
+        self.current_entry = new_entry;
     }
 }

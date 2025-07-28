@@ -36,6 +36,10 @@ impl Commit {
             hash: self.hash.clone(),
         }
     }
+
+    pub fn to_fancy_string(&self) -> String {
+        format!("{} ({})", self.hash, self.date.to_fancy_string())
+    }
 }
 
 #[derive(Tsify, Debug, Clone, Serialize)]

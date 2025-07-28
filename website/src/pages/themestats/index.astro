@@ -1,7 +1,12 @@
 ---
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
-import ThemesIndex from '../../components/svelte/indexPages/themesIndex.svelte';
-import { getThemeData } from '../../../../src/utils';
+import DataIndex from '../../components/newSvelte/DataIndex.svelte';
+import { getThemeDataArray } from '../../utils/data';
+import { ItemType } from '../../utils/misc';
+
+const dataArray = await getThemeDataArray();
+const view = dataArray.view();
+const data = view.overview(dataArray);
 ---
 
 <StarlightPage
@@ -19,5 +24,5 @@ import { getThemeData } from '../../../../src/utils';
 >
 	<p>This table shows all themes ever available on the community plugin page. You can sort the table by clicking on the column headers.</p>
 
-	<ThemesIndex data={getThemeData()} client:only="svelte" />
+	<DataIndex data={data} type={ItemType.Theme} client:only="svelte" />
 </StarlightPage>

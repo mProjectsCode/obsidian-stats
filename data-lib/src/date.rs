@@ -57,7 +57,8 @@ impl Date {
     }
 
     pub fn is_leap_year(&self) -> bool {
-        (self.year % 4 == 0 && self.year % 100 != 0) || (self.year % 400 == 0)
+        (self.year.is_multiple_of(4) && !self.year.is_multiple_of(100))
+            || self.year.is_multiple_of(400)
     }
 
     pub fn days_since_epoch(&self) -> u32 {

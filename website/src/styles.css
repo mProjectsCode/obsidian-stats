@@ -33,6 +33,10 @@ a.right-sidebar-link {
 	line-height: 1.25;
 }
 
+a.right-sidebar-link:hover {
+	color: var(--sl-color-white);
+}
+
 @media (min-width: 72rem) {
 	.only-show-small {
 		display: none;
@@ -180,6 +184,6 @@ aside.starlight-aside {
 	margin-top: 0.5rem !important;
 }
 
-.no-overflow > div > svg {
+.no-overflow-clip > div > svg {
 	overflow: visible;
 }

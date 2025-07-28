@@ -72,12 +72,12 @@ pub fn clone_plugin_repos() -> Result<(), Box<dyn std::error::Error>> {
                 Ok(_) => {
                     total_progress.inc(1);
                     success_progress.inc(1);
-                    return CloneResult::Success;
+                    CloneResult::Success
                 }
                 Err(e) => {
                     total_progress.inc(1);
                     failed_progress.inc(1);
-                    return CloneResult::Failed(plugin.id, e);
+                    CloneResult::Failed(plugin.id, e)
                 }
             }
         })
@@ -109,7 +109,7 @@ pub fn clone_plugin_repos() -> Result<(), Box<dyn std::error::Error>> {
     println!();
 
     for (id, error) in failed_plugins {
-        eprintln!("Failed to clone plugin {}: {}", id, error);
+        eprintln!("Failed to clone plugin {id}: {error}");
     }
 
     println!("Cloning completed in {:?}", now.elapsed());

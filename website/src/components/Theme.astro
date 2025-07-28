@@ -1,0 +1,106 @@
+---
+import Commit from './Commit.astro';
+import { Aside } from '@astrojs/starlight/components';
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import { getThemeDataArray } from '../utils/data';
+
+const { themeId } = Astro.props as { themeId: string };
+if (!themeId) {
+	throw new Error('Theme ID is required');
+}
+
+const data = await getThemeDataArray();
+const view = data.view();
+const theme = view.get_by_id(data, themeId);
+if (!theme) {
+	throw new Error(`Theme with ID ${themeId} not found.`);
+}
+
+const obsidianHubUrl = theme.obsidian_hub_url();
+
+const external_links: { text: string; href: string }[] = [
+	{ text: 'GitHub Repo', href: theme.repo_url() },
+	obsidianHubUrl ? { text: 'View on the Obsidian Hub', href: obsidianHubUrl } : undefined,
+].filter(x => x !== undefined);
+---
+
+<StarlightPage
+	frontmatter={{ title: theme.name(), description: `Page for the ${theme.name()} theme.`, links: external_links }}
+	headings={[
+		{ depth: 2, text: 'Data', slug: 'data' },
+		{ depth: 3, text: 'Changes', slug: 'changes' },
+	]}
+>
+	{
+		theme.removed_commit() && (
+			<Aside type="danger" title="Theme has been Removed">
+				<p>
+					This theme has been removed from the community list on <Commit commit={theme.removed_commit()} /> and can no longer be installed.
+				</p>
+			</Aside>
+		)
+	}
+
+	<h2 id="data">Data</h2>
+
+	<table class="full-width">
+		<tbody>
+			<tr>
+				<td>Name</td>
+				<td>{theme.name()}</td>
+			</tr>
+			<tr>
+				<td>Author</td>
+				<td>{theme.author()}</td>
+			</tr>
+			<tr>
+				<td>Modes</td>
+				<td>{theme.modes().join(', ')}</td>
+			</tr>
+			<tr>
+				<td>Official Release Date</td>
+				<td><Commit commit={theme.added_commit()} /></td>
+			</tr>
+		</tbody>
+	</table>
+
+	<h3 class="only-show-small">Quick Links</h3>
+	<ul class="only-show-small">
+		{
+			external_links.map(link => (
+				<li>
+					<a href={link.href} target="_blank">
+						{link.text}
+					</a>
+				</li>
+			))
+		}
+	</ul>
+
+	<h3 id="changes">Changes</h3>
+
+	<table>
+		<thead>
+			<tr>
+				<th>Date</th>
+				<th>Changed Property</th>
+				<th>Old Value</th>
+				<th>New Value</th>
+			</tr>
+		</thead>
+		<tbody>
+			{
+				theme.changes().map(change => (
+					<tr>
+						<td>
+							<Commit commit={change.commit} />
+						</td>
+						<td>{change.property}</td>
+						<td>{change.old_value}</td>
+						<td>{change.new_value}</td>
+					</tr>
+				))
+			}
+		</tbody>
+	</table>
+</StarlightPage>

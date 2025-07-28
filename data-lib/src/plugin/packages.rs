@@ -44,7 +44,7 @@ impl PackageManager {
     pub fn matches_lock_file(&self, file_name: &str) -> bool {
         self.get_lock_file_name().iter().any(|name| {
             if file_name.contains("/") {
-                file_name.ends_with(format!("/{}", name).as_str())
+                file_name.ends_with(format!("/{name}").as_str())
             } else {
                 file_name == *name
             }

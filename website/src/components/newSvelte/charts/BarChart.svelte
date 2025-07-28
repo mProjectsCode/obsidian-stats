@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { BarY, Dot, Line, Plot } from 'svelteplot';
+	import { BarY, Dot, Line, Plot, Text } from 'svelteplot';
 	import type { NamedDataPoint } from '../../../../../data-wasm/pkg/data_wasm';
 
 	interface Props {
@@ -7,10 +7,12 @@
 		xLabel: string;
 		yLabel: string;
 		skewLabels?: boolean;
+		percentages?: boolean;
+		hideBarValues?: boolean;
 		yDomain?: [number, number];
 	}
 
-	const { dataPoints, xLabel, yLabel, yDomain, skewLabels = false }: Props = $props();
+	const { dataPoints, xLabel, yLabel, yDomain, skewLabels = false, percentages = false, hideBarValues = false }: Props = $props();
 
 	const mappedDataPoints = dataPoints.map((point, index) => {
 		return {
@@ -25,6 +27,22 @@
 	}
 </script>
 
-<Plot grid x={{ type: 'band', label: `${xLabel} →`, tickRotate: skewLabels ? 45 : 0 }} y={{ label: `↑ ${yLabel}`, domain: yDomain }} class="no-overflow">
+<Plot
+	grid
+	x={{ type: 'band', label: `${xLabel} →`, tickRotate: skewLabels ? 45 : 0 }}
+	y={{ label: `↑ ${yLabel}`, domain: yDomain, tickFormat: percentages ? d => `${String(d)}%` : d => String(d) }}
+	class="no-overflow-clip"
+>
 	<BarY data={mappedDataPoints} x="label" y="value" fill="var(--sl-color-text-accent)" sort={sortData} />
+	{#if !hideBarValues}
+		<Text
+			data={mappedDataPoints}
+			x="label"
+			y="value"
+			fill="var(--sl-color-text-foreground)"
+			text={d => (percentages ? `${d.value.toFixed(1)}%` : d.value.toFixed(1))}
+			lineAnchor="bottom"
+			dy={-2}
+		/>
+	{/if}
 </Plot>

@@ -50,11 +50,18 @@ const licenseDataPoints = view.license_data_points(dataArray, licenseDataFile);
 		<code>unknown</code> means that a license file was found, but the license could not be identified.
 	</p>
 
-	<BarChart dataPoints={licenseDataPoints.licenses} xLabel="License" yLabel="Number of Plugins" skewLabels client:only="svelte" />
+	<BarChart dataPoints={licenseDataPoints.licenses} xLabel="License" yLabel="Number of Plugins" skewLabels hideBarValues client:only="svelte" />
 
 	<p>Licenses that are used by more than 100 plugins are excluded from the chart below.</p>
 
-	<BarChart dataPoints={licenseDataPoints.licenses.filter(x => x.value <= 100)} xLabel="License" yLabel="Number of Plugins" skewLabels client:only="svelte" />
+	<BarChart
+		dataPoints={licenseDataPoints.licenses.filter(x => x.value <= 100)}
+		xLabel="License"
+		yLabel="Number of Plugins"
+		skewLabels
+		hideBarValues
+		client:only="svelte"
+	/>
 
 	<h2 id="license-terms">License Terms</h2>
 
@@ -64,7 +71,7 @@ const licenseDataPoints = view.license_data_points(dataArray, licenseDataFile);
 
 	<p>A number of plugins give the following permissions.</p>
 
-	<BarChart dataPoints={licenseDataPoints.permissions} xLabel="Permission" yLabel="Number of Plugins" skewLabels client:only="svelte" />
+	<BarChart dataPoints={licenseDataPoints.permissions} xLabel="Permission" yLabel="Number of Plugins" skewLabels hideBarValues client:only="svelte" />
 
 	{
 		licenseDataPoints.descriptions.permissions.map(x => (
@@ -78,7 +85,7 @@ const licenseDataPoints = view.license_data_points(dataArray, licenseDataFile);
 
 	<p>A number of plugins impose the following conditions.</p>
 
-	<BarChart dataPoints={licenseDataPoints.conditions} xLabel="Condition" yLabel="Number of Plugins" skewLabels client:only="svelte" />
+	<BarChart dataPoints={licenseDataPoints.conditions} xLabel="Condition" yLabel="Number of Plugins" skewLabels hideBarValues client:only="svelte" />
 
 	{
 		licenseDataPoints.descriptions.conditions.map(x => (
@@ -92,7 +99,7 @@ const licenseDataPoints = view.license_data_points(dataArray, licenseDataFile);
 
 	<p>A number of plugins impose the following limitations.</p>
 
-	<BarChart dataPoints={licenseDataPoints.limitations} xLabel="Limitation" yLabel="Number of Plugins" skewLabels client:only="svelte" />
+	<BarChart dataPoints={licenseDataPoints.limitations} xLabel="Limitation" yLabel="Number of Plugins" skewLabels hideBarValues client:only="svelte" />
 
 	{
 		licenseDataPoints.descriptions.limitations.map(x => (

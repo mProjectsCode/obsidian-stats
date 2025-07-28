@@ -1,5 +1,4 @@
 use data_lib::{
-    commit::Commit,
     date::Date,
     input_data::{ObsDownloadStats, ObsPluginList},
     plugin::PluginData,
@@ -11,62 +10,18 @@ use std::{path::Path, process::Command};
 use crate::{
     constants::{OBS_RELEASES_REPO_PATH, PLUGIN_DATA_PATH, PLUGIN_LIST_PATH, PLUGIN_STATS_PATH},
     file_utils::{empty_dir, read_chunked_data, write_in_chunks},
+    git_utils::get_obs_repo_changes,
     plugins::{BorrowedPluginData, PluginDownloadStats, PluginList},
 };
 
-fn get_plugin_list_changes() -> Vec<Commit> {
-    let git_output = Command::new("git")
-        .args([
-            "--no-pager",
-            "log",
-            "--diff-filter=M",
-            "--date-order",
-            "--reverse",
-            "--format=\"%ad %H\"",
-            "--date=iso-strict",
-            "--grep=stats",
-        ])
-        .current_dir(
-            Path::new(OBS_RELEASES_REPO_PATH)
-                .canonicalize()
-                .expect("Failed to canonicalize path"),
-        )
-        .output()
-        .expect("Failed to execute git command");
-
-    Commit::from_git_log(String::from_utf8_lossy(&git_output.stdout).to_string())
-}
-
-fn get_plugin_download_changes() -> Vec<Commit> {
-    let git_output = Command::new("git")
-        .args([
-            "log",
-            "--diff-filter=M",
-            "--date-order",
-            "--reverse",
-            "--format=\"%ad %H\"",
-            "--date=iso-strict",
-            "--grep=stats",
-        ])
-        .current_dir(
-            Path::new(OBS_RELEASES_REPO_PATH)
-                .canonicalize()
-                .expect("Failed to canonicalize path"),
-        )
-        .output()
-        .expect("Failed to execute git command");
-
-    Commit::from_git_log(String::from_utf8_lossy(&git_output.stdout).to_string())
-}
-
 fn get_plugin_lists() -> Vec<PluginList> {
-    let commits = get_plugin_list_changes();
+    let commits = get_obs_repo_changes();
 
     assert!(!commits.is_empty(), "No plugin list changes found");
 
     commits
         .par_iter()
-        .map(|commit| {
+        .filter_map(|commit| {
             let list = Command::new("git")
                 .args([
                     "cat-file",
@@ -82,6 +37,10 @@ fn get_plugin_lists() -> Vec<PluginList> {
                 .expect("Failed to execute git command");
 
             let list_str = String::from_utf8_lossy(&list.stdout).to_string();
+            if list_str.is_empty() {
+                eprintln!("Empty plugin list at commit {}", commit.to_fancy_string());
+                return None;
+            }
             let list: Result<ObsPluginList, serde_json::Error> = serde_json::from_str(&list_str);
             match list {
                 Ok(list) => Some(PluginList {
@@ -89,12 +48,15 @@ fn get_plugin_lists() -> Vec<PluginList> {
                     commit: commit.clone(),
                 }),
                 Err(e) => {
-                    eprintln!("Error parsing plugin list: {e}");
+                    eprintln!(
+                        "Error parsing plugin list at commit {}: {}",
+                        commit.to_fancy_string(),
+                        e
+                    );
                     None
                 }
             }
         })
-        .filter_map(|x| x)
         .collect()
 }
 
@@ -113,8 +75,6 @@ fn build_plugin_data(plugin_lists: &[PluginList]) -> Vec<BorrowedPluginData<'_>>
     }
 
     for plugin_list in plugin_lists.iter().skip(1) {
-        // println!("Processing plugin list {} of {}", i, plugin_lists.len());
-
         for (_, plugin) in plugin_data_map.iter_mut() {
             plugin.find_changes(plugin_list);
         }
@@ -206,9 +166,9 @@ fn update_version_history(
 fn get_plugin_download_stats() -> Vec<PluginDownloadStats> {
     println!("Fetching plugin download stats...");
 
-    let download_commits = get_plugin_download_changes();
+    let commits = get_obs_repo_changes();
 
-    download_commits
+    commits
         .par_iter()
         .map(|commit| {
             let stats = Command::new("git")

@@ -1,10 +1,8 @@
 ---
 import { getCollection } from 'astro:content';
-import PluginComponent from '../../components/plugin.astro';
+import PluginComponent from '../../components/Plugin.astro';
 
 export async function getStaticPaths() {
-	console.log('Generating static paths for plugin pages...');
-
 	const plugins = await getCollection('plugins');
 
 	return plugins.map(plugin => {

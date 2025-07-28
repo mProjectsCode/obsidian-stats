@@ -1,7 +1,3 @@
-function UTCDate(year: number, month: number, date: number): Date {
-	return new Date(Date.UTC(year, month - 1, date));
-}
-
 export class CDate {
 	year: number;
 	month: number;

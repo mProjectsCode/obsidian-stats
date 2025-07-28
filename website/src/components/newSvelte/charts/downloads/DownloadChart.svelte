@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Plot, Line, Frame, RectX, BrushX, GridX, RuleX, Dot, BarY, Pointer, RuleY, AxisX, AxisY } from 'svelteplot';
+	import { Plot, Line, Frame, RectX, BrushX, RuleX, Dot, Pointer, Text, AxisX, AxisY } from 'svelteplot';
 	import type { VersionDataPoint } from '../../../../../../data-wasm/pkg/data_wasm';
 	import { smooth } from '../chartUtils';
 
@@ -60,29 +60,37 @@
 	</Plot>
 </div>
 
-<Plot grid x={{ label: 'Date →' }} y={{ label: '↑ Downloads' }}>
+<Plot grid x={{ label: 'Date →' }} y={{ label: '↑ Downloads' }} class="no-overflow-clip">
 	<AxisX />
 	<AxisY />
 	<Line data={filteredData} x={'date'} y={'downloads'} stroke={'var(--sl-color-text-accent)'}></Line>
 	{#if filteredVersions}
 		<RuleX data={filteredVersions} x={'date'} strokeOpacity={0.3} strokeDasharray={'5'} />
 	{/if}
-	<!-- <Pointer
+	<Pointer
         data={filteredData}
         x="date"
-        y="downloads">
+		y="downloads"
+        maxDistance={30}>
         {#snippet children({ data })}
-            <RuleX {data} x="date" opacity="0.3" />
-            <RuleY {data} y="downloads" opacity="0.3" />
-            <AxisX
-                data={data.map((d) => d.date)} />
-            <AxisY
-                data={data.map((d) => d.downloads)} />
+            <Text
+                {data}
+                fill="var(--sl-color-text-accent)"
+                x="date"
+                y="downloads"
+                text={(d) => d.downloads.toFixed()}
+                lineAnchor="bottom"
+                dy={-7} />
+            <Dot
+                {data}
+                x="date"
+                y="downloads"
+                fill="var(--sl-color-text-accent)" />
         {/snippet}
-    </Pointer> -->
+    </Pointer>
 </Plot>
 
-<Plot grid x={{ label: 'Date →' }} y={{ label: '↑ Weekly Delta' }}>
+<Plot grid x={{ label: 'Date →' }} y={{ label: '↑ Weekly Delta' }} class="no-overflow-clip">
 	<AxisX />
 	<AxisY />
 	{#if zoomedToYear}
@@ -93,4 +101,25 @@
 	{#if filteredVersions}
 		<RuleX data={filteredVersions} x={'date'} strokeOpacity={0.3} strokeDasharray={'5'} />
 	{/if}
+	<Pointer
+        data={filteredData}
+        x="date"
+		y="delta"
+        maxDistance={30}>
+        {#snippet children({ data })}
+            <Text
+                {data}
+                fill="var(--sl-color-text-accent)"
+                x="date"
+                y="delta"
+                text={(d) => d.delta.toFixed()}
+                lineAnchor="bottom"
+                dy={-7} />
+            <Dot
+                {data}
+                x="date"
+                y="delta"
+                fill="var(--sl-color-text-accent)" />
+        {/snippet}
+    </Pointer>
 </Plot>

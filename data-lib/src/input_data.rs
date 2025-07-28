@@ -69,8 +69,51 @@ pub struct ObsCommunityTheme {
     pub author: String,
     pub repo: String,
     pub screenshot: String,
+    #[serde(default)]
     pub modes: Vec<String>,
+    #[serde(default)]
     pub legacy: bool,
+}
+
+impl ObsCommunityTheme {
+    pub fn compare(&self, new: &ObsCommunityTheme, commit: &Commit) -> Vec<EntryChange> {
+        let mut changes = Vec::new();
+
+        if self.name != new.name {
+            changes.push(EntryChange {
+                property: "name".to_string(),
+                commit: commit.clone(),
+                old_value: self.name.clone(),
+                new_value: new.name.clone(),
+            });
+        }
+        if self.author != new.author {
+            changes.push(EntryChange {
+                property: "author".to_string(),
+                commit: commit.clone(),
+                old_value: self.author.clone(),
+                new_value: new.author.clone(),
+            });
+        }
+        if self.modes != new.modes {
+            changes.push(EntryChange {
+                property: "modes".to_string(),
+                commit: commit.clone(),
+                old_value: self.modes.join(", "),
+                new_value: new.modes.join(", "),
+            });
+        }
+        if self.repo != new.repo {
+            changes.push(EntryChange {
+                property: "repo".to_string(),
+                commit: commit.clone(),
+                old_value: self.repo.clone(),
+                new_value: new.repo.clone(),
+            });
+        }
+
+        changes
+    }
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -93,3 +136,16 @@ impl ObsPluginList {
 pub struct ObsDownloadStats<'a>(
     #[serde(borrow)] pub HashMap<String, HashMap<String, &'a value::RawValue>>,
 );
+
+#[derive(Debug, Clone, Serialize, Deserialize, Default)]
+pub struct ObsThemeList(pub Vec<ObsCommunityTheme>);
+
+impl ObsThemeList {
+    pub fn get(&self) -> &Vec<ObsCommunityTheme> {
+        &self.0
+    }
+
+    pub fn to_hashmap(self) -> HashMap<String, ObsCommunityTheme> {
+        self.0.into_iter().map(|p| (p.name.clone(), p)).collect()
+    }
+}

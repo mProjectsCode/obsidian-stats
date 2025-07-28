@@ -1,7 +1,7 @@
 use serde::Serialize;
 use tsify::Tsify;
 
-use crate::{commit::StringCommit, date::Date, plugin::analysis::FullPluginData};
+use crate::{commit::StringCommit, date::Date, plugin::full::FullPluginData};
 
 #[derive(Tsify, Debug, Clone, Serialize)]
 #[tsify(into_wasm_abi)]
@@ -58,21 +58,18 @@ pub struct PluginWarningMismatchedManifestDataField {
 
 #[derive(Tsify, Debug, Clone, Serialize)]
 #[tsify(into_wasm_abi)]
-
 pub struct PluginWarningUnlicensed {
     pub severity: PluginWarningSeverity,
 }
 
 #[derive(Tsify, Debug, Clone, Serialize)]
 #[tsify(into_wasm_abi)]
-
 pub struct PluginWarningNoLicense {
     pub severity: PluginWarningSeverity,
 }
 
 #[derive(Tsify, Debug, Clone, Serialize)]
 #[tsify(into_wasm_abi)]
-
 pub struct PluginWarningMismatchedLicense {
     pub severity: PluginWarningSeverity,
     pub license_file: String,
@@ -81,14 +78,12 @@ pub struct PluginWarningMismatchedLicense {
 
 #[derive(Tsify, Debug, Clone, Serialize)]
 #[tsify(into_wasm_abi)]
-
 pub struct PLuginWarningMissingExtendedData {
     pub severity: PluginWarningSeverity,
 }
 
 #[derive(Tsify, Debug, Clone, Serialize)]
 #[tsify(into_wasm_abi)]
-
 pub struct PluginWarningMissingRepoData {
     pub severity: PluginWarningSeverity,
 

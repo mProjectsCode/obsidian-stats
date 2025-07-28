@@ -1,38 +1,69 @@
 import fs from 'fs/promises';
 import { loadWasm, wasm } from './wasmLoader';
 
-let data: wasm.FullPluginDataArray | null = null;
-let loadingPromise: Promise<wasm.FullPluginDataArray> | null = null;
+let pluginData: wasm.PluginDataArray | null = null;
+let pluginDataPromise: Promise<wasm.PluginDataArray> | null = null;
 
-export async function getPluginDataArray(): Promise<wasm.FullPluginDataArray> {
-	if (data) {
-		return data;
+export async function getPluginDataArray(): Promise<wasm.PluginDataArray> {
+	if (pluginData) {
+		return pluginData;
 	}
 
-	if (loadingPromise) {
-		return loadingPromise;
+	if (pluginDataPromise) {
+		return pluginDataPromise;
 	}
 
-	loadingPromise = loadData()
+	pluginDataPromise = loadPluginData()
 		.then(loadedData => {
-			data = loadedData;
-			return data;
+			pluginData = loadedData;
+			return pluginData;
 		})
 		.finally(() => {
-			loadingPromise = null;
+			pluginDataPromise = null;
 		});
 
-	return loadingPromise;
-	// return loadData();
+	return pluginDataPromise;
 }
 
-async function loadData(): Promise<wasm.FullPluginDataArray> {
+let themeData: wasm.ThemeDataArray | null = null;
+let themeDataPromise: Promise<wasm.ThemeDataArray> | null = null;
+
+export async function getThemeDataArray(): Promise<wasm.ThemeDataArray> {
+	if (themeData) {
+		return themeData;
+	}
+
+	if (themeDataPromise) {
+		return themeDataPromise;
+	}
+
+	themeDataPromise = loadThemeData()
+		.then(loadedData => {
+			themeData = loadedData;
+			return themeData;
+		})
+		.finally(() => {
+			themeDataPromise = null;
+		});
+
+	return themeDataPromise;
+}
+
+async function loadPluginData(): Promise<wasm.PluginDataArray> {
 	const pluginDataChunks = await readChunksInDir('../../../data/out/plugin-data');
 	const pluginRepoDataChunks = await readChunksInDir('../../../data/out/plugin-repo-data');
 
 	await loadWasm();
 
-	return wasm.load_data_from_chunks(pluginDataChunks, pluginRepoDataChunks);
+	return wasm.load_plugin_data_from_chunks(pluginDataChunks, pluginRepoDataChunks);
+}
+
+async function loadThemeData(): Promise<wasm.ThemeDataArray> {
+	const themeDataChunks = await readChunksInDir('../../../data/out/theme-data');
+
+	await loadWasm();
+
+	return wasm.load_theme_data_from_chunks(themeDataChunks);
 }
 
 async function readChunksInDir(dir: string): Promise<string[]> {
