@@ -25,7 +25,11 @@ const external_links: { text: string; href: string }[] = [
 ---
 
 <StarlightPage
-	frontmatter={{ title: theme.name(), description: `Page for the ${theme.name()} theme.`, links: external_links }}
+	frontmatter={{ 
+		title: theme.name(), 
+		description: `Page for the ${theme.name()} theme.`, 
+		links: external_links 
+	}}
 	headings={[
 		{ depth: 2, text: 'Data', slug: 'data' },
 		{ depth: 3, text: 'Changes', slug: 'changes' },
@@ -79,7 +83,7 @@ const external_links: { text: string; href: string }[] = [
 
 	<h3 id="changes">Changes</h3>
 
-	<table>
+	<table class="full-width">
 		<thead>
 			<tr>
 				<th>Date</th>

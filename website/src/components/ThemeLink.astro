@@ -1,7 +1,5 @@
 ---
-import slug from 'slug';
-
 const { id, name } = Astro.props;
 ---
 
-<a href={'/obsidian-stats/themes/' + slug(id)}>{name}</a>
+<a href={'/obsidian-stats/themes/' + id}>{name}</a>

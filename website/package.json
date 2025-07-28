@@ -24,8 +24,6 @@
 		"svelte": "^5.37.0",
 		"svelteplot": "^0.3.7",
 		"typescript": "^5.8.3",
-		"vite-plugin-top-level-await": "^1.6.0",
-		"vite-plugin-wasm": "^3.5.0",
 		"zod": "^3.25.76"
 	}
 }
