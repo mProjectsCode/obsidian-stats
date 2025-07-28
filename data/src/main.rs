@@ -4,6 +4,7 @@ use crate::{
         license::process_licenses,
     },
     theme::data::build_theme_stats,
+    release::data::build_release_stats,
 };
 
 pub mod constants;
@@ -11,6 +12,7 @@ pub mod file_utils;
 pub mod git_utils;
 pub mod plugins;
 pub mod theme;
+pub mod release;
 
 fn main() {
     build_theme_stats().expect("Failed to build theme stats");

@@ -4,6 +4,7 @@ use chumsky::{
     cache::{Cache, Cached},
     prelude::*,
 };
+use serde::{Deserialize, Serialize};
 
 fn version_parser<'a>() -> impl Parser<'a, &'a str, Version> {
     let number = text::int(10).map(|s: &str| s.parse::<u32>().unwrap());
@@ -12,6 +13,7 @@ fn version_parser<'a>() -> impl Parser<'a, &'a str, Version> {
         .map(|(_, s): (_, &str)| s.to_string());
 
     group((
+        just('v').or_not(),
         number,
         just('.'),
         number,
@@ -19,7 +21,7 @@ fn version_parser<'a>() -> impl Parser<'a, &'a str, Version> {
         number,
         pre_release.or_not(),
     ))
-    .map(|(major, _, minor, _, patch, pre)| Version {
+    .map(|(_, major, _, minor, _, patch, pre)| Version {
         major,
         minor,
         patch,
@@ -41,7 +43,7 @@ thread_local! {
     static VERSION_PARSER: LazyCell<Cache<VersionParser>> = LazyCell::new(Cache::default);
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Default)]
+#[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize)]
 pub struct Version {
     pub major: u32,
     pub minor: u32,
