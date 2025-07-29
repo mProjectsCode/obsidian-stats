@@ -1,6 +1,8 @@
-use crate::date::Date;
-
+use chrono::{DateTime, Utc};
+use data_lib::version::Version;
 use serde::{Deserialize, Serialize};
+
+pub mod data;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GithubUser {
@@ -19,9 +21,8 @@ pub struct GithubUser {
     pub repos_url: String,
     pub events_url: String,
     pub received_events_url: String,
-    // TODO: Check if this matters for serialization
     #[serde(rename = "type")]
-    pub r#type: String,
+    pub user_type: String,
     pub site_admin: bool,
 }
 
@@ -37,8 +38,8 @@ pub struct GithubReleaseAsset {
     pub content_type: String,
     pub size: u32,
     pub download_count: u32,
-    pub created_at: Date,
-    pub updated_at: Date,
+    pub created_at: DateTime<Utc>,
+    pub updated_at: DateTime<Utc>,
     pub uploader: GithubUser,
 }
 
@@ -72,8 +73,8 @@ pub struct GithubReleaseEntry {
     pub name: String,
     pub draft: bool,
     pub prerelease: bool,
-    pub created_at: Date,
-    pub published_at: Date,
+    pub created_at: DateTime<Utc>,
+    pub published_at: DateTime<Utc>,
     pub assets: Vec<GithubReleaseAsset>,
     pub tarball_url: String,
     pub zipball_url: String,
@@ -82,22 +83,31 @@ pub struct GithubReleaseEntry {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct GithubAssetInfo {
+    pub version: Version,
+    pub date: DateTime<Utc>,
+    pub asset: String,
+    pub downloads: u32,
+    pub size: u32,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub enum ObsidianPlatform {
     Desktop,
     Mobile,
+    Publish,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ObsidianReleaseInfo {
-    pub version: String,
+    pub version: Version,
     pub platform: ObsidianPlatform,
     pub insider: bool,
-    pub date: Date,
+    pub date: DateTime<Utc>,
     pub info: String,
     pub major_release: bool,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub type GithubReleases = Vec<GithubReleaseEntry>;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -110,14 +120,14 @@ pub struct ReleaseAsset {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ReleaseEntry {
     pub version: String,
-    pub date: Date,
+    pub date: DateTime<Utc>,
     pub assets: Vec<ReleaseAsset>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct WeeklyReleaseGrowthEntry {
-    pub date: Date,
-    pub version: String,
+    pub date: DateTime<Utc>,
+    pub version: Version,
     pub asset: String,
     pub downloads: u32,
 }
