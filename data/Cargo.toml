@@ -19,5 +19,5 @@ indicatif = { version = "0.18.0", features = ["rayon"] }
 data-lib = { version = "*", path = "../data-lib" }
 gix = { version = "0.73.0", features = ["blocking-network-client", "blocking-http-transport-reqwest-rust-tls"] }
 slug = "0.1.6"
-quick-xml = { version = "0.38.0" , features = ["serde"] }
+quick-xml = { version = "0.38.0" , features = ["serialize"] }
 reqwest = { version = "0.12.22", features = ["json", "blocking"] }

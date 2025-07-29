@@ -1,0 +1,20 @@
+---
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import StackedBarChart from '../../components/newSvelte/charts/StackedBarChart.svelte';
+import { getReleaseDataArray } from '../../utils/data';
+
+const dataArray = await getReleaseDataArray();
+const downloads = dataArray.total_downloads();
+const downloadsPercentages = dataArray.total_download_percentages();
+---
+
+<StarlightPage
+	frontmatter={{
+		title: 'Release Downloads',
+		description: `Stats about the download number of Obsidian releases.`,
+	}}
+	headings={[]}
+>
+	<StackedBarChart dataPoints={downloads} xLabel="Version Number" yLabel="Downloads" skewLabels client:only="svelte" />
+	<StackedBarChart dataPoints={downloadsPercentages} xLabel="Version Number" yLabel="Downloads" skewLabels percentages client:only="svelte" />
+</StarlightPage>

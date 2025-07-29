@@ -2,6 +2,7 @@ mod utils;
 
 use data_lib::{
     plugin::{data_array::PluginDataArray, PluginData, PluginExtraData},
+    release::{data_array::ReleaseDataArray, GithubReleaseInfo, ObsidianReleaseInfo},
     theme::{data_array::ThemeDataArray, ThemeData},
 };
 use wasm_bindgen::prelude::*;
@@ -47,4 +48,51 @@ pub fn load_theme_data_from_chunks(data_chunks: Vec<String>) -> Result<ThemeData
     let data = data.into_iter().flatten().collect::<Vec<ThemeData>>();
 
     Ok(ThemeDataArray::new(data))
+}
+
+#[wasm_bindgen]
+pub fn load_release_data_from_chunks(
+    raw_data_chunks: Vec<String>,
+    interpolated_data_chunks: Vec<String>,
+    changelog_chunks: Vec<String>,
+) -> Result<ReleaseDataArray, JsValue> {
+    set_panic_hook();
+
+    let raw_data = raw_data_chunks
+        .iter()
+        .map(|chunk| serde_json::from_str::<Vec<GithubReleaseInfo>>(chunk))
+        .collect::<Result<Vec<_>, _>>()
+        .map_err(|e| JsValue::from_str(&format!("Failed to parse raw data chunks: {e}")))?;
+    let raw_data = raw_data
+        .into_iter()
+        .flatten()
+        .collect::<Vec<GithubReleaseInfo>>();
+
+    let interpolated_data = interpolated_data_chunks
+        .iter()
+        .map(|chunk| serde_json::from_str::<Vec<GithubReleaseInfo>>(chunk))
+        .collect::<Result<Vec<_>, _>>()
+        .map_err(|e| {
+            JsValue::from_str(&format!("Failed to parse interpolated data chunks: {e}"))
+        })?;
+    let interpolated_data = interpolated_data
+        .into_iter()
+        .flatten()
+        .collect::<Vec<GithubReleaseInfo>>();
+
+    let changelog = changelog_chunks
+        .iter()
+        .map(|chunk| serde_json::from_str::<Vec<ObsidianReleaseInfo>>(chunk))
+        .collect::<Result<Vec<_>, _>>()
+        .map_err(|e| JsValue::from_str(&format!("Failed to parse changelog chunks: {e}")))?;
+    let changelog = changelog
+        .into_iter()
+        .flatten()
+        .collect::<Vec<ObsidianReleaseInfo>>();
+
+    Ok(ReleaseDataArray::new(
+        raw_data,
+        interpolated_data,
+        changelog,
+    ))
 }

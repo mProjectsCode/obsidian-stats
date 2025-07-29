@@ -1,9 +1,9 @@
 ---
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import { Aside } from '@astrojs/starlight/components';
 import Commit from './Commit.astro';
 import DownloadChart from './newSvelte/charts/downloads/DownloadChart.svelte';
-import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
 import { getPluginDataArray } from '../utils/data';
-import { Aside } from '@astrojs/starlight/components';
 import type { PluginWarning } from '../../../data-wasm/pkg/data_wasm';
 
 const { pluginId } = Astro.props as { pluginId: string };

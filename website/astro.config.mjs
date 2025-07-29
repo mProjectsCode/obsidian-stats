@@ -78,9 +78,12 @@ export default defineConfig({
 				},
 				{
 					label: 'Release Stats',
-					autogenerate: {
-						directory: 'releasestats',
-					},
+					items: [
+						{
+							label: 'Downloads',
+							link: '/releasestats/downloads',
+						},
+					],
 				},
 			],
 			customCss: ['./src/styles.css'],

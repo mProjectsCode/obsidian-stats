@@ -1,5 +1,5 @@
 {
 	"extends": "astro/tsconfigs/strict",
 	"exclude": ["node_modules", "dist"],
-	"include": ["../arquero.d.ts", "${configDir}/.astro/types.d.ts", "${configDir}/**/*"]
+	"include": ["${configDir}/.astro/types.d.ts", "${configDir}/**/*"]
 }

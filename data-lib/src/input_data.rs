@@ -149,3 +149,22 @@ impl ObsThemeList {
         self.0.into_iter().map(|p| (p.name.clone(), p)).collect()
     }
 }
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct ObsReleasesFeed {
+    pub feed: ObsReleasesFeedInner,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct ObsReleasesFeedInner {
+    #[serde(rename = "entry", default)]
+    pub entries: Vec<ObsReleasesFeedEntry>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct ObsReleasesFeedEntry {
+    pub id: String,
+    pub title: String,
+    pub updated: String,
+    pub content: String,
+}

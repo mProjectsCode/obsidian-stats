@@ -78,7 +78,7 @@ impl Date {
 
     pub fn week_day(&self) -> u32 {
         let days = self.days_since_epoch();
-        ((days + 4) % 7) + 1 // 1970-01-01 was a Thursday, so we adjust to make it 1-based
+        (days + 3) % 7
     }
 
     pub fn advance_days(&mut self, days: u32) {
@@ -210,6 +210,23 @@ impl Date {
                 None
             }
         })
+    }
+
+    pub fn find_biggest_smaller<'a>(&self, dates: &'a [Date]) -> Option<&'a Date> {
+        dates.iter().filter(|&d| d <= self).max()
+    }
+
+    pub fn find_smallest_bigger<'a>(&self, dates: &'a [Date]) -> Option<&'a Date> {
+        dates.iter().filter(|&d| d >= self).min()
+    }
+
+    pub fn find_surrounding<'a>(&self, dates: &'a [Date]) -> Option<(&'a Date, &'a Date)> {
+        let smaller = self.find_biggest_smaller(dates);
+        let bigger = self.find_smallest_bigger(dates);
+        match (smaller, bigger) {
+            (Some(s), Some(b)) => Some((s, b)),
+            _ => None,
+        }
     }
 }
 

@@ -3,23 +3,23 @@ use crate::{
         clone_repos::clone_plugin_repos, data::build_plugin_stats, extra::extract_extra_data,
         license::process_licenses,
     },
-    theme::data::build_theme_stats,
     release::data::build_release_stats,
+    theme::data::build_theme_stats,
 };
 
 pub mod constants;
 pub mod file_utils;
 pub mod git_utils;
 pub mod plugins;
-pub mod theme;
 pub mod release;
+pub mod theme;
 
 fn main() {
-    build_theme_stats().expect("Failed to build theme stats");
+    // build_theme_stats().expect("Failed to build theme stats");
 
-    println!();
+    // println!();
 
-    build_plugin_stats().expect("Failed to build plugin stats");
+    // build_plugin_stats().expect("Failed to build plugin stats");
 
     // println!();
     // println!("Cloning plugin repositories...");
@@ -31,7 +31,11 @@ fn main() {
 
     // extract_extra_data().expect("Failed to extract repository data");
 
-    process_licenses();
+    // process_licenses();
+
+    println!();
+
+    build_release_stats().expect("Failed to build release stats");
 
     println!();
     println!("Done!");

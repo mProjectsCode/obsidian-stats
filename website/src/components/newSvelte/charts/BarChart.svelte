@@ -14,9 +14,8 @@
 
 	const { dataPoints, xLabel, yLabel, yDomain, skewLabels = false, percentages = false, hideBarValues = false }: Props = $props();
 
-	const mappedDataPoints = dataPoints.map((point, index) => {
+	const mappedDataPoints = dataPoints.map((point) => {
 		return {
-			index: index,
 			label: point.name,
 			value: point.value,
 		};

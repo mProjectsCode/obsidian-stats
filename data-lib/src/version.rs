@@ -43,7 +43,7 @@ thread_local! {
     static VERSION_PARSER: LazyCell<Cache<VersionParser>> = LazyCell::new(Cache::default);
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize, Hash)]
 pub struct Version {
     pub major: u32,
     pub minor: u32,
@@ -113,11 +113,38 @@ impl PartialOrd for Version {
 
 impl Ord for Version {
     fn cmp(&self, other: &Self) -> std::cmp::Ordering {
-        (self.major, self.minor, self.patch, &self.pre_release).cmp(&(
-            other.major,
-            other.minor,
-            other.patch,
-            &other.pre_release,
-        ))
+        (self.major, self.minor, self.patch)
+            .cmp(&(other.major, other.minor, other.patch))
+            .then(other.pre_release.cmp(&self.pre_release))
     }
+}
+
+#[test]
+fn version_compare() {
+    let v1 = Version::new(1, 0, 0, None);
+    let v2 = Version::new(1, 0, 1, None);
+    let v3 = Version::new(1, 1, 0, None);
+    let v4 = Version::new(2, 0, 0, None);
+
+    assert!(v1 < v2);
+    assert!(v2 < v3);
+    assert!(v3 < v4);
+    assert!(v1 < v3);
+    assert!(v1 < v4);
+    assert!(v2 < v4);
+}
+
+#[test]
+fn version_compare_with_pre_release() {
+    let v1 = Version::new(0, 1, 0, None);
+    let v2 = Version::new(1, 0, 0, Some("alpha".to_string()));
+    let v3 = Version::new(1, 0, 0, None);
+    let v4 = Version::new(1, 0, 1, None);
+
+    assert!(v1 < v2);
+    assert!(v2 < v3);
+    assert!(v3 < v4);
+    assert!(v1 < v3);
+    assert!(v1 < v4);
+    assert!(v2 < v4);
 }
