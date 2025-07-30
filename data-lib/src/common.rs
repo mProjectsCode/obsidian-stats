@@ -153,7 +153,7 @@ pub fn to_percentage(value: &mut f64, total: f64) {
 
 #[derive(Tsify, Debug, Clone, Serialize)]
 #[tsify(into_wasm_abi)]
-pub struct SackedNamedDataPoint {
+pub struct StackedNamedDataPoint {
     pub name: String,
     pub layer: String,
     pub value: f64,

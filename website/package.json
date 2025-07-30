@@ -21,7 +21,7 @@
 		"chartjs-plugin-datalabels": "^2.2.0",
 		"chartjs-plugin-zoom": "^2.2.0",
 		"sharp": "^0.34.3",
-		"svelte": "^5.37.0",
+		"svelte": "^5.37.1",
 		"svelteplot": "^0.3.7",
 		"typescript": "^5.8.3",
 		"zod": "^3.25.76"

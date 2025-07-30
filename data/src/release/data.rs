@@ -262,8 +262,8 @@ pub fn build_release_stats() -> Result<(), Box<dyn std::error::Error>> {
         read_chunked_data(Path::new(RELEASE_GITHUB_RAW_PATH))?;
     // let mut raw_github_info: Vec<GithubReleaseInfo> = vec![];
 
-    let release_entries = load_test_release_entries();
-    // let release_entries = fetch_github_release_entries();
+    // let release_entries = load_test_release_entries();
+    let release_entries = fetch_github_release_entries();
 
     get_github_release_info(&mut raw_github_info, release_entries);
 

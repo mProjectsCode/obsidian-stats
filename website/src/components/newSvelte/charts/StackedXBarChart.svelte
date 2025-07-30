@@ -1,17 +1,15 @@
 <script lang="ts">
-	import { BarY, Plot } from 'svelteplot';
+	import { BarX, BarY, Plot, HTMLTooltip } from 'svelteplot';
 	import type { StackedNamedDataPoint } from '../../../../../data-wasm/pkg/data_wasm';
 
 	interface Props {
 		dataPoints: StackedNamedDataPoint[];
-		xLabel: string;
-		yLabel: string;
 		skewLabels?: boolean;
 		percentages?: boolean;
 		yDomain?: [number, number];
 	}
 
-	const { dataPoints, xLabel, yLabel, yDomain, skewLabels = false, percentages = false }: Props = $props();
+	const { dataPoints, yDomain, skewLabels = false, percentages = false }: Props = $props();
 
 	const mappedDataPoints = dataPoints.map((point, index) => {
 		return {
@@ -26,9 +24,9 @@
 <Plot
 	grid
 	color={{ legend: true, scheme: 'tableau10' }}
-	x={{ type: 'band', label: `${xLabel} →`, tickRotate: skewLabels ? 45 : 0 }}
-	y={{ label: `↑ ${yLabel}`, domain: yDomain, tickFormat: percentages ? d => `${String(d)}%` : d => String(d) }}
+	x={{ label: '', domain: yDomain, tickFormat: percentages ? d => `${String(d)}%` : d => String(d) }}
+	y={{ type: 'band', label: '', tickRotate: skewLabels ? 45 : 0 }}
 	class="no-overflow-clip"
 >
-	<BarY data={mappedDataPoints} x="label" y="value" fill="stack" sort={{channel: "index"}} />
+	<BarX data={mappedDataPoints} x="value" y="label" fill="stack" sort={{channel: "index"}} />
 </Plot>

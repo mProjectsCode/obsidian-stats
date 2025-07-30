@@ -1,11 +1,17 @@
 ---
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
 import StackedBarChart from '../../components/newSvelte/charts/StackedBarChart.svelte';
+import StackedXBarChart from '../../components/newSvelte/charts/StackedXBarChart.svelte';
+import AssetSizeChart from '../../components/newSvelte/charts/release/AssetSizeChart.svelte';
 import { getReleaseDataArray } from '../../utils/data';
 
 const dataArray = await getReleaseDataArray();
-const downloads = dataArray.total_downloads();
-const downloadsPercentages = dataArray.total_download_percentages();
+
+const downloads = dataArray.total_downloads_per_version_by_os();
+const downloadsPercentages = dataArray.total_downloads_per_version_by_os_as_percentages();
+
+const assetTypes = dataArray.get_asset_type_percentages();
+const assetSize = dataArray.get_asset_size_by_version();
 ---
 
 <StarlightPage
@@ -17,4 +23,8 @@ const downloadsPercentages = dataArray.total_download_percentages();
 >
 	<StackedBarChart dataPoints={downloads} xLabel="Version Number" yLabel="Downloads" skewLabels client:only="svelte" />
 	<StackedBarChart dataPoints={downloadsPercentages} xLabel="Version Number" yLabel="Downloads" skewLabels percentages client:only="svelte" />
+	<StackedXBarChart dataPoints={assetTypes} percentages client:only="svelte" />
+	<!-- <StackedBarChart dataPoints={assetSize} xLabel="Version Number" yLabel="Asset Size" skewLabels client:only="svelte" /> -->
+	<AssetSizeChart dataPoints={assetSize} client:only="svelte" />
+
 </StarlightPage>
