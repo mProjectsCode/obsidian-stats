@@ -5,5 +5,7 @@
 		"pluginRepos": true,
 		"data/out/plugin-repos/**": true
 	},
-	"rust-analyzer.files.exclude": ["data/out/**"]
+	"rust-analyzer.files.exclude": [
+		"data/out/**"
+	]
 }

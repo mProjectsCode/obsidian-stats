@@ -1,25 +1,7 @@
 ---
-import { type Commit } from '../../../src/types';
+import type { StringCommit } from "../../../data-wasm/pkg/data_wasm";
 
-const props = Astro.props as { commit: Commit } | { date: string; hash: string };
-
-function getHash(): string {
-	if ('commit' in props) {
-		return props.commit.hash;
-	} else {
-		return props.hash;
-	}
-}
-
-function getDate(): string {
-	if ('commit' in props) {
-		return props.commit.date;
-	} else {
-		return props.date;
-	}
-}
-
-const url = 'https://github.com/obsidianmd/obsidian-releases/commit/' + getHash();
+const props = Astro.props as { commit: StringCommit };
 ---
 
-<a href={url} target="_blank">{getDate()}</a>
+<a href={'https://github.com/obsidianmd/obsidian-releases/commit/' + props.commit.hash} target="_blank">{props.commit.date}</a>

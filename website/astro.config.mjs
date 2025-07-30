@@ -83,6 +83,10 @@ export default defineConfig({
 							label: 'Downloads',
 							link: '/releasestats/downloads',
 						},
+						{
+							label: 'Assets',
+							link: '/releasestats/assets',
+						},
 					],
 				},
 			],

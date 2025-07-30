@@ -114,10 +114,10 @@ pub fn get_asset_release_file_type(file_name: &str) -> Option<String> {
 
 pub fn get_asset_cpu_instruction_set(file_name: &str) -> Option<&'static str> {
     if file_name.ends_with(".dmg") {
-        Some("both")
+        Some("both (.dmg)")
     } else if file_name.contains("arm64") {
         Some("arm64")
     } else {
-        Some("x64")
+        Some("x86")
     }
 }
