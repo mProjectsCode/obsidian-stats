@@ -1,8 +1,4 @@
 <script lang="ts">
-	import ThemeLink from '../svelte/helpers/themeLink.svelte';
-	import PluginLink from '../svelte/helpers/pluginLink.svelte';
-	import GithubLink from '../svelte/helpers/githubLink.svelte';
-	import Commit from '../svelte/helpers/commit.svelte';
 	import { onMount } from 'svelte';
 	import type { OverviewDataPoint } from '../../../../data-wasm/pkg/data_wasm';
 	import type { ItemType } from '../../utils/misc';
@@ -58,6 +54,7 @@
 <table>
 	<thead>
 		<tr>
+			<th onclick={() => sort(idSort)}>Id</th>
 			<th onclick={() => sort(nameSort)}>Name</th>
 			<th onclick={() => sort(authorSort)}>Author</th>
 			<th onclick={() => sort(repoSort)}>Repo</th>
@@ -68,16 +65,26 @@
 	<tbody>
 		{#each sorted as datum (datum.id)}
 			<tr>
-				<td
-					>{#if type === 'plugin'}<PluginLink id={datum.id}></PluginLink>{:else}<ThemeLink id={datum.id} name={datum.name}></ThemeLink>{/if}</td
-				>
+				<td>
+					{#if type === 'plugin'}
+						<a href={'/obsidian-stats/plugins/' + datum.id}>{datum.id}</a>
+					{:else}
+						<a href={'/obsidian-stats/themes/' + datum.id}>{datum.name}</a>
+					{/if}
+				</td>
 				<td>{datum.name}</td>
 				<td>{datum.author}</td>
-				<td><GithubLink repo={datum.repo}></GithubLink></td>
-				<td><Commit commit={datum.added_commit}></Commit></td>
-				<td
-					>{#if datum.removed_commit}<Commit commit={datum.removed_commit}></Commit>{/if}</td
-				>
+				<td>
+					<a href={'https://github.com/' + datum.repo} target="_blank">{datum.repo}</a>
+				</td>
+				<td>
+					<a href={'https://github.com/obsidianmd/obsidian-releases/commit/' + datum.added_commit.hash} target="_blank">{datum.added_commit.date}</a>
+				</td>
+				<td>
+					{#if datum.removed_commit}
+						<a href={'https://github.com/obsidianmd/obsidian-releases/commit/' + datum.removed_commit.hash} target="_blank">{datum.removed_commit.date}</a>
+					{/if}
+				</td>
 			</tr>
 		{/each}
 	</tbody>

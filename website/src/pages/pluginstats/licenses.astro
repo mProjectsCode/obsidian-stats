@@ -2,7 +2,7 @@
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
 import { projectRelativeUrl } from '../../utils/base';
 import { promises as fs } from 'fs';
-import BarChart from '../../components/newSvelte/charts/BarChart.svelte';
+import BarChart from '../../components/svelte/charts/BarChart.svelte';
 import { getPluginDataArray } from '../../utils/data';
 
 const dataArray = await getPluginDataArray();
@@ -40,14 +40,16 @@ const licenseDataPoints = view.license_data_points(dataArray, licenseDataFile);
 	<p>The following chart shows the distribution of licenses in the plugins.</p>
 
 	<p>
-		<code>not found</code> means that a no license file was found in the repository. Obsidian <a
+		<code>Not Found</code> means that a no license file was found in the repository root. Obsidian <a
 			href="https://docs.obsidian.md/Developer+policies#Copyright+and+licensing"
-			target="_blank">requires a license file to be present</a
-		> for new plugins, but this is not enforced retroactively.
+			target="_blank"
+		>
+			requires a license file to be present
+		</a> for new plugins, but this is not enforced retroactively.
 	</p>
 
 	<p>
-		<code>unknown</code> means that a license file was found, but the license could not be identified.
+		<code>Unrecognized</code> means that a license file was found, but the license could not be identified.
 	</p>
 
 	<BarChart dataPoints={licenseDataPoints.licenses} xLabel="License" yLabel="Number of Plugins" skewLabels hideBarValues client:only="svelte" />

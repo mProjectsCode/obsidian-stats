@@ -5,8 +5,7 @@ use crate::{
     common::{DownloadDataPoint, EntryChangeDataPoint, VersionDataPoint},
     date::Date,
     plugin::{
-        FundingUrl, PluginData, PluginExtraData, PluginRepoData,
-        warnings::{PluginWarning, get_plugin_warnings},
+        warnings::{get_plugin_warnings, PluginWarning}, FundingUrl, LicenseInfo, PluginData, PluginExtraData, PluginRepoData
     },
 };
 
@@ -173,12 +172,12 @@ impl FullPluginData {
             .map(|v| v.initial_release_date.to_fancy_string())
     }
 
-    pub fn license_package_json(&self) -> Option<String> {
-        self.repo_data().map(|r| r.package_json_license.clone())
+    pub fn license_package_json(&self) -> String {
+        LicenseInfo::from(self.repo_data().map(|r| &r.package_json_license)).to_fancy_string()
     }
 
-    pub fn license_file(&self) -> Option<String> {
-        self.repo_data().map(|r| r.license_file.clone())
+    pub fn license_file(&self) -> String {
+        LicenseInfo::from(self.repo_data().map(|r| &r.file_license)).to_fancy_string()
     }
 
     pub fn package_managers(&self) -> Option<Vec<String>> {

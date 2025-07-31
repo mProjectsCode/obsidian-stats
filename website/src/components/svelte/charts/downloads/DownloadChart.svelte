@@ -67,27 +67,12 @@
 	{#if filteredVersions}
 		<RuleX data={filteredVersions} x={'date'} strokeOpacity={0.3} strokeDasharray={'5'} />
 	{/if}
-	<Pointer
-        data={filteredData}
-        x="date"
-		y="downloads"
-        maxDistance={30}>
-        {#snippet children({ data })}
-            <Text
-                {data}
-                fill="var(--sl-color-text-accent)"
-                x="date"
-                y="downloads"
-                text={(d) => d.downloads.toFixed()}
-                lineAnchor="bottom"
-                dy={-7} />
-            <Dot
-                {data}
-                x="date"
-                y="downloads"
-                fill="var(--sl-color-text-accent)" />
-        {/snippet}
-    </Pointer>
+	<Pointer data={filteredData} x="date" y="downloads" maxDistance={30}>
+		{#snippet children({ data })}
+			<Text {data} fill="var(--sl-color-text-accent)" x="date" y="downloads" text={d => d.downloads.toFixed()} lineAnchor="bottom" dy={-7} />
+			<Dot {data} x="date" y="downloads" fill="var(--sl-color-text-accent)" />
+		{/snippet}
+	</Pointer>
 </Plot>
 
 <Plot grid x={{ label: 'Date →' }} y={{ label: '↑ Weekly Delta' }} class="no-overflow-clip">
@@ -101,25 +86,10 @@
 	{#if filteredVersions}
 		<RuleX data={filteredVersions} x={'date'} strokeOpacity={0.3} strokeDasharray={'5'} />
 	{/if}
-	<Pointer
-        data={filteredData}
-        x="date"
-		y="delta"
-        maxDistance={30}>
-        {#snippet children({ data })}
-            <Text
-                {data}
-                fill="var(--sl-color-text-accent)"
-                x="date"
-                y="delta"
-                text={(d) => d.delta.toFixed()}
-                lineAnchor="bottom"
-                dy={-7} />
-            <Dot
-                {data}
-                x="date"
-                y="delta"
-                fill="var(--sl-color-text-accent)" />
-        {/snippet}
-    </Pointer>
+	<Pointer data={filteredData} x="date" y="delta" maxDistance={30}>
+		{#snippet children({ data })}
+			<Text {data} fill="var(--sl-color-text-accent)" x="date" y="delta" text={d => d.delta.toFixed()} lineAnchor="bottom" dy={-7} />
+			<Dot {data} x="date" y="delta" fill="var(--sl-color-text-accent)" />
+		{/snippet}
+	</Pointer>
 </Plot>

@@ -2,7 +2,7 @@ wasm:
 	cd data-wasm && make
 
 data:
-	cd data && make
+	cd data && make -B
 
 format:
 	cd data && make format

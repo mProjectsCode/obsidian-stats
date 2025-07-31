@@ -262,26 +262,26 @@ pub fn build_release_stats() -> Result<(), Box<dyn std::error::Error>> {
     let time = std::time::Instant::now();
     let mut time2 = std::time::Instant::now();
 
-    // let mut raw_github_info: Vec<GithubReleaseInfo> =
-    //     read_chunked_data(Path::new(RELEASE_GITHUB_RAW_PATH))?;
-    // // let mut raw_github_info: Vec<GithubReleaseInfo> = vec![];
+    let mut raw_github_info: Vec<GithubReleaseInfo> =
+        read_chunked_data(Path::new(RELEASE_GITHUB_RAW_PATH))?;
+    // let mut raw_github_info: Vec<GithubReleaseInfo> = vec![];
 
-    // // let release_entries = load_test_release_entries();
-    // let release_entries = fetch_github_release_entries();
+    // let release_entries = load_test_release_entries();
+    let release_entries = fetch_github_release_entries();
 
-    // get_github_release_info(&mut raw_github_info, release_entries);
+    get_github_release_info(&mut raw_github_info, release_entries);
 
-    // let interpolated_github_info = interpolate_github_release_info(&raw_github_info);
+    let interpolated_github_info = interpolate_github_release_info(&raw_github_info);
 
-    // empty_dir(Path::new(RELEASE_GITHUB_RAW_PATH))?;
-    // empty_dir(Path::new(RELEASE_GITHUB_INTERPOLATED_PATH))?;
+    empty_dir(Path::new(RELEASE_GITHUB_RAW_PATH))?;
+    empty_dir(Path::new(RELEASE_GITHUB_INTERPOLATED_PATH))?;
 
-    // write_in_chunks(Path::new(RELEASE_GITHUB_RAW_PATH), &raw_github_info, 50)?;
-    // write_in_chunks(
-    //     Path::new(RELEASE_GITHUB_INTERPOLATED_PATH),
-    //     &interpolated_github_info,
-    //     50,
-    // )?;
+    write_in_chunks(Path::new(RELEASE_GITHUB_RAW_PATH), &raw_github_info, 50)?;
+    write_in_chunks(
+        Path::new(RELEASE_GITHUB_INTERPOLATED_PATH),
+        &interpolated_github_info,
+        50,
+    )?;
 
     println!("Github release data: {:#?}", time2.elapsed());
     time2 = std::time::Instant::now();

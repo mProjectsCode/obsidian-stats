@@ -19,9 +19,11 @@ enum CloneResult {
 pub fn clone_plugin_repos() -> Result<(), Box<dyn std::error::Error>> {
     empty_dir(Path::new(PLUGIN_REPO_PATH))?;
 
+    println!("Loading data...");
+
     let data = read_plugin_data()?;
 
-    println!("Cloning plugin repositories...");
+    println!("Starting cloning process...");
 
     let progress = MultiProgress::new();
     let total_progress = ProgressBar::new(data.len() as u64);
@@ -36,52 +38,53 @@ pub fn clone_plugin_repos() -> Result<(), Box<dyn std::error::Error>> {
 
     let now = std::time::Instant::now();
 
-    ThreadPoolBuilder::new()
+    let thread_pol = ThreadPoolBuilder::new()
         .num_threads(4)
-        .build_global()
+        .build()
         .expect("Failed to build thread pool");
 
-    let results: Vec<CloneResult> = data
-        .into_par_iter()
-        .map(|plugin| {
-            if plugin.removed_commit.is_some() {
-                total_progress.inc(1);
-                skipped_progress.inc(1);
-                return CloneResult::Skipped(plugin.id);
-            }
+    let results: Vec<_> = thread_pol.install(|| {
+        data.into_par_iter()
+            .map(|plugin| {
+                if plugin.removed_commit.is_some() {
+                    total_progress.inc(1);
+                    skipped_progress.inc(1);
+                    return CloneResult::Skipped(plugin.id);
+                }
 
-            let clone_task = prep_clone(&plugin);
-            let mut clone_task = match clone_task {
-                Ok(task) => task,
-                Err(e) => {
-                    total_progress.inc(1);
-                    failed_progress.inc(1);
-                    return CloneResult::Failed(plugin.id, e.to_string());
-                }
-            };
+                let clone_task = prep_clone(&plugin);
+                let mut clone_task = match clone_task {
+                    Ok(task) => task,
+                    Err(e) => {
+                        total_progress.inc(1);
+                        failed_progress.inc(1);
+                        return CloneResult::Failed(plugin.id, e.to_string());
+                    }
+                };
 
-            let clone_res: Result<_, String> = clone_task
-                .fetch_then_checkout(gix::progress::Discard, &gix::interrupt::IS_INTERRUPTED)
-                .map_err(|e| e.to_string())
-                .and_then(|(mut checkout, _)| {
-                    checkout
-                        .main_worktree(gix::progress::Discard, &gix::interrupt::IS_INTERRUPTED)
-                        .map_err(|e| e.to_string())
-                });
-            match clone_res {
-                Ok(_) => {
-                    total_progress.inc(1);
-                    success_progress.inc(1);
-                    CloneResult::Success
+                let clone_res: Result<_, String> = clone_task
+                    .fetch_then_checkout(gix::progress::Discard, &gix::interrupt::IS_INTERRUPTED)
+                    .map_err(|e| e.to_string())
+                    .and_then(|(mut checkout, _)| {
+                        checkout
+                            .main_worktree(gix::progress::Discard, &gix::interrupt::IS_INTERRUPTED)
+                            .map_err(|e| e.to_string())
+                    });
+                match clone_res {
+                    Ok(_) => {
+                        total_progress.inc(1);
+                        success_progress.inc(1);
+                        CloneResult::Success
+                    }
+                    Err(e) => {
+                        total_progress.inc(1);
+                        failed_progress.inc(1);
+                        CloneResult::Failed(plugin.id, e)
+                    }
                 }
-                Err(e) => {
-                    total_progress.inc(1);
-                    failed_progress.inc(1);
-                    CloneResult::Failed(plugin.id, e)
-                }
-            }
-        })
-        .collect();
+            })
+            .collect()
+    });
 
     total_progress.finish();
     success_progress.finish();

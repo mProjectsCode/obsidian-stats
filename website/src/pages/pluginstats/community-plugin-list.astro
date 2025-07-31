@@ -1,10 +1,10 @@
 ---
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
 import { getPluginDataArray } from '../../utils/data';
-import CountChart from '../../components/newSvelte/charts/count/CountChart.svelte';
-import CountNewChart from '../../components/newSvelte/charts/count/CountNewChart.svelte';
-import CountRemovedChart from '../../components/newSvelte/charts/count/CountRemovedChart.svelte';
-import RemovedByReleaseChart from '../../components/newSvelte/charts/count/RemovedByReleaseChart.svelte';
+import CountChart from '../../components/svelte/charts/count/CountChart.svelte';
+import CountNewChart from '../../components/svelte/charts/count/CountNewChart.svelte';
+import CountRemovedChart from '../../components/svelte/charts/count/CountRemovedChart.svelte';
+import RemovedByReleaseChart from '../../components/svelte/charts/count/RemovedByReleaseChart.svelte';
 import { ItemType } from '../../utils/misc';
 
 const data = await getPluginDataArray();

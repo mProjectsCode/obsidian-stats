@@ -3,7 +3,7 @@ use regex::Regex;
 use wasm_bindgen::prelude::*;
 
 use crate::{
-    common::{StackedNamedDataPoint, increment_named_data_points},
+    common::StackedNamedDataPoint,
     iter_ext::{DedupExt, GroupByExt, SortExt},
     release::{
         ChangeLogChangeCategory, ChangelogChanges, ChangelogDataPoint, GithubReleaseInfo, OS,

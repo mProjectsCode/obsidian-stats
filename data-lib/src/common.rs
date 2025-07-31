@@ -1,5 +1,3 @@
-use std::hash::Hash;
-
 use hashbrown::HashMap;
 use serde::{Deserialize, Serialize};
 use tsify::Tsify;

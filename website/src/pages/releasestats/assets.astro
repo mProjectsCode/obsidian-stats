@@ -1,7 +1,7 @@
 ---
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
-import StackedXBarChart from '../../components/newSvelte/charts/StackedXBarChart.svelte';
-import AssetSizeChart from '../../components/newSvelte/charts/release/AssetSizeChart.svelte';
+import StackedXBarChart from '../../components/svelte/charts/StackedXBarChart.svelte';
+import AssetSizeChart from '../../components/svelte/charts/release/AssetSizeChart.svelte';
 import { getReleaseDataArray } from '../../utils/data';
 
 const dataArray = await getReleaseDataArray();
@@ -18,34 +18,30 @@ const assetInstructionSet = dataArray.get_asset_instruction_set_percentages();
 	}}
 	headings={[]}
 >
+	<p>This page looks at the assets that are included in Obsidian releases, including the types of assets, their sizes, and what type of PCs they are for.</p>
 
-    <p>
-        This page looks at the assets that are included in Obsidian releases, including the types of assets, their sizes, and what type of PCs they are for.
-    </p>
-
-    <p>
-        The following graph groups the assets by type. 
-        The first bar shows the distribution of downloads among the different asset types.
-        The second bar shows the distribution of how many assets of each type are included in all releases.
-        The third bar shows the distribution of the average sizes of each asset type.
-    </p>
+	<p>
+		The following graph groups the assets by type. The first bar shows the distribution of downloads among the different asset types. The second bar shows the
+		distribution of how many assets of each type are included in all releases. The third bar shows the distribution of the average sizes of each asset type.
+	</p>
 
 	<p><StackedXBarChart dataPoints={assetTypes} percentages client:only="svelte" /></p>
 
-    <p>
-        The next graph shows the evolution of asset sizes over time. 
-        The data is split by asset type. 
-        Note that gaps may appear, as not every asset type is included in every release.
-    </p>
+	<p>
+		The next graph shows the evolution of asset sizes over time. The data is split by asset type. Note that gaps may appear, as not every asset type is included
+		in every release.
+	</p>
 
 	<p><AssetSizeChart dataPoints={assetSize} client:only="svelte" /></p>
 
-    <p>
-        This graph shows the split between downloads of assets for different instruction sets.
-        The instruction set is the type of CPU architecture that the asset is built for, such as x86 or ARM.
-        From this we can see that downloads for ARM make up only {assetInstructionSet.find((x) => x.layer === 'arm64')?.value?.toFixed(1)}% of the total downloads. 
-        The macOS <code>.dmg</code> assets make up the <code>both (.dmg)</code> category with {assetInstructionSet.find((x) => x.layer === 'both (.dmg)')?.value?.toFixed(1)}%, as they can be used on both x86 and ARM Macs.
-    </p>
+	<p>
+		This graph shows the split between downloads of assets for different instruction sets. The instruction set is the type of CPU architecture that the asset is
+		built for, such as x86 or ARM. From this we can see that downloads for ARM make up only {
+			assetInstructionSet.find(x => x.layer === 'arm64')?.value?.toFixed(1)
+		}% of the total downloads. The macOS <code>.dmg</code> assets make up the <code>both (.dmg)</code> category with {
+			assetInstructionSet.find(x => x.layer === 'both (.dmg)')?.value?.toFixed(1)
+		}%, as they can be used on both x86 and ARM Macs.
+	</p>
 
 	<p><StackedXBarChart dataPoints={assetInstructionSet} percentages client:only="svelte" /></p>
 </StarlightPage>

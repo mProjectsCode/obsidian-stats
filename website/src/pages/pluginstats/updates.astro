@@ -1,8 +1,8 @@
 ---
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
 import { getPluginDataArray } from '../../utils/data';
-import InactivityByReleaseChart from '../../components/newSvelte/charts/updates/InactivityByReleaseChart.svelte';
-import InactivityDistributionChart from '../../components/newSvelte/charts/updates/InactivityDistributionChart.svelte';
+import InactivityByReleaseChart from '../../components/svelte/charts/updates/InactivityByReleaseChart.svelte';
+import InactivityDistributionChart from '../../components/svelte/charts/updates/InactivityDistributionChart.svelte';
 
 const data = await getPluginDataArray();
 const view = data.view();

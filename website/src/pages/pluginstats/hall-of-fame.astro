@@ -1,7 +1,7 @@
 ---
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
 import { getPluginDataArray } from '../../utils/data';
-import HallOfFameChart from '../../components/newSvelte/charts/HallOfFameChart.svelte';
+import HallOfFameChart from '../../components/svelte/charts/HallOfFameChart.svelte';
 
 let dataArray = await getPluginDataArray();
 let view = dataArray.view();

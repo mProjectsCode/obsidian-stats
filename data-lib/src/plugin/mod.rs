@@ -72,8 +72,10 @@ pub struct PluginRepoData {
     pub has_test_files: bool,
     pub has_beta_manifest: bool,
     pub file_type_counts: HashMap<String, usize>,
-    pub package_json_license: String,
-    pub license_file: String,
+    /// The license identifier from the package.json file.
+    pub package_json_license: LicenseInfo,
+    /// The license identifier from the LICENSE file in the repository.
+    pub file_license: LicenseInfo,
     pub manifest: PluginManifest,
 }
 
@@ -108,4 +110,50 @@ pub struct PluginLicenseDataPoints {
     conditions: Vec<NamedDataPoint>,
     limitations: Vec<NamedDataPoint>,
     descriptions: LicenseDescriptionNested,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+pub enum LicenseInfo {
+    Known(String),
+    ExplicitlyUnlicensed,
+    Unrecognized,
+    NotFound,
+}
+
+impl LicenseInfo {
+    pub fn to_fancy_string(&self) -> String {
+        match self {
+            LicenseInfo::Known(name) => name.clone(),
+            LicenseInfo::Unrecognized => "Unrecognized".to_string(),
+            LicenseInfo::NotFound => "Not Found".to_string(),
+            LicenseInfo::ExplicitlyUnlicensed => "Explicitly Unlicensed".to_string(),
+        }
+    }
+
+    pub fn matches(&self, other: &Self) -> bool {
+        match (self, other) {
+            (LicenseInfo::Known(name1), LicenseInfo::Known(name2)) => name1 == name2,
+            _ => true, // Unrecognized and NotFound match anything
+        }
+    }
+
+    pub fn matches_identifier(&self, other: &str) -> bool {
+        match self {
+            LicenseInfo::Known(name1) => name1 == other,
+            _ => false,
+        }
+    }
+}
+
+impl From<Option<LicenseInfo>> for LicenseInfo {
+    fn from(value: Option<LicenseInfo>) -> Self {
+        value.unwrap_or(LicenseInfo::NotFound)
+    }
+}
+
+
+impl From<Option<&LicenseInfo>> for LicenseInfo {
+    fn from(value: Option<&LicenseInfo>) -> Self {
+        value.cloned().unwrap_or(LicenseInfo::NotFound)
+    }
 }

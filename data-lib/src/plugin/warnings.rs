@@ -1,7 +1,7 @@
 use serde::Serialize;
 use tsify::Tsify;
 
-use crate::{commit::StringCommit, date::Date, plugin::full::FullPluginData};
+use crate::{commit::StringCommit, date::Date, plugin::{full::FullPluginData, LicenseInfo}};
 
 #[derive(Tsify, Debug, Clone, Serialize)]
 #[tsify(into_wasm_abi)]
@@ -21,7 +21,7 @@ pub enum PluginWarning {
     Unlicensed(PluginWarningUnlicensed),
     NoLicense(PluginWarningNoLicense),
     MismatchedLicense(PluginWarningMismatchedLicense),
-    MissingExtendedData(PLuginWarningMissingExtendedData),
+    MissingExtendedData(PluginWarningMissingExtendedData),
     MissingRepoData(PluginWarningMissingRepoData),
 }
 
@@ -78,7 +78,7 @@ pub struct PluginWarningMismatchedLicense {
 
 #[derive(Tsify, Debug, Clone, Serialize)]
 #[tsify(into_wasm_abi)]
-pub struct PLuginWarningMissingExtendedData {
+pub struct PluginWarningMissingExtendedData {
     pub severity: PluginWarningSeverity,
 }
 
@@ -202,27 +202,20 @@ fn get_license_warnings(data: &FullPluginData, warnings: &mut Vec<PluginWarning>
         return;
     };
 
-    if repo.license_file == "explicitly unlicensed" {
+    if repo.file_license == LicenseInfo::Known("explicitly unlicensed".to_string()) {
         warnings.push(PluginWarning::Unlicensed(PluginWarningUnlicensed {
             severity: PluginWarningSeverity::CAUTION,
         }));
-    } else if repo.license_file == "no license" {
+    } else if repo.file_license == LicenseInfo::NotFound {
         warnings.push(PluginWarning::NoLicense(PluginWarningNoLicense {
             severity: PluginWarningSeverity::CAUTION,
         }));
-    } else if repo.license_file != "unknown"
-        && repo.license_file != "not found"
-        && repo.package_json_license != "unknown"
-        && repo.package_json_license != "not found"
-        && repo.package_json_license != "no license"
-        && !repo.package_json_license.starts_with(&repo.license_file)
-        && !repo.license_file.starts_with(&repo.package_json_license)
-    {
+    } else if !repo.file_license.matches(&repo.package_json_license) {
         warnings.push(PluginWarning::MismatchedLicense(
             PluginWarningMismatchedLicense {
                 severity: PluginWarningSeverity::CAUTION,
-                license_file: repo.license_file.clone(),
-                package_json_license: repo.package_json_license.clone(),
+                license_file: repo.file_license.to_fancy_string(),
+                package_json_license: repo.package_json_license.to_fancy_string(),
             },
         ));
     }
@@ -231,7 +224,7 @@ fn get_license_warnings(data: &FullPluginData, warnings: &mut Vec<PluginWarning>
 fn get_missing_warnings(data: &FullPluginData, warnings: &mut Vec<PluginWarning>) {
     if data.extended.is_none() {
         warnings.push(PluginWarning::MissingExtendedData(
-            PLuginWarningMissingExtendedData {
+            PluginWarningMissingExtendedData {
                 severity: PluginWarningSeverity::DANGER,
             },
         ));

@@ -15,27 +15,27 @@ pub mod release;
 pub mod theme;
 
 fn main() {
-    // build_theme_stats().expect("Failed to build theme stats");
-
-    // println!();
-
-    // build_plugin_stats().expect("Failed to build plugin stats");
-
-    // println!();
-    // println!("Cloning plugin repositories...");
-
-    // clone_plugin_repos().expect("Failed to clone plugin repositories");
-
-    // println!();
-    // println!("Extracting repository data...");
-
-    // extract_extra_data().expect("Failed to extract repository data");
-
-    // process_licenses();
+    build_theme_stats().expect("Failed to build theme stats");
 
     println!();
 
-    build_release_stats().expect("Failed to build release stats");
+    build_plugin_stats().expect("Failed to build plugin stats");
+
+    println!();
+    println!("Cloning plugin repositories...");
+
+    clone_plugin_repos().expect("Failed to clone plugin repositories");
+
+    println!();
+    println!("Extracting repository data...");
+
+    extract_extra_data().expect("Failed to extract repository data");
+
+    process_licenses();
+
+    println!();
+
+    // build_release_stats().expect("Failed to build release stats");
 
     println!();
     println!("Done!");

@@ -3,8 +3,7 @@ use std::{fs, path::Path};
 use data_lib::{
     input_data::{ObsCommunityPluginDeprecations, ObsCommunityPluginRemoved},
     plugin::{
-        PluginData, PluginExtraData, PluginRepoData, bundlers::Bundler, packages::PackageManager,
-        testing::TestingFramework,
+        bundlers::Bundler, packages::PackageManager, testing::TestingFramework, LicenseInfo, PluginData, PluginExtraData, PluginRepoData
     },
 };
 use hashbrown::HashMap;
@@ -103,7 +102,7 @@ pub fn extract_data_from_repo(
     let mut dev_dependencies = Vec::new();
     let mut testing_frameworks = Vec::new();
     let mut bundlers = Vec::new();
-    let mut package_json_license = "unknown".to_string();
+    let mut package_json_license = LicenseInfo::NotFound;
 
     if has_package_json {
         let package_json =
@@ -140,14 +139,14 @@ pub fn extract_data_from_repo(
         package_json_license = package_json
             .get("license")
             .and_then(|l| l.as_str())
-            .and_then(|l| {
+            .map(|l| {
                 if l.is_empty() {
-                    None
+                    LicenseInfo::Unrecognized
                 } else {
-                    Some(l.to_string())
+                    LicenseInfo::Known(l.to_string())
                 }
             })
-            .unwrap_or("not set".to_string());
+            .into();
     }
 
     let license_file = files.iter().find(|file| {
@@ -157,12 +156,11 @@ pub fn extract_data_from_repo(
             || lower_case_file == "license.md"
     });
 
-    let license_file = license_file.and_then(|file| {
-        let license_text = fs::read_to_string(format!("{repo_path}/{file}")).ok()?;
-        license_comparer.compare(&plugin.id, &license_text)
-    });
-
-    let license_file = license_file.unwrap_or_else(|| "unknown".to_string());
+    let file_license = license_file.and_then(|file| {
+        fs::read_to_string(format!("{repo_path}/{file}")).map(|license_text| {
+            license_comparer.compare(&plugin.id, &license_text)
+        }).ok()
+    }).into();
 
     Ok(PluginRepoData {
         uses_typescript,
@@ -176,7 +174,7 @@ pub fn extract_data_from_repo(
         has_beta_manifest,
         file_type_counts,
         package_json_license,
-        license_file,
+        file_license,
         manifest,
     })
 }

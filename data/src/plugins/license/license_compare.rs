@@ -1,4 +1,4 @@
-use data_lib::license::LicenseData;
+use data_lib::{license::LicenseData, plugin::LicenseInfo};
 use serde_yaml;
 use strsim::jaro;
 
@@ -70,38 +70,37 @@ impl LicenseComparer {
     /**
      * Returns the spdx-id of the best matching license or undefined if no match is found.
      */
-    pub fn compare(&self, _plugin_id: &str, license: &str) -> Option<String> {
+    pub fn compare(&self, _plugin_id: &str, license: &str) -> LicenseInfo {
         let lower_case_license = license.to_lowercase();
         let lower_case_license = lower_case_license.trim();
 
         // println!("Comparing license: {}", lower_case_license);
 
         if self.mit_re.is_match(lower_case_license) {
-            return Some("MIT".to_string());
+            return LicenseInfo::Known("MIT".to_string());
         }
 
         if self.gpl_3_re.is_match(lower_case_license) {
-            return Some("GPL-3.0".to_string());
+            return LicenseInfo::Known("GPL-3.0".to_string());
         }
 
         if self.lgpl_3_re.is_match(lower_case_license) {
-            return Some("LGPL-3.0".to_string());
+            return LicenseInfo::Known("LGPL-3.0".to_string());
         }
 
         if self.agpl_3_re.is_match(lower_case_license) {
-            return Some("AGPL-3.0".to_string());
+            return LicenseInfo::Known("AGPL-3.0".to_string());
         }
 
         // we test if the license contains only a copyright notice like "Copyright (c) 2024 Moritz Jung"
         if self.copyright_re.is_match(lower_case_license) {
-            println!("explicitly unlicensed: {license}");
             // if so we assume that the author reserves all rights
-            return Some("explicitly unlicensed".to_string());
+            return LicenseInfo::ExplicitlyUnlicensed;
         }
 
         let exact_match = self.licenses.iter().find(|l| l.text == lower_case_license);
         if let Some(license) = exact_match {
-            return Some(license.name.clone());
+            return LicenseInfo::Known(license.name.clone());
         }
 
         let mut scores = self
@@ -121,9 +120,9 @@ impl LicenseComparer {
         if let Some((score, name)) = scores.first()
             && score > &0.85
         {
-            return Some(name.clone());
+            return LicenseInfo::Known(name.clone());
         }
 
-        None
+        LicenseInfo::Unrecognized
     }
 }
