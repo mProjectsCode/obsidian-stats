@@ -158,25 +158,3 @@ pub struct StackedNamedDataPoint {
     pub layer: String,
     pub value: f64,
 }
-
-pub fn group_by<'a, T, K: Hash + Eq, TFn: Fn(&T) -> K>(
-    items: impl IntoIterator<Item = &'a T>,
-    key_fn: TFn,
-) -> HashMap<K, Vec<&'a T>> {
-    let mut map: HashMap<K, Vec<&T>> = HashMap::new();
-    for item in items {
-        let key = key_fn(item);
-        map.entry(key).or_default().push(item);
-    }
-    map
-}
-
-pub trait GroupByExt<'a, T, K: Hash + Eq> {
-    fn group_by<F: Fn(&T) -> K>(self, key_fn: F) -> HashMap<K, Vec<&'a T>>;
-}
-
-impl<'a, T: 'a, K: Hash + Eq, I: IntoIterator<Item = &'a T>> GroupByExt<'a, T, K> for I {
-    fn group_by<F: Fn(&T) -> K>(self, key_fn: F) -> HashMap<K, Vec<&'a T>> {
-        group_by(self, key_fn)
-    }
-}

@@ -333,7 +333,6 @@ dependencies = [
  "chrono",
  "chumsky",
  "hashbrown 0.15.4",
- "itertools",
  "js-sys",
  "rayon",
  "regex",

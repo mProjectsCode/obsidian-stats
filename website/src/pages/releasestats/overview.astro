@@ -1,0 +1,87 @@
+---
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import ChangelogChart from '../../components/newSvelte/charts/release/ChangelogChart.svelte';
+import { getReleaseDataArray } from '../../utils/data';
+
+const dataArray = await getReleaseDataArray();
+
+const overview = dataArray.get_changelog_overview();
+const changelogChanges = dataArray.get_changelog_changes_for_minor_releases();
+const changelogChangesDataPoints = dataArray.get_changelog_changes_as_data_points();
+const changelogCategories = dataArray.get_changelog_categories();
+---
+
+<StarlightPage
+    frontmatter={{
+		title: 'Release Overview',
+		description: `Stats about Obsidian releases.`,
+	}}
+	headings={[
+        { depth: 3, text: 'Changelog Changes', slug: 'changelog-changes' },
+    ]}
+>
+
+    <p>
+        The following table shows an overview of Obsidian minor releases.
+    </p>
+
+    <table class="full-width">
+        <thead>
+            <tr>
+                <th>Minor Version</th>
+                <th>First Public Version</th>
+                <th>First Public Release Date</th>
+                <th>First Insider Release Date</th>
+                <th>Number of Insider Patches</th>
+                <th>Number of Patches</th>
+            </tr>
+        </thead>
+        <tbody>
+            {overview.map((item) => (
+                <tr>
+                    <td>{item.minor_version}</td>
+                    <td>{item.first_public_version}</td>
+                    <td>{item.public_release_date}</td>
+                    <td>{item.insider_release_date}</td>
+                    <td>{item.number_of_insider_patches}</td>
+                    <td>{item.number_of_patches}</td>
+                </tr>
+            ))}
+        </tbody>
+    </table>
+
+    <h3 id="changelog-changes">Changelog Changes</h3>
+
+    <p>
+        Each Obsidian release has a changelog, which lists the changes made in that release.
+        The following chart shows the number of changes made in each release, grouped by category.
+    </p>
+
+    <p><ChangelogChart dataPoints={changelogChangesDataPoints} client:only="svelte" /></p>
+
+    <p>
+        The following table shows the sum of changes made in each minor release, grouped by category.
+    </p>
+
+    <table class="full-width">
+        <thead>
+            <tr>
+                <th>Version</th>
+                {changelogCategories.map((category) => (
+                    <th>{category}</th>
+                ))}
+            </tr>
+        </thead>
+        <tbody>
+            {changelogChanges.map((item) => (
+                <tr>
+                    <td>{item.version_string}</td>
+                    {changelogCategories.map((category) => (
+                        <td>{item.changes[category] || 0}</td>
+                    ))}
+                </tr>
+            ))}
+        </tbody>
+    </table>
+
+</StarlightPage>

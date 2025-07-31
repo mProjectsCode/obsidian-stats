@@ -8,6 +8,16 @@ pub struct Date {
     pub day: u32,
 }
 
+impl Default for Date {
+    fn default() -> Self {
+        Date {
+            year: 0,
+            month: 1,
+            day: 1,
+        }
+    }
+}
+
 impl Date {
     pub fn new(year: u32, month: u32, day: u32) -> Self {
         Date { year, month, day }

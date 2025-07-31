@@ -80,6 +80,10 @@ export default defineConfig({
 					label: 'Release Stats',
 					items: [
 						{
+							label: 'Overview',
+							link: '/releasestats/overview',
+						},
+						{
 							label: 'Downloads',
 							link: '/releasestats/downloads',
 						},

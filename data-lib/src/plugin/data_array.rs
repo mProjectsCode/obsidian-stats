@@ -1,6 +1,5 @@
 use std::ops::Index;
 
-use itertools::Itertools;
 use wasm_bindgen::prelude::wasm_bindgen;
 
 use crate::{
@@ -250,7 +249,7 @@ impl PluginDataArrayView {
 
                 Some((index, downloads_new as u32, downloads_start_date))
             })
-            .collect_vec();
+            .collect::<Vec<_>>();
         tmp.sort_by(|a, b| b.1.cmp(&a.1)); // Sort by downloads_new in descending order
         tmp.truncate(count);
 
@@ -283,7 +282,7 @@ impl PluginDataArrayView {
                     data,
                 }
             })
-            .collect_vec()
+            .collect()
     }
 
     pub fn monthly_count(&self, data: &PluginDataArray) -> Vec<CountMonthlyDataPoint> {

@@ -12,19 +12,19 @@ fn version_parser<'a>() -> impl Parser<'a, &'a str, Version> {
         .then(text::ident())
         .map(|(_, s): (_, &str)| s.to_string());
 
+    let dot_number = group((just('.'), number)).map(|(_, n)| n);
+
     group((
         just('v').or_not(),
         number,
-        just('.'),
-        number,
-        just('.'),
-        number,
+        dot_number,
+        dot_number.or_not(),
         pre_release.or_not(),
     ))
-    .map(|(_, major, _, minor, _, patch, pre)| Version {
+    .map(|(_, major, minor, patch, pre)| Version {
         major,
         minor,
-        patch,
+        patch: patch.unwrap_or(0),
         pre_release: pre,
     })
 }

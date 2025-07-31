@@ -1,5 +1,6 @@
 use hashbrown::HashMap;
 use serde::{Deserialize, Serialize};
+use tsify::Tsify;
 
 use crate::{date::Date, version::Version};
 
@@ -20,7 +21,7 @@ pub struct GithubReleaseInfo {
     pub assets: Vec<GithubAssetInfo>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub enum ObsidianPlatform {
     Desktop,
     Mobile,
@@ -120,4 +121,98 @@ pub fn get_asset_cpu_instruction_set(file_name: &str) -> Option<&'static str> {
     } else {
         Some("x86")
     }
+}
+
+#[derive(Tsify, Debug, Clone, Serialize, Deserialize)]
+#[tsify(into_wasm_abi)]
+pub struct ChangelogDataPoint {
+    pub minor_version: String,
+    pub first_public_version: String,
+    pub public_release_date: String,
+    pub insider_release_date: String,
+    pub number_of_insider_patches: usize,
+    pub number_of_patches: usize,
+}
+
+#[derive(Tsify, Debug, Clone, Serialize, Deserialize, Hash, PartialEq, Eq)]
+#[tsify(into_wasm_abi)]
+pub enum ChangeLogChangeCategory {
+    BreakingChange,
+    BugFix,
+    Developer,
+    Feature,
+    Improvement,
+    Uncategorized,
+}
+
+impl ChangeLogChangeCategory {
+    pub fn to_fancy_string(&self) -> String {
+        match self {
+            ChangeLogChangeCategory::BreakingChange => "Breaking Change".into(),
+            ChangeLogChangeCategory::BugFix => "Bug Fix".into(),
+            ChangeLogChangeCategory::Developer => "Developer".into(),
+            ChangeLogChangeCategory::Feature => "Feature".into(),
+            ChangeLogChangeCategory::Improvement => "Improvement".into(),
+            ChangeLogChangeCategory::Uncategorized => "Uncategorized".into(),
+        }
+    }
+
+    pub fn iter() -> impl Iterator<Item = Self> {
+        [
+            ChangeLogChangeCategory::Uncategorized,
+            ChangeLogChangeCategory::BugFix,
+            ChangeLogChangeCategory::Improvement,
+            ChangeLogChangeCategory::Feature,
+            ChangeLogChangeCategory::Developer,
+            ChangeLogChangeCategory::BreakingChange,
+        ]
+        .iter()
+        .cloned()
+    }
+}
+
+impl From<Option<ChangeLogChangeCategory>> for ChangeLogChangeCategory {
+    fn from(value: Option<ChangeLogChangeCategory>) -> Self {
+        value.unwrap_or(ChangeLogChangeCategory::Uncategorized)
+    }
+}
+
+const CHANGELOG_CATEGORIES_MAP: &[(&str, ChangeLogChangeCategory)] = &[
+    ("Uncategorized", ChangeLogChangeCategory::Uncategorized),
+    ("Shiny new things", ChangeLogChangeCategory::Feature),
+    ("No longer broken", ChangeLogChangeCategory::BugFix),
+    ("Changes", ChangeLogChangeCategory::Improvement),
+    ("Breaking changes", ChangeLogChangeCategory::BreakingChange),
+    ("Improvements", ChangeLogChangeCategory::Improvement),
+    ("Developers", ChangeLogChangeCategory::Developer),
+    ("Migration notice", ChangeLogChangeCategory::Uncategorized),
+    ("Developer", ChangeLogChangeCategory::Developer),
+    (
+        "Shiny new things for Obsidian Publish",
+        ChangeLogChangeCategory::Feature,
+    ),
+    ("For Developers", ChangeLogChangeCategory::Developer),
+    ("Bug fixes", ChangeLogChangeCategory::BugFix),
+    ("New shiny things", ChangeLogChangeCategory::Feature),
+    ("For developers", ChangeLogChangeCategory::Developer),
+    ("Improved", ChangeLogChangeCategory::Improvement),
+];
+
+impl From<&str> for ChangeLogChangeCategory {
+    fn from(value: &str) -> Self {
+        for (keyword, category) in CHANGELOG_CATEGORIES_MAP {
+            if value == *keyword {
+                return category.clone();
+            }
+        }
+        ChangeLogChangeCategory::Uncategorized
+    }
+}
+
+#[derive(Tsify, Debug, Clone, Serialize, Deserialize)]
+#[tsify(into_wasm_abi)]
+pub struct ChangelogChanges {
+    pub version: Version,
+    pub version_string: String,
+    pub changes: HashMap<ChangeLogChangeCategory, usize>,
 }
