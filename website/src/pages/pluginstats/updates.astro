@@ -23,13 +23,16 @@ const inactivityDistributionDataPoints = Array.from(view.inactivity_distribution
 		the API. Though it is worth noting that a plugin can work perfectly fine for years without any updates.
 	</p>
 
-	<p>The following chart shows the overall distribution days since the last plugin update.</p>
+	<p>The following chart shows the overall distribution of plugin inactivity.</p>
 
 	<p>
 		<InactivityDistributionChart dataPoints={inactivityDistributionDataPoints} client:only="svelte" />
 	</p>
 
-	<p>The next chart shows years of inactivity grouped by release month.</p>
+	<p>
+		The next chart shows years of inactivity grouped by the month in which the plugin was released. The negative space represents the percentage of plugins that
+		have been updated within the last year.
+	</p>
 
 	<p>
 		<InactivityByReleaseChart dataPoints={inactivityDataPoints} client:only="svelte" />

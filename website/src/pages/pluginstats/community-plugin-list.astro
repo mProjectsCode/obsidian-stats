@@ -32,7 +32,10 @@ const retiredByMonthDataPoints = view.removed_by_release_month(data);
 
 	<h2 id="plugin-count">Plugin Count</h2>
 
-	<p>The following chart shows the total number of plugins available in the community plugin list.</p>
+	<p>
+		The following chart shows the total number of plugins available in the community plugin list, as well as the total amount of plugins that were ever
+		available.
+	</p>
 
 	<p><CountChart dataPoints={countDataPoints} type={ItemType.Plugin} client:only="svelte" /></p>
 

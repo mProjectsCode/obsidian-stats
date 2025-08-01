@@ -4,12 +4,15 @@ use wasm_bindgen::prelude::wasm_bindgen;
 
 use crate::{
     common::{
-        increment_named_data_points, to_percentage, CountMonthlyDataPoint, DownloadDataPoint, HallOfFameDataPoint, InactivityByReleaseDataPoint, IndividualDownloadDataPoint, OverviewDataPoint, RemovedByReleaseDataPoint
+        CountMonthlyDataPoint, DownloadDataPoint, HallOfFameDataPoint,
+        InactivityByReleaseDataPoint, IndividualDownloadDataPoint, OverviewDataPoint,
+        RemovedByReleaseDataPoint, increment_named_data_points, to_percentage,
     },
     date::Date,
     license::Licenses,
     plugin::{
-        full::FullPluginData, LicenseInfo, NamedDataPoint, PluginData, PluginExtraData, PluginLicenseDataPoints, PluginRepoDataPoints
+        LicenseInfo, NamedDataPoint, PluginData, PluginExtraData, PluginLicenseDataPoints,
+        PluginRepoDataPoints, full::FullPluginData,
     },
 };
 
@@ -512,13 +515,14 @@ impl PluginDataArrayView {
 
             match &repo_data.file_license {
                 LicenseInfo::Known(name) => {
-                    let license_data = licenses
-                        .licenses
-                        .iter()
-                        .find(|l| *name == l.spdx_id);
+                    let license_data = licenses.licenses.iter().find(|l| *name == l.spdx_id);
 
                     if let Some(license_data) = license_data {
-                        increment_named_data_points(&mut points.licenses, &license_data.spdx_id, 1.0);
+                        increment_named_data_points(
+                            &mut points.licenses,
+                            &license_data.spdx_id,
+                            1.0,
+                        );
 
                         for permission in &license_data.permissions {
                             increment_named_data_points(&mut points.permissions, permission, 1.0);
@@ -531,11 +535,19 @@ impl PluginDataArrayView {
                         }
                     } else {
                         // I think we should never hit this path, as we make sure that the license is known during data extraction.
-                        increment_named_data_points(&mut points.licenses, &LicenseInfo::Unrecognized.to_fancy_string(), 1.0);
+                        increment_named_data_points(
+                            &mut points.licenses,
+                            &LicenseInfo::Unrecognized.to_fancy_string(),
+                            1.0,
+                        );
                     }
                 }
                 other => {
-                    increment_named_data_points(&mut points.licenses, &other.to_fancy_string(), 1.0);
+                    increment_named_data_points(
+                        &mut points.licenses,
+                        &other.to_fancy_string(),
+                        1.0,
+                    );
                 }
             }
         });

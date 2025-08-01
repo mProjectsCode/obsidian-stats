@@ -151,7 +151,6 @@ impl From<Option<LicenseInfo>> for LicenseInfo {
     }
 }
 
-
 impl From<Option<&LicenseInfo>> for LicenseInfo {
     fn from(value: Option<&LicenseInfo>) -> Self {
         value.cloned().unwrap_or(LicenseInfo::NotFound)

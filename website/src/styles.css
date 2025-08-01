@@ -187,3 +187,7 @@ aside.starlight-aside {
 .no-overflow-clip > div > svg {
 	overflow: visible;
 }
+
+.high-z-index {
+	z-index: 1000;
+}

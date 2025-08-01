@@ -22,7 +22,7 @@ impl Bundler {
 
     pub fn get_identifier(&self) -> &'static str {
         match self {
-            Bundler::Esbuild => "ESBuild",
+            Bundler::Esbuild => "esbuild",
             Bundler::Rollup => "Rollup",
             Bundler::Webpack => "Webpack",
             Bundler::Vite => "Vite",
@@ -31,12 +31,12 @@ impl Bundler {
     }
 
     pub fn from_identifier(identifier: &str) -> Option<Self> {
-        match identifier {
-            "ESBuild" => Some(Bundler::Esbuild),
-            "Rollup" => Some(Bundler::Rollup),
-            "Webpack" => Some(Bundler::Webpack),
-            "Vite" => Some(Bundler::Vite),
-            "Turbo" => Some(Bundler::Turbo),
+        match identifier.to_lowercase().as_str() {
+            "esbuild" => Some(Bundler::Esbuild),
+            "rollup" => Some(Bundler::Rollup),
+            "webpack" => Some(Bundler::Webpack),
+            "vite" => Some(Bundler::Vite),
+            "turbo" => Some(Bundler::Turbo),
             _ => None,
         }
     }

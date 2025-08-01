@@ -5,7 +5,8 @@ use crate::{
     common::{DownloadDataPoint, EntryChangeDataPoint, VersionDataPoint},
     date::Date,
     plugin::{
-        warnings::{get_plugin_warnings, PluginWarning}, FundingUrl, LicenseInfo, PluginData, PluginExtraData, PluginRepoData
+        FundingUrl, LicenseInfo, PluginData, PluginExtraData, PluginRepoData,
+        warnings::{PluginWarning, get_plugin_warnings},
     },
 };
 

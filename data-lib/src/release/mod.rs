@@ -134,7 +134,7 @@ pub struct ChangelogDataPoint {
     pub number_of_patches: usize,
 }
 
-#[derive(Tsify, Debug, Clone, Serialize, Deserialize, Hash, PartialEq, Eq)]
+#[derive(Tsify, Debug, Clone, Hash, PartialEq, Eq)]
 #[tsify(into_wasm_abi)]
 pub enum ChangeLogChangeCategory {
     BreakingChange,
@@ -168,6 +168,15 @@ impl ChangeLogChangeCategory {
         ]
         .iter()
         .cloned()
+    }
+}
+
+impl Serialize for ChangeLogChangeCategory {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: serde::Serializer,
+    {
+        serializer.serialize_str(&self.to_fancy_string())
     }
 }
 
@@ -209,7 +218,7 @@ impl From<&str> for ChangeLogChangeCategory {
     }
 }
 
-#[derive(Tsify, Debug, Clone, Serialize, Deserialize)]
+#[derive(Tsify, Debug, Clone, Serialize)]
 #[tsify(into_wasm_abi)]
 pub struct ChangelogChanges {
     pub version: Version,

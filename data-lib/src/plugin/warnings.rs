@@ -1,7 +1,11 @@
 use serde::Serialize;
 use tsify::Tsify;
 
-use crate::{commit::StringCommit, date::Date, plugin::{full::FullPluginData, LicenseInfo}};
+use crate::{
+    commit::StringCommit,
+    date::Date,
+    plugin::{LicenseInfo, full::FullPluginData},
+};
 
 #[derive(Tsify, Debug, Clone, Serialize)]
 #[tsify(into_wasm_abi)]

@@ -51,12 +51,15 @@ const changelogCategories = dataArray.get_changelog_categories();
 
 	<p>
 		Each Obsidian release has a changelog, which lists the changes made in that release. The following chart shows the number of changes made in each release,
-		grouped by category.
+		grouped by category. This statistic is determined by simply counting the number of items in the changelog.
 	</p>
 
 	<p><ChangelogChart dataPoints={changelogChangesDataPoints} client:only="svelte" /></p>
 
-	<p>The following table shows the sum of changes made in each minor release, grouped by category.</p>
+	<p>
+		The following table shows the sum of changes made in each minor release, grouped by category. Note that the number of changes in this table can be inflated,
+		as the first public release of a minor version may relist changes from earlier insider releases.
+	</p>
 
 	<table class="full-width">
 		<thead>

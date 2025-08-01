@@ -422,8 +422,12 @@ function getAsideVariant(warning: PluginWarning): 'note' | 'tip' | 'caution' | '
 		</tbody>
 	</table>
 
-	<p class="muted">
-		<i>Blacklisted</i> versions are versions that are known to cause major issues or contain security concerns and have thus been blacklisted by the Obsidian team.
-		Obsidian will disable plugins on startup whose installed version is blacklisted. It is strongly recommended to update to a newer version.
-	</p>
+	{
+		versions.some(x => x.deprecated) && (
+			<p class="muted">
+				<i>Blacklisted</i> versions are versions that are known to cause major issues or contain security concerns and have thus been blacklisted by the
+				Obsidian team. Obsidian will disable plugins on startup whose installed version is blacklisted. It is strongly recommended to update to a newer version.
+			</p>
+		)
+	}
 </StarlightPage>

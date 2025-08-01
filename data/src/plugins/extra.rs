@@ -3,7 +3,8 @@ use std::{fs, path::Path};
 use data_lib::{
     input_data::{ObsCommunityPluginDeprecations, ObsCommunityPluginRemoved},
     plugin::{
-        bundlers::Bundler, packages::PackageManager, testing::TestingFramework, LicenseInfo, PluginData, PluginExtraData, PluginRepoData
+        LicenseInfo, PluginData, PluginExtraData, PluginRepoData, bundlers::Bundler,
+        packages::PackageManager, testing::TestingFramework,
     },
 };
 use hashbrown::HashMap;
@@ -156,11 +157,13 @@ pub fn extract_data_from_repo(
             || lower_case_file == "license.md"
     });
 
-    let file_license = license_file.and_then(|file| {
-        fs::read_to_string(format!("{repo_path}/{file}")).map(|license_text| {
-            license_comparer.compare(&plugin.id, &license_text)
-        }).ok()
-    }).into();
+    let file_license = license_file
+        .and_then(|file| {
+            fs::read_to_string(format!("{repo_path}/{file}"))
+                .map(|license_text| license_comparer.compare(&plugin.id, &license_text))
+                .ok()
+        })
+        .into();
 
     Ok(PluginRepoData {
         uses_typescript,
