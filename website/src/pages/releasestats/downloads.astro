@@ -1,0 +1,37 @@
+---
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import StackedBarChart from '../../components/svelte/charts/StackedBarChart.svelte';
+import { getReleaseDataArray } from '../../utils/data';
+
+const dataArray = await getReleaseDataArray();
+
+const downloads = dataArray.total_downloads_per_version_by_os();
+const downloadsPercentages = dataArray.total_downloads_per_version_by_os_as_percentages();
+---
+
+<StarlightPage
+	frontmatter={{
+		title: 'Release Downloads',
+		description: `Stats about the download number of Obsidian releases.`,
+	}}
+	headings={[]}
+>
+	<p>
+		This page presents download statistics for Obsidian releases, including the total number of downloads per version and the distribution of downloads across
+		different operating systems.
+	</p>
+
+	<p>
+		The download stats are inferred from publicly available GitHub release data. This data does not include mobile or insider releases. Older versions of
+		Obsidian (pre 0.6.4) are also not included in the data. The charts exclude the <code>.asar.gz</code> assets, which are used for in-app updates on all operating
+		systems.
+	</p>
+
+	<p>The below graph depicts the total number of downloads for every release, split by OS.</p>
+
+	<p><StackedBarChart dataPoints={downloads} xLabel="Version Number" yLabel="Downloads" skewLabels client:only="svelte" /></p>
+
+	<p>This graph shows the distribution of downloads among the different operating systems.</p>
+
+	<p><StackedBarChart dataPoints={downloadsPercentages} xLabel="Version Number" yLabel="Downloads" skewLabels percentages client:only="svelte" /></p>
+</StarlightPage>

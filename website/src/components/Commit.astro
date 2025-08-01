@@ -1,0 +1,7 @@
+---
+import type { StringCommit } from '../../../data-wasm/pkg/data_wasm';
+
+const props = Astro.props as { commit: StringCommit };
+---
+
+<a href={'https://github.com/obsidianmd/obsidian-releases/commit/' + props.commit.hash} target="_blank">{props.commit.date}</a>

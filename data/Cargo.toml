@@ -1,0 +1,23 @@
+[package]
+name = "data"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+chrono = { version = "0.4.41", features = ["serde"] }
+chumsky = { version = "0.10.1", features = ["unstable"] }
+hashbrown = { version = "0.15.3", features = ["serde"] }
+itertools = "0.14.0"
+rayon = "1.10.0"
+regex = "1.11.1"
+serde = { version = "1.0.219", features = ["derive"] }
+serde-deserialize-duplicates = "0.1.2"
+serde_json = { version = "1.0.140", features = ["raw_value"] }
+serde_yaml = "0.9.34"
+strsim = "0.11.1"
+indicatif = { version = "0.18.0", features = ["rayon"] }
+data-lib = { version = "*", path = "../data-lib" }
+gix = { version = "0.73.0", features = ["blocking-network-client", "blocking-http-transport-reqwest-rust-tls"] }
+slug = "0.1.6"
+quick-xml = { version = "0.38.0" , features = ["serialize"] }
+reqwest = { version = "0.12.22", features = ["json", "blocking"] }

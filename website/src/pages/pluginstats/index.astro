@@ -1,7 +1,12 @@
 ---
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
-import PluginsIndex from '../../components/svelte/indexPages/pluginsIndex.svelte';
-import { getPluginData } from '../../../../src/utils';
+import DataIndex from '../../components/svelte/DataIndex.svelte';
+import { getPluginDataArray } from '../../utils/data';
+import { ItemType } from '../../utils/misc';
+
+const dataArray = await getPluginDataArray();
+const view = dataArray.view();
+const data = view.overview(dataArray);
 ---
 
 <StarlightPage
@@ -19,5 +24,5 @@ import { getPluginData } from '../../../../src/utils';
 >
 	<p>This table shows all plugins ever available on the community plugin page. You can sort the table by clicking on the column headers.</p>
 
-	<PluginsIndex data={getPluginData()} client:only="svelte" />
+	<DataIndex data={data} type={ItemType.Plugin} client:only="svelte" />
 </StarlightPage>

@@ -1,46 +1,22 @@
 ---
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
-import { getPluginData } from '../../../../src/utils';
-import { getDownloadReleaseCorrelationDataPoints, getPluginDownloadsWeekly } from '../../../../src/plugin/data';
-import PluginDownloadChart from '../../components/svelte/pluginDownloadChart.svelte';
-import PluginReleaseCountDownloadsCorrelationChart from '../../components/svelte/pluginReleaseCountDownloadsCorrelationChart.svelte';
-import PluginReleaseTimeDownloadsCorrelationChart from '../../components/svelte/pluginReleaseTimeDownloadsCorrelationChart.svelte';
-import PluginDownloadsNameCorrelationChart from '../../components/svelte/pluginDownloadsNameCorrelationChart.svelte';
-import BarChart from '../../components/svelte/genericCharts/barChart.svelte';
+import DownloadChart from '../../components/svelte/charts/downloads/DownloadChart.svelte';
+import DownloadRelationChart from '../../components/svelte/charts/downloads/DownloadRelationChart.svelte';
+import DownloadNameChart from '../../components/svelte/charts/downloads/DownloadNameChart.svelte';
+import DownloadDistributionChart from '../../components/svelte/charts/downloads/DownloadDistributionChart.svelte';
+import { getPluginDataArray } from '../../utils/data';
 
-const pluginData = getPluginData();
+const data = await getPluginDataArray();
+const view = data.view();
 
-const downloadDataPoints = getPluginDownloadsWeekly(pluginData);
-
-const downloadReleaseCorrelationDataPoints = getDownloadReleaseCorrelationDataPoints(pluginData);
-
-const sortedData = downloadReleaseCorrelationDataPoints.slice().sort((a, b) => a.downloads - b.downloads);
-
-const now = new Date();
-const lastUpdateInfo = pluginData
-	.map(x => {
-		if (x.versionHistory.length === 0) {
-			return {
-				value: 0,
-				label: x.id,
-			};
-		}
-
-		const lastUpdate = x.versionHistory.sort((a, b) => b.initialReleaseDate.localeCompare(a.initialReleaseDate))[0];
-		const date = new Date(lastUpdate.initialReleaseDate);
-		const dayDiff = Math.round((now.getTime() - date.getTime()) / (1000 * 60 * 60 * 24));
-		return {
-			value: dayDiff,
-			label: x.id,
-		};
-	})
-	.sort((a, b) => b.value - a.value);
+const downloadDataPoints = view.total_download_data(data);
+const individualDownloadDataPoints = view.individual_download_data(data);
 ---
 
 <StarlightPage
 	frontmatter={{
-		title: 'Community Plugin List',
-		description: `Changes in the plugins on the community plugin list.`,
+		title: 'Plugin Downloads',
+		description: `Stats about the download number of plugins.`,
 	}}
 	headings={[{ depth: 2, text: 'Plugin Downloads Correlations', slug: 'plugin-downloads-correlations' }]}
 >
@@ -50,48 +26,28 @@ const lastUpdateInfo = pluginData
 		community list.
 	</p>
 
-	<PluginDownloadChart dataPoints={downloadDataPoints} client:only="svelte" />
+	<DownloadChart dataPoints={downloadDataPoints} client:only="svelte" />
 
 	<h2 id="plugin-downloads-correlations">Plugin Downloads Correlations</h2>
 
 	<p>
-		This figure shows the correlation between the number of downloads and the number of releases. This shows that plugins with more downloads tend to have more
-		releases.
+		The first figure shows the correlation between the number of downloads and the number of releases. This shows that plugins with more downloads tend to have
+		more releases. The second figure shows the correlation between the number of downloads and the initial release time.
 	</p>
 
-	<div>
-		<PluginReleaseCountDownloadsCorrelationChart dataPoints={downloadReleaseCorrelationDataPoints} client:only="svelte" />
-	</div>
-
-	<p>This figure shows the correlation between the number of downloads and the initial release time.</p>
-
-	<div>
-		<PluginReleaseTimeDownloadsCorrelationChart dataPoints={downloadReleaseCorrelationDataPoints} client:only="svelte" />
-	</div>
+	<DownloadRelationChart dataPoints={individualDownloadDataPoints} client:only="svelte" />
 
 	<p>
 		The chart below shows the correlation between the name of the plugin and the number of downloads. The regression line is calculated using the Simple Linear
 		Regression algorithm. It is evident that there is a slight correlation between the placement of the plugin in the alphabet and the number of downloads.
 	</p>
 
-	<div>
-		<PluginDownloadsNameCorrelationChart dataPoints={downloadReleaseCorrelationDataPoints} client:only="svelte" />
-	</div>
+	<DownloadNameChart dataPoints={individualDownloadDataPoints} client:only="svelte" />
 
 	<p>
 		This chart shows the overall distribution of downloads, it is clear that the majority of plugins have a low number of downloads, with a few plugins having a
 		very high number of downloads.
 	</p>
 
-	<div>
-		<BarChart
-			dataPoints={sortedData.map((x, i) => x.downloads)}
-			labels={sortedData.map(x => x.id)}
-			logScale={true}
-			seriesName="Download count distribution"
-			calculatePrecentages={false}
-			showXLabels={false}
-			client:only="svelte"
-		/>
-	</div>
+	<DownloadDistributionChart dataPoints={individualDownloadDataPoints} client:only="svelte" />
 </StarlightPage>

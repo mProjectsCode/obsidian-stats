@@ -1,32 +1,14 @@
 ---
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
-import BarChart from '../../components/svelte/genericCharts/barChart.svelte';
-import { getPluginData } from '../../../../src/utils';
-import { getPluginWarningPercentByReleaseMonth } from '../../utils/base';
+import { getPluginDataArray } from '../../utils/data';
+import InactivityByReleaseChart from '../../components/svelte/charts/updates/InactivityByReleaseChart.svelte';
+import InactivityDistributionChart from '../../components/svelte/charts/updates/InactivityDistributionChart.svelte';
 
-const pluginData = getPluginData();
+const data = await getPluginDataArray();
+const view = data.view();
 
-const now = new Date();
-const lastUpdateInfo = pluginData
-	.map(x => {
-		if (x.versionHistory.length === 0) {
-			return {
-				value: 0,
-				label: x.id,
-			};
-		}
-
-		const lastUpdate = x.versionHistory.sort((a, b) => b.initialReleaseDate.localeCompare(a.initialReleaseDate))[0];
-		const date = new Date(lastUpdate.initialReleaseDate);
-		const dayDiff = Math.round((now.getTime() - date.getTime()) / (1000 * 60 * 60 * 24));
-		return {
-			value: dayDiff,
-			label: x.id,
-		};
-	})
-	.sort((a, b) => b.value - a.value);
-
-const warningsByReleaseMonth = await getPluginWarningPercentByReleaseMonth(pluginData);
+const inactivityDataPoints = view.inactivity_by_release_month(data);
+const inactivityDistributionDataPoints = Array.from(view.inactivity_distribution(data));
 ---
 
 <StarlightPage
@@ -37,42 +19,22 @@ const warningsByReleaseMonth = await getPluginWarningPercentByReleaseMonth(plugi
 >
 	<p>
 		Plugin updates are important for the security and functionality of a plugin. Even though the Obsidian plugin API is very stable and things rarely get
-		changed, it's can still happen that a plugin no longer works as expected on a new version of Obsidian, expecially when a plugin uses undocumented parts of
+		changed, it's can still happen that a plugin no longer works as expected on a new version of Obsidian, especially when a plugin uses undocumented parts of
 		the API. Though it is worth noting that a plugin can work perfectly fine for years without any updates.
 	</p>
 
-	<p>The following chart shows the overall distribution days since the last plugin update.</p>
-
-	<div>
-		<BarChart
-			dataPoints={lastUpdateInfo.map(x => x.value)}
-			labels={lastUpdateInfo.map(x => x.label)}
-			logScale={false}
-			seriesName="Days since last update distribution"
-			showXLabels={false}
-			client:only="svelte"
-		/>
-	</div>
-
-	<p>Years of inactivity by release month.</p>
+	<p>The following chart shows the overall distribution of plugin inactivity.</p>
 
 	<p>
-		When looking at the inverse of this chart, the number of plugins that have been updated in the last 12 months, no real correlation to the initial release
-		date can be seen.
+		<InactivityDistributionChart dataPoints={inactivityDistributionDataPoints} client:only="svelte" />
 	</p>
 
-	<div>
-		<BarChart
-			dataPoints={warningsByReleaseMonth.map(x => x.warningPercent['inactivity-24-months'])}
-			dataPoints2={warningsByReleaseMonth.map(x => x.warningPercent['inactivity-12-months'])}
-			labels={warningsByReleaseMonth.map(x => x.month)}
-			logScale={false}
-			stacked={true}
-			calculatePrecentages={true}
-			seriesName="2 years of inactivity"
-			seriesName2="1 year of inactivity"
-			showXLabels={true}
-			client:only="svelte"
-		/>
-	</div>
+	<p>
+		The next chart shows years of inactivity grouped by the month in which the plugin was released. The negative space represents the percentage of plugins that
+		have been updated within the last year.
+	</p>
+
+	<p>
+		<InactivityByReleaseChart dataPoints={inactivityDataPoints} client:only="svelte" />
+	</p>
 </StarlightPage>

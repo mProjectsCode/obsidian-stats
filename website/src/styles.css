@@ -33,6 +33,10 @@ a.right-sidebar-link {
 	line-height: 1.25;
 }
 
+a.right-sidebar-link:hover {
+	color: var(--sl-color-white);
+}
+
 @media (min-width: 72rem) {
 	.only-show-small {
 		display: none;
@@ -158,7 +162,6 @@ aside.starlight-aside {
 
 .timeline-element > .timeline-element-heading {
 	font-size: var(--sl-text-base);
-
 }
 
 .timeline-element {
@@ -179,4 +182,12 @@ aside.starlight-aside {
 
 .timeline-element > p {
 	margin-top: 0.5rem !important;
+}
+
+.no-overflow-clip > div > svg {
+	overflow: visible;
+}
+
+.high-z-index {
+	z-index: 1000;
 }

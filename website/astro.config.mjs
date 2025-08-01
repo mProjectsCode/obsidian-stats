@@ -13,9 +13,7 @@ export default defineConfig({
 				light: './src/assets/logo_complex_light.svg',
 				dark: './src/assets/logo_complex_dark.svg',
 			},
-			social: [
-				{ icon: 'github', label: 'github', href: 'https://github.com/mProjectsCode/obsidian-stats'},
-			],
+			social: [{ icon: 'github', label: 'github', href: 'https://github.com/mProjectsCode/obsidian-stats' }],
 			components: {
 				TableOfContents: './src/components/TableOfContents.astro',
 				SocialIcons: './src/components/SocialIcons.astro',
@@ -38,7 +36,7 @@ export default defineConfig({
 							label: 'Hall of Fame',
 							link: '/pluginstats/hall-of-fame',
 						},
-						
+
 						{
 							label: 'Milestones',
 							link: '/pluginstats/milestones',
@@ -80,9 +78,20 @@ export default defineConfig({
 				},
 				{
 					label: 'Release Stats',
-					autogenerate: {
-						directory: 'releasestats',
-					},
+					items: [
+						{
+							label: 'Overview',
+							link: '/releasestats/overview',
+						},
+						{
+							label: 'Downloads',
+							link: '/releasestats/downloads',
+						},
+						{
+							label: 'Assets',
+							link: '/releasestats/assets',
+						},
+					],
 				},
 			],
 			customCss: ['./src/styles.css'],

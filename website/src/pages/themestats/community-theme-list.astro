@@ -1,32 +1,17 @@
 ---
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
-import { getThemeData } from '../../../../src/utils';
-import {
-	getThemeAddedRecentList,
-	getThemeCountAddedMonthly,
-	getThemeCountMonthly,
-	getThemeCountRemovedMonthly,
-	getThemeCountWoRetiredMonthly,
-	getThemePercentageRemovedByReleaseMonth,
-	getThemeRemovedRecentList,
-} from '../../../../src/theme/data';
-import DataPerMonthChart from '../../components/svelte/genericCharts/dataPerMonthChart.svelte';
-import ThemeLink from '../../components/themeLink.astro';
-import Commit from '../../components/commit.astro';
+import { getThemeDataArray } from '../../utils/data';
+import CountChart from '../../components/svelte/charts/count/CountChart.svelte';
+import CountNewChart from '../../components/svelte/charts/count/CountNewChart.svelte';
+import CountRemovedChart from '../../components/svelte/charts/count/CountRemovedChart.svelte';
+import RemovedByReleaseChart from '../../components/svelte/charts/count/RemovedByReleaseChart.svelte';
+import { ItemType } from '../../utils/misc';
 
-const themeData = getThemeData();
+const data = await getThemeDataArray();
+const view = data.view();
 
-const themeCountAddedMonthly = getThemeCountAddedMonthly(themeData);
-
-const themeCountRemovedMonthly = getThemeCountRemovedMonthly(themeData);
-
-const themePercentageRemovedByReleaseMonth = getThemePercentageRemovedByReleaseMonth(themeData);
-
-const themeRemovedRecentList = getThemeRemovedRecentList(themeData);
-const themeAddedRecentList = getThemeAddedRecentList(themeData);
-
-const themeCountMonthly = getThemeCountMonthly(themeData);
-const themeCountWoRetiredMonthly = getThemeCountWoRetiredMonthly(themeData);
+const countDataPoints = view.monthly_count(data);
+const retiredByMonthDataPoints = view.removed_by_release_month(data);
 ---
 
 <StarlightPage
@@ -47,73 +32,29 @@ const themeCountWoRetiredMonthly = getThemeCountWoRetiredMonthly(themeData);
 
 	<h2 id="theme-count">Theme Count</h2>
 
-	<DataPerMonthChart dataPoints={themeCountWoRetiredMonthly} title="Total Theme Count" type="line" client:only="svelte" />
-	
-	<DataPerMonthChart dataPoints={themeCountMonthly} title="Total Theme Count with Retired Themes" type="line" client:only="svelte" />
+	<p>The following chart shows the total number of themes available in the community theme list.</p>
+
+	<p><CountChart dataPoints={countDataPoints} type={ItemType.Theme} client:only="svelte" /></p>
 
 	<h2 id="new-themes">New Themes</h2>
 
-	<p>This shows how many new themes have been added to the community theme list each month.</p>
+	<p>
+		This shows how many new themes have been added to the community theme list each month. The dashed gray line is the raw data and the blue line has been
+		smoothed.
+	</p>
 
-	<DataPerMonthChart dataPoints={themeCountAddedMonthly} title="New Themes per Month" client:only="svelte" />
-
-	<p>This is a list of the most recently added themes.</p>
-
-	<table>
-		<thead>
-			<tr>
-				<th>Theme</th>
-				<th>Release Date</th>
-			</tr>
-		</thead>
-		<tbody>
-			{
-				themeAddedRecentList.map(x => (
-					<tr>
-						<td>
-							<ThemeLink id={x.id} name={x.name} />
-						</td>
-						<td>
-							<Commit commit={x.addedCommit} />
-						</td>
-					</tr>
-				))
-			}
-		</tbody>
-	</table>
+	<p><CountNewChart dataPoints={countDataPoints} type={ItemType.Theme} client:only="svelte" /></p>
 
 	<h2 id="removed-themes">Removed Themes</h2>
 
-	<p>This shows how many themes have been removed from the community theme list each month.</p>
+	<p>
+		This shows how many themes have been removed from the community theme list each month. The dashed gray line is the raw data and the blue line has been
+		smoothed.
+	</p>
 
-	<DataPerMonthChart dataPoints={themeCountRemovedMonthly} title="Total Retired Theme Count" type="line" client:only="svelte" />
+	<p><CountRemovedChart dataPoints={countDataPoints} type={ItemType.Theme} client:only="svelte" /></p>
 
 	<p>This shows what percentage of themes, sorted by their release month, have been removed from the community theme list.</p>
 
-	<DataPerMonthChart dataPoints={themePercentageRemovedByReleaseMonth} max={100} title="Percentage of Retired Themes by Release Month" client:only="svelte" />
-
-	<p>This is a list of the most recently removed themes.</p>
-
-	<table>
-		<thead>
-			<tr>
-				<th>Theme</th>
-				<th>Removed Date</th>
-			</tr>
-		</thead>
-		<tbody>
-			{
-				themeRemovedRecentList.map(x => (
-					<tr>
-						<td>
-							<ThemeLink id={x.id} name={x.name} />
-						</td>
-						<td>
-							<Commit commit={x.removedCommit} />
-						</td>
-					</tr>
-				))
-			}
-		</tbody>
-	</table>
+	<p><RemovedByReleaseChart dataPoints={retiredByMonthDataPoints} type={ItemType.Theme} client:only="svelte" /></p>
 </StarlightPage>
