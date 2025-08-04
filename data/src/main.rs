@@ -15,9 +15,12 @@ pub mod release;
 pub mod theme;
 
 fn main() {
+    println!("Building theme data...");
+
     build_theme_stats().expect("Failed to build theme stats");
 
     println!();
+    println!("Building plugin data...");
 
     build_plugin_stats().expect("Failed to build plugin stats");
 
@@ -31,11 +34,15 @@ fn main() {
 
     extract_extra_data().expect("Failed to extract repository data");
 
+    println!();
+    println!("Extracting licenses data...");
+
     process_licenses();
 
     println!();
+    println!("Building release data...");
 
-    // build_release_stats().expect("Failed to build release stats");
+    build_release_stats().expect("Failed to build release stats");
 
     println!();
     println!("Done!");
