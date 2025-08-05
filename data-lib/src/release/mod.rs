@@ -113,11 +113,18 @@ pub fn get_asset_release_file_type(file_name: &str) -> Option<String> {
     }
 }
 
-pub fn get_asset_cpu_instruction_set(file_name: &str) -> Option<&'static str> {
-    if file_name.ends_with(".dmg") {
-        Some("both (.dmg)")
-    } else if file_name.contains("arm64") {
-        Some("arm64")
+pub fn get_asset_cpu_instruction_set(
+    release_info: &GithubReleaseInfo,
+    asset: &GithubAssetInfo,
+) -> Option<&'static str> {
+    let is_dmg = asset.name.ends_with(".dmg");
+    let is_combined_exe =
+        asset.name.ends_with(".exe") && release_info.version >= Version::new(1, 6, 0, None);
+
+    if is_dmg || is_combined_exe {
+        Some("Both")
+    } else if asset.name.contains("arm64") {
+        Some("ARM")
     } else {
         Some("x86")
     }

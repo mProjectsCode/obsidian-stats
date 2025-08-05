@@ -209,12 +209,12 @@ impl ReleaseDataArray {
 
         self.raw_data
             .iter()
-            .flat_map(|release| release.assets.iter())
-            .group_by(|asset| get_asset_cpu_instruction_set(&asset.name))
+            .flat_map(|release| release.assets.iter().map(move |asset| (release, asset)))
+            .group_by(|(release, asset)| get_asset_cpu_instruction_set(release, asset))
             .map(|(instruction_set, assets)| {
                 let downloads: u64 = assets
                     .iter()
-                    .map(|asset| *asset.downloads.values().max().unwrap_or(&0) as u64)
+                    .map(|(_, asset)| *asset.downloads.values().max().unwrap_or(&0) as u64)
                     .sum();
 
                 StackedNamedDataPoint {
