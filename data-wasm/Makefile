@@ -1,3 +1,5 @@
+.PHONY: all clean format lint build
+
 default: build
 
 build:
