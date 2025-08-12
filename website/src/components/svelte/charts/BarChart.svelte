@@ -1,6 +1,7 @@
 <script lang="ts">
-	import { BarY, Dot, Line, Plot, Text } from 'svelteplot';
+	import { BarY, Plot, Text } from 'svelteplot';
 	import type { NamedDataPoint } from '../../../../../data-wasm/pkg/data_wasm';
+	import ChartWrapper from '../ChartWrapper.svelte';
 
 	interface Props {
 		dataPoints: NamedDataPoint[];
@@ -26,22 +27,24 @@
 	}
 </script>
 
-<Plot
-	grid
-	x={{ type: 'band', label: `${xLabel} →`, tickRotate: skewLabels ? 45 : 0 }}
-	y={{ label: `↑ ${yLabel}`, domain: yDomain, tickFormat: percentages ? d => `${String(d)}%` : d => String(d) }}
-	class="no-overflow-clip"
->
-	<BarY data={mappedDataPoints} x="label" y="value" fill="var(--sl-color-text-accent)" sort={sortData} />
-	{#if !hideBarValues}
-		<Text
-			data={mappedDataPoints}
-			x="label"
-			y="value"
-			fill="var(--sl-color-text-foreground)"
-			text={d => (percentages ? `${d.value.toFixed(1)}%` : d.value.toFixed(1))}
-			lineAnchor="bottom"
-			dy={-2}
-		/>
-	{/if}
-</Plot>
+<ChartWrapper>
+	<Plot
+		grid
+		x={{ type: 'band', label: `${xLabel} →`, tickRotate: skewLabels ? 45 : 0 }}
+		y={{ label: `↑ ${yLabel}`, domain: yDomain, tickFormat: percentages ? d => `${String(d)}%` : d => String(d) }}
+		class="no-overflow-clip"
+	>
+		<BarY data={mappedDataPoints} x="label" y="value" fill="var(--sl-color-text-accent)" sort={sortData} />
+		{#if !hideBarValues}
+			<Text
+				data={mappedDataPoints}
+				x="label"
+				y="value"
+				fill="var(--sl-color-text-foreground)"
+				text={d => (percentages ? `${d.value.toFixed(1)}%` : d.value.toFixed(1))}
+				lineAnchor="bottom"
+				dy={-2}
+			/>
+		{/if}
+	</Plot>
+</ChartWrapper>

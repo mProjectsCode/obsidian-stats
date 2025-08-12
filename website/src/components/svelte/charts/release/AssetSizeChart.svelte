@@ -1,6 +1,7 @@
 <script lang="ts">
-	import { BarY, Dot, Line, Plot, Pointer, Text } from 'svelteplot';
+	import { Dot, Plot, Pointer, Text } from 'svelteplot';
 	import type { StackedNamedDataPoint } from '../../../../../../data-wasm/pkg/data_wasm';
+	import ChartWrapper from '../../ChartWrapper.svelte';
 
 	interface Props {
 		dataPoints: StackedNamedDataPoint[];
@@ -22,18 +23,20 @@
 	}
 </script>
 
-<Plot
-	grid
-	color={{ legend: true, scheme: 'tableau10' }}
-	x={{ type: 'band', label: `Version Number →`, tickRotate: 45 }}
-	y={{ label: `↑ Asset Size`, tickFormat: formatSize }}
-	class="no-overflow-clip"
->
-	<Dot data={mappedDataPoints} x="label" y="value" stroke="stack" sort="index" />
-	<Pointer data={mappedDataPoints} x="label" z="stack" maxDistance={2}>
-		{#snippet children({ data })}
-			<Text {data} fill="stack" x="label" y="value" text={d => formatSize(d.value)} lineAnchor="bottom" dy={-7} />
-			<Dot {data} x="label" y="value" fill="stack" />
-		{/snippet}
-	</Pointer>
-</Plot>
+<ChartWrapper>
+	<Plot
+		grid
+		color={{ legend: true, scheme: 'tableau10' }}
+		x={{ type: 'band', label: `Version Number →`, tickRotate: 45 }}
+		y={{ label: `↑ Asset Size`, tickFormat: formatSize }}
+		class="no-overflow-clip"
+	>
+		<Dot data={mappedDataPoints} x="label" y="value" stroke="stack" sort="index" />
+		<Pointer data={mappedDataPoints} x="label" z="stack" maxDistance={2}>
+			{#snippet children({ data })}
+				<Text {data} fill="stack" x="label" y="value" text={d => formatSize(d.value)} lineAnchor="bottom" dy={-7} />
+				<Dot {data} x="label" y="value" fill="stack" />
+			{/snippet}
+		</Pointer>
+	</Plot>
+</ChartWrapper>

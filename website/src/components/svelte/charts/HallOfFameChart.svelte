@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Line, Plot, Pointer, Text, Dot } from 'svelteplot';
 	import type { DownloadDataPoint, HallOfFameDataPoint } from '../../../../../data-wasm/pkg/data_wasm';
+	import ChartWrapper from '../ChartWrapper.svelte';
 
 	interface Props {
 		data: HallOfFameDataPoint[];
@@ -26,12 +27,14 @@
 	}
 </script>
 
-<Plot grid color={{ legend: true, scheme: 'tableau10' }} class="no-overflow-clip">
-	<Line data={mappedData} x="date" y="downloads" stroke="id" marker={showDots ? 'dot' : undefined} />
-	<Pointer data={mappedData} x="date" z="id" maxDistance={30}>
-		{#snippet children({ data })}
-			<Text {data} fill="id" x="date" y="downloads" text={d => d.downloads.toFixed()} lineAnchor="bottom" dy={-7} />
-			<Dot {data} x="date" y="downloads" fill="id" />
-		{/snippet}
-	</Pointer>
-</Plot>
+<ChartWrapper>
+	<Plot grid color={{ legend: true, scheme: 'tableau10' }} class="no-overflow-clip">
+		<Line data={mappedData} x="date" y="downloads" stroke="id" marker={showDots ? 'dot' : undefined} />
+		<Pointer data={mappedData} x="date" z="id" maxDistance={30}>
+			{#snippet children({ data })}
+				<Text {data} fill="id" x="date" y="downloads" text={d => d.downloads.toFixed()} lineAnchor="bottom" dy={-7} />
+				<Dot {data} x="date" y="downloads" fill="id" />
+			{/snippet}
+		</Pointer>
+	</Plot>
+</ChartWrapper>

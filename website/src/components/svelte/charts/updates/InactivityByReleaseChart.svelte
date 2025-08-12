@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { BarY, Plot } from 'svelteplot';
 	import type { InactivityByReleaseDataPoint } from '../../../../../../data-wasm/pkg/data_wasm';
+	import ChartWrapper from '../../ChartWrapper.svelte';
 
 	interface Props {
 		dataPoints: InactivityByReleaseDataPoint[];
@@ -41,12 +42,14 @@
 		.flat();
 </script>
 
-<Plot
-	grid
-	x={{ type: 'band', label: 'Release Date →', tickRotate: 45 }}
-	y={{ label: '↑ Plugin Percentage', domain: [0, 100], tickFormat: d => `${String(d)}%` }}
-	color={{ legend: true, scheme: 'tableau10' }}
-	class="no-overflow-clip"
->
-	<BarY data={mappedDataPoints} x="date" y="count" fill="type" />
-</Plot>
+<ChartWrapper>
+	<Plot
+		grid
+		x={{ type: 'band', label: 'Release Date →', tickRotate: 45 }}
+		y={{ label: '↑ Plugin Percentage', domain: [0, 100], tickFormat: d => `${String(d)}%` }}
+		color={{ legend: true, scheme: 'tableau10' }}
+		class="no-overflow-clip"
+	>
+		<BarY data={mappedDataPoints} x="date" y="count" fill="type" />
+	</Plot>
+</ChartWrapper>

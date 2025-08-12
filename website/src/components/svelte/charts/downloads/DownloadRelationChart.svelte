@@ -1,6 +1,7 @@
 <script lang="ts">
-	import { Dot, Plot, RegressionY } from 'svelteplot';
+	import { Dot, Plot } from 'svelteplot';
 	import type { IndividualDownloadDataPoint } from '../../../../../../data-wasm/pkg/data_wasm';
+	import ChartWrapper from '../../ChartWrapper.svelte';
 
 	interface Props {
 		dataPoints: IndividualDownloadDataPoint[];
@@ -20,10 +21,14 @@
 		});
 </script>
 
-<Plot grid x={{ label: 'Releases →', type: 'log' }} y={{ label: '↑ Downloads', type: 'log', domain: [1, 10_000_000] }}>
-	<Dot data={mappedData} x="version_count" y="downloads" opacity={0.3} stroke="var(--sl-color-text-accent)" />
-</Plot>
+<ChartWrapper>
+	<Plot grid x={{ label: 'Releases →', type: 'log' }} y={{ label: '↑ Downloads', type: 'log', domain: [1, 10_000_000] }}>
+		<Dot data={mappedData} x="version_count" y="downloads" opacity={0.3} stroke="var(--sl-color-text-accent)" />
+	</Plot>
+</ChartWrapper>
 
-<Plot grid x={{ label: 'Release Date →' }} y={{ label: '↑ Downloads', type: 'log', domain: [1, 10_000_000] }}>
-	<Dot data={mappedData} x="date" y="downloads" opacity={0.3} stroke="var(--sl-color-text-accent)" />
-</Plot>
+<ChartWrapper>
+	<Plot grid x={{ label: 'Release Date →' }} y={{ label: '↑ Downloads', type: 'log', domain: [1, 10_000_000] }}>
+		<Dot data={mappedData} x="date" y="downloads" opacity={0.3} stroke="var(--sl-color-text-accent)" />
+	</Plot>
+</ChartWrapper>

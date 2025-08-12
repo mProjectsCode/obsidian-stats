@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import { Line, Plot } from 'svelteplot';
+	import ChartWrapper from '../../ChartWrapper.svelte';
 
 	interface Props {
 		dataPoints: number[];
@@ -31,11 +31,13 @@
 	}
 </script>
 
-<Plot
-	grid
-	x={{ label: 'Inactivity Rank →', type: 'linear' }}
-	y={{ label: '↑ Years of Inactivity', tickFormat: formatTick, ticks: ticks }}
-	class="no-overflow-clip"
->
-	<Line data={mappedDataPoints} x="index" y="inactivity" stroke="var(--sl-color-text-accent)" />
-</Plot>
+<ChartWrapper>
+	<Plot
+		grid
+		x={{ label: 'Inactivity Rank →', type: 'linear' }}
+		y={{ label: '↑ Years of Inactivity', tickFormat: formatTick, ticks: ticks }}
+		class="no-overflow-clip"
+	>
+		<Line data={mappedDataPoints} x="index" y="inactivity" stroke="var(--sl-color-text-accent)" />
+	</Plot>
+</ChartWrapper>

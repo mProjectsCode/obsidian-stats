@@ -397,7 +397,7 @@ function getAsideVariant(warning: PluginWarning): 'note' | 'tip' | 'caution' | '
 		of new downloads per week. New version releases are marked with vertical lines.
 	</p>
 
-	<p><DownloadChart dataPoints={pluginDownloadData} versions={versions} client:only="svelte" /></p>
+	<DownloadChart dataPoints={pluginDownloadData} versions={versions} client:visible />
 
 	<h2 id="version-history">Version History</h2>
 

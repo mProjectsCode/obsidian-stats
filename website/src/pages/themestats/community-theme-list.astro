@@ -34,7 +34,7 @@ const retiredByMonthDataPoints = view.removed_by_release_month(data);
 
 	<p>The following chart shows the total number of themes available in the community theme list.</p>
 
-	<p><CountChart dataPoints={countDataPoints} type={ItemType.Theme} client:only="svelte" /></p>
+	<CountChart dataPoints={countDataPoints} type={ItemType.Theme} client:visible />
 
 	<h2 id="new-themes">New Themes</h2>
 
@@ -43,7 +43,7 @@ const retiredByMonthDataPoints = view.removed_by_release_month(data);
 		smoothed.
 	</p>
 
-	<p><CountNewChart dataPoints={countDataPoints} type={ItemType.Theme} client:only="svelte" /></p>
+	<CountNewChart dataPoints={countDataPoints} type={ItemType.Theme} client:visible />
 
 	<h2 id="removed-themes">Removed Themes</h2>
 
@@ -52,9 +52,9 @@ const retiredByMonthDataPoints = view.removed_by_release_month(data);
 		smoothed.
 	</p>
 
-	<p><CountRemovedChart dataPoints={countDataPoints} type={ItemType.Theme} client:only="svelte" /></p>
+	<CountRemovedChart dataPoints={countDataPoints} type={ItemType.Theme} client:visible />
 
 	<p>This shows what percentage of themes, sorted by their release month, have been removed from the community theme list.</p>
 
-	<p><RemovedByReleaseChart dataPoints={retiredByMonthDataPoints} type={ItemType.Theme} client:only="svelte" /></p>
+	<RemovedByReleaseChart dataPoints={retiredByMonthDataPoints} type={ItemType.Theme} client:visible />
 </StarlightPage>

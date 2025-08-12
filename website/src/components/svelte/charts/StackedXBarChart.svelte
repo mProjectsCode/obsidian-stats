@@ -1,6 +1,7 @@
 <script lang="ts">
-	import { BarX, BarY, Plot, HTMLTooltip } from 'svelteplot';
+	import { BarX, Plot } from 'svelteplot';
 	import type { StackedNamedDataPoint } from '../../../../../data-wasm/pkg/data_wasm';
+	import ChartWrapper from '../ChartWrapper.svelte';
 
 	interface Props {
 		dataPoints: StackedNamedDataPoint[];
@@ -21,12 +22,14 @@
 	});
 </script>
 
-<Plot
-	grid
-	color={{ legend: true, scheme: 'tableau10' }}
-	x={{ label: '', domain: yDomain, tickFormat: percentages ? d => `${String(d)}%` : d => String(d) }}
-	y={{ type: 'band', label: '', tickRotate: skewLabels ? 45 : 0 }}
-	class="no-overflow-clip"
->
-	<BarX data={mappedDataPoints} x="value" y="label" fill="stack" sort={{ channel: 'index' }} />
-</Plot>
+<ChartWrapper>
+	<Plot
+		grid
+		color={{ legend: true, scheme: 'tableau10' }}
+		x={{ label: '', domain: yDomain, tickFormat: percentages ? d => `${String(d)}%` : d => String(d) }}
+		y={{ type: 'band', label: '', tickRotate: skewLabels ? 45 : 0 }}
+		class="no-overflow-clip"
+	>
+		<BarX data={mappedDataPoints} x="value" y="label" fill="stack" sort={{ channel: 'index' }} />
+	</Plot>
+</ChartWrapper>

@@ -1,6 +1,7 @@
 <script lang="ts">
-	import { Dot, Line, Plot, RegressionY } from 'svelteplot';
+	import { Line, Plot, RegressionY } from 'svelteplot';
 	import type { IndividualDownloadDataPoint } from '../../../../../../data-wasm/pkg/data_wasm';
+	import ChartWrapper from '../../ChartWrapper.svelte';
 
 	interface Props {
 		dataPoints: IndividualDownloadDataPoint[];
@@ -20,6 +21,8 @@
 		});
 </script>
 
-<Plot grid x={{ label: 'Rank →', type: 'linear' }} y={{ label: '↑ Downloads', type: 'log', domain: [1, 10_000_000] }}>
-	<Line data={mappedData} x="rank" y="downloads" stroke="var(--sl-color-text-accent)" />
-</Plot>
+<ChartWrapper>
+	<Plot grid x={{ label: 'Rank →', type: 'linear' }} y={{ label: '↑ Downloads', type: 'log', domain: [1, 10_000_000] }}>
+		<Line data={mappedData} x="rank" y="downloads" stroke="var(--sl-color-text-accent)" />
+	</Plot>
+</ChartWrapper>

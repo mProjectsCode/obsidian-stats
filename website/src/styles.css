@@ -191,3 +191,30 @@ aside.starlight-aside {
 .high-z-index {
 	z-index: 1000;
 }
+
+@keyframes spinner {
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+.chart-placeholder {
+	width: 100%;
+	aspect-ratio: 16 / 9;
+	position: relative;
+}
+
+.chart-placeholder::before {
+	content: '';
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 24px;
+	height: 24px;
+	margin-top: -12px;
+	margin-left: -12px;
+	border-radius: 50%;
+	border: 2px solid var(--sl-color-bg-accent);
+	border-top-color: transparent;
+	animation: spinner 600ms linear infinite;
+}

@@ -20,13 +20,9 @@ const individualDownloadDataPoints = view.individual_download_data(data);
 	}}
 	headings={[{ depth: 2, text: 'Plugin Downloads Correlations', slug: 'plugin-downloads-correlations' }]}
 >
-	<p>
-		The first graph depicts the total number of plugin downloads over time. The second graph shows the number of new plugin downloads per week. The data was
-		aggregated over all plugins that were available at the respective time. Bigger drops in the graph can be explained by plugins being removed from the
-		community list.
-	</p>
+	<p>The first graph depicts the total number of plugin downloads over time. The second graph shows the number of new plugin downloads per week.</p>
 
-	<DownloadChart dataPoints={downloadDataPoints} client:only="svelte" />
+	<DownloadChart dataPoints={downloadDataPoints} client:visible />
 
 	<h2 id="plugin-downloads-correlations">Plugin Downloads Correlations</h2>
 
@@ -35,19 +31,19 @@ const individualDownloadDataPoints = view.individual_download_data(data);
 		more releases. The second figure shows the correlation between the number of downloads and the initial release time.
 	</p>
 
-	<DownloadRelationChart dataPoints={individualDownloadDataPoints} client:only="svelte" />
+	<DownloadRelationChart dataPoints={individualDownloadDataPoints} client:visible />
 
 	<p>
 		The chart below shows the correlation between the name of the plugin and the number of downloads. The regression line is calculated using the Simple Linear
 		Regression algorithm. It is evident that there is a slight correlation between the placement of the plugin in the alphabet and the number of downloads.
 	</p>
 
-	<DownloadNameChart dataPoints={individualDownloadDataPoints} client:only="svelte" />
+	<DownloadNameChart dataPoints={individualDownloadDataPoints} client:visible />
 
 	<p>
 		This chart shows the overall distribution of downloads, it is clear that the majority of plugins have a low number of downloads, with a few plugins having a
 		very high number of downloads.
 	</p>
 
-	<DownloadDistributionChart dataPoints={individualDownloadDataPoints} client:only="svelte" />
+	<DownloadDistributionChart dataPoints={individualDownloadDataPoints} client:visible />
 </StarlightPage>
