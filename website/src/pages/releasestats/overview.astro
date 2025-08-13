@@ -54,7 +54,7 @@ const changelogCategories = dataArray.get_changelog_categories();
 		grouped by category. This statistic is determined by simply counting the number of items in the changelog.
 	</p>
 
-	<ChangelogChart dataPoints={changelogChangesDataPoints} client:visible />
+	<ChangelogChart dataPoints={changelogChangesDataPoints} client:idle />
 
 	<p>
 		The following table shows the sum of changes made in each minor release, grouped by category. Note that the number of changes in this table can be inflated,

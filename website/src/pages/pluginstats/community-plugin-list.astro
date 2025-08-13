@@ -37,7 +37,7 @@ const retiredByMonthDataPoints = view.removed_by_release_month(data);
 		available.
 	</p>
 
-	<CountChart dataPoints={countDataPoints} type={ItemType.Plugin} client:visible />
+	<CountChart dataPoints={countDataPoints} type={ItemType.Plugin} client:idle />
 
 	<h2 id="new-plugins">New Plugins</h2>
 
@@ -46,7 +46,7 @@ const retiredByMonthDataPoints = view.removed_by_release_month(data);
 		smoothed.
 	</p>
 
-	<CountNewChart dataPoints={countDataPoints} type={ItemType.Plugin} client:visible />
+	<CountNewChart dataPoints={countDataPoints} type={ItemType.Plugin} client:idle />
 
 	<h2 id="removed-plugins">Removed Plugins</h2>
 
@@ -55,9 +55,9 @@ const retiredByMonthDataPoints = view.removed_by_release_month(data);
 		smoothed.
 	</p>
 
-	<CountRemovedChart dataPoints={countDataPoints} type={ItemType.Plugin} client:visible />
+	<CountRemovedChart dataPoints={countDataPoints} type={ItemType.Plugin} client:idle />
 
 	<p>This shows what percentage of plugins, sorted by their release month, have been removed from the community plugin list.</p>
 
-	<RemovedByReleaseChart dataPoints={retiredByMonthDataPoints} type={ItemType.Plugin} client:visible />
+	<RemovedByReleaseChart dataPoints={retiredByMonthDataPoints} type={ItemType.Plugin} client:idle />
 </StarlightPage>

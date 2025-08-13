@@ -397,7 +397,7 @@ function getAsideVariant(warning: PluginWarning): 'note' | 'tip' | 'caution' | '
 		of new downloads per week. New version releases are marked with vertical lines.
 	</p>
 
-	<DownloadChart dataPoints={pluginDownloadData} versions={versions} client:visible />
+	<DownloadChart dataPoints={pluginDownloadData} versions={versions} client:idle />
 
 	<h2 id="version-history">Version History</h2>
 

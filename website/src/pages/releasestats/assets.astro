@@ -25,7 +25,7 @@ const assetInstructionSet = dataArray.get_asset_instruction_set_percentages();
 		distribution of how many assets of each type are included in all releases. The third bar shows the distribution of the average sizes of each asset type.
 	</p>
 
-	<StackedXBarChart dataPoints={assetTypes} percentages client:visible />
+	<StackedXBarChart dataPoints={assetTypes} percentages client:idle />
 
 	<p>
 		The next graph shows the evolution of asset sizes over time. The data is split by asset type. Note that gaps may appear, as not every asset type is included
@@ -34,7 +34,7 @@ const assetInstructionSet = dataArray.get_asset_instruction_set_percentages();
 		> assets after version <code>1.6.0</code> are even larger, as they contain an x86, a 32 bit x86, and an ARM version of the app in a singe installer.
 	</p>
 
-	<AssetSizeChart dataPoints={assetSize} client:visible />
+	<AssetSizeChart dataPoints={assetSize} client:idle />
 
 	<p>
 		This graph shows the split between downloads of assets for different instruction sets. The instruction set is the type of CPU architecture that the asset is
@@ -44,5 +44,5 @@ const assetInstructionSet = dataArray.get_asset_instruction_set_percentages();
 		installers that include both x86 and ARM versions, and are thus labeled as "Both".
 	</p>
 
-	<StackedXBarChart dataPoints={assetInstructionSet} percentages client:visible />
+	<StackedXBarChart dataPoints={assetInstructionSet} percentages client:idle />
 </StarlightPage>

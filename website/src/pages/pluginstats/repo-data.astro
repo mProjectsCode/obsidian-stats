@@ -48,18 +48,18 @@ const desktopOnlyData = view.desktop_only_data(data);
 		data in their manifest.
 	</p>
 
-	<BarChart dataPoints={mismatchedData} xLabel="Mismatched Data" yLabel="Percent of Plugins" yDomain={[0, 100]} percentages client:visible />
+	<BarChart dataPoints={mismatchedData} xLabel="Mismatched Data" yLabel="Percent of Plugins" yDomain={[0, 100]} percentages client:idle />
 
 	<p>
 		Some fields in the manifest are optional, such as <code>authorUrl</code> and <code>fundingUrl</code>. Additionally, some plugin authors add extra,
 		non-standard fields to the manifest, such as <code>helpUrl</code>. The following chart shows the percentage of plugins that have these fields set.
 	</p>
 
-	<BarChart dataPoints={optionalManifestFields} xLabel="Optional Manifest Fields" yLabel="Percent of Plugins" yDomain={[0, 100]} percentages client:visible />
+	<BarChart dataPoints={optionalManifestFields} xLabel="Optional Manifest Fields" yLabel="Percent of Plugins" yDomain={[0, 100]} percentages client:idle />
 
 	<p>Plugins can specify that they only work on the desktop version of Obsidian, which is useful for plugins that use features not available on mobile.</p>
 
-	<BarChart dataPoints={desktopOnlyData} xLabel="Desktop Only" yLabel="Percent of Plugins" yDomain={[0, 100]} percentages client:visible />
+	<BarChart dataPoints={desktopOnlyData} xLabel="Desktop Only" yLabel="Percent of Plugins" yDomain={[0, 100]} percentages client:idle />
 
 	<h2 id="dependencies">Dependencies</h2>
 
@@ -72,7 +72,7 @@ const desktopOnlyData = view.desktop_only_data(data);
 
 	<p>The below chart shows the distribution of package managers used in plugins.</p>
 
-	<BarChart dataPoints={dataPoints.package_managers} xLabel="Package Managers" yLabel="Percent of Plugins" yDomain={[0, 100]} percentages client:visible />
+	<BarChart dataPoints={dataPoints.package_managers} xLabel="Package Managers" yLabel="Percent of Plugins" yDomain={[0, 100]} percentages client:idle />
 
 	<p>
 		{dataPoints.no_package_managers.toFixed(1)}% of plugins have no lockfile.
@@ -87,7 +87,7 @@ const desktopOnlyData = view.desktop_only_data(data);
 		> file.
 	</p>
 
-	<BarChart dataPoints={dataPoints.bundlers} xLabel="Code Bundlers" yLabel="Percent of Plugins" yDomain={[0, 100]} percentages client:visible />
+	<BarChart dataPoints={dataPoints.bundlers} xLabel="Code Bundlers" yLabel="Percent of Plugins" yDomain={[0, 100]} percentages client:idle />
 
 	<p>
 		{dataPoints.no_bundlers.toFixed(1)}% of plugins use no code bundler.
@@ -97,7 +97,7 @@ const desktopOnlyData = view.desktop_only_data(data);
 
 	<p>Plugin developers like to use tooling to make their jobs easier. The chart below shows the usage percentage of common developer tooling.</p>
 
-	<BarChart dataPoints={toolingDataPoints} xLabel="Tooling Dependencies" yLabel="Percent of Plugins" yDomain={[0, 100]} percentages client:visible />
+	<BarChart dataPoints={toolingDataPoints} xLabel="Tooling Dependencies" yLabel="Percent of Plugins" yDomain={[0, 100]} percentages client:idle />
 
 	<h3 id="testing-framework-usage">Testing Framework Usage</h3>
 
@@ -108,7 +108,7 @@ const desktopOnlyData = view.desktop_only_data(data);
 		> file of the plugin.
 	</p>
 
-	<BarChart dataPoints={dataPoints.testing_frameworks} xLabel="Testing Frameworks" yLabel="Percent of Plugins" yDomain={[0, 100]} percentages client:visible />
+	<BarChart dataPoints={dataPoints.testing_frameworks} xLabel="Testing Frameworks" yLabel="Percent of Plugins" yDomain={[0, 100]} percentages client:idle />
 
 	<p>
 		{dataPoints.no_testing_frameworks.toFixed(1)}% of plugins use no testing framework.
@@ -121,7 +121,7 @@ const desktopOnlyData = view.desktop_only_data(data);
 		frameworks. The data is extracted from the <code>package.json</code> file of the plugin.
 	</p>
 
-	<BarChart dataPoints={frontEndFrameworksDataPoints} xLabel="Frontend Frameworks" yLabel="Percent of Plugins" yDomain={[0, 100]} percentages client:visible />
+	<BarChart dataPoints={frontEndFrameworksDataPoints} xLabel="Frontend Frameworks" yLabel="Percent of Plugins" yDomain={[0, 100]} percentages client:idle />
 
 	<h3 id="most-used-dependencies">Most Used Dependencies</h3>
 

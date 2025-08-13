@@ -46,7 +46,7 @@ const downloadDistributionDataPoints = individualDownloadDataPoints
 >
 	<p>The first graph depicts the total number of plugin downloads over time. The second graph shows the number of new plugin downloads per week.</p>
 
-	<DownloadChart dataPoints={downloadDataPoints} client:visible />
+	<DownloadChart dataPoints={downloadDataPoints} client:idle />
 
 	<h2 id="plugin-downloads-correlations">Plugin Downloads Correlations</h2>
 
@@ -55,19 +55,19 @@ const downloadDistributionDataPoints = individualDownloadDataPoints
 		more releases. The second figure shows the correlation between the number of downloads and the initial release time.
 	</p>
 
-	<DownloadRelationChart dataPoints={downloadRelationDataPoints} client:visible />
+	<DownloadRelationChart dataPoints={downloadRelationDataPoints} client:idle />
 
 	<p>
 		The chart below shows the correlation between the name of the plugin and the number of downloads. The regression line is calculated using the Simple Linear
 		Regression algorithm. It is evident that there is a slight correlation between the placement of the plugin in the alphabet and the number of downloads.
 	</p>
 
-	<DownloadNameChart dataPoints={downloadNameDataPoints} client:visible />
+	<DownloadNameChart dataPoints={downloadNameDataPoints} client:idle />
 
 	<p>
 		This chart shows the overall distribution of downloads, it is clear that the majority of plugins have a low number of downloads, with a few plugins having a
 		very high number of downloads.
 	</p>
 
-	<DownloadDistributionChart dataPoints={downloadDistributionDataPoints} client:visible />
+	<DownloadDistributionChart dataPoints={downloadDistributionDataPoints} client:idle />
 </StarlightPage>

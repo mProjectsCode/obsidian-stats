@@ -25,12 +25,12 @@ const inactivityDistributionDataPoints = Array.from(view.inactivity_distribution
 
 	<p>The following chart shows the overall distribution of plugin inactivity.</p>
 
-	<InactivityDistributionChart dataPoints={inactivityDistributionDataPoints} client:visible />
+	<InactivityDistributionChart dataPoints={inactivityDistributionDataPoints} client:idle />
 
 	<p>
 		The next chart shows years of inactivity grouped by the month in which the plugin was released. The negative space represents the percentage of plugins that
 		have been updated within the last year.
 	</p>
 
-	<InactivityByReleaseChart dataPoints={inactivityDataPoints} client:visible />
+	<InactivityByReleaseChart dataPoints={inactivityDataPoints} client:idle />
 </StarlightPage>

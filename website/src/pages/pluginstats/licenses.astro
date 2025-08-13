@@ -53,7 +53,7 @@ const licenseDataPoints = view.license_data_points(dataArray, licenseDataFile);
 		<code>Unrecognized</code> means that a license file was found, but the license could not be identified.
 	</p>
 
-	<BarChart dataPoints={licenseDataPoints.licenses} xLabel="License" yLabel="Number of Plugins" skewLabels hideBarValues client:visible />
+	<BarChart dataPoints={licenseDataPoints.licenses} xLabel="License" yLabel="Number of Plugins" skewLabels hideBarValues client:idle />
 
 	<p>Licenses that are used by more than 100 plugins are excluded from the chart below.</p>
 
@@ -63,7 +63,7 @@ const licenseDataPoints = view.license_data_points(dataArray, licenseDataFile);
 		yLabel="Number of Plugins"
 		skewLabels
 		hideBarValues
-		client:visible
+		client:idle
 	/>
 
 	<h2 id="license-terms">License Terms</h2>
@@ -74,7 +74,7 @@ const licenseDataPoints = view.license_data_points(dataArray, licenseDataFile);
 
 	<p>A number of plugins give the following permissions.</p>
 
-	<BarChart dataPoints={licenseDataPoints.permissions} xLabel="Permission" yLabel="Number of Plugins" skewLabels hideBarValues client:visible />
+	<BarChart dataPoints={licenseDataPoints.permissions} xLabel="Permission" yLabel="Number of Plugins" skewLabels hideBarValues client:idle />
 
 	{
 		licenseDataPoints.descriptions.permissions.map(x => (
@@ -88,7 +88,7 @@ const licenseDataPoints = view.license_data_points(dataArray, licenseDataFile);
 
 	<p>A number of plugins impose the following conditions.</p>
 
-	<BarChart dataPoints={licenseDataPoints.conditions} xLabel="Condition" yLabel="Number of Plugins" skewLabels hideBarValues client:visible />
+	<BarChart dataPoints={licenseDataPoints.conditions} xLabel="Condition" yLabel="Number of Plugins" skewLabels hideBarValues client:idle />
 
 	{
 		licenseDataPoints.descriptions.conditions.map(x => (
@@ -102,7 +102,7 @@ const licenseDataPoints = view.license_data_points(dataArray, licenseDataFile);
 
 	<p>A number of plugins impose the following limitations.</p>
 
-	<BarChart dataPoints={licenseDataPoints.limitations} xLabel="Limitation" yLabel="Number of Plugins" skewLabels hideBarValues client:visible />
+	<BarChart dataPoints={licenseDataPoints.limitations} xLabel="Limitation" yLabel="Number of Plugins" skewLabels hideBarValues client:idle />
 
 	{
 		licenseDataPoints.descriptions.limitations.map(x => (
