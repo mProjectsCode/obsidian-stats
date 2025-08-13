@@ -1,26 +1,19 @@
 <script lang="ts">
 	import { Dot, GridY, Plot, RegressionY } from 'svelteplot';
-	import type { IndividualDownloadDataPoint } from '../../../../../../data-wasm/pkg/data_wasm';
 	import ChartWrapper from '../../ChartWrapper.svelte';
 
 	interface Props {
-		dataPoints: IndividualDownloadDataPoint[];
+		dataPoints: number[];
 	}
 
 	const { dataPoints }: Props = $props();
 
-	const mappedData = dataPoints
-		.filter(x => x.downloads > 0 && x.version_count > 0)
-		.sort((a, b) => a.name.localeCompare(b.name))
-		.map((point, i) => {
-			return {
-				index: i,
-				id: point.id,
-				name: point.name,
-				downloads: point.downloads ?? null,
-				version_count: point.version_count ?? null,
-			};
-		});
+	const mappedData = dataPoints.map((downloads, index) => {
+		return {
+			index: index,
+			downloads: downloads,
+		};
+	});
 </script>
 
 <ChartWrapper>

@@ -11,6 +11,30 @@ const view = data.view();
 
 const downloadDataPoints = view.total_download_data(data);
 const individualDownloadDataPoints = view.individual_download_data(data);
+
+const downloadRelationDataPoints = individualDownloadDataPoints
+	.filter(x => x.downloads > 0 && x.version_count > 0)
+	.map(point => {
+		return {
+			date: new Date(point.date),
+			downloads: point.downloads,
+			version_count: point.version_count,
+		};
+	});
+
+const downloadNameDataPoints = individualDownloadDataPoints
+	.filter(x => x.downloads > 0 && x.version_count > 0)
+	.sort((a, b) => a.name.localeCompare(b.name))
+	.map(point => {
+		return point.downloads;
+	});
+
+const downloadDistributionDataPoints = individualDownloadDataPoints
+	.filter(x => x.downloads > 0 && x.version_count > 0)
+	.sort((a, b) => b.downloads - a.downloads)
+	.map(point => {
+		return point.downloads;
+	});
 ---
 
 <StarlightPage
@@ -31,19 +55,19 @@ const individualDownloadDataPoints = view.individual_download_data(data);
 		more releases. The second figure shows the correlation between the number of downloads and the initial release time.
 	</p>
 
-	<DownloadRelationChart dataPoints={individualDownloadDataPoints} client:visible />
+	<DownloadRelationChart dataPoints={downloadRelationDataPoints} client:visible />
 
 	<p>
 		The chart below shows the correlation between the name of the plugin and the number of downloads. The regression line is calculated using the Simple Linear
 		Regression algorithm. It is evident that there is a slight correlation between the placement of the plugin in the alphabet and the number of downloads.
 	</p>
 
-	<DownloadNameChart dataPoints={individualDownloadDataPoints} client:visible />
+	<DownloadNameChart dataPoints={downloadNameDataPoints} client:visible />
 
 	<p>
 		This chart shows the overall distribution of downloads, it is clear that the majority of plugins have a low number of downloads, with a few plugins having a
 		very high number of downloads.
 	</p>
 
-	<DownloadDistributionChart dataPoints={individualDownloadDataPoints} client:visible />
+	<DownloadDistributionChart dataPoints={downloadDistributionDataPoints} client:visible />
 </StarlightPage>
