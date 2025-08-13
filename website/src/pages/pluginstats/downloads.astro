@@ -36,17 +36,6 @@ const downloadDistributionDataPoints = individualDownloadDataPoints
 	.map(point => {
 		return point.downloads;
 	});
-
-const top_loc = individualDownloadDataPoints.filter(x => x.downloads > 0 && x.version_count > 0 && x.total_loc > 0).sort((a, b) => b.total_loc - a.total_loc);
-
-console.log(top_loc[0]);
-console.log(top_loc[1]);
-console.log(top_loc[2]);
-
-// bottom 3
-console.log(top_loc[top_loc.length - 1]);
-console.log(top_loc[top_loc.length - 2]);
-console.log(top_loc[top_loc.length - 3]);
 ---
 
 <StarlightPage

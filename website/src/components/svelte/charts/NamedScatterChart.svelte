@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { BarY, Dot, GridY, Plot } from 'svelteplot';
+	import { Dot, GridY, Plot } from 'svelteplot';
 	import type { NamedDataPoint } from '../../../../../data-wasm/pkg/data_wasm';
 	import ChartWrapper from '../ChartWrapper.svelte';
 
