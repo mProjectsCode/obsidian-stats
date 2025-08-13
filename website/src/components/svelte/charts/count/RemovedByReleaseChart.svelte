@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { BarY, Plot } from 'svelteplot';
+	import { BarY, GridY, Plot } from 'svelteplot';
 	import type { RemovedByReleaseDataPoint } from '../../../../../../data-wasm/pkg/data_wasm';
 	import { typeToString, type ItemType } from '../../../../utils/misc';
 	import ChartWrapper from '../../ChartWrapper.svelte';
@@ -21,11 +21,11 @@
 
 <ChartWrapper>
 	<Plot
-		grid
 		x={{ type: 'band', label: 'Release Date →', tickRotate: 45 }}
 		y={{ label: `↑ Percentage of Removed ${typeToString(type, true, true)}`, domain: [0, 100], tickFormat: d => `${String(d)}%` }}
 		class="no-overflow-clip"
 	>
+		<GridY />
 		<BarY data={mappedDataPoints} x="date" y="percentage" fill="var(--sl-color-text-accent)" />
 	</Plot>
 </ChartWrapper>

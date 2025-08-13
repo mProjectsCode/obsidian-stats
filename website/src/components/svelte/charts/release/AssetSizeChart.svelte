@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Dot, Plot, Pointer, Text } from 'svelteplot';
+	import { Dot, Plot, Pointer, Text, GridY } from 'svelteplot';
 	import type { StackedNamedDataPoint } from '../../../../../../data-wasm/pkg/data_wasm';
 	import ChartWrapper from '../../ChartWrapper.svelte';
 
@@ -25,12 +25,12 @@
 
 <ChartWrapper>
 	<Plot
-		grid
 		color={{ legend: true, scheme: 'tableau10' }}
 		x={{ type: 'band', label: `Version Number →`, tickRotate: 45 }}
 		y={{ label: `↑ Asset Size`, tickFormat: formatSize }}
 		class="no-overflow-clip"
 	>
+		<GridY />
 		<Dot data={mappedDataPoints} x="label" y="value" stroke="stack" sort="index" />
 		<Pointer data={mappedDataPoints} x="label" z="stack" maxDistance={2}>
 			{#snippet children({ data })}

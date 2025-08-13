@@ -1,11 +1,12 @@
 use std::ops::Index;
 
+use chumsky::container::Seq;
 use wasm_bindgen::prelude::wasm_bindgen;
 
 use crate::{
     common::{
         CountMonthlyDataPoint, DownloadDataPoint, HallOfFameDataPoint,
-        InactivityByReleaseDataPoint, IndividualDownloadDataPoint, OverviewDataPoint,
+        InactivityByReleaseDataPoint, IndividualDownloadDataPoint, LOC_EXCLUDED, OverviewDataPoint,
         RemovedByReleaseDataPoint, increment_named_data_points, to_percentage,
     },
     date::Date,
@@ -184,6 +185,13 @@ impl PluginDataArrayView {
                 let date = plugin_data.added_commit().date;
                 let downloads = plugin_data.download_count();
                 let version_count = plugin_data.data.version_history.len() as u32;
+                let total_loc = plugin_data.repo_data().map_or(0, |repo| {
+                    repo.lines_of_code
+                        .iter()
+                        .filter(|(lang, _)| !LOC_EXCLUDED.contains(&lang.as_str()))
+                        .map(|(_, loc)| loc)
+                        .sum()
+                }) as u32;
 
                 IndividualDownloadDataPoint {
                     id,
@@ -191,6 +199,7 @@ impl PluginDataArrayView {
                     date,
                     downloads,
                     version_count,
+                    total_loc,
                 }
             })
             .collect()
@@ -639,6 +648,46 @@ impl PluginDataArrayView {
         });
 
         points
+    }
+
+    pub fn lines_of_code_by_language(&self, data: &PluginDataArray) -> Vec<NamedDataPoint> {
+        let mut points = Vec::new();
+
+        self.data.iter().for_each(|&index| {
+            let plugin_data = &data[index];
+            let Some(repo_data) = plugin_data.repo_data() else {
+                return;
+            };
+
+            repo_data.lines_of_code.iter().for_each(|(lang, count)| {
+                increment_named_data_points(&mut points, lang, *count as f64);
+            });
+        });
+
+        points
+            .into_iter()
+            .filter(|point| point.value > 10_000.0 && !LOC_EXCLUDED.contains(&point.name.as_str()))
+            .collect()
+    }
+
+    pub fn lines_of_code_by_language_usage(&self, data: &PluginDataArray) -> Vec<NamedDataPoint> {
+        let mut points = Vec::new();
+
+        self.data.iter().for_each(|&index| {
+            let plugin_data = &data[index];
+            let Some(repo_data) = plugin_data.repo_data() else {
+                return;
+            };
+
+            repo_data.lines_of_code.iter().for_each(|(lang, _)| {
+                increment_named_data_points(&mut points, lang, 1.0);
+            });
+        });
+
+        points
+            .into_iter()
+            .filter(|point| !LOC_EXCLUDED.contains(&point.name.as_str()))
+            .collect()
     }
 }
 

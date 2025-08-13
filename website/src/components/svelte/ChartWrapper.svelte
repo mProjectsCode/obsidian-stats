@@ -5,5 +5,7 @@
 {#if import.meta.env.SSR}
 	<div class="chart-placeholder"></div>
 {:else}
-	{@render children?.()}
+	<div class="chart-wrapper">
+		{@render children?.()}
+	</div>
 {/if}

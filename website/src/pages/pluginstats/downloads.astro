@@ -19,6 +19,7 @@ const downloadRelationDataPoints = individualDownloadDataPoints
 			date: new Date(point.date),
 			downloads: point.downloads,
 			version_count: point.version_count,
+			total_loc: point.total_loc,
 		};
 	});
 
@@ -35,6 +36,17 @@ const downloadDistributionDataPoints = individualDownloadDataPoints
 	.map(point => {
 		return point.downloads;
 	});
+
+const top_loc = individualDownloadDataPoints.filter(x => x.downloads > 0 && x.version_count > 0 && x.total_loc > 0).sort((a, b) => b.total_loc - a.total_loc);
+
+console.log(top_loc[0]);
+console.log(top_loc[1]);
+console.log(top_loc[2]);
+
+// bottom 3
+console.log(top_loc[top_loc.length - 1]);
+console.log(top_loc[top_loc.length - 2]);
+console.log(top_loc[top_loc.length - 3]);
 ---
 
 <StarlightPage
@@ -52,7 +64,8 @@ const downloadDistributionDataPoints = individualDownloadDataPoints
 
 	<p>
 		The first figure shows the correlation between the number of downloads and the number of releases. This shows that plugins with more downloads tend to have
-		more releases. The second figure shows the correlation between the number of downloads and the initial release time.
+		more releases. The second figure depicts the correlation between downloads and total line of code. The third figure shows the correlation between the number
+		of downloads and the initial release time.
 	</p>
 
 	<DownloadRelationChart dataPoints={downloadRelationDataPoints} client:idle />

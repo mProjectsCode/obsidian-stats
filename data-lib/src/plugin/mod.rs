@@ -77,6 +77,7 @@ pub struct PluginRepoData {
     /// The license identifier from the LICENSE file in the repository.
     pub file_license: LicenseInfo,
     pub manifest: PluginManifest,
+    pub lines_of_code: HashMap<String, usize>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

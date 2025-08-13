@@ -8,6 +8,33 @@ use crate::{
     version::Version,
 };
 
+pub const LOC_EXCLUDED: [&'static str; 24] = [
+    "JSON",
+    "SVG",
+    "XML",
+    "YAML",
+    "AsciiDoc",
+    "BASH",
+    "Batch",
+    "Dockerfile",
+    "Edn",
+    "Fish",
+    "INI",
+    "Jsonnet",
+    "Makefile",
+    "Markdown",
+    "MSBuild",
+    "Nix",
+    "Org",
+    "Plain Text",
+    "PowerShell",
+    "ReStructuredText",
+    "Rakefile",
+    "Shell",
+    "TOML",
+    "TeX",
+];
+
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct EntryChange {
     pub property: String,
@@ -83,6 +110,7 @@ pub struct IndividualDownloadDataPoint {
     pub date: String,
     pub downloads: u32,
     pub version_count: u32,
+    pub total_loc: u32,
 }
 
 #[derive(Tsify, Debug, Clone, Serialize)]

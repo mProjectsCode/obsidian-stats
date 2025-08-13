@@ -1,6 +1,7 @@
 ---
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
 import BarChart from '../../components/svelte/charts/BarChart.svelte';
+import NamedScatterChart from '../../components/svelte/charts/NamedScatterChart.svelte';
 import { getPluginDataArray } from '../../utils/data';
 
 const frontendFrameworks = ['react', 'preact', 'svelte', 'vue', '@angular/core', 'solid-js'];
@@ -20,6 +21,9 @@ mostUsedDependencies.sort((a, b) => b.value - a.value);
 const mismatchedData = view.mismatched_data(data);
 const optionalManifestFields = view.optional_manifest_fields(data);
 const desktopOnlyData = view.desktop_only_data(data);
+
+const locByLanguages = view.lines_of_code_by_language(data);
+const locByUsage = view.lines_of_code_by_language_usage(data);
 ---
 
 <StarlightPage
@@ -29,6 +33,7 @@ const desktopOnlyData = view.desktop_only_data(data);
 	}}
 	headings={[
 		{ depth: 2, text: 'Manifest', slug: 'manifest' },
+		{ depth: 2, text: 'Programming Languages', slug: 'programming-languages' },
 		{ depth: 2, text: 'Dependencies', slug: 'dependencies' },
 		{ depth: 3, text: 'Package Manager Usage', slug: 'package-manager-usage' },
 		{ depth: 3, text: 'Code Bundler Usage', slug: 'code-bundler-usage' },
@@ -60,6 +65,18 @@ const desktopOnlyData = view.desktop_only_data(data);
 	<p>Plugins can specify that they only work on the desktop version of Obsidian, which is useful for plugins that use features not available on mobile.</p>
 
 	<BarChart dataPoints={desktopOnlyData} xLabel="Desktop Only" yLabel="Percent of Plugins" yDomain={[0, 100]} percentages client:idle />
+
+	<h2 id="programming-languages">Programming Languages</h2>
+
+	<p>
+		The below chart shows the lines of code per programming language, summed over all plugins. Only languages with more than 10,000 lines of code are shown.
+	</p>
+
+	<BarChart dataPoints={locByLanguages} xLabel="Language" yLabel="Lines of Code" skewLabels client:idle />
+
+	<p>The next chart shows the number of plugins that use a specific programming language, sorted by the number of plugins that use it.</p>
+
+	<BarChart dataPoints={locByUsage} xLabel="Language" yLabel="Plugins" skewLabels client:idle />
 
 	<h2 id="dependencies">Dependencies</h2>
 

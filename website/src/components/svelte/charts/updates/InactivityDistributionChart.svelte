@@ -10,7 +10,7 @@
 
 	const mappedDataPoints = dataPoints.map((inactivity, index) => ({
 		inactivity,
-		index,
+		index: index / (dataPoints.length - 1),
 	}));
 
 	const maxInactivity = mappedDataPoints[0]?.inactivity || 0;
@@ -34,7 +34,7 @@
 <ChartWrapper>
 	<Plot
 		grid
-		x={{ label: 'Inactivity Rank →', type: 'linear' }}
+		x={{ label: 'Distribution →', type: 'linear', percent: true }}
 		y={{ label: '↑ Years of Inactivity', tickFormat: formatTick, ticks: ticks }}
 		class="no-overflow-clip"
 	>

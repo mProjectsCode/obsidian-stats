@@ -3,6 +3,7 @@ import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
 import { Aside } from '@astrojs/starlight/components';
 import Commit from './Commit.astro';
 import DownloadChart from './svelte/charts/downloads/DownloadChart.svelte';
+import BarChart from './svelte/charts/BarChart.svelte';
 import { getPluginDataArray } from '../utils/data';
 import type { PluginWarning } from '../../../data-wasm/pkg/data_wasm';
 
@@ -60,6 +61,9 @@ function getAsideVariant(warning: PluginWarning): 'note' | 'tip' | 'caution' | '
 
 	return 'note';
 }
+
+const loc = plugin.loc();
+const totalLoc = loc?.reduce((acc, x) => acc + x.value, 0);
 ---
 
 <StarlightPage
@@ -72,6 +76,7 @@ function getAsideVariant(warning: PluginWarning): 'note' | 'tip' | 'caution' | '
 		{ depth: 2, text: 'Data', slug: 'data' },
 		{ depth: 3, text: 'Changes', slug: 'changes' },
 		{ depth: 3, text: 'Repository Data', slug: 'repository-data' },
+		{ depth: 3, text: 'Lines of Code', slug: 'loc' },
 		{ depth: 2, text: 'Downloads', slug: 'downloads' },
 		{ depth: 2, text: 'Version History', slug: 'version-history' },
 	]}
@@ -314,13 +319,13 @@ function getAsideVariant(warning: PluginWarning): 'note' | 'tip' | 'caution' | '
 						</tr>
 						<tr>
 							<td>Package Manager</td>
-							<td>{plugin.package_managers() ?? 'Unknown (no lock file found)'}</td>
+							<td>{plugin.package_managers_str() ?? <span class="muted">Unknown (no lock file found)</span>}</td>
 						</tr>
 						<tr>
 							<td>Uses Typescript</td>
 							<td>
 								{plugin.uses_typescript() ? (
-									'true'
+									'Yes'
 								) : (
 									<>
 										No <code>.ts</code> or <code>.tsx</code> files found
@@ -330,11 +335,11 @@ function getAsideVariant(warning: PluginWarning): 'note' | 'tip' | 'caution' | '
 						</tr>
 						<tr>
 							<td>Installed Bundlers</td>
-							<td>{plugin.bundlers() ? plugin.bundlers()!.join(', ') : 'None found'}</td>
+							<td>{plugin.bundlers_str() ?? <span class="muted">None found</span>}</td>
 						</tr>
 						<tr>
 							<td>Installed Testing Frameworks</td>
-							<td>{plugin.testing_frameworks() ? plugin.testing_frameworks()!.join(', ') : 'None found'}</td>
+							<td>{plugin.testing_frameworks_str() ?? <span class="muted">None found</span>}</td>
 						</tr>
 						<tr>
 							<td>Has Test Files</td>
@@ -348,11 +353,11 @@ function getAsideVariant(warning: PluginWarning): 'note' | 'tip' | 'caution' | '
 							<td>Dependencies</td>
 							<td>
 								{plugin.has_package_json() ? (
-									(plugin.dependencies()?.sort().join(', ') ?? '')
+									(plugin.dependencies_str() ?? <span class="muted">None</span>)
 								) : (
-									<>
+									<span class="muted">
 										No <code>package.json</code> found
-									</>
+									</span>
 								)}
 							</td>
 						</tr>
@@ -360,11 +365,11 @@ function getAsideVariant(warning: PluginWarning): 'note' | 'tip' | 'caution' | '
 							<td>Dev Dependencies</td>
 							<td>
 								{plugin.has_package_json() ? (
-									(plugin.dev_dependencies()?.sort().join(', ') ?? '')
+									(plugin.dev_dependencies_str() ?? <span class="muted">None</span>)
 								) : (
-									<>
+									<span class="muted">
 										No <code>package.json</code> found
-									</>
+									</span>
 								)}
 							</td>
 						</tr>
@@ -389,6 +394,22 @@ function getAsideVariant(warning: PluginWarning): 'note' | 'tip' | 'caution' | '
 			<p class="muted">No repository data available.</p>
 		)
 	}
+
+	<h3 id="loc">Lines of Code</h3>
+
+	{
+		loc && (
+			<>
+				<p>
+					The plugin has a total of <b>{totalLoc}</b> lines of code. The following chart shows the lines of code split by programming language.
+				</p>
+
+				<BarChart dataPoints={loc} xLabel="Language" yLabel="Lines of Code" skewLabels client:idle />
+			</>
+		)
+	}
+
+	{!loc && <p class="muted">No data available.</p>}
 
 	<h2 id="downloads">Downloads</h2>
 

@@ -124,11 +124,13 @@ pub fn extract_data_from_repo(
             .get("dependencies")
             .and_then(|d| d.as_object())
             .map_or_else(Vec::new, |deps| deps.keys().cloned().collect());
+        dependencies.sort();
 
         dev_dependencies = package_json
             .get("devDependencies")
             .and_then(|d| d.as_object())
             .map_or_else(Vec::new, |dev_deps| dev_deps.keys().cloned().collect());
+        dev_dependencies.sort();
 
         let all_dependencies = dependencies
             .iter()
@@ -165,6 +167,8 @@ pub fn extract_data_from_repo(
         })
         .into();
 
+    let lines_of_code = count_lines_of_code(&repo_path);
+
     Ok(PluginRepoData {
         uses_typescript,
         has_package_json,
@@ -179,6 +183,7 @@ pub fn extract_data_from_repo(
         package_json_license,
         file_license,
         manifest,
+        lines_of_code,
     })
 }
 
@@ -190,6 +195,25 @@ fn count_file_types(files: &[String]) -> HashMap<String, usize> {
         }
     }
     file_types
+}
+
+fn count_lines_of_code(repo_path: &str) -> HashMap<String, usize> {
+    let mut excluded = Vec::new();
+    excluded.push("node_modules");
+    PackageManager::iter_variants().for_each(|pm| {
+        excluded.extend(pm.get_lock_file_name());
+    });
+
+    let config = tokei::Config::default();
+    let mut languages = tokei::Languages::new();
+
+    languages.get_statistics(&[repo_path], &excluded, &config);
+
+    languages
+        .into_iter()
+        .map(|(lang, stats)| (lang.name().into(), stats.code))
+        .filter(|(_, count)| *count > 0)
+        .collect()
 }
 
 fn has_test_files(files: &[String]) -> bool {

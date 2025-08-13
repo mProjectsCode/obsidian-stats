@@ -2,7 +2,9 @@ use wasm_bindgen::prelude::wasm_bindgen;
 
 use crate::{
     commit::StringCommit,
-    common::{DownloadDataPoint, EntryChangeDataPoint, VersionDataPoint},
+    common::{
+        DownloadDataPoint, EntryChangeDataPoint, LOC_EXCLUDED, NamedDataPoint, VersionDataPoint,
+    },
     date::Date,
     plugin::{
         FundingUrl, LicenseInfo, PluginData, PluginExtraData, PluginRepoData,
@@ -208,6 +210,51 @@ impl FullPluginData {
         })
     }
 
+    pub fn package_managers_str(&self) -> Option<String> {
+        self.repo_data().and_then(|r| {
+            let mut strs = r
+                .package_managers
+                .iter()
+                .map(|pm| pm.get_identifier())
+                .collect::<Vec<_>>();
+            if strs.is_empty() {
+                return None;
+            }
+            strs.sort();
+            Some(strs.join(", "))
+        })
+    }
+
+    pub fn bundlers_str(&self) -> Option<String> {
+        self.repo_data().and_then(|r| {
+            let mut strs = r
+                .bundlers
+                .iter()
+                .map(|pm| pm.get_identifier())
+                .collect::<Vec<_>>();
+            if strs.is_empty() {
+                return None;
+            }
+            strs.sort();
+            Some(strs.join(", "))
+        })
+    }
+
+    pub fn testing_frameworks_str(&self) -> Option<String> {
+        self.repo_data().and_then(|r| {
+            let mut strs = r
+                .testing_frameworks
+                .iter()
+                .map(|pm| pm.get_identifier())
+                .collect::<Vec<_>>();
+            if strs.is_empty() {
+                return None;
+            }
+            strs.sort();
+            Some(strs.join(", "))
+        })
+    }
+
     pub fn uses_typescript(&self) -> Option<bool> {
         self.repo_data().map(|r| r.uses_typescript)
     }
@@ -228,8 +275,26 @@ impl FullPluginData {
         self.repo_data().map(|r| r.dev_dependencies.clone())
     }
 
+    pub fn dev_dependencies_str(&self) -> Option<String> {
+        self.repo_data().and_then(|r| {
+            if r.dev_dependencies.is_empty() {
+                return None;
+            }
+            Some(r.dev_dependencies.join(", "))
+        })
+    }
+
     pub fn dependencies(&self) -> Option<Vec<String>> {
         self.repo_data().map(|r| r.dependencies.clone())
+    }
+
+    pub fn dependencies_str(&self) -> Option<String> {
+        self.repo_data().and_then(|r| {
+            if r.dependencies.is_empty() {
+                return None;
+            }
+            Some(r.dependencies.join(", "))
+        })
     }
 
     pub fn download_count(&self) -> u32 {
@@ -306,5 +371,18 @@ impl FullPluginData {
             .iter()
             .map(|change| change.to_data_point())
             .collect()
+    }
+
+    pub fn loc(&self) -> Option<Vec<NamedDataPoint>> {
+        self.repo_data().map(|r| {
+            r.lines_of_code
+                .iter()
+                .filter(|(lang, count)| **count > 0 && !LOC_EXCLUDED.contains(&lang.as_str()))
+                .map(|(lang, count)| NamedDataPoint {
+                    name: lang.clone(),
+                    value: *count as f64,
+                })
+                .collect()
+        })
     }
 }

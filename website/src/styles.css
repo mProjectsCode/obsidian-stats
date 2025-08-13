@@ -199,6 +199,7 @@ aside.starlight-aside {
 }
 
 .chart-placeholder {
+	margin-block: 1rem;
 	width: 100%;
 	aspect-ratio: 16 / 9;
 	position: relative;
@@ -217,4 +218,8 @@ aside.starlight-aside {
 	border: 2px solid var(--sl-color-bg-accent);
 	border-top-color: transparent;
 	animation: spinner 600ms linear infinite;
+}
+
+.chart-wrapper {
+	margin-block: 1rem;
 }
