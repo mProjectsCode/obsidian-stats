@@ -10,13 +10,13 @@ pub enum PackageManager {
 }
 
 impl PackageManager {
-    pub fn get_lock_file_name(&self) -> Vec<&'static str> {
+    pub const fn get_lock_file_name(&self) -> &'static [&'static str] {
         match self {
-            PackageManager::Npm => vec!["package-lock.json"],
-            PackageManager::Yarn => vec!["yarn.lock"],
-            PackageManager::Pnpm => vec!["pnpm-lock.yaml"],
-            PackageManager::Bun => vec!["bun.lockb", "bun.lock"],
-            PackageManager::Deno => vec!["lock.json"],
+            PackageManager::Npm => &["package-lock.json"],
+            PackageManager::Yarn => &["yarn.lock"],
+            PackageManager::Pnpm => &["pnpm-lock.yaml"],
+            PackageManager::Bun => &["bun.lockb", "bun.lock"],
+            PackageManager::Deno => &["lock.json"],
         }
     }
 
@@ -52,15 +52,19 @@ impl PackageManager {
     }
 
     pub fn iter_variants() -> impl Iterator<Item = PackageManager> {
-        [
+        PackageManager::variants()
+            .into_iter()
+            .cloned()
+    }
+
+    pub const fn variants() -> &'static [PackageManager] {
+        &[
             PackageManager::Npm,
             PackageManager::Yarn,
             PackageManager::Pnpm,
             PackageManager::Bun,
             PackageManager::Deno,
         ]
-        .iter()
-        .cloned()
     }
 
     pub fn find_package_managers(file_paths: &[String]) -> Vec<Self> {

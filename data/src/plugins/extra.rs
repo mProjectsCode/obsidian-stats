@@ -197,17 +197,21 @@ fn count_file_types(files: &[String]) -> HashMap<String, usize> {
     file_types
 }
 
-fn count_lines_of_code(repo_path: &str) -> HashMap<String, usize> {
-    let mut excluded = Vec::new();
-    excluded.push("node_modules");
-    PackageManager::iter_variants().for_each(|pm| {
-        excluded.extend(pm.get_lock_file_name());
-    });
+const LOC_EXCLUDED: &[&str] = &[
+    "package-lock.json",
+    "yarn.lock",
+    "pnpm-lock.yaml",
+    "bun.lockb",
+    "bun.lock",
+    "lock.json",
+    "node_modules",
+];
 
+fn count_lines_of_code(repo_path: &str) -> HashMap<String, usize> {
     let config = tokei::Config::default();
     let mut languages = tokei::Languages::new();
 
-    languages.get_statistics(&[repo_path], &excluded, &config);
+    languages.get_statistics(&[repo_path], LOC_EXCLUDED, &config);
 
     languages
         .into_iter()
