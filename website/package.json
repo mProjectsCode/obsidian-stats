@@ -15,11 +15,11 @@
 		"@astrojs/check": "0.9.4",
 		"@astrojs/starlight": "0.35.2",
 		"@astrojs/svelte": "7.1.0",
-		"astro": "5.13.3",
+		"astro": "5.13.5",
 		"prettier": "^3.6.2",
 		"prettier-plugin-astro": "^0.14.1",
 		"prettier-plugin-svelte": "^3.4.0",
-		"svelte": "^5.38.3",
+		"svelte": "^5.38.6",
 		"svelteplot": "^0.3.9",
 		"typescript": "^5.9.2"
 	}

@@ -27,3 +27,26 @@ export function smooth<T extends Obj<K>, K extends keyof T>(data: T[], key: K, f
 		};
 	});
 }
+
+export function toCompactString(datum: number | string | symbol | boolean | Date | null | undefined): string {
+	if (datum == null) {
+		return '';
+	}
+	if (typeof datum === 'number') {
+		return datum.toLocaleString(undefined, { notation: 'compact' });
+	}
+	if (typeof datum === 'boolean') {
+		return datum ? 'Yes' : 'No';
+	}
+	if (typeof datum === 'symbol') {
+		return Symbol.keyFor(datum) || '';
+	}
+	if (datum instanceof Date) {
+		return datum.toLocaleDateString();
+	}
+	return datum;
+}
+
+export function navigateToPlugin(id: string): void {
+	window.open(`/obsidian-stats/plugins/${id}`, '_self');
+}

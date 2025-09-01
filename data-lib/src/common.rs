@@ -8,7 +8,7 @@ use crate::{
     version::Version,
 };
 
-pub const LOC_EXCLUDED: [&'static str; 24] = [
+pub const LOC_EXCLUDED: &[&str] = &[
     "JSON",
     "SVG",
     "XML",
@@ -33,6 +33,11 @@ pub const LOC_EXCLUDED: [&'static str; 24] = [
     "Shell",
     "TOML",
     "TeX",
+];
+
+pub const FILE_EXT_INCLUDED: &[&str] = &[
+    "ts", "tsx", "mts", "cts", "js", "jsx", "mjs", "cjs", "css", "svelte", "vue", "scss", "sass",
+    "py", "rs", "java", "kt", "rb", "c", "cpp", "h", "hpp",
 ];
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]

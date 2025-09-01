@@ -1,7 +1,10 @@
 ---
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
 import BarChart from '../../components/svelte/charts/BarChart.svelte';
+import LocDistributionChart from '../../components/svelte/charts/misc/LocDistributionChart.svelte';
+import FileDistributionChart from '../../components/svelte/charts/misc/FileDistributionChart.svelte';
 import { getPluginDataArray } from '../../utils/data';
+import { toCompactString } from '../../components/svelte/charts/chartUtils';
 
 const frontendFrameworks = ['react', 'preact', 'svelte', 'vue', '@angular/core', 'solid-js'];
 const tooling = ['eslint', 'prettier', '@biomejs', 'dprint', 'typescript'];
@@ -23,6 +26,17 @@ const desktopOnlyData = view.desktop_only_data(data);
 
 const locByLanguages = view.lines_of_code_by_language(data);
 const locByUsage = view.lines_of_code_by_language_usage(data);
+
+const fileTypeCounts = view.file_count_by_extension(data);
+
+const locDistribution = Array.from(view.lines_of_code_distribution(data));
+const fileCountDistribution = Array.from(view.file_count_distribution(data));
+
+const avgLoc = locDistribution.reduce((acc, curr) => acc + curr, 0) / locDistribution.length;
+const avgFileCount = fileCountDistribution.reduce((acc, curr) => acc + curr, 0) / fileCountDistribution.length;
+
+const medLoc = locDistribution.length > 0 ? locDistribution[Math.floor(locDistribution.length / 2)] : 0;
+const medFileCount = fileCountDistribution.length > 0 ? fileCountDistribution[Math.floor(fileCountDistribution.length / 2)] : 0;
 ---
 
 <StarlightPage
@@ -33,6 +47,8 @@ const locByUsage = view.lines_of_code_by_language_usage(data);
 	headings={[
 		{ depth: 2, text: 'Manifest', slug: 'manifest' },
 		{ depth: 2, text: 'Programming Languages', slug: 'programming-languages' },
+		{ depth: 3, text: 'Lines of Code', slug: 'lines-of-code' },
+		{ depth: 3, text: 'Files', slug: 'files' },
 		{ depth: 2, text: 'Dependencies', slug: 'dependencies' },
 		{ depth: 3, text: 'Package Manager Usage', slug: 'package-manager-usage' },
 		{ depth: 3, text: 'Code Bundler Usage', slug: 'code-bundler-usage' },
@@ -67,15 +83,40 @@ const locByUsage = view.lines_of_code_by_language_usage(data);
 
 	<h2 id="programming-languages">Programming Languages</h2>
 
+	<p>The next chart shows the number of plugins that use a specific programming language, sorted by the number of plugins that use it.</p>
+
+	<BarChart dataPoints={locByUsage} xLabel="Language" yLabel="Plugins" skewLabels client:idle />
+
+	<h3 id="lines-of-code">Lines of Code</h3>
+
 	<p>
 		The below chart shows the lines of code per programming language, summed over all plugins. Only languages with more than 10,000 lines of code are shown.
 	</p>
 
 	<BarChart dataPoints={locByLanguages} xLabel="Language" yLabel="Lines of Code" skewLabels client:idle />
 
-	<p>The next chart shows the number of plugins that use a specific programming language, sorted by the number of plugins that use it.</p>
+	<p>
+		The next chart shows the distribution of the total lines of code per plugin. The average plugin has {toCompactString(avgLoc)} lines of code while the median
+		plugin has only {toCompactString(medLoc)} lines of code.
+	</p>
 
-	<BarChart dataPoints={locByUsage} xLabel="Language" yLabel="Plugins" skewLabels client:idle />
+	<LocDistributionChart dataPoints={locDistribution} client:idle />
+
+	<h3 id="files">Files</h3>
+
+	<p>
+		The following chart shows the total number of files per file extension, summed over all plugins. Only source code file extensions are included. Common
+		configuration files like <code>json</code>, <code>yaml</code>, and tool specific extensions like <code>prettierignore</code> are excluded.
+	</p>
+
+	<BarChart dataPoints={fileTypeCounts} xLabel="File Type" yLabel="File Count" skewLabels client:idle />
+
+	<p>
+		The next chart shows the distribution of the number of code files per plugin. The average plugin has {toCompactString(avgFileCount)} code files while the median
+		plugin has only {toCompactString(medFileCount)} code files.
+	</p>
+
+	<FileDistributionChart dataPoints={fileCountDistribution} client:idle />
 
 	<h2 id="dependencies">Dependencies</h2>
 

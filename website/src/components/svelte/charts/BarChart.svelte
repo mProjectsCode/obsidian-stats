@@ -2,6 +2,7 @@
 	import { BarY, GridY, Plot, Text } from 'svelteplot';
 	import type { NamedDataPoint } from '../../../../../data-wasm/pkg/data_wasm';
 	import ChartWrapper from '../ChartWrapper.svelte';
+	import { toCompactString } from './chartUtils';
 
 	interface Props {
 		dataPoints: NamedDataPoint[];
@@ -28,7 +29,7 @@
 <ChartWrapper>
 	<Plot
 		x={{ type: 'band', label: `${xLabel} →`, tickRotate: skewLabels ? 45 : 0 }}
-		y={{ label: `↑ ${yLabel}`, domain: yDomain, tickFormat: percentages ? d => `${String(d)}%` : d => d.toLocaleString(undefined, { notation: 'compact' }) }}
+		y={{ label: `↑ ${yLabel}`, domain: yDomain, tickFormat: percentages ? d => `${String(d)}%` : d => toCompactString(d) }}
 		class="no-overflow-clip"
 	>
 		<GridY />
@@ -39,12 +40,7 @@
 				x="name"
 				y="value"
 				fill="var(--sl-color-text-foreground)"
-				text={d =>
-					percentages
-						? `${d.value.toFixed(1)}%`
-						: d.value.toLocaleString(undefined, {
-								notation: 'compact',
-							})}
+				text={d => (percentages ? `${d.value.toFixed(1)}%` : toCompactString(d.value))}
 				lineAnchor="bottom"
 				dy={-2}
 			/>

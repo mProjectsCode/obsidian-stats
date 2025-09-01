@@ -1,7 +1,9 @@
 ---
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
 import DownloadChart from '../../components/svelte/charts/downloads/DownloadChart.svelte';
-import DownloadRelationChart from '../../components/svelte/charts/downloads/DownloadRelationChart.svelte';
+import DownloadRelationReleaseDateChart from '../../components/svelte/charts/downloads/DownloadRelationReleaseDateChart.svelte';
+import DownloadRelationVersionCountChart from '../../components/svelte/charts/downloads/DownloadRelationVersionCountChart.svelte';
+import DownloadRelationLocChart from '../../components/svelte/charts/downloads/DownloadRelationLocChart.svelte';
 import DownloadNameChart from '../../components/svelte/charts/downloads/DownloadNameChart.svelte';
 import DownloadDistributionChart from '../../components/svelte/charts/downloads/DownloadDistributionChart.svelte';
 import { getPluginDataArray } from '../../utils/data';
@@ -9,19 +11,7 @@ import { getPluginDataArray } from '../../utils/data';
 const data = await getPluginDataArray();
 const view = data.view();
 
-const downloadDataPoints = view.total_download_data(data);
 const individualDownloadDataPoints = view.individual_download_data(data);
-
-const downloadRelationDataPoints = individualDownloadDataPoints
-	.filter(x => x.downloads > 0 && x.version_count > 0)
-	.map(point => {
-		return {
-			date: new Date(point.date),
-			downloads: point.downloads,
-			version_count: point.version_count,
-			total_loc: point.total_loc,
-		};
-	});
 
 const downloadNameDataPoints = individualDownloadDataPoints
 	.filter(x => x.downloads > 0 && x.version_count > 0)
@@ -47,7 +37,7 @@ const downloadDistributionDataPoints = individualDownloadDataPoints
 >
 	<p>The first graph depicts the total number of plugin downloads over time. The second graph shows the number of new plugin downloads per week.</p>
 
-	<DownloadChart dataPoints={downloadDataPoints} client:idle />
+	<DownloadChart dataUrl="/obsidian-stats/data/plugins/stats/downloads.json" client:idle />
 
 	<h2 id="plugin-downloads-correlations">Plugin Downloads Correlations</h2>
 
@@ -57,7 +47,9 @@ const downloadDistributionDataPoints = individualDownloadDataPoints
 		of downloads and the initial release time.
 	</p>
 
-	<DownloadRelationChart dataPoints={downloadRelationDataPoints} client:idle />
+	<DownloadRelationVersionCountChart client:idle />
+	<DownloadRelationLocChart client:idle />
+	<DownloadRelationReleaseDateChart client:idle />
 
 	<p>
 		The chart below shows the correlation between the name of the plugin and the number of downloads. The regression line is calculated using the Simple Linear

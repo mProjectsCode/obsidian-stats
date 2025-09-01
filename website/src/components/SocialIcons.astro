@@ -1,5 +1,4 @@
 ---
-import type { Props } from '@astrojs/starlight/props';
 import Default from '@astrojs/starlight/components/SocialIcons.astro';
 ---
 
@@ -26,7 +25,7 @@ import Default from '@astrojs/starlight/components/SocialIcons.astro';
 	</svg>
 </a>
 <!-- Render the default social links. -->
-<Default {...Astro.props}><slot /></Default>
+<Default {...Astro.locals.starlightRoute}><slot /></Default>
 
 <!-- Add styles to mimic the default links appearance. -->
 <style>

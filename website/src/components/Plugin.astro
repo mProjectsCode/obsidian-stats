@@ -19,8 +19,6 @@ if (!plugin) {
 	throw new Error(`Plugin with ID ${pluginId} not found.`);
 }
 
-const pluginDownloadData = plugin.download_data_points();
-
 function getFundingLinks(urls: string | Record<string, string> | undefined): { text: string; href: string }[] {
 	if (!urls) {
 		return [];
@@ -418,7 +416,7 @@ const totalLoc = loc?.reduce((acc, x) => acc + x.value, 0);
 		of new downloads per week. New version releases are marked with vertical lines.
 	</p>
 
-	<DownloadChart dataPoints={pluginDownloadData} versions={versions} client:idle />
+	<DownloadChart dataUrl={`/obsidian-stats/data/plugins/downloads/${pluginId}.json`} versions={versions} client:idle />
 
 	<h2 id="version-history">Version History</h2>
 

@@ -1,11 +1,10 @@
 use std::ops::Index;
 
-use chumsky::container::Seq;
 use wasm_bindgen::prelude::wasm_bindgen;
 
 use crate::{
     common::{
-        CountMonthlyDataPoint, DownloadDataPoint, HallOfFameDataPoint,
+        CountMonthlyDataPoint, DownloadDataPoint, FILE_EXT_INCLUDED, HallOfFameDataPoint,
         InactivityByReleaseDataPoint, IndividualDownloadDataPoint, LOC_EXCLUDED, OverviewDataPoint,
         RemovedByReleaseDataPoint, increment_named_data_points, to_percentage,
     },
@@ -688,6 +687,76 @@ impl PluginDataArrayView {
             .into_iter()
             .filter(|point| !LOC_EXCLUDED.contains(&point.name.as_str()))
             .collect()
+    }
+
+    pub fn file_count_by_extension(&self, data: &PluginDataArray) -> Vec<NamedDataPoint> {
+        let mut points = Vec::new();
+
+        self.data.iter().for_each(|&index| {
+            let plugin_data = &data[index];
+            let Some(repo_data) = plugin_data.repo_data() else {
+                return;
+            };
+
+            repo_data.file_type_counts.iter().for_each(|(ext, count)| {
+                increment_named_data_points(&mut points, ext, *count as f64);
+            });
+        });
+
+        points
+            .into_iter()
+            .filter(|point| FILE_EXT_INCLUDED.contains(&point.name.to_lowercase().as_str()))
+            .collect()
+    }
+
+    pub fn lines_of_code_distribution(&self, data: &PluginDataArray) -> Vec<u32> {
+        let mut tmp: Vec<_> = self
+            .data
+            .iter()
+            .map(|&index| {
+                let plugin_data = &data[index];
+
+                let Some(repo_data) = plugin_data.repo_data() else {
+                    return 0;
+                };
+
+                repo_data
+                    .lines_of_code
+                    .iter()
+                    .filter(|(lang, _)| !LOC_EXCLUDED.contains(&lang.as_str()))
+                    .map(|(_, loc)| loc)
+                    .sum::<usize>() as u32
+            })
+            .filter(|&count| count > 0)
+            .collect();
+
+        tmp.sort_by(|a, b| b.cmp(a));
+        tmp
+    }
+
+    pub fn file_count_distribution(&self, data: &PluginDataArray) -> Vec<u32> {
+        let mut tmp: Vec<_> = self
+            .data
+            .iter()
+            .map(|&index| {
+                let plugin_data = &data[index];
+
+                let Some(repo_data) = plugin_data.repo_data() else {
+                    return 0;
+                };
+
+                repo_data
+                    .file_type_counts
+                    .iter()
+                    .filter(|(ext, _)| FILE_EXT_INCLUDED.contains(&ext.to_lowercase().as_str()))
+                    .map(|(_, count)| count)
+                    .sum::<usize>() as u32
+            })
+            .filter(|&count| count > 0)
+            .collect();
+
+        tmp.sort_by(|a, b| b.cmp(a));
+        tmp
     }
 }
 
