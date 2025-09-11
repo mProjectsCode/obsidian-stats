@@ -90,7 +90,7 @@ impl ReleaseDataArray {
                         )
                     })
             })
-            .sort_by(|a, b| a.0.cmp(&b.0))
+            .sort_by(|a, b| a.0.cmp(b.0))
             .map(|(version, os, value)| StackedNamedDataPoint {
                 name: version.to_fancy_string(),
                 layer: os,
@@ -254,7 +254,7 @@ impl ReleaseDataArray {
                         )
                     })
             })
-            .sort_by(|a, b| a.0.cmp(&b.0).then_with(|| b.2.total_cmp(&a.2)))
+            .sort_by(|a, b| a.0.cmp(b.0).then_with(|| b.2.total_cmp(&a.2)))
             .map(|(version, file_type, value)| StackedNamedDataPoint {
                 name: version.to_fancy_string(),
                 layer: file_type,
@@ -315,7 +315,7 @@ impl ReleaseDataArray {
             .iter()
             .filter(|release| release.platform == ObsidianPlatform::Desktop)
             .dedup_by(|a, b| a.version == b.version)
-            .filter_map(|release| {
+            .map(|release| {
                 let mut changes = ChangelogChanges {
                     version: release.version.clone(),
                     version_string: release.version.to_fancy_string(),
@@ -386,7 +386,7 @@ impl ReleaseDataArray {
                     }
                 }
 
-                Some(changes)
+                changes
             })
             .sort_by(|a, b| a.version.cmp(&b.version))
             .collect()

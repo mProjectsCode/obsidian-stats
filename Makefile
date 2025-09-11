@@ -17,6 +17,7 @@ lint:
 	cd data && make lint
 	cd data-lib && make lint
 	cd data-wasm && make lint
+	cd website && bun run check
 
 submodule-update:
 	git submodule update --init --remote

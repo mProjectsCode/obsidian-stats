@@ -32,7 +32,7 @@
 	>
 		<GridY />
 		<Dot data={mappedDataPoints} x="label" y="value" stroke="stack" sort="index" />
-		<Pointer data={mappedDataPoints} x="label" z="stack" maxDistance={2}>
+		<Pointer data={mappedDataPoints} x="label" z="stack" maxDistance={5}>
 			{#snippet children({ data })}
 				<Text {data} fill="stack" x="label" y="value" text={d => formatSize(d.value)} lineAnchor="bottom" dy={-7} />
 				<Dot {data} x="label" y="value" fill="stack" />

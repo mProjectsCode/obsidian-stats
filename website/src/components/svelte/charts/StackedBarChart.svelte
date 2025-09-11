@@ -10,9 +10,10 @@
 		skewLabels?: boolean;
 		percentages?: boolean;
 		yDomain?: [number, number];
+		xPadding?: number;
 	}
 
-	const { dataPoints, xLabel, yLabel, yDomain, skewLabels = false, percentages = false }: Props = $props();
+	const { dataPoints, xLabel, yLabel, yDomain, skewLabels = false, percentages = false, xPadding = undefined }: Props = $props();
 
 	const mappedDataPoints = dataPoints.map((point, index) => {
 		return {
@@ -27,7 +28,7 @@
 <ChartWrapper>
 	<Plot
 		color={{ legend: true, scheme: 'tableau10' }}
-		x={{ type: 'band', label: `${xLabel} →`, tickRotate: skewLabels ? 45 : 0 }}
+		x={{ type: 'band', label: `${xLabel} →`, tickRotate: skewLabels ? 45 : 0, padding: xPadding }}
 		y={{ label: `↑ ${yLabel}`, domain: yDomain, tickFormat: percentages ? d => `${String(d)}%` : d => String(d) }}
 		class="no-overflow-clip"
 	>

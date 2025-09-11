@@ -29,9 +29,9 @@ const downloadsPercentages = dataArray.total_downloads_per_version_by_os_as_perc
 
 	<p>The below graph depicts the total number of downloads for every release, split by OS.</p>
 
-	<StackedBarChart dataPoints={downloads} xLabel="Version Number" yLabel="Downloads" skewLabels client:idle />
+	<StackedBarChart dataPoints={downloads} xLabel="Version Number" yLabel="Downloads" skewLabels xPadding={0} client:idle />
 
 	<p>This graph shows the distribution of downloads among the different operating systems.</p>
 
-	<StackedBarChart dataPoints={downloadsPercentages} xLabel="Version Number" yLabel="Downloads" skewLabels percentages client:idle />
+	<StackedBarChart dataPoints={downloadsPercentages} xLabel="Version Number" yLabel="Downloads" skewLabels percentages xPadding={0} client:idle />
 </StarlightPage>

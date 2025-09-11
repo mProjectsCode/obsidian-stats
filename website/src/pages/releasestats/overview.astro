@@ -74,7 +74,7 @@ const changelogCategories = dataArray.get_changelog_categories();
 					<tr>
 						<td>{item.version_string}</td>
 						{changelogCategories.map(category => (
-							<td>{item.changes[category] || 0}</td>
+							<td>{item.changes.get(category) || 0}</td>
 						))}
 					</tr>
 				))

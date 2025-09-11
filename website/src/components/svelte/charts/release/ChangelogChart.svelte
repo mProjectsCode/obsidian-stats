@@ -22,7 +22,7 @@
 <ChartWrapper>
 	<Plot
 		color={{ legend: true, scheme: 'tableau10' }}
-		x={{ type: 'band', label: `Version Number →`, tickRotate: 45 }}
+		x={{ type: 'band', label: `Version Number →`, tickRotate: 45, padding: 0 }}
 		y={{ label: `↑ Changes` }}
 		class="no-overflow-clip"
 	>

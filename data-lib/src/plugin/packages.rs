@@ -52,7 +52,7 @@ impl PackageManager {
     }
 
     pub fn iter_variants() -> impl Iterator<Item = PackageManager> {
-        PackageManager::variants().into_iter().cloned()
+        PackageManager::variants().iter().cloned()
     }
 
     pub const fn variants() -> &'static [PackageManager] {

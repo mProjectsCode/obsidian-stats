@@ -1,9 +1,9 @@
 mod utils;
 
 use data_lib::{
-    plugin::{data_array::PluginDataArray, PluginData, PluginExtraData},
-    release::{data_array::ReleaseDataArray, GithubReleaseInfo, ObsidianReleaseInfo},
-    theme::{data_array::ThemeDataArray, ThemeData},
+    plugin::{PluginData, PluginExtraData, data_array::PluginDataArray},
+    release::{GithubReleaseInfo, ObsidianReleaseInfo, data_array::ReleaseDataArray},
+    theme::{ThemeData, data_array::ThemeDataArray},
 };
 use wasm_bindgen::prelude::*;
 

@@ -19,7 +19,7 @@ if (!plugin) {
 	throw new Error(`Plugin with ID ${pluginId} not found.`);
 }
 
-function getFundingLinks(urls: string | Record<string, string> | undefined): { text: string; href: string }[] {
+function getFundingLinks(urls: string | Map<string, string> | undefined): { text: string; href: string }[] {
 	if (!urls) {
 		return [];
 	}
@@ -28,7 +28,7 @@ function getFundingLinks(urls: string | Record<string, string> | undefined): { t
 		return [{ text: 'Support the Author', href: urls }];
 	}
 
-	return Object.entries(urls).map(([text, href]) => ({ text: `Support the Author via ${text}`, href }));
+	return Array.from(urls.entries()).map(([text, href]) => ({ text: `Support the Author via ${text}`, href }));
 }
 
 const helpUrl = plugin.help_url();
@@ -43,7 +43,7 @@ const external_links: { text: string; href: string }[] = [
 	obsidianUrl ? { text: 'View in Obsidian', href: obsidianUrl } : undefined,
 	obsidianHubUrl ? { text: 'View on the Obsidian Hub', href: obsidianHubUrl } : undefined,
 	authorUrl ? { text: 'Author Website', href: authorUrl } : undefined,
-	...getFundingLinks(plugin.funding_url()),
+	...getFundingLinks(fundingUrl),
 ].filter(x => x !== undefined);
 
 const warnings = plugin.warnings();
