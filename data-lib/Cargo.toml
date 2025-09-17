@@ -6,7 +6,7 @@ edition = "2024"
 [dependencies]
 chrono = "0.4.41"
 chumsky = {version = "0.10.1", features = ["unstable"]}
-hashbrown = {version = "0.15.3", features = ["serde"]}
+hashbrown = {version = "0.16.0", features = ["serde"]}
 js-sys = "0.3.77"
 rayon = "1.10.0"
 regex = "1.11.1"
