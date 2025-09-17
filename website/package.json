@@ -20,7 +20,7 @@
 		"prettier-plugin-astro": "^0.14.1",
 		"prettier-plugin-svelte": "^3.4.0",
 		"svelte": "^5.38.10",
-		"svelteplot": "^0.3.11",
+		"svelteplot": "^0.4.4",
 		"typescript": "^5.9.2"
 	}
 }
