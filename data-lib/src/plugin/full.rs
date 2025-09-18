@@ -297,6 +297,13 @@ impl FullPluginData {
         })
     }
 
+    pub fn has_dependency(&self, dependency: &str) -> Option<bool> {
+        self.repo_data().map(|r| {
+            r.dependencies.iter().any(|d| d == dependency)
+                || r.dev_dependencies.iter().any(|d| d == dependency)
+        })
+    }
+
     pub fn download_count(&self) -> u32 {
         self.data.download_count
     }

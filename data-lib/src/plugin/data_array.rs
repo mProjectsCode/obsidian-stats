@@ -4,15 +4,12 @@ use wasm_bindgen::prelude::wasm_bindgen;
 
 use crate::{
     common::{
-        CountMonthlyDataPoint, DownloadDataPoint, FILE_EXT_INCLUDED, HallOfFameDataPoint,
-        InactivityByReleaseDataPoint, IndividualDownloadDataPoint, LOC_EXCLUDED, OverviewDataPoint,
-        RemovedByReleaseDataPoint, increment_named_data_points, to_percentage,
+        increment_named_data_points, to_percentage, CountMonthlyDataPoint, DownloadDataPoint, HallOfFameDataPoint, InactivityByReleaseDataPoint, IndividualDownloadDataPoint, OverviewDataPoint, RemovedByReleaseDataPoint, FILE_EXT_INCLUDED, I18N_DEPENDENCIES, LOC_EXCLUDED
     },
     date::Date,
     license::Licenses,
     plugin::{
-        LicenseInfo, NamedDataPoint, PluginData, PluginExtraData, PluginLicenseDataPoints,
-        PluginRepoDataPoints, full::FullPluginData,
+        full::FullPluginData, LicenseInfo, NamedDataPoint, PluginData, PluginExtraData, PluginLicenseDataPoints, PluginRepoDataPoints
     },
 };
 
@@ -757,6 +754,20 @@ impl PluginDataArrayView {
 
         tmp.sort_by(|a, b| b.cmp(a));
         tmp
+    }
+
+    pub fn i18n_usage(&self, data: &PluginDataArray) -> Vec<String> {
+        let mut plugins_with_i18n = Vec::new();
+
+        self.data.iter().for_each(|&index| {
+            let plugin_data = &data[index];
+
+            if I18N_DEPENDENCIES.iter().any(|dep| plugin_data.has_dependency(dep).unwrap_or(false)) {
+                plugins_with_i18n.push(plugin_data.id());
+            }
+        });
+
+        plugins_with_i18n
     }
 }
 

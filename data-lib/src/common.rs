@@ -40,6 +40,38 @@ pub const FILE_EXT_INCLUDED: &[&str] = &[
     "py", "rs", "java", "kt", "rb", "c", "cpp", "h", "hpp",
 ];
 
+// list of i18n adjacent libraries, thanks chatgpt
+pub const I18N_DEPENDENCIES: &[&str] = &[
+    "i18next",
+    "i18n",
+    "node-polyglot",
+    "formatjs",
+    "intl-messageformat",
+    "intl-relativeformat",
+    "messageformat",
+    "react-intl",
+    "react-i18next",
+    "next-i18next",
+    "next-intl",
+    "@lingui/core",
+    "@lingui/react",
+    "vue-i18n",
+    "vue-i18next",
+    "@ngx-translate/core",
+    "@angular/localize",
+    "react-native-localize",
+    "expo-localization",
+    "svelte-i18n",
+    "intl",
+    "globalize",
+];
+
+pub const I18N_LOCALE_CODES: &[&str] = &[
+    "af", "ar", "bg", "bn", "ca", "cs", "cy", "da", "de", "el", "en", "es", "et", "fa", "fi",
+    "fr", "he", "hi", "hr", "hu", "id", "it", "ja", "ka", "ko", "lt", "lv", "ms", "nb", "nl",
+    "pl", "pt", "ro", "ru", "sk", "sl", "sr", "sv", "th", "tr", "uk", "vi", "zh",
+];
+
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct EntryChange {
     pub property: String,

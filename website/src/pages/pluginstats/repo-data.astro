@@ -5,6 +5,7 @@ import LocDistributionChart from '../../components/svelte/charts/misc/LocDistrib
 import FileDistributionChart from '../../components/svelte/charts/misc/FileDistributionChart.svelte';
 import { getPluginDataArray } from '../../utils/data';
 import { toCompactString } from '../../components/svelte/charts/chartUtils';
+import PluginLink from '../../components/PluginLink.astro';
 
 const frontendFrameworks = ['react', 'preact', 'svelte', 'vue', '@angular/core', 'solid-js'];
 const tooling = ['eslint', 'prettier', '@biomejs', 'dprint', 'typescript'];
@@ -16,6 +17,8 @@ const dataPoints = view.repo_data_points(data);
 
 const frontEndFrameworksDataPoints = dataPoints.dependencies.filter(x => frontendFrameworks.includes(x.name));
 const toolingDataPoints = dataPoints.dependencies.filter(x => tooling.includes(x.name));
+
+const i18nUsage = view.i18n_usage(data);
 
 const mostUsedDependencies = dataPoints.dependencies.filter(x => x.value >= 1);
 mostUsedDependencies.sort((a, b) => b.value - a.value);
@@ -50,11 +53,12 @@ const medFileCount = fileCountDistribution.length > 0 ? fileCountDistribution[Ma
 		{ depth: 3, text: 'Lines of Code', slug: 'lines-of-code' },
 		{ depth: 3, text: 'Files', slug: 'files' },
 		{ depth: 2, text: 'Dependencies', slug: 'dependencies' },
-		{ depth: 3, text: 'Package Manager Usage', slug: 'package-manager-usage' },
-		{ depth: 3, text: 'Code Bundler Usage', slug: 'code-bundler-usage' },
-		{ depth: 3, text: 'Developer Tooling Usage', slug: 'developer-tooling-usage' },
-		{ depth: 3, text: 'Testing Framework Usage', slug: 'testing-framework-usage' },
-		{ depth: 3, text: 'Frontend Framework Usage', slug: 'frontend-framework-usage' },
+		{ depth: 3, text: 'Package Managers', slug: 'package-managers' },
+		{ depth: 3, text: 'Code Bundlers', slug: 'code-bundlers' },
+		{ depth: 3, text: 'Developer Tooling', slug: 'developer-tooling' },
+		{ depth: 3, text: 'Testing Frameworks', slug: 'testing-frameworks' },
+		{ depth: 3, text: 'Frontend Frameworks', slug: 'frontend-frameworks' },
+		{ depth: 3, text: 'Translations', slug: 'translations' },
 		{ depth: 3, text: 'Most Used Dependencies', slug: 'most-used-dependencies' },
 	]}
 >
@@ -120,7 +124,7 @@ const medFileCount = fileCountDistribution.length > 0 ? fileCountDistribution[Ma
 
 	<h2 id="dependencies">Dependencies</h2>
 
-	<h3 id="package-manager-usage">Package Manager Usage</h3>
+	<h3 id="package-managers">Package Managers</h3>
 
 	<p>
 		Plugins may bundle additional dependencies into when building a release. There are several package managers that can be used to manage these dependencies,
@@ -135,7 +139,7 @@ const medFileCount = fileCountDistribution.length > 0 ? fileCountDistribution[Ma
 		{dataPoints.no_package_managers.toFixed(1)}% of plugins have no lockfile.
 	</p>
 
-	<h3 id="code-bundler-usage">Code Bundler Usage</h3>
+	<h3 id="code-bundlers">Code Bundlers</h3>
 
 	<p>
 		The vast majority of plugins consist of more than just a single JavaScript file. Since Obsidian can only load a single JavaScript file, plugins need to
@@ -150,13 +154,13 @@ const medFileCount = fileCountDistribution.length > 0 ? fileCountDistribution[Ma
 		{dataPoints.no_bundlers.toFixed(1)}% of plugins use no code bundler.
 	</p>
 
-	<h3 id="developer-tooling-usage">Developer Tooling Usage</h3>
+	<h3 id="developer-tooling">Developer Tooling</h3>
 
 	<p>Plugin developers like to use tooling to make their jobs easier. The chart below shows the usage percentage of common developer tooling.</p>
 
 	<BarChart dataPoints={toolingDataPoints} xLabel="Tooling Dependencies" yLabel="Percent of Plugins" yDomain={[0, 100]} percentages client:idle />
 
-	<h3 id="testing-framework-usage">Testing Framework Usage</h3>
+	<h3 id="testing-frameworks">Testing Frameworks</h3>
 
 	<p>
 		When building a plugin, it is important to test it to ensure that it works as expected. There are several testing frameworks that can automatically test
@@ -171,7 +175,7 @@ const medFileCount = fileCountDistribution.length > 0 ? fileCountDistribution[Ma
 		{dataPoints.no_testing_frameworks.toFixed(1)}% of plugins use no testing framework.
 	</p>
 
-	<h3 id="frontend-framework-usage">Frontend Framework Usage</h3>
+	<h3 id="frontend-frameworks">Frontend Frameworks</h3>
 
 	<p>
 		For complex user interfaces, plugins may use a frontend framework to make development easier. The chart below shows the usage percentage of common frontend
@@ -179,6 +183,19 @@ const medFileCount = fileCountDistribution.length > 0 ? fileCountDistribution[Ma
 	</p>
 
 	<BarChart dataPoints={frontEndFrameworksDataPoints} xLabel="Frontend Frameworks" yLabel="Percent of Plugins" yDomain={[0, 100]} percentages client:idle />
+
+	<h3 id="translations">Translations</h3>
+
+	<p>
+		Plugins can use i18n libraries to provide translations for their user interface. The following shows all {i18nUsage.length} plugins that use an i18n library or framework, such as
+		i18next or react-i18next.
+	</p>
+
+	<ul>
+		{i18nUsage.sort().map(id => (
+			<li><PluginLink id={id}></PluginLink></li>
+		))}
+	</ul>
 
 	<h3 id="most-used-dependencies">Most Used Dependencies</h3>
 
