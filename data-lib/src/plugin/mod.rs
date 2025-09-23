@@ -78,6 +78,8 @@ pub struct PluginRepoData {
     pub file_license: LicenseInfo,
     pub manifest: PluginManifest,
     pub lines_of_code: HashMap<String, usize>,
+    pub has_i18n_dependencies: bool,
+    pub has_i18n_files: bool,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

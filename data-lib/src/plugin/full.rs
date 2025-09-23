@@ -115,6 +115,10 @@ impl FullPluginData {
         self.data.current_entry.description.clone()
     }
 
+    pub fn repo(&self) -> String {
+        self.data.current_entry.repo.clone()
+    }
+
     pub fn repo_url(&self) -> String {
         format!("https://github.com/{}", self.data.current_entry.repo)
     }

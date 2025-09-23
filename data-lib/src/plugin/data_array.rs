@@ -4,12 +4,15 @@ use wasm_bindgen::prelude::wasm_bindgen;
 
 use crate::{
     common::{
-        increment_named_data_points, to_percentage, CountMonthlyDataPoint, DownloadDataPoint, HallOfFameDataPoint, InactivityByReleaseDataPoint, IndividualDownloadDataPoint, OverviewDataPoint, RemovedByReleaseDataPoint, FILE_EXT_INCLUDED, I18N_DEPENDENCIES, LOC_EXCLUDED
+        CountMonthlyDataPoint, DownloadDataPoint, FILE_EXT_INCLUDED, HallOfFameDataPoint,
+        InactivityByReleaseDataPoint, IndividualDownloadDataPoint, LOC_EXCLUDED, OverviewDataPoint,
+        RemovedByReleaseDataPoint, increment_named_data_points, to_percentage,
     },
     date::Date,
     license::Licenses,
     plugin::{
-        full::FullPluginData, LicenseInfo, NamedDataPoint, PluginData, PluginExtraData, PluginLicenseDataPoints, PluginRepoDataPoints
+        LicenseInfo, NamedDataPoint, PluginData, PluginExtraData, PluginLicenseDataPoints,
+        PluginRepoDataPoints, full::FullPluginData,
     },
 };
 
@@ -53,69 +56,69 @@ impl PluginDataArray {
 #[wasm_bindgen]
 pub struct PluginDataArrayView {
     #[wasm_bindgen(skip)]
-    pub data: Vec<usize>,
+    pub indices: Vec<usize>,
 }
 
 impl PluginDataArrayView {
     pub fn new(len: usize) -> Self {
         Self {
-            data: (0..len).collect(),
+            indices: (0..len).collect(),
         }
+    }
+
+    pub fn iter_data<'a>(
+        &'a self,
+        data: &'a PluginDataArray,
+    ) -> impl Iterator<Item = &'a FullPluginData> {
+        self.indices.iter().map(move |&index| &data[index])
     }
 }
 
 #[wasm_bindgen]
 impl PluginDataArrayView {
     pub fn len(&self) -> usize {
-        self.data.len()
+        self.indices.len()
     }
 
     pub fn is_empty(&self) -> bool {
-        self.data.is_empty()
+        self.indices.is_empty()
     }
 
     pub fn get(&self, data: &PluginDataArray, index: usize) -> FullPluginData {
-        data[self.data[index]].clone()
+        data[self.indices[index]].clone()
     }
 
     pub fn get_ids(&self, data: &PluginDataArray) -> Vec<String> {
-        self.data.iter().map(|&index| data[index].id()).collect()
+        self.iter_data(data).map(|item| item.id()).collect()
     }
 
     pub fn get_by_id(&self, data: &PluginDataArray, id: &str) -> Option<FullPluginData> {
-        self.data.iter().find_map(|&index| {
-            let item = &data[index];
-            if item.id() == id {
-                Some(item.clone())
-            } else {
-                None
-            }
-        })
+        self.iter_data(data).find(|item| item.id() == id).cloned()
     }
 
     pub fn to_vec(&self, data: &PluginDataArray) -> Vec<FullPluginData> {
-        self.data.iter().map(|&index| data[index].clone()).collect()
+        self.iter_data(data).cloned().collect()
     }
 
     pub fn sort_asc(&mut self, data: &PluginDataArray, spec: PluginDataSortSpec) {
-        self.data.sort_by(|&a, &b| spec.cmp(&data[a], &data[b]));
+        self.indices.sort_by(|&a, &b| spec.cmp(&data[a], &data[b]));
     }
 
     pub fn sort_desc(&mut self, data: &PluginDataArray, spec: PluginDataSortSpec) {
-        self.data.sort_by(|&a, &b| spec.cmp(&data[b], &data[a]));
+        self.indices.sort_by(|&a, &b| spec.cmp(&data[b], &data[a]));
     }
 
     /// Truncate the view to the top `count` elements.
     pub fn truncate_top(&mut self, count: usize) {
-        if count < self.data.len() {
-            self.data.truncate(count);
+        if count < self.indices.len() {
+            self.indices.truncate(count);
         }
     }
 
     /// Truncate the view to the bottom `count` elements.
     pub fn truncate_bottom(&mut self, count: usize) {
-        if count < self.data.len() {
-            self.data.drain(0..self.data.len() - count);
+        if count < self.indices.len() {
+            self.indices.drain(0..self.indices.len() - count);
         }
     }
 
@@ -139,10 +142,10 @@ impl PluginDataArrayView {
                 let mut prev_date = date.clone();
                 prev_date.reverse_days(7);
 
-                let downloads = self.data.iter().fold(0, |acc, index| {
+                let downloads = self.indices.iter().fold(0, |acc, index| {
                     acc + data[*index].find_downloads_in_week(&date).unwrap_or(0)
                 });
-                let previous_downloads = self.data.iter().fold(0, |acc, index| {
+                let previous_downloads = self.indices.iter().fold(0, |acc, index| {
                     acc + data[*index].find_downloads_in_week(&prev_date).unwrap_or(0)
                 });
 
@@ -172,16 +175,14 @@ impl PluginDataArrayView {
         &self,
         data: &PluginDataArray,
     ) -> Vec<IndividualDownloadDataPoint> {
-        self.data
-            .iter()
-            .map(|&index| {
-                let plugin_data = &data[index];
-                let id = plugin_data.id();
-                let name = plugin_data.name();
-                let date = plugin_data.added_commit().date;
-                let downloads = plugin_data.download_count();
-                let version_count = plugin_data.data.version_history.len() as u32;
-                let total_loc = plugin_data.repo_data().map_or(0, |repo| {
+        self.iter_data(data)
+            .map(|item| {
+                let id = item.id();
+                let name = item.name();
+                let date = item.added_commit().date;
+                let downloads = item.download_count();
+                let version_count = item.data.version_history.len() as u32;
+                let total_loc = item.repo_data().map_or(0, |repo| {
                     repo.lines_of_code
                         .iter()
                         .filter(|(lang, _)| !LOC_EXCLUDED.contains(&lang.as_str()))
@@ -202,19 +203,15 @@ impl PluginDataArrayView {
     }
 
     pub fn overview(&self, data: &PluginDataArray) -> Vec<OverviewDataPoint> {
-        self.data
-            .iter()
-            .map(|&index| {
-                let plugin_data = &data[index];
-                OverviewDataPoint {
-                    id: plugin_data.id(),
-                    name: plugin_data.name(),
-                    author: plugin_data.author(),
-                    repo: plugin_data.data.current_entry.repo.clone(),
-                    repo_url: plugin_data.repo_url(),
-                    added_commit: plugin_data.added_commit(),
-                    removed_commit: plugin_data.removed_commit(),
-                }
+        self.iter_data(data)
+            .map(|item| OverviewDataPoint {
+                id: item.id(),
+                name: item.name(),
+                author: item.author(),
+                repo: item.repo(),
+                repo_url: item.repo_url(),
+                added_commit: item.added_commit(),
+                removed_commit: item.removed_commit(),
             })
             .collect()
     }
@@ -232,7 +229,7 @@ impl PluginDataArrayView {
         };
 
         let mut tmp = self
-            .data
+            .indices
             .iter()
             .filter_map(|&index| {
                 let plugin_data = &data[index];
@@ -303,7 +300,7 @@ impl PluginDataArrayView {
                 let mut new_plugins = 0;
                 let mut removed_plugins = 0;
 
-                for index in &self.data {
+                for index in &self.indices {
                     let plugin_data = &data[*index];
                     if plugin_data.released_in_month(&date) {
                         new_plugins += 1;
@@ -340,7 +337,7 @@ impl PluginDataArrayView {
                 let mut removed_count = 0;
                 let mut count = 0;
 
-                self.data.iter().for_each(|&index| {
+                self.indices.iter().for_each(|&index| {
                     let plugin_data = &data[index];
                     if plugin_data.released_in_month(&date) {
                         count += 1;
@@ -375,7 +372,7 @@ impl PluginDataArrayView {
                 let mut inactive = [0; 5];
                 let mut released_in_month = 0;
 
-                self.data.iter().for_each(|&index| {
+                self.indices.iter().for_each(|&index| {
                     let plugin_data = &data[index];
                     if plugin_data.released_in_month(&date) {
                         released_in_month += 1;
@@ -406,12 +403,9 @@ impl PluginDataArrayView {
 
     pub fn inactivity_distribution(&self, data: &PluginDataArray) -> Vec<i32> {
         let mut tmp: Vec<_> = self
-            .data
-            .iter()
-            .map(|&index| {
-                let plugin_data = &data[index];
-
-                let last_updated = plugin_data.last_updated();
+            .iter_data(data)
+            .map(|item| {
+                let last_updated = item.last_updated();
 
                 Date::now().diff_in_days(last_updated).abs()
             })
@@ -423,9 +417,8 @@ impl PluginDataArrayView {
     pub fn repo_data_points(&self, data: &PluginDataArray) -> PluginRepoDataPoints {
         let mut points = PluginRepoDataPoints::default();
 
-        self.data.iter().for_each(|&index| {
-            let plugin_data = &data[index];
-            let Some(repo_data) = plugin_data.repo_data() else {
+        self.iter_data(data).for_each(|item| {
+            let Some(repo_data) = item.repo_data() else {
                 return;
             };
 
@@ -474,7 +467,7 @@ impl PluginDataArrayView {
         });
 
         // now turn everything into percentages
-        let total_plugins = self.data.len() as f64;
+        let total_plugins = self.indices.len() as f64;
         points.package_managers.iter_mut().for_each(|point| {
             to_percentage(&mut point.value, total_plugins);
         });
@@ -512,9 +505,8 @@ impl PluginDataArrayView {
             descriptions: licenses.descriptions,
         };
 
-        self.data.iter().for_each(|&index| {
-            let plugin_data = &data[index];
-            let Some(repo_data) = plugin_data.repo_data() else {
+        self.iter_data(data).for_each(|item| {
+            let Some(repo_data) = item.repo_data() else {
                 return;
             };
 
@@ -564,27 +556,26 @@ impl PluginDataArrayView {
     /// The data is in percentage form.
     pub fn mismatched_data(&self, data: &PluginDataArray) -> Vec<NamedDataPoint> {
         let mut points = Vec::new();
-        self.data.iter().for_each(|&index| {
-            let plugin_data = &data[index];
-            let Some(repo_data) = plugin_data.repo_data() else {
+        self.iter_data(data).for_each(|item| {
+            let Some(repo_data) = item.repo_data() else {
                 return;
             };
 
-            if repo_data.manifest.description != plugin_data.data.current_entry.description {
+            if repo_data.manifest.description != item.data.current_entry.description {
                 increment_named_data_points(&mut points, "Description mismatch", 1.0);
             }
 
-            if repo_data.manifest.name != plugin_data.data.current_entry.name {
+            if repo_data.manifest.name != item.data.current_entry.name {
                 increment_named_data_points(&mut points, "Name mismatch", 1.0);
             }
 
-            if repo_data.manifest.author != plugin_data.data.current_entry.author {
+            if repo_data.manifest.author != item.data.current_entry.author {
                 increment_named_data_points(&mut points, "Author mismatch", 1.0);
             }
         });
 
         points.iter_mut().for_each(|point| {
-            to_percentage(&mut point.value, self.data.len() as f64);
+            to_percentage(&mut point.value, self.indices.len() as f64);
         });
 
         points
@@ -593,9 +584,8 @@ impl PluginDataArrayView {
     /// Usage percentages of optional manifest fields across all plugins in the view.
     pub fn optional_manifest_fields(&self, data: &PluginDataArray) -> Vec<NamedDataPoint> {
         let mut points = Vec::new();
-        self.data.iter().for_each(|&index| {
-            let plugin_data = &data[index];
-            let Some(repo_data) = plugin_data.repo_data() else {
+        self.iter_data(data).for_each(|item| {
+            let Some(repo_data) = item.repo_data() else {
                 return;
             };
 
@@ -611,7 +601,7 @@ impl PluginDataArrayView {
         });
 
         points.iter_mut().for_each(|point| {
-            to_percentage(&mut point.value, self.data.len() as f64);
+            to_percentage(&mut point.value, self.indices.len() as f64);
         });
 
         points
@@ -619,9 +609,8 @@ impl PluginDataArrayView {
 
     pub fn desktop_only_data(&self, data: &PluginDataArray) -> Vec<NamedDataPoint> {
         let mut points = Vec::new();
-        self.data.iter().for_each(|&index| {
-            let plugin_data = &data[index];
-            let Some(repo_data) = plugin_data.repo_data() else {
+        self.iter_data(data).for_each(|item| {
+            let Some(repo_data) = item.repo_data() else {
                 increment_named_data_points(&mut points, "Unknown", 1.0);
                 return;
             };
@@ -640,7 +629,7 @@ impl PluginDataArrayView {
         });
 
         points.iter_mut().for_each(|point| {
-            to_percentage(&mut point.value, self.data.len() as f64);
+            to_percentage(&mut point.value, self.indices.len() as f64);
         });
 
         points
@@ -649,9 +638,8 @@ impl PluginDataArrayView {
     pub fn lines_of_code_by_language(&self, data: &PluginDataArray) -> Vec<NamedDataPoint> {
         let mut points = Vec::new();
 
-        self.data.iter().for_each(|&index| {
-            let plugin_data = &data[index];
-            let Some(repo_data) = plugin_data.repo_data() else {
+        self.iter_data(data).for_each(|item| {
+            let Some(repo_data) = item.repo_data() else {
                 return;
             };
 
@@ -669,9 +657,8 @@ impl PluginDataArrayView {
     pub fn lines_of_code_by_language_usage(&self, data: &PluginDataArray) -> Vec<NamedDataPoint> {
         let mut points = Vec::new();
 
-        self.data.iter().for_each(|&index| {
-            let plugin_data = &data[index];
-            let Some(repo_data) = plugin_data.repo_data() else {
+        self.iter_data(data).for_each(|item| {
+            let Some(repo_data) = item.repo_data() else {
                 return;
             };
 
@@ -689,9 +676,8 @@ impl PluginDataArrayView {
     pub fn file_count_by_extension(&self, data: &PluginDataArray) -> Vec<NamedDataPoint> {
         let mut points = Vec::new();
 
-        self.data.iter().for_each(|&index| {
-            let plugin_data = &data[index];
-            let Some(repo_data) = plugin_data.repo_data() else {
+        self.iter_data(data).for_each(|item| {
+            let Some(repo_data) = item.repo_data() else {
                 return;
             };
 
@@ -708,12 +694,9 @@ impl PluginDataArrayView {
 
     pub fn lines_of_code_distribution(&self, data: &PluginDataArray) -> Vec<u32> {
         let mut tmp: Vec<_> = self
-            .data
-            .iter()
-            .map(|&index| {
-                let plugin_data = &data[index];
-
-                let Some(repo_data) = plugin_data.repo_data() else {
+            .iter_data(data)
+            .map(|item| {
+                let Some(repo_data) = item.repo_data() else {
                     return 0;
                 };
 
@@ -733,12 +716,9 @@ impl PluginDataArrayView {
 
     pub fn file_count_distribution(&self, data: &PluginDataArray) -> Vec<u32> {
         let mut tmp: Vec<_> = self
-            .data
-            .iter()
-            .map(|&index| {
-                let plugin_data = &data[index];
-
-                let Some(repo_data) = plugin_data.repo_data() else {
+            .iter_data(data)
+            .map(|item| {
+                let Some(repo_data) = item.repo_data() else {
                     return 0;
                 };
 
@@ -756,18 +736,46 @@ impl PluginDataArrayView {
         tmp
     }
 
-    pub fn i18n_usage(&self, data: &PluginDataArray) -> Vec<String> {
-        let mut plugins_with_i18n = Vec::new();
+    pub fn i18n_usage(&self, data: &PluginDataArray) -> Vec<NamedDataPoint> {
+        let mut data_points = Vec::new();
 
-        self.data.iter().for_each(|&index| {
-            let plugin_data = &data[index];
+        self.iter_data(data).for_each(|item| {
+            let Some(repo_data) = item.repo_data() else {
+                return;
+            };
 
-            if I18N_DEPENDENCIES.iter().any(|dep| plugin_data.has_dependency(dep).unwrap_or(false)) {
-                plugins_with_i18n.push(plugin_data.id());
+            if repo_data.has_i18n_dependencies && repo_data.has_i18n_files {
+                increment_named_data_points(
+                    &mut data_points,
+                    "Has i18n dependencies and files",
+                    1.0,
+                );
+            } else if repo_data.has_i18n_dependencies {
+                increment_named_data_points(&mut data_points, "Has i18n dependencies", 1.0);
+            } else if repo_data.has_i18n_files {
+                increment_named_data_points(&mut data_points, "Has i18n files", 1.0);
             }
         });
 
-        plugins_with_i18n
+        data_points
+    }
+
+    pub fn i18n_plugin_ids(&self, data: &PluginDataArray) -> Vec<String> {
+        let mut ids = Vec::new();
+
+        self.iter_data(data).for_each(|item| {
+            let Some(repo_data) = item.repo_data() else {
+                return;
+            };
+
+            if repo_data.has_i18n_dependencies || repo_data.has_i18n_files {
+                ids.push(item.id());
+            }
+        });
+
+        ids.sort();
+
+        ids
     }
 }
 

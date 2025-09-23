@@ -19,6 +19,8 @@ const frontEndFrameworksDataPoints = dataPoints.dependencies.filter(x => fronten
 const toolingDataPoints = dataPoints.dependencies.filter(x => tooling.includes(x.name));
 
 const i18nUsage = view.i18n_usage(data);
+const i18nPluginIds = view.i18n_plugin_ids(data);
+const i18nPercentage = toCompactString((i18nPluginIds.length / view.len()) * 100);
 
 const mostUsedDependencies = dataPoints.dependencies.filter(x => x.value >= 1);
 mostUsedDependencies.sort((a, b) => b.value - a.value);
@@ -187,15 +189,30 @@ const medFileCount = fileCountDistribution.length > 0 ? fileCountDistribution[Ma
 	<h3 id="translations">Translations</h3>
 
 	<p>
-		Plugins can use i18n libraries to provide translations for their user interface. The following shows all {i18nUsage.length} plugins that use an i18n library or framework, such as
-		i18next or react-i18next.
+		Some plugins include translations for multiple languages. This is usually done by including translation files in the repository. Plugins have three
+		different ways to apply translations: by using Obsidian's i18n instance, by including a translation library, such as <code>i18next</code>, or by hand
+		rolling their own solution. The chart below shows how many plugins use translations.
 	</p>
 
-	<ul>
-		{i18nUsage.sort().map(id => (
-			<li><PluginLink id={id}></PluginLink></li>
-		))}
-	</ul>
+	<BarChart dataPoints={i18nUsage} xLabel="i18n Usage" yLabel="Number of Plugins" client:idle />
+
+	<p>
+		A total of {i18nPluginIds.length} plugins ({i18nPercentage}%) use translations. These plugins are:
+	</p>
+
+	<details>
+		<summary>Click to expand</summary>
+
+		<ul>
+			{
+				i18nPluginIds.map(id => (
+					<li>
+						<PluginLink id={id} />
+					</li>
+				))
+			}
+		</ul>
+	</details>
 
 	<h3 id="most-used-dependencies">Most Used Dependencies</h3>
 

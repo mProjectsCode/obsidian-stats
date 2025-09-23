@@ -1,6 +1,7 @@
 use std::{fs, path::Path};
 
 use data_lib::{
+    common::{I18N_DEPENDENCIES, I18N_FILE_ENDINGS, I18N_LOCALE_CODES},
     input_data::{ObsCommunityPluginDeprecations, ObsCommunityPluginRemoved},
     plugin::{
         LicenseInfo, PluginData, PluginExtraData, PluginRepoData, bundlers::Bundler,
@@ -105,6 +106,8 @@ pub fn extract_data_from_repo(
     let mut bundlers = Vec::new();
     let mut package_json_license = LicenseInfo::NotFound;
 
+    let mut has_i18n_dependencies = false;
+
     if has_package_json {
         let package_json =
             fs::read_to_string(format!("{repo_path}/package.json")).map_err(|e| {
@@ -150,6 +153,10 @@ pub fn extract_data_from_repo(
                 }
             })
             .into();
+
+        has_i18n_dependencies = all_dependencies
+            .iter()
+            .any(|d| I18N_DEPENDENCIES.contains(&d.as_str()));
     }
 
     let license_file = files.iter().find(|file| {
@@ -169,6 +176,14 @@ pub fn extract_data_from_repo(
 
     let lines_of_code = count_lines_of_code(&repo_path);
 
+    let has_i18n_files = files.iter().any(|file| {
+        I18N_LOCALE_CODES.iter().any(|code| {
+            I18N_FILE_ENDINGS
+                .iter()
+                .any(|ending| file == &format!("{code}{ending}"))
+        })
+    });
+
     Ok(PluginRepoData {
         uses_typescript,
         has_package_json,
@@ -184,6 +199,8 @@ pub fn extract_data_from_repo(
         file_license,
         manifest,
         lines_of_code,
+        has_i18n_dependencies,
+        has_i18n_files,
     })
 }
 
