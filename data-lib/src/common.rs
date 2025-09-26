@@ -148,6 +148,15 @@ pub struct DownloadDataPoint {
 
 #[derive(Tsify, Debug, Clone, Serialize, Deserialize)]
 #[tsify(into_wasm_abi)]
+pub struct MultiDownloadDataPoint {
+    pub date: String,
+    pub category: String,
+    pub downloads: Option<u32>,
+    pub delta: Option<u32>,
+}
+
+#[derive(Tsify, Debug, Clone, Serialize, Deserialize)]
+#[tsify(into_wasm_abi)]
 pub struct VersionDataPoint {
     pub version: String,
     pub date: String,

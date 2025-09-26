@@ -5,6 +5,7 @@ use chumsky::{
     prelude::*,
 };
 use serde::{Deserialize, Serialize};
+use wasm_bindgen::prelude::*;
 
 fn version_parser<'a>() -> impl Parser<'a, &'a str, Version> {
     let number = text::int(10).map(|s: &str| s.parse::<u32>().unwrap());
@@ -44,14 +45,18 @@ thread_local! {
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize, Hash)]
+#[wasm_bindgen]
 pub struct Version {
     pub major: u32,
     pub minor: u32,
     pub patch: u32,
+    #[wasm_bindgen(getter_with_clone)]
     pub pre_release: Option<String>,
 }
 
+#[wasm_bindgen]
 impl Version {
+    #[wasm_bindgen(constructor)]
     pub fn new(major: u32, minor: u32, patch: u32, pre_release: Option<String>) -> Self {
         Version {
             major,
@@ -102,6 +107,18 @@ impl Version {
             patch: self.patch,
             pre_release: None,
         }
+    }
+
+    pub fn earlier_than(&self, other: &Version) -> bool {
+        self < other
+    }
+
+    pub fn later_than(&self, other: &Version) -> bool {
+        self > other
+    }
+
+    pub fn equals(&self, other: &Version) -> bool {
+        self == other
     }
 }
 

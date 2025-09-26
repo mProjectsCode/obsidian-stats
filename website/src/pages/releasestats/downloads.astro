@@ -1,12 +1,18 @@
 ---
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
 import StackedBarChart from '../../components/svelte/charts/StackedBarChart.svelte';
+import MultiDownloadChart from '../../components/svelte/charts/downloads/MultiDownloadChart.svelte';
 import { getReleaseDataArray } from '../../utils/data';
+import { Version } from '../../../../data-wasm/pkg/data_wasm';
 
 const dataArray = await getReleaseDataArray();
 
 const downloads = dataArray.total_downloads_per_version_by_os();
 const downloadsPercentages = dataArray.total_downloads_per_version_by_os_as_percentages();
+
+const allMinorVersions = dataArray.get_all_minor_versions();
+const downloadsEarliestVersion = new Version(1, 8, 0, undefined);
+const downloadVersions = allMinorVersions.filter(v => v.equals(downloadsEarliestVersion) || v.later_than(downloadsEarliestVersion)).toReversed();
 ---
 
 <StarlightPage
@@ -14,7 +20,7 @@ const downloadsPercentages = dataArray.total_downloads_per_version_by_os_as_perc
 		title: 'Release Downloads',
 		description: `Stats about the download number of Obsidian releases.`,
 	}}
-	headings={[]}
+	headings={[{ depth: 2, text: 'Weekly Downloads by Version Number', slug: 'weekly-downloads' }]}
 >
 	<p>
 		This page presents download statistics for Obsidian releases, including the total number of downloads per version and the distribution of downloads across
@@ -34,4 +40,21 @@ const downloadsPercentages = dataArray.total_downloads_per_version_by_os_as_perc
 	<p>This graph shows the distribution of downloads among the different operating systems.</p>
 
 	<StackedBarChart dataPoints={downloadsPercentages} xLabel="Version Number" yLabel="Downloads" skewLabels percentages xPadding={0} client:idle />
+
+	<h2 id="weekly-downloads">Weekly Downloads by Version Number</h2>
+
+	{
+		downloadVersions.map(v => (
+			<>
+				<h3>{v.to_fancy_string()}</h3>
+
+				<p>
+					The following charts show the weekly download numbers for all patch versions belonging to Obsidian {v.to_fancy_string()}. The first chart shows the
+					absolute download numbers, while the second chart shows the weekly changes in download numbers.
+				</p>
+
+				<MultiDownloadChart dataUrl={`/data/releases/weekly-downloads/${v.to_fancy_string()}.json`} client:idle />
+			</>
+		))
+	}
 </StarlightPage>

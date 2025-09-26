@@ -3,13 +3,15 @@ use regex::Regex;
 use wasm_bindgen::prelude::*;
 
 use crate::{
-    common::StackedNamedDataPoint,
+    common::{MultiDownloadDataPoint, StackedNamedDataPoint},
+    date::Date,
     iter_ext::{DedupExt, GroupByExt, SortExt},
     release::{
         ChangeLogChangeCategory, ChangelogChanges, ChangelogDataPoint, GithubReleaseInfo, OS,
         ObsidianPlatform, ObsidianReleaseInfo, ToFancyString, get_asset_cpu_instruction_set,
         get_asset_release_file_type,
     },
+    version::Version,
 };
 
 #[derive(Debug, Clone)]
@@ -442,6 +444,94 @@ impl ReleaseDataArray {
 
     pub fn get_changelog_categories(&self) -> Vec<ChangeLogChangeCategory> {
         ChangeLogChangeCategory::iter().collect()
+    }
+
+    pub fn weekly_download_data(&self, minor: Version) -> Vec<MultiDownloadDataPoint> {
+        let now = Date::now();
+        let data_collection_start = Date::new(2025, 8, 1);
+
+        self.interpolated_data
+            .iter()
+            .filter(|release| release.version.get_minor() == minor)
+            .flat_map(|release| {
+                let mut download_map = HashMap::new();
+
+                release.assets.iter().for_each(|asset| {
+                    asset.downloads.iter().for_each(|(date, count)| {
+                        let entry = download_map.entry(date.clone()).or_insert(0u32);
+                        *entry += *count;
+                    });
+                });
+
+                if download_map.is_empty() {
+                    return vec![];
+                }
+
+                let mut updates = download_map
+                    .keys()
+                    .map(|x| Date::from_string(x).expect("valid date"))
+                    .collect::<Vec<_>>();
+                updates.sort();
+
+                let mut first_update = updates
+                    .first()
+                    .expect("Expected at least one download entry")
+                    .clone();
+
+                first_update.reverse_days(7);
+                first_update.advance_to_weekday(0);
+
+                let mut downloads = first_update
+                    .iterate_weekly_to(&now)
+                    .filter_map(|date| {
+                        let date_str = date.to_fancy_string();
+                        let count = *download_map.get(&date_str)?;
+
+                        Some(MultiDownloadDataPoint {
+                            date: date_str.clone(),
+                            category: release.version.to_fancy_string(),
+                            downloads: Some(count),
+                            delta: None,
+                        })
+                    })
+                    .collect::<Vec<_>>();
+
+                if release.date > data_collection_start {
+                    downloads.insert(
+                        0,
+                        MultiDownloadDataPoint {
+                            date: release.date.to_fancy_string(),
+                            category: release.version.to_fancy_string(),
+                            downloads: Some(0),
+                            delta: Some(0),
+                        },
+                    );
+                }
+
+                for i in 1..downloads.len() {
+                    let previous = downloads[i - 1].downloads;
+                    let current = downloads[i].downloads;
+
+                    if let (Some(p), Some(c)) = (previous, current) {
+                        downloads[i].delta = Some(c.saturating_sub(p));
+                    }
+                }
+
+                downloads
+            })
+            .collect()
+    }
+
+    pub fn get_all_minor_versions(&self) -> Vec<Version> {
+        let mut versions = self
+            .raw_data
+            .iter()
+            .map(|release| release.version.get_minor())
+            .collect::<Vec<_>>();
+
+        versions.dedup();
+        versions.sort();
+        versions
     }
 }
 
