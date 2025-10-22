@@ -53,7 +53,7 @@ const downloadVersions = allMinorVersions.filter(v => v.equals(downloadsEarliest
 					absolute download numbers, while the second chart shows the weekly changes in download numbers.
 				</p>
 
-				<MultiDownloadChart dataUrl={`/data/releases/weekly-downloads/${v.to_fancy_string()}.json`} client:idle />
+				<MultiDownloadChart dataUrl={`/obsidian-stats/data/releases/weekly-downloads/${v.to_fancy_string()}.json`} client:idle />
 			</>
 		))
 	}
