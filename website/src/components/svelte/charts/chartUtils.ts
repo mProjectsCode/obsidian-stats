@@ -50,3 +50,22 @@ export function toCompactString(datum: number | string | symbol | boolean | Date
 export function navigateToPlugin(id: string): void {
 	window.open(`/obsidian-stats/plugins/${id}`, '_self');
 }
+
+const monthFormatOptions = {
+	year: 'numeric',
+	month: 'long',
+} as const;
+
+export function formatMonth(date: Date): string {
+	return date.toLocaleDateString(undefined, monthFormatOptions);
+}
+
+const dateFormatOptions = {
+	year: 'numeric',
+	month: 'long',
+	day: 'numeric',
+} as const;
+
+export function formatDate(date: Date): string {
+	return date.toLocaleDateString(undefined, dateFormatOptions);
+}

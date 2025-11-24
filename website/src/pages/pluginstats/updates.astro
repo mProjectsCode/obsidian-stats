@@ -3,12 +3,14 @@ import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
 import { getPluginDataArray } from '../../utils/data';
 import InactivityByReleaseChart from '../../components/svelte/charts/updates/InactivityByReleaseChart.svelte';
 import InactivityDistributionChart from '../../components/svelte/charts/updates/InactivityDistributionChart.svelte';
+import UpdatesWeeklyChart from '../../components/svelte/charts/updates/UpdatesWeeklyChart.svelte';
 
 const data = await getPluginDataArray();
 const view = data.view();
 
 const inactivityDataPoints = view.inactivity_by_release_month(data);
 const inactivityDistributionDataPoints = Array.from(view.inactivity_distribution(data));
+const updatesWeeklyDataPoints = view.updates_weekly(data);
 ---
 
 <StarlightPage
@@ -22,6 +24,13 @@ const inactivityDistributionDataPoints = Array.from(view.inactivity_distribution
 		changed, it's can still happen that a plugin no longer works as expected on a new version of Obsidian, especially when a plugin uses undocumented parts of
 		the API. Though it is worth noting that a plugin can work perfectly fine for years without any updates.
 	</p>
+
+	<p>
+		This chart shows the total number of updates across the entire plugin eco system per week. The dashed line is the raw data, while the continuos line is a
+		rolling average.
+	</p>
+
+	<UpdatesWeeklyChart dataPoints={updatesWeeklyDataPoints} client:idle />
 
 	<p>The following chart shows the overall distribution of plugin inactivity.</p>
 

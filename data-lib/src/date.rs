@@ -1,10 +1,31 @@
 use chrono::Datelike;
 use serde::{Deserialize, Serialize};
 
+pub fn is_leap_year(year: u32) -> bool {
+    (year.is_multiple_of(4) && !year.is_multiple_of(100)) || year.is_multiple_of(400)
+}
+
+pub fn get_days_in_month(month: u32, year: u32) -> u32 {
+    match month {
+        1 | 3 | 5 | 7 | 8 | 10 | 12 => 31,
+        4 | 6 | 9 | 11 => 30,
+        2 => {
+            if is_leap_year(year) {
+                29
+            } else {
+                28
+            }
+        }
+        _ => panic!("Invalid month"),
+    }
+}
+
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Hash)]
 pub struct Date {
     pub year: u32,
+    /// the month, starting with 1 for january
     pub month: u32,
+    // the day, starting at 1 each month
     pub day: u32,
 }
 
@@ -52,38 +73,31 @@ impl Date {
     }
 
     pub fn get_month_length(&self) -> u32 {
-        match self.month {
-            1 | 3 | 5 | 7 | 8 | 10 | 12 => 31,
-            4 | 6 | 9 | 11 => 30,
-            2 => {
-                if self.is_leap_year() {
-                    29
-                } else {
-                    28
-                }
-            }
-            _ => panic!("Invalid month"),
-        }
+        get_days_in_month(self.month, self.year)
     }
 
     pub fn is_leap_year(&self) -> bool {
-        (self.year.is_multiple_of(4) && !self.year.is_multiple_of(100))
-            || self.year.is_multiple_of(400)
+        is_leap_year(self.year)
     }
 
     pub fn days_since_epoch(&self) -> u32 {
         let mut days = 0;
         for y in 1970..self.year {
-            days += if Date::new(y, 1, 1).is_leap_year() {
-                366
-            } else {
-                365
-            };
+            days += if is_leap_year(y) { 366 } else { 365 };
         }
+        days + self.day_in_year() - 1 // Subtract one because we start counting from day 1
+    }
+
+    pub fn day_in_year(&self) -> u32 {
+        let mut days = 0;
         for m in 1..self.month {
-            days += Date::new(self.year, m, 1).get_month_length();
+            days += get_days_in_month(m, self.year);
         }
-        days + self.day - 1 // Subtract one because we start counting from day 1
+        days + self.day
+    }
+
+    pub fn week_number(&self) -> u32 {
+        (self.day_in_year() + 1) / 7 + 1
     }
 
     pub fn week_day(&self) -> u32 {
@@ -159,6 +173,12 @@ impl Date {
             // Move to same week
             self.advance_days(week_day - current_week_day);
         }
+    }
+
+    pub fn week_start(&self) -> Date {
+        let mut date = self.clone();
+        date.reverse_days(self.week_day());
+        date
     }
 
     pub fn diff_in_days(&self, other: &Date) -> i32 {
@@ -298,4 +318,34 @@ fn date_advance() {
     let mut date5 = Date::new(2023, 12, 31);
     date5.advance_month();
     assert_eq!(date5.to_fancy_string(), "2024-01-01");
+}
+
+#[test]
+fn week_number() {
+    let date1 = Date::new(2025, 1, 1);
+    assert_eq!(date1.week_number(), 1);
+
+    let date2 = Date::new(2025, 11, 23);
+    assert_eq!(date2.week_number(), 47);
+
+    let date3 = Date::new(2025, 11, 24);
+    assert_eq!(date3.week_number(), 48);
+}
+
+#[test]
+fn week_day() {
+    let date2 = Date::new(2025, 11, 23);
+    assert_eq!(date2.week_day(), 6);
+
+    let date3 = Date::new(2025, 11, 24);
+    assert_eq!(date3.week_day(), 0);
+}
+
+#[test]
+fn week_start() {
+    let date2 = Date::new(2025, 11, 23);
+    assert_eq!(date2.week_start(), Date::new(2025, 11, 17));
+
+    let date3 = Date::new(2025, 11, 24);
+    assert_eq!(date3.week_start(), date3);
 }

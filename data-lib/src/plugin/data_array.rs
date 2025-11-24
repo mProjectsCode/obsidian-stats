@@ -1,5 +1,6 @@
 use std::ops::Index;
 
+use hashbrown::HashMap;
 use wasm_bindgen::prelude::wasm_bindgen;
 
 use crate::{
@@ -412,6 +413,24 @@ impl PluginDataArrayView {
             .collect();
         tmp.sort_by(|a, b| b.cmp(a));
         tmp
+    }
+
+    pub fn updates_weekly(&self, data: &PluginDataArray) -> Vec<NamedDataPoint> {
+        let mut points = vec![];
+
+        self.iter_data(data).for_each(|item| {
+            item.data.version_history.iter().for_each(|version| {
+                increment_named_data_points(
+                    &mut points,
+                    &version.initial_release_date.week_start().to_fancy_string(),
+                    1.0,
+                );
+            });
+        });
+
+        points.sort_by(|a, b| a.name.cmp(&b.name));
+
+        points
     }
 
     pub fn repo_data_points(&self, data: &PluginDataArray) -> PluginRepoDataPoints {

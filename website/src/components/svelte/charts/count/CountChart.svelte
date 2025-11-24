@@ -3,6 +3,7 @@
 	import type { CountMonthlyDataPoint } from '../../../../../../data-wasm/pkg/data_wasm';
 	import { typeToString, type ItemType } from '../../../../utils/misc';
 	import ChartWrapper from '../../ChartWrapper.svelte';
+	import { formatMonth } from '../chartUtils';
 
 	interface Props {
 		dataPoints: CountMonthlyDataPoint[];
@@ -22,22 +23,24 @@
 				new_removed: point.new_removed,
 			};
 		});
-
-	const totalStroke = `Listed ${typeToString(type, true, true)}`;
-	const totalWithRemovedStroke = `Including Removed ${typeToString(type, true, true)}`;
 </script>
 
 <ChartWrapper>
-	<Plot grid color={{ legend: true, scheme: 'tableau10' }} class="no-overflow-clip" y={{ label: `↑ ${typeToString(type, false, true)} Count` }}>
-		<Line data={mappedDataPoints} x="date" y="total" stroke={totalStroke} marker="dot" />
-		<Line data={mappedDataPoints} x="date" y="total_with_removed" stroke={totalWithRemovedStroke} marker="dot" />
+	<Plot grid class="no-overflow-clip" y={{ label: `↑ ${typeToString(type, false, true)} Count` }}>
+		<Line data={mappedDataPoints} x="date" y="total" stroke="var(--sl-color-text-accent)" marker="dot" />
 
 		<Pointer data={mappedDataPoints} x="date" maxDistance={5}>
 			{#snippet children({ data })}
-				<Dot {data} x="date" y="total" fill={totalStroke} />
-				<Dot {data} x="date" y="total_with_removed" fill={totalWithRemovedStroke} />
-				<Text {data} fill={totalStroke} x="date" y="total" text={d => d.total.toFixed()} lineAnchor="bottom" dy={-7} />
-				<Text {data} fill={totalWithRemovedStroke} x="date" y="total_with_removed" text={d => d.total_with_removed.toFixed()} lineAnchor="bottom" dy={-7} />
+				<Dot {data} x="date" y="total" fill="var(--sl-color-text-accent)" />
+				<Text
+					{data}
+					fill="var(--sl-color-text-accent)"
+					x="date"
+					y="total"
+					text={d => `${formatMonth(d.date)}\n${d.total.toFixed()}`}
+					lineAnchor="bottom"
+					dy={-7}
+				/>
 			{/snippet}
 		</Pointer>
 	</Plot>

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Plot, Line, Frame, RectX, BrushX, RuleX, Dot, Pointer, Text, AxisX, AxisY } from 'svelteplot';
 	import type { DownloadDataPoint, VersionDataPoint } from '../../../../../../data-wasm/pkg/data_wasm';
-	import { smooth, toCompactString } from '../chartUtils';
+	import { formatDate, formatMonth, smooth, toCompactString } from '../chartUtils';
 
 	interface Props {
 		dataPoints: DownloadDataPoint[];
@@ -65,7 +65,15 @@
 	{/if}
 	<Pointer data={filteredData} x="date" y="downloads" maxDistance={30}>
 		{#snippet children({ data })}
-			<Text {data} fill="var(--sl-color-text-accent)" x="date" y="downloads" text={d => toCompactString(d.downloads)} lineAnchor="bottom" dy={-7} />
+			<Text
+				{data}
+				fill="var(--sl-color-text-accent)"
+				x="date"
+				y="downloads"
+				text={d => `${formatDate(d.date)}\n${toCompactString(d.downloads)}`}
+				lineAnchor="bottom"
+				dy={-7}
+			/>
 			<Dot {data} x="date" y="downloads" fill="var(--sl-color-text-accent)" />
 		{/snippet}
 	</Pointer>
@@ -84,7 +92,15 @@
 	{/if}
 	<Pointer data={filteredData} x="date" y="delta" maxDistance={30}>
 		{#snippet children({ data })}
-			<Text {data} fill="var(--sl-color-text-accent)" x="date" y="delta" text={d => toCompactString(d.delta)} lineAnchor="bottom" dy={-7} />
+			<Text
+				{data}
+				fill="var(--sl-color-text-accent)"
+				x="date"
+				y="delta"
+				text={d => `${formatDate(d.date)}\n${toCompactString(d.delta)}`}
+				lineAnchor="bottom"
+				dy={-7}
+			/>
 			<Dot {data} x="date" y="delta" fill="var(--sl-color-text-accent)" />
 		{/snippet}
 	</Pointer>

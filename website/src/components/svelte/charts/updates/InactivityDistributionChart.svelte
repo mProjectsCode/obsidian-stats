@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Line, Plot } from 'svelteplot';
+	import { GridY, Line, Plot } from 'svelteplot';
 	import ChartWrapper from '../../ChartWrapper.svelte';
 
 	interface Props {
@@ -33,11 +33,11 @@
 
 <ChartWrapper>
 	<Plot
-		grid
 		x={{ label: 'Distribution →', type: 'linear', percent: true }}
 		y={{ label: '↑ Years of Inactivity', tickFormat: formatTick, ticks: ticks }}
 		class="no-overflow-clip"
 	>
+		<GridY />
 		<Line data={mappedDataPoints} x="index" y="inactivity" stroke="var(--sl-color-text-accent)" />
 	</Plot>
 </ChartWrapper>
