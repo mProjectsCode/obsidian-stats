@@ -1,6 +1,5 @@
 use std::ops::Index;
 
-use hashbrown::HashMap;
 use wasm_bindgen::prelude::wasm_bindgen;
 
 use crate::{
