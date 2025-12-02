@@ -96,7 +96,13 @@ export default defineConfig({
 			],
 			customCss: ['./src/styles.css'],
 		}),
-		svelte(),
+		svelte({
+			compilerOptions: {
+				experimental: {
+					async: false,
+				}
+			}
+		}),
 	],
 	redirects: {
 		'/globalstats/plugins/': '/obsidian-stats/',
