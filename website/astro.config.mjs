@@ -100,8 +100,8 @@ export default defineConfig({
 			compilerOptions: {
 				experimental: {
 					async: false,
-				}
-			}
+				},
+			},
 		}),
 	],
 	redirects: {

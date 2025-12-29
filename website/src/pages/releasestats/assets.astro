@@ -40,8 +40,8 @@ const assetInstructionSet = dataArray.get_asset_instruction_set_percentages();
 		This graph shows the split between downloads of assets for different instruction sets. The instruction set is the type of CPU architecture that the asset is
 		built for, such as x86 or ARM. From this we can see that downloads for only-ARM assets make up only {
 			assetInstructionSet.find(x => x.layer === 'ARM')?.value?.toFixed(1)
-		}% of the total downloads. The Windows <code>.exe</code> assets for version <code>1.6.0</code> and later and the macOS <code>.dmg</code> assets are combined
-		installers that include both x86 and ARM versions, and are thus labeled as "Both".
+		}% of the total downloads. The Windows <code>.exe</code> assets for version <code>1.6.0</code> and later and the macOS <code>.dmg</code> assets are combined installers
+		that include both x86 and ARM versions, and are thus labeled as "Both".
 	</p>
 
 	<StackedXBarChart dataPoints={assetInstructionSet} percentages client:idle />

@@ -102,8 +102,8 @@ const medFileCount = fileCountDistribution.length > 0 ? fileCountDistribution[Ma
 	<BarChart dataPoints={locByLanguages} xLabel="Language" yLabel="Lines of Code" skewLabels client:idle />
 
 	<p>
-		The next chart shows the distribution of the total lines of code per plugin. The average plugin has {toCompactString(avgLoc)} lines of code while the median
-		plugin has only {toCompactString(medLoc)} lines of code.
+		The next chart shows the distribution of the total lines of code per plugin. The average plugin has {toCompactString(avgLoc)} lines of code while the median plugin
+		has only {toCompactString(medLoc)} lines of code.
 	</p>
 
 	<LocDistributionChart dataPoints={locDistribution} client:idle />

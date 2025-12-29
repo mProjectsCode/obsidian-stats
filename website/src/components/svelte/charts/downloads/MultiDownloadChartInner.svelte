@@ -44,7 +44,7 @@
 </div>
 
 <Plot grid color={{ legend: true, scheme: 'tableau10' }} x={{ label: 'Date →' }} y={{ label: '↑ Downloads' }} class="no-overflow-clip">
-	<AxisX />
+	<AxisX removeDuplicateTicks />
 	<AxisY />
 	<Line data={filteredData} x={'date'} y={'downloads'} stroke={'category'}></Line>
 	<Pointer data={filteredData} x="date" y="downloads" maxDistance={30}>
@@ -56,7 +56,7 @@
 </Plot>
 
 <Plot grid color={{ legend: true, scheme: 'tableau10' }} x={{ label: 'Date →' }} y={{ label: '↑ Weekly Delta' }} class="no-overflow-clip">
-	<AxisX />
+	<AxisX removeDuplicateTicks />
 	<AxisY />
 	{#if zoomedToYear}
 		<Dot data={filteredData} x={'date'} y={'delta'} stroke={'category'} />

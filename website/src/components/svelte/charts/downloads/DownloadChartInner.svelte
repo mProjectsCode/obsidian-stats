@@ -57,7 +57,7 @@
 </div>
 
 <Plot grid x={{ label: 'Date →' }} y={{ label: '↑ Downloads' }} class="no-overflow-clip">
-	<AxisX />
+	<AxisX removeDuplicateTicks />
 	<AxisY />
 	<Line data={filteredData} x={'date'} y={'downloads'} stroke={'var(--sl-color-text-accent)'}></Line>
 	{#if filteredVersions}
@@ -80,7 +80,7 @@
 </Plot>
 
 <Plot grid x={{ label: 'Date →' }} y={{ label: '↑ Weekly Delta' }} class="no-overflow-clip">
-	<AxisX />
+	<AxisX removeDuplicateTicks />
 	<AxisY />
 	{#if zoomedToYear}
 		<Dot data={filteredData} x={'date'} y={'delta'} opacity={0.5} stroke={'var(--sl-color-text-accent)'} />

@@ -28,7 +28,7 @@ export function smooth<T extends Obj<K>, K extends keyof T>(data: T[], key: K, f
 	});
 }
 
-export function toCompactString(datum: number | string | symbol | boolean | Date | null | undefined): string {
+export function toCompactString(datum: number | string | symbol | boolean | Date | object | null | undefined): string {
 	if (datum == null) {
 		return '';
 	}
@@ -43,6 +43,9 @@ export function toCompactString(datum: number | string | symbol | boolean | Date
 	}
 	if (datum instanceof Date) {
 		return datum.toLocaleDateString();
+	}
+	if (typeof datum === 'object') {
+		return JSON.stringify(datum);
 	}
 	return datum;
 }
