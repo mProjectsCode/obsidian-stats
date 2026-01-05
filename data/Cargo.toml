@@ -5,7 +5,7 @@ edition = "2024"
 
 [dependencies]
 chrono = { version = "0.4.41", features = ["serde"] }
-chumsky = { version = "0.11.2", features = ["unstable"] }
+chumsky = { version = "0.12.0", features = ["unstable"] }
 hashbrown = { version = "0.16.0", features = ["serde"] }
 itertools = "0.14.0"
 rayon = "1.10.0"
@@ -17,8 +17,8 @@ serde_yaml = "0.9.34"
 strsim = "0.11.1"
 indicatif = { version = "0.18.0", features = ["rayon"] }
 data-lib = { version = "*", path = "../data-lib" }
-gix = { version = "0.74.1", features = ["blocking-network-client", "blocking-http-transport-reqwest-rust-tls"] }
+gix = { version = "0.77.0", features = ["blocking-network-client", "blocking-http-transport-reqwest-rust-tls"] }
 slug = "0.1.6"
 quick-xml = { version = "0.38.0" , features = ["serialize"] }
-reqwest = { version = "0.12.22", features = ["json", "blocking"] }
-tokei = "12.1.2"
+reqwest = { version = "0.13.1", features = ["json", "blocking"] }
+tokei = "14.0.0"
