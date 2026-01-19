@@ -6,7 +6,7 @@ const YEARS = [2020, 2021, 2022, 2023, 2024, 2025, 2026];
 const ROUTES = ['full', ...YEARS.map(year => [year.toString(), `${year}-new`]).flat()];
 
 export async function getStaticPaths() {
-	return YEARS.map(year => {
+	return ROUTES.map(year => {
 		return {
 			params: {
 				year: year,
