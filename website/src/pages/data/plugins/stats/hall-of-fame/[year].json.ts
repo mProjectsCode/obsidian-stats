@@ -1,7 +1,9 @@
 import type { APIRoute } from 'astro';
 import { getPluginDataArray } from '../../../../../utils/data';
 
-const YEARS = ['full', '2020', '2020-new', '2021', '2021-new', '2022', '2022-new', '2023', '2023-new', '2024', '2024-new', '2025', '2025-new'];
+const YEARS = [2020, 2021, 2022, 2023, 2024, 2025, 2026];
+
+const ROUTES = ['full', ...YEARS.map(year => [year.toString(), `${year}-new`]).flat()];
 
 export async function getStaticPaths() {
 	return YEARS.map(year => {
