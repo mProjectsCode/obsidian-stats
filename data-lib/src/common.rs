@@ -254,3 +254,19 @@ pub struct StackedNamedDataPoint {
     pub layer: String,
     pub value: f64,
 }
+
+#[derive(Tsify, Debug, Clone, Serialize)]
+#[tsify(into_wasm_abi)]
+pub struct MilestoneMonthGroup {
+    pub month: String,
+    pub milestones: Vec<MilestoneDataPoint>,
+}
+
+#[derive(Tsify, Debug, Clone, Serialize)]
+#[tsify(into_wasm_abi)]
+pub struct MilestoneDataPoint {
+    pub milestone_type: String,
+    pub milestone_value: u32,
+    pub date: String,
+    pub plugin_id: Option<String>,
+}

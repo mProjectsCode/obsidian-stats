@@ -13,6 +13,7 @@ use crate::{
 pub mod bundlers;
 pub mod data_array;
 pub mod full;
+pub mod milestones;
 pub mod packages;
 pub mod testing;
 pub mod warnings;

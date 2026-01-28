@@ -5,14 +5,15 @@ use wasm_bindgen::prelude::wasm_bindgen;
 use crate::{
     common::{
         CountMonthlyDataPoint, DownloadDataPoint, FILE_EXT_INCLUDED, HallOfFameDataPoint,
-        InactivityByReleaseDataPoint, IndividualDownloadDataPoint, LOC_EXCLUDED, OverviewDataPoint,
-        RemovedByReleaseDataPoint, increment_named_data_points, to_percentage,
+        InactivityByReleaseDataPoint, IndividualDownloadDataPoint, LOC_EXCLUDED,
+        MilestoneDataPoint, MilestoneMonthGroup, OverviewDataPoint, RemovedByReleaseDataPoint,
+        increment_named_data_points, to_percentage,
     },
     date::Date,
     license::Licenses,
     plugin::{
         LicenseInfo, NamedDataPoint, PluginData, PluginExtraData, PluginLicenseDataPoints,
-        PluginRepoDataPoints, full::FullPluginData,
+        PluginRepoDataPoints, full::FullPluginData, milestones,
     },
 };
 
@@ -794,6 +795,37 @@ impl PluginDataArrayView {
         ids.sort();
 
         ids
+    }
+
+    /// Calculate all milestones reached, grouped by month and sorted newest first
+    pub fn calculate_milestones(&self, data: &PluginDataArray) -> Vec<MilestoneMonthGroup> {
+        let milestone_data = milestones::calculate_milestones(data, self);
+
+        // Convert to Vec and sort by month (newest first)
+        let mut result: Vec<_> = milestone_data
+            .into_iter()
+            .map(|(month, milestones_in_month)| {
+                let milestone_points: Vec<MilestoneDataPoint> = milestones_in_month
+                    .into_iter()
+                    .map(|m| MilestoneDataPoint {
+                        milestone_type: m.milestone_type.to_string().to_string(),
+                        milestone_value: m.milestone_value,
+                        date: m.date.to_fancy_string(),
+                        plugin_id: m.plugin_id,
+                    })
+                    .collect();
+
+                MilestoneMonthGroup {
+                    month,
+                    milestones: milestone_points,
+                }
+            })
+            .collect();
+
+        // Sort by month in descending order (newest first)
+        result.sort_by(|a, b| b.month.cmp(&a.month));
+
+        result
     }
 }
 
