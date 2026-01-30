@@ -1,97 +1,221 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onMount, onDestroy } from 'svelte';
 	import type { OverviewDataPoint } from '../../../../data-wasm/pkg/data_wasm';
 	import type { ItemType } from '../../utils/misc';
+	import VirtualTable from './VirtualTable.svelte';
 
 	interface Props {
 		data?: OverviewDataPoint[];
 		type: ItemType;
 	}
 
-	let { data = [], type }: Props = $props();
+	const { data = [], type }: Props = $props();
 
-	const idSort = (x: OverviewDataPoint) => x.id.toLowerCase();
-	const nameSort = (x: OverviewDataPoint) => x.name.toLowerCase();
-	const authorSort = (x: OverviewDataPoint) => x.author.toLowerCase();
-	const repoSort = (x: OverviewDataPoint) => x.repo;
-	const addedSort = (x: OverviewDataPoint) => x.added_commit.date;
-	const removedSort = (x: OverviewDataPoint) => (x.removed_commit?.date ? x.removed_commit.date : '');
+	type SortBy = 'id' | 'name' | 'author' | 'repo' | 'added' | 'removed';
 
-	let sortCriteria: (x: OverviewDataPoint) => string = idSort;
+	let sortBy: SortBy = $state('id');
+	let ascending = $state(false);
+	let searchQuery = $state('');
+	// svelte-ignore state_referenced_locally
+	let filtered: OverviewDataPoint[] = $state([...data]);
+	let worker: Worker | null = null;
 
-	let ascending = false;
+	function initWorker(): void {
+		worker = new Worker(new URL('../../workers/tableWorker.ts', import.meta.url), {
+			type: 'module',
+		});
 
-	let sorted: OverviewDataPoint[] = $state([...data]);
-
-	function sort(criteria: (x: OverviewDataPoint) => string): void {
-		if (criteria === sortCriteria) {
-			ascending = !ascending;
-		} else {
-			sortCriteria = criteria;
-			ascending = true;
-		}
-
-		const sortModifier = ascending ? 1 : -1;
-		sorted = sorted.sort((a, b) => {
-			const _a = sortCriteria(a);
-			const _b = sortCriteria(b);
-
-			if (_a < _b) {
-				return -1 * sortModifier;
-			} else if (_a > _b) {
-				return 1 * sortModifier;
-			} else {
-				return 0;
+		worker.onmessage = (e: MessageEvent) => {
+			if (e.data.type === 'result') {
+				// Build filtered array from indices
+				filtered = e.data.indices.map((idx: number) => data[idx]);
 			}
+		};
+
+		// Send data once during initialization
+		worker.postMessage({
+			type: 'init',
+			data: $state.snapshot(data),
 		});
 	}
 
+	function processData(): void {
+		if (!worker) return;
+
+		// Only send sort/filter criteria, not the data
+		worker.postMessage({
+			type: 'process',
+			sortBy: sortBy,
+			ascending: ascending,
+			searchQuery: searchQuery,
+		});
+	}
+
+	function sort(newSortBy: SortBy): void {
+		if (newSortBy === sortBy) {
+			ascending = !ascending;
+		} else {
+			sortBy = newSortBy;
+			ascending = false;
+		}
+		processData();
+	}
+
+	function getSortIndicator(criteria: SortBy): string {
+		if (criteria === sortBy) {
+			return ascending ? ' ↑' : ' ↓';
+		}
+		return '';
+	}
+
+	$effect(() => {
+		searchQuery;
+		processData();
+	});
+
 	onMount(() => {
-		sort(sortCriteria);
+		initWorker();
+		processData();
+	});
+
+	onDestroy(() => {
+		worker?.terminate();
 	});
 </script>
 
-<table>
-	<thead>
-		<tr>
-			<th onclick={() => sort(idSort)}>Id</th>
-			<th onclick={() => sort(nameSort)}>Name</th>
-			<th onclick={() => sort(authorSort)}>Author</th>
-			<th onclick={() => sort(repoSort)}>Repo</th>
-			<th onclick={() => sort(addedSort)}>Added Date</th>
-			<th onclick={() => sort(removedSort)}>Removed Date</th>
-		</tr>
-	</thead>
-	<tbody>
-		{#each sorted as datum (datum.id)}
-			<tr>
-				<td>
-					{#if type === 'plugin'}
-						<a href={'/obsidian-stats/plugins/' + datum.id}>{datum.id}</a>
-					{:else}
-						<a href={'/obsidian-stats/themes/' + datum.id}>{datum.name}</a>
-					{/if}
-				</td>
-				<td>{datum.name}</td>
-				<td>{datum.author}</td>
-				<td>
-					<a href={'https://github.com/' + datum.repo} target="_blank">{datum.repo}</a>
-				</td>
-				<td>
-					<a href={'https://github.com/obsidianmd/obsidian-releases/commit/' + datum.added_commit.hash} target="_blank">{datum.added_commit.date}</a>
-				</td>
-				<td>
-					{#if datum.removed_commit}
-						<a href={'https://github.com/obsidianmd/obsidian-releases/commit/' + datum.removed_commit.hash} target="_blank">{datum.removed_commit.date}</a>
-					{/if}
-				</td>
-			</tr>
-		{/each}
-	</tbody>
-</table>
+<div class="table-controls">
+	<input type="text" placeholder="Search... (e.g. name:tasks author:clare)" bind:value={searchQuery} />
+	<span class="count">{filtered.length} of {data.length} items</span>
+</div>
+
+<VirtualTable items={filtered} colCount={6} colWidths={['16%', '22%', '18%', '22%', '11%', '11%']} minWidth={'72rem'} itemHeight={50} height={600}>
+	{#snippet header()}
+		<div
+			class="vt-cell vt-header-cell"
+			role="button"
+			tabindex="0"
+			onclick={() => sort('id')}
+			onkeydown={e => (e.key === 'Enter' || e.key === ' ') && sort('id')}
+		>
+			Id{getSortIndicator('id')}
+		</div>
+		<div
+			class="vt-cell vt-header-cell"
+			role="button"
+			tabindex="0"
+			onclick={() => sort('name')}
+			onkeydown={e => (e.key === 'Enter' || e.key === ' ') && sort('name')}
+		>
+			Name{getSortIndicator('name')}
+		</div>
+		<div
+			class="vt-cell vt-header-cell"
+			role="button"
+			tabindex="0"
+			onclick={() => sort('author')}
+			onkeydown={e => (e.key === 'Enter' || e.key === ' ') && sort('author')}
+		>
+			Author{getSortIndicator('author')}
+		</div>
+		<div
+			class="vt-cell vt-header-cell"
+			role="button"
+			tabindex="0"
+			onclick={() => sort('repo')}
+			onkeydown={e => (e.key === 'Enter' || e.key === ' ') && sort('repo')}
+		>
+			Repo{getSortIndicator('repo')}
+		</div>
+		<div
+			class="vt-cell vt-header-cell"
+			role="button"
+			tabindex="0"
+			onclick={() => sort('added')}
+			onkeydown={e => (e.key === 'Enter' || e.key === ' ') && sort('added')}
+		>
+			Added Date{getSortIndicator('added')}
+		</div>
+		<div
+			class="vt-cell vt-header-cell"
+			role="button"
+			tabindex="0"
+			onclick={() => sort('removed')}
+			onkeydown={e => (e.key === 'Enter' || e.key === ' ') && sort('removed')}
+		>
+			Removed Date{getSortIndicator('removed')}
+		</div>
+	{/snippet}
+
+	{#snippet row(datum: OverviewDataPoint, index: number)}
+		<div class="vt-cell">
+			{#if type === 'plugin'}
+				<a href={'/obsidian-stats/plugins/' + datum.id}>{datum.id}</a>
+			{:else}
+				<a href={'/obsidian-stats/themes/' + datum.id}>{datum.name}</a>
+			{/if}
+		</div>
+		<div class="vt-cell"><span>{datum.name}</span></div>
+		<div class="vt-cell"><span>{datum.author}</span></div>
+		<div class="vt-cell">
+			<a href={'https://github.com/' + datum.repo} target="_blank">{datum.repo}</a>
+		</div>
+		<div class="vt-cell">
+			<a href={'https://github.com/obsidianmd/obsidian-releases/commit/' + datum.added_commit.hash} target="_blank">{datum.added_commit.date}</a>
+		</div>
+		<div class="vt-cell">
+			{#if datum.removed_commit}
+				<a href={'https://github.com/obsidianmd/obsidian-releases/commit/' + datum.removed_commit.hash} target="_blank">{datum.removed_commit.date}</a>
+			{/if}
+		</div>
+	{/snippet}
+</VirtualTable>
 
 <style>
-	th {
+	.table-controls {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: 1rem;
+		gap: 1rem;
+	}
+
+	.table-controls input {
+		flex: 1;
+		border: 1px solid var(--sl-color-gray-5);
+		border-radius: 0.5rem;
+		padding-inline-start: 0.75rem;
+		padding-inline-end: 0.5rem;
+		background-color: var(--sl-color-black);
+		color: var(--sl-color-gray-2);
+		font-size: var(--sl-text-sm);
+		width: 100%;
+		height: 40px;
+	}
+
+	.table-controls input::placeholder {
+		color: var(--sl-color-gray-3);
+	}
+
+	.table-controls input:hover {
+		border-color: var(--sl-color-gray-2);
+		color: var(--sl-color-white);
+	}
+
+	.table-controls input:focus {
+		outline: none;
+		border-color: var(--sl-color-gray-2);
+		color: var(--sl-color-white);
+	}
+
+	.count {
+		white-space: nowrap;
+		font-size: 0.9rem;
+		opacity: 0.7;
+	}
+
+	.vt-header-cell {
 		cursor: pointer;
+		user-select: none;
+		font-weight: 600;
 	}
 </style>

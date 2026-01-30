@@ -22,7 +22,10 @@ const data = view.overview(dataArray);
 		tableOfContents: false,
 	}}
 >
-	<p>This table shows all plugins ever available on the community plugin page. You can sort the table by clicking on the column headers.</p>
+	<p>
+		This table shows all plugins ever available on the community plugin page. The table allows sorting and searching across all columns, or specific ones via
+		filters like <code>name:</code>, <code>author:</code>, <code>repo:</code>, and <code>id:</code>.
+	</p>
 
 	<DataIndex data={data} type={ItemType.Plugin} client:only="svelte" />
 </StarlightPage>
