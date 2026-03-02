@@ -1,5 +1,5 @@
 import init from '../../../data-wasm/pkg/data_wasm';
-// import wasmbin from '../../../data-wasm/pkg/data_wasm_bg.wasm?raw';
+import path from 'path';
 import fs from 'fs/promises';
 
 let wasm_promise: Promise<void> | undefined = undefined;
@@ -9,7 +9,8 @@ export async function loadWasm() {
 		return wasm_promise;
 	} else {
 		wasm_promise = (async () => {
-			const wasmbin = await fs.readFile(new URL('../../../data-wasm/pkg/data_wasm_bg.wasm', import.meta.url));
+			const file_path = path.resolve(process.cwd(), '../data-wasm/pkg/data_wasm_bg.wasm');
+			const wasmbin = await fs.readFile(file_path);
 
 			await init({ module_or_path: wasmbin as any });
 		})();

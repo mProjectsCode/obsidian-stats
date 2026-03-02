@@ -102,11 +102,14 @@ export default defineConfig({
 					async: false,
 				},
 			},
-		}),
+		})
 	],
 	redirects: {
 		'/globalstats/plugins/': '/obsidian-stats/',
 		'/pluginstats/halloffame/': '/obsidian-stats/pluginstats/hall-of-fame/',
 		'/pluginstats/repodata/': '/obsidian-stats/pluginstats/repo-data/',
+	},
+	experimental: {
+		rustCompiler: true,
 	},
 });

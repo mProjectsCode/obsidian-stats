@@ -1,10 +1,11 @@
 import fs from 'fs/promises';
+import path from 'path';
 import { loadWasm, wasm } from './wasmLoader';
 
 async function readChunksInDir(dir: string): Promise<string[]> {
-	const dirFiles = await fs.readdir(new URL(dir, import.meta.url));
+	const dirFiles = await fs.readdir(path.resolve(process.cwd(), dir));
 	const jsonFiles = dirFiles.filter(file => file.endsWith('.json'));
-	return Promise.all(jsonFiles.map(file => fs.readFile(new URL(`${dir}/${file}`, import.meta.url), 'utf-8')));
+	return Promise.all(jsonFiles.map(file => fs.readFile(path.resolve(process.cwd(), dir, file), 'utf-8')));
 }
 
 // ---------------------------------
@@ -36,8 +37,8 @@ export async function getPluginDataArray(): Promise<wasm.PluginDataArray> {
 }
 
 async function loadPluginData(): Promise<wasm.PluginDataArray> {
-	const pluginDataChunks = await readChunksInDir('../../../data/out/plugin-data');
-	const pluginRepoDataChunks = await readChunksInDir('../../../data/out/plugin-repo-data');
+	const pluginDataChunks = await readChunksInDir('../data/out/plugin-data');
+	const pluginRepoDataChunks = await readChunksInDir('../data/out/plugin-repo-data');
 
 	await loadWasm();
 
@@ -73,7 +74,7 @@ export async function getThemeDataArray(): Promise<wasm.ThemeDataArray> {
 }
 
 async function loadThemeData(): Promise<wasm.ThemeDataArray> {
-	const themeDataChunks = await readChunksInDir('../../../data/out/theme-data');
+	const themeDataChunks = await readChunksInDir('../data/out/theme-data');
 
 	await loadWasm();
 
@@ -109,9 +110,9 @@ export async function getReleaseDataArray(): Promise<wasm.ReleaseDataArray> {
 }
 
 async function loadReleaseData(): Promise<wasm.ReleaseDataArray> {
-	const releasesRawDataChunks = await readChunksInDir('../../../data/out/releases-github-raw');
-	const releasesInterpolatedDataChunks = await readChunksInDir('../../../data/out/releases-github-interpolated');
-	const releasesChangelogChunks = await readChunksInDir('../../../data/out/releases-changelog');
+	const releasesRawDataChunks = await readChunksInDir('../data/out/releases-github-raw');
+	const releasesInterpolatedDataChunks = await readChunksInDir('../data/out/releases-github-interpolated');
+	const releasesChangelogChunks = await readChunksInDir('../data/out/releases-changelog');
 
 	await loadWasm();
 
