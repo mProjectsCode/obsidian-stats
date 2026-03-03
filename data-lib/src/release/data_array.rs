@@ -529,8 +529,8 @@ impl ReleaseDataArray {
             .map(|release| release.version.get_minor())
             .collect::<Vec<_>>();
 
-        versions.dedup();
         versions.sort();
+        versions.dedup();
         versions
     }
 }

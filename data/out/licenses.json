@@ -992,20 +992,20 @@
     "patent-use"
   ],
   "conditions": [
-    "document-changes",
-    "include-copyright--source",
     "same-license--library",
-    "network-use-disclose",
-    "same-license--file",
+    "document-changes",
     "same-license",
     "disclose-source",
+    "network-use-disclose",
+    "same-license--file",
+    "include-copyright--source",
     "include-copyright"
   ],
   "limitations": [
     "liability",
-    "trademark-use",
     "patent-use",
-    "warranty"
+    "warranty",
+    "trademark-use"
   ],
   "descriptions": {
     "permissions": [
