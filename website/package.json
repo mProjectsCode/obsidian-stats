@@ -12,17 +12,17 @@
 		"format": "prettier --write ."
 	},
 	"dependencies": {
-		"@astrojs/check": "0.9.6",
-		"@astrojs/compiler-rs": "^0.1.2",
-		"@astrojs/starlight": "https://pkg.pr.new/@astrojs/starlight@3644",
-		"@astrojs/svelte": "7.2.5",
-		"astro": "6.0.0-beta.15",
-		"prettier": "^3.8.0",
+		"@astrojs/check": "0.9.8",
+		"@astrojs/compiler-rs": "^0.1.5",
+		"@astrojs/starlight": "0.38.1",
+		"@astrojs/svelte": "8.0.1",
+		"astro": "6.0.5",
+		"prettier": "^3.8.1",
 		"prettier-plugin-astro": "^0.14.1",
 		"prettier-plugin-svelte": "^3.5.1",
-		"svelte": "^5.53.8",
+		"svelte": "^5.53.12",
 		"svelte-check": "^4.4.5",
-		"svelteplot": "^0.11.0",
+		"svelteplot": "^0.11.1",
 		"typescript": "^5.9.3"
 	}
 }
