@@ -1,16 +1,16 @@
 ---
 title: Welcome to Obsidian Stats
-description: View Stats for the Obsidian Eco-System
+description: Discover the Obsidian ecosystem in minutes.
 template: splash
 hero:
-  tagline: View Stats for the Obsidian Eco-System
+  tagline: Explore plugin, theme, and release stats of the Obsidian ecosystem.
   image:
     dark: '../../assets/logo_complex_dark.svg'
     light: '../../assets/logo_complex_light.svg'
     alt: Obsidian Stats Logo
   actions:
-    - text: Learn More
-      link: /obsidian-stats/home/about/
+    - text: Explore Plugin Stats
+      link: /obsidian-stats/pluginstats/
       icon: right-arrow
       variant: primary
     - text: Visit on GitHub
@@ -23,21 +23,25 @@ import AutofillSearch from '../../components/AutofillSearch.astro';
 
 <AutofillSearch></AutofillSearch>
 
-## Next steps
-
 <CardGrid stagger>
-	<Card title="View the About Page">
-    	View the [About Page](/obsidian-stats/home/about/) to learn more about this project.
-  	</Card>
-	<Card title="Look at Global Stats">
-    	View stats for all plugins and Themes.
- 	</Card>
-	<Card title="Search for a Plugin or Theme">
-		Use the <a href="" id="open-search">search</a> at the top to search for stats on a specific plugin it theme.
-	</Card>
-	<Card title="Visit this Project on GitHub">
-    	Visit the [source code](https://github.com/mProjectsCode/obsidian-stats) for this project on GitHub.
-	</Card>
+  <Card title="Plugin Overview">
+    Open the [Plugin Overview](/obsidian-stats/pluginstats/) to view and filter all plugins that were ever available in Obsidian.
+  </Card>
+  <Card title="Theme Overview">
+    Browse the [Theme Overview](/obsidian-stats/themestats/) to explore the list of Obsidian themes.
+  </Card>
+  <Card title="Hall of Fame">
+    Jump to the [Plugin Hall of Fame](/obsidian-stats/pluginstats/hall-of-fame/) for milestone and all-time leader charts.
+  </Card>
+  <Card title="Search Fast">
+    Use <a href="" id="open-search">search</a> to find a specific plugin or a keyword across the entire site.
+  </Card>
+  <Card title="How the Data Works">
+    Read the [About page](/obsidian-stats/home/about/) for data sources, known limitations, and interpretation tips.
+  </Card>
+  <Card title="Source Code">
+    Visit the [GitHub repository](https://github.com/mProjectsCode/obsidian-stats) to inspect the source code and contribute.
+  </Card>
 </CardGrid>
 
 This project is not affiliated with [Obsidian](https://obsidian.md/).

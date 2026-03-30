@@ -33,6 +33,10 @@ export default defineConfig({
 							link: '/pluginstats',
 						},
 						{
+							label: 'Downloads',
+							link: '/pluginstats/downloads',
+						},
+						{
 							label: 'Hall of Fame',
 							link: '/pluginstats/hall-of-fame',
 						},
@@ -40,10 +44,6 @@ export default defineConfig({
 						{
 							label: 'Milestones',
 							link: '/pluginstats/milestones',
-						},
-						{
-							label: 'Downloads',
-							link: '/pluginstats/downloads',
 						},
 						{
 							label: 'Community Plugin List',
@@ -102,7 +102,7 @@ export default defineConfig({
 					async: false,
 				},
 			},
-		})
+		}),
 	],
 	redirects: {
 		'/globalstats/plugins/': '/obsidian-stats/',

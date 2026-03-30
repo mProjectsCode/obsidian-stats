@@ -13,16 +13,16 @@
 	},
 	"dependencies": {
 		"@astrojs/check": "0.9.8",
-		"@astrojs/compiler-rs": "^0.1.5",
-		"@astrojs/starlight": "0.38.1",
-		"@astrojs/svelte": "8.0.1",
-		"astro": "6.0.5",
+		"@astrojs/compiler-rs": "^0.1.6",
+		"@astrojs/starlight": "0.38.2",
+		"@astrojs/svelte": "8.0.4",
+		"astro": "6.1.1",
 		"prettier": "^3.8.1",
 		"prettier-plugin-astro": "^0.14.1",
 		"prettier-plugin-svelte": "^3.5.1",
-		"svelte": "^5.53.12",
+		"svelte": "^5.55.0",
 		"svelte-check": "^4.4.5",
-		"svelteplot": "^0.11.1",
+		"svelteplot": "^0.12.0",
 		"typescript": "^5.9.3"
 	}
 }
