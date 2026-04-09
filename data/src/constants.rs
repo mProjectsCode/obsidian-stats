@@ -16,8 +16,21 @@ pub const RELEASE_INFO_URL: &str = "https://obsidian.md/changelog.xml";
 pub const PLUGIN_DATA_PATH: &str = "./out/plugin-data";
 pub const PLUGIN_REPO_PATH: &str = "./out/plugin-repos";
 pub const PLUGIN_REPO_DATA_PATH: &str = "./out/plugin-repo-data";
+pub const PLUGIN_RELEASE_MAIN_JS_PATH: &str = "./out/plugin-release-mainjs";
 pub const THEME_DATA_PATH: &str = "./out/theme-data";
 
 pub const RELEASE_GITHUB_RAW_PATH: &str = "./out/releases-github-raw";
 pub const RELEASE_GITHUB_INTERPOLATED_PATH: &str = "./out/releases-github-interpolated";
 pub const RELEASE_CHANGELOG_PATH: &str = "./out/releases-changelog";
+
+pub const STATE_PATH: &str = "./out/state";
+pub const PLUGIN_RELEASE_ENRICHMENT_STATE_PATH: &str =
+    "./out/state/plugin-release-enrichment-state.json";
+pub const CLONE_STATE_PATH: &str = "./out/state/clone-state.json";
+pub const RELEASE_STATS_STATE_PATH: &str = "./out/state/release-stats-state.json";
+
+pub const DEFAULT_PLUGIN_RELEASE_REFRESH_DAYS: i64 = 3;
+pub const DEFAULT_CLONE_REFRESH_DAYS: i64 = 3;
+pub const DEFAULT_RELEASE_STATS_REFRESH_DAYS: i64 = 3;
+
+pub const GITHUB_RATE_LIMIT_MODE_ENV: &str = "GITHUB_RATE_LIMIT_MODE";

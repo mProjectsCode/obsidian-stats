@@ -3,18 +3,18 @@ use data_lib::{
     input_data::{ObsDownloadStats, ObsPluginList},
     plugin::PluginData,
 };
-use hashbrown::HashMap;
+use hashbrown::{HashMap, HashSet};
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 use std::{path::Path, process::Command};
 
 use crate::{
     constants::{OBS_RELEASES_REPO_PATH, PLUGIN_DATA_PATH, PLUGIN_LIST_PATH, PLUGIN_STATS_PATH},
-    file_utils::{empty_dir, read_chunked_data, write_in_chunks},
+    file_utils::{read_chunked_data, write_in_chunks_atomic},
     git_utils::get_obs_repo_changes,
     plugins::{BorrowedPluginData, PluginDownloadStats, PluginList},
 };
 
-fn get_plugin_lists() -> Vec<PluginList> {
+fn load_plugin_list_history() -> Vec<PluginList> {
     let commits = get_obs_repo_changes();
 
     assert!(!commits.is_empty(), "No plugin list changes found");
@@ -60,7 +60,7 @@ fn get_plugin_lists() -> Vec<PluginList> {
         .collect()
 }
 
-fn build_plugin_data(plugin_lists: &[PluginList]) -> Vec<BorrowedPluginData<'_>> {
+fn build_plugin_change_timeline(plugin_lists: &[PluginList]) -> Vec<BorrowedPluginData<'_>> {
     println!("Building plugin data...");
 
     let mut plugin_data_map = HashMap::new();
@@ -92,7 +92,7 @@ fn build_plugin_data(plugin_lists: &[PluginList]) -> Vec<BorrowedPluginData<'_>>
     plugin_data_map.into_iter().map(|(_, data)| data).collect()
 }
 
-fn update_weekly_download_stats(
+fn backfill_download_history(
     plugin_data: &mut [BorrowedPluginData],
     download_stats: &[PluginDownloadStats],
 ) {
@@ -106,7 +106,7 @@ fn update_weekly_download_stats(
     let start_date = Date::new(2020, 1, 1);
     let end_date = Date::now();
 
-    // something in may 2024 is messed up, e.g. advanced-canvas
+    // Something in May 2024 is broken in source data (for example advanced-canvas).
     let excluded_dates = [
         Date::new(2024, 5, 18),
         Date::new(2024, 5, 19),
@@ -119,12 +119,18 @@ fn update_weekly_download_stats(
         Date::new(2024, 5, 26),
         Date::new(2024, 5, 27),
         Date::new(2024, 5, 28),
-    ];
+    ]
+    .into_iter()
+    .collect::<HashSet<_>>();
 
     for date in start_date.iterate_daily_to(&end_date) {
         if excluded_dates.contains(&date) {
             continue;
         }
+
+        let Some(stats) = find_recent_download_stats(&download_stats_map, &date) else {
+            continue;
+        };
 
         for entry in plugin_data.iter_mut() {
             // Don't update downloads for plugins that were not yet released
@@ -132,21 +138,28 @@ fn update_weekly_download_stats(
                 continue;
             }
 
-            for i in 0..6 {
-                let mut current_date = date.clone();
-                current_date.advance_days(i);
-
-                let download_stats = download_stats_map.get(&current_date);
-                if let Some(stats) = download_stats {
-                    entry.update_download_history(stats);
-                    break;
-                }
-            }
+            entry.update_download_history(stats);
         }
     }
 }
 
-fn update_version_history(
+fn find_recent_download_stats<'a>(
+    download_stats_map: &'a HashMap<Date, &'a PluginDownloadStats>,
+    date: &Date,
+) -> Option<&'a PluginDownloadStats> {
+    for i in 0..6 {
+        let mut current_date = date.clone();
+        current_date.advance_days(i);
+
+        if let Some(stats) = download_stats_map.get(&current_date) {
+            return Some(stats);
+        }
+    }
+
+    None
+}
+
+fn build_version_history(
     plugin_data: &mut [BorrowedPluginData],
     download_stats: &[PluginDownloadStats],
 ) {
@@ -163,14 +176,14 @@ fn update_version_history(
     }
 }
 
-fn get_plugin_download_stats() -> Vec<PluginDownloadStats> {
+fn load_plugin_download_stat_history() -> Vec<PluginDownloadStats> {
     println!("Fetching plugin download stats...");
 
     let commits = get_obs_repo_changes();
 
     commits
         .par_iter()
-        .map(|commit| {
+        .filter_map(|commit| {
             let stats = Command::new("git")
                 .args([
                     "cat-file",
@@ -196,11 +209,10 @@ fn get_plugin_download_stats() -> Vec<PluginDownloadStats> {
                 }
             }
         })
-        .filter_map(|x| x)
         .collect()
 }
 
-fn filter_plugins(plugin_data: Vec<BorrowedPluginData>) -> Vec<BorrowedPluginData> {
+fn filter_low_signal_plugins(plugin_data: Vec<BorrowedPluginData>) -> Vec<BorrowedPluginData> {
     let now = Date::now();
 
     plugin_data
@@ -217,7 +229,7 @@ fn filter_plugins(plugin_data: Vec<BorrowedPluginData>) -> Vec<BorrowedPluginDat
             advanced_date.advance_days(7);
 
             // remove plugins that have no downloads and are more than 7 days old
-            !(plugin.download_count == 0 && advanced_date > now)
+            !(plugin.download_count == 0 && advanced_date < now)
         })
         .collect()
 }
@@ -226,36 +238,34 @@ pub fn build_plugin_stats() -> Result<(), Box<dyn std::error::Error>> {
     let time = std::time::Instant::now();
     let mut time2 = std::time::Instant::now();
 
-    let plugin_lists = get_plugin_lists();
+    let plugin_lists = load_plugin_list_history();
 
     println!("Get plugin lists: {:#?}", time2.elapsed());
     time2 = std::time::Instant::now();
 
-    let mut plugin_data = build_plugin_data(&plugin_lists);
+    let mut plugin_data = build_plugin_change_timeline(&plugin_lists);
 
     println!("Build Plugin Data {:#?}", time2.elapsed());
     time2 = std::time::Instant::now();
 
-    let download_stats = get_plugin_download_stats();
+    let download_stats = load_plugin_download_stat_history();
 
     println!("Get plugin download stats: {:#?}", time2.elapsed());
     time2 = std::time::Instant::now();
 
-    update_weekly_download_stats(&mut plugin_data, &download_stats);
+    backfill_download_history(&mut plugin_data, &download_stats);
 
     println!("Update weekly download stats: {:#?}", time2.elapsed());
     time2 = std::time::Instant::now();
 
-    update_version_history(&mut plugin_data, &download_stats);
+    build_version_history(&mut plugin_data, &download_stats);
 
     println!("Update version history: {:#?}", time2.elapsed());
     time2 = std::time::Instant::now();
 
-    plugin_data = filter_plugins(plugin_data);
+    plugin_data = filter_low_signal_plugins(plugin_data);
 
-    empty_dir(Path::new(PLUGIN_DATA_PATH))?;
-
-    write_in_chunks(Path::new(PLUGIN_DATA_PATH), &plugin_data, 50)?;
+    write_in_chunks_atomic(Path::new(PLUGIN_DATA_PATH), &plugin_data, 50)?;
 
     println!("Filtered and write plugin data: {:#?}", time2.elapsed());
 

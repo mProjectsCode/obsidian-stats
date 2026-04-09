@@ -49,6 +49,8 @@ const external_links: { text: string; href: string }[] = [
 const warnings = plugin.warnings();
 const versions = plugin.versions();
 const changes = plugin.changes();
+const latestReleaseSizeBytes = plugin.latest_release_main_js_size_bytes();
+const estimatedTargetEsVersion = plugin.estimated_target_es_version();
 
 function getAsideVariant(warning: PluginWarning): 'note' | 'tip' | 'caution' | 'danger' {
 	if (warning.severity === 'CAUTION') {
@@ -62,6 +64,20 @@ function getAsideVariant(warning: PluginWarning): 'note' | 'tip' | 'caution' | '
 
 const loc = plugin.loc();
 const totalLoc = loc?.reduce((acc, x) => acc + x.value, 0);
+
+function formatBytes(bytes: number | bigint): string {
+	const bytesAsNumber = Number(bytes);
+
+	if (bytesAsNumber === 0) {
+		return '0 B';
+	}
+
+	const units = ['B', 'KB', 'MB', 'GB'];
+	const exponent = Math.min(Math.floor(Math.log(bytesAsNumber) / Math.log(1024)), units.length - 1);
+	const value = bytesAsNumber / 1024 ** exponent;
+
+	return `${value.toFixed(value >= 100 ? 0 : value >= 10 ? 1 : 2)} ${units[exponent]}`;
+}
 ---
 
 <StarlightPage
@@ -344,6 +360,14 @@ const totalLoc = loc?.reduce((acc, x) => acc + x.value, 0);
 							<td>{plugin.has_test_files() ? 'Yes' : 'No'}</td>
 						</tr>
 						<tr>
+							<td>Latest Release main.js Size</td>
+							<td>{latestReleaseSizeBytes ? formatBytes(latestReleaseSizeBytes) : <span class="muted">Unknown</span>}</td>
+						</tr>
+						<tr>
+							<td>Detected ES Version</td>
+							<td>{estimatedTargetEsVersion ?? <span class="muted">Unknown</span>}</td>
+						</tr>
+						<tr>
 							<td>Uses BRAT beta releases</td>
 							<td>{plugin.has_beta_manifest() ? 'Yes' : 'No'}</td>
 						</tr>
@@ -383,6 +407,9 @@ const totalLoc = loc?.reduce((acc, x) => acc + x.value, 0);
 				</p>
 				<p class="muted">
 					<i>Installed Testing Frameworks</i> looks at installed dependencies. This does not mean that a plugin is actually using the testing framework.
+				</p>
+				<p class="muted">
+					<i>Detected ES Version</i> is the estimated used ECMAScript version based on the syntax used in the main JavaScript file of the latest release. This is just an estimation and might underestimate the actual target version.
 				</p>
 				<p class="muted">
 					<i>Dependencies</i> and <i>Dev Dependencies</i> only list the direct dependencies of the plugin.

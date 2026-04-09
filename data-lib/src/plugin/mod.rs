@@ -81,6 +81,11 @@ pub struct PluginRepoData {
     pub lines_of_code: HashMap<String, usize>,
     pub has_i18n_dependencies: bool,
     pub has_i18n_files: bool,
+    pub latest_release_main_js_size_bytes: Option<u64>,
+    pub estimated_target_es_version: Option<String>,
+    pub latest_release_tag: Option<String>,
+    pub latest_release_published_at: Option<String>,
+    pub latest_release_fetch_status: Option<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

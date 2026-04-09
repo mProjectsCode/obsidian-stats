@@ -253,7 +253,7 @@ impl PluginDataArrayView {
                 Some((index, downloads_new as u32, downloads_start_date))
             })
             .collect::<Vec<_>>();
-        tmp.sort_by(|a, b| b.1.cmp(&a.1)); // Sort by downloads_new in descending order
+        tmp.sort_by_key(|entry| std::cmp::Reverse(entry.1)); // Sort by downloads_new in descending order
         tmp.truncate(count);
 
         tmp.into_iter()
@@ -753,6 +753,113 @@ impl PluginDataArrayView {
 
         tmp.sort_by(|a, b| b.cmp(a));
         tmp
+    }
+
+    pub fn release_size_distribution(&self, data: &PluginDataArray) -> Vec<u32> {
+        let mut tmp: Vec<_> = self
+            .iter_data(data)
+            .filter_map(|item| {
+                let repo_data = item.repo_data()?;
+                repo_data
+                    .latest_release_main_js_size_bytes
+                    .map(|size| size.min(u32::MAX as u64) as u32)
+            })
+            .filter(|&size| size > 0)
+            .collect();
+
+        tmp.sort_by(|a, b| b.cmp(a));
+        tmp
+    }
+
+    /// Return plugin IDs sorted by latest release `main.js` size, largest first.
+    pub fn top_release_size_plugin_ids(&self, data: &PluginDataArray, count: usize) -> Vec<String> {
+        let mut tmp: Vec<(String, u64)> = self
+            .iter_data(data)
+            .filter_map(|item| {
+                let repo_data = item.repo_data()?;
+                let size = repo_data.latest_release_main_js_size_bytes?;
+
+                if size == 0 {
+                    return None;
+                }
+
+                Some((item.id(), size))
+            })
+            .collect();
+
+        tmp.sort_by(|a, b| b.1.cmp(&a.1).then_with(|| a.0.cmp(&b.0)));
+
+        tmp.into_iter().take(count).map(|(id, _)| id).collect()
+    }
+
+    /// Return top plugins by latest release `main.js` size.
+    /// The `name` field contains the plugin ID and the `value` field contains bytes.
+    pub fn top_release_size_plugins(
+        &self,
+        data: &PluginDataArray,
+        count: usize,
+    ) -> Vec<NamedDataPoint> {
+        let mut tmp: Vec<(String, u64)> = self
+            .iter_data(data)
+            .filter_map(|item| {
+                let repo_data = item.repo_data()?;
+                let size = repo_data.latest_release_main_js_size_bytes?;
+
+                if size == 0 {
+                    return None;
+                }
+
+                Some((item.id(), size))
+            })
+            .collect();
+
+        tmp.sort_by(|a, b| b.1.cmp(&a.1).then_with(|| a.0.cmp(&b.0)));
+
+        tmp.into_iter()
+            .take(count)
+            .map(|(id, size)| NamedDataPoint {
+                name: id,
+                value: size as f64,
+            })
+            .collect()
+    }
+
+    pub fn es_version_distribution(&self, data: &PluginDataArray) -> Vec<NamedDataPoint> {
+        let mut points = Vec::new();
+
+        self.iter_data(data).for_each(|item| {
+            let Some(repo_data) = item.repo_data() else {
+                return;
+            };
+
+            match &repo_data.estimated_target_es_version {
+                Some(version) => increment_named_data_points(&mut points, version, 1.0),
+                None => increment_named_data_points(&mut points, "Unknown", 1.0),
+            }
+        });
+
+        points
+    }
+
+    /// Return plugin IDs whose estimated target ES version matches `version`.
+    pub fn es_version_plugin_ids(&self, data: &PluginDataArray, version: &str) -> Vec<String> {
+        let mut ids: Vec<String> = self
+            .iter_data(data)
+            .filter_map(|item| {
+                let repo_data = item.repo_data()?;
+                let estimated_version = repo_data.estimated_target_es_version.as_deref()?;
+
+                if estimated_version.eq_ignore_ascii_case(version) {
+                    Some(item.id())
+                } else {
+                    None
+                }
+            })
+            .collect();
+
+        ids.sort();
+
+        ids
     }
 
     pub fn i18n_usage(&self, data: &PluginDataArray) -> Vec<NamedDataPoint> {

@@ -1,5 +1,5 @@
 ---
-const { id } = Astro.props;
+const { id, label } = Astro.props;
 ---
 
-<a href={'/obsidian-stats/plugins/' + id}>{id}</a>
+<a href={'/obsidian-stats/plugins/' + id}>{label ?? id}</a>

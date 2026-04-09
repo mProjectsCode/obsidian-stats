@@ -1,219 +1,39 @@
-use std::{fs, path::Path};
-
-use data_lib::{
-    common::{I18N_DEPENDENCIES, I18N_FILE_ENDINGS, I18N_LOCALE_CODES},
-    input_data::{ObsCommunityPluginDeprecations, ObsCommunityPluginRemoved},
-    plugin::{
-        LicenseInfo, PluginData, PluginExtraData, PluginRepoData, bundlers::Bundler,
-        packages::PackageManager, testing::TestingFramework,
-    },
+use std::{
+    path::Path,
+    sync::atomic::{AtomicUsize, Ordering},
 };
-use hashbrown::HashMap;
-use indicatif::ParallelProgressIterator;
-use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
+
+use data_lib::plugin::PluginExtraData;
+use hashbrown::{HashMap, HashSet};
+use rayon::{
+    ThreadPoolBuilder,
+    iter::{IntoParallelRefIterator, ParallelIterator},
+};
+
+use self::{
+    release_enrichment::enrich_release_metadata,
+    repo_analysis::{
+        analyze_plugin_repository, read_plugin_version_deprecations, read_removed_plugins,
+    },
+    run_stats::{ExtraPluginResult, ExtraRunStats},
+};
 
 use crate::{
-    constants::{
-        OBS_RELEASES_REPO_PATH, PLUGIN_DEPRECATIONS_PATH, PLUGIN_REMOVED_PATH,
-        PLUGIN_REPO_DATA_PATH, PLUGIN_REPO_PATH,
+    constants::{PLUGIN_RELEASE_ENRICHMENT_STATE_PATH, PLUGIN_REPO_DATA_PATH},
+    file_utils::{read_chunked_data_or_default, write_in_chunks_atomic},
+    plugins::{
+        data::read_plugin_data, license::license_compare::LicenseComparer,
+        release_acquisition::PluginReleaseState,
     },
-    file_utils::{empty_dir, write_in_chunks},
-    plugins::{data::read_plugin_data, license::license_compare::LicenseComparer},
+    state::read_json_or_default,
 };
 
-pub fn extract_extra_data() -> Result<(), Box<dyn std::error::Error>> {
-    let plugin_removed_list = get_removed_plugins()?;
-    let plugin_version_deprecations = get_plugin_version_deprecations()?;
+mod es_inference;
+mod release_enrichment;
+mod repo_analysis;
+mod run_stats;
 
-    let plugin_data = read_plugin_data()?;
-    let mut license_comparer = LicenseComparer::new();
-    license_comparer.init();
-
-    let extra_data = plugin_data
-        .par_iter()
-        .progress_count(plugin_data.len() as u64)
-        .map(|plugin| {
-            let removed_entry = plugin_removed_list.iter().find(|r| r.id == plugin.id);
-            let removal_reason = removed_entry.map(|r| r.reason.clone());
-
-            let deprecated_versions = plugin_version_deprecations
-                .0
-                .get(&plugin.id)
-                .map_or_else(Vec::new, |d| d.clone());
-
-            let repo = if plugin.removed_commit.is_none() {
-                extract_data_from_repo(plugin, &license_comparer)
-            } else {
-                Err(format!(
-                    "Plugin {} was removed, skipping repository extraction",
-                    plugin.id
-                ))
-            };
-
-            PluginExtraData {
-                id: plugin.id.clone(),
-                repo,
-                removal_reason,
-                deprecated_versions,
-            }
-        })
-        .collect::<Vec<PluginExtraData>>();
-
-    empty_dir(Path::new(PLUGIN_REPO_DATA_PATH))?;
-
-    write_in_chunks(Path::new(PLUGIN_REPO_DATA_PATH), &extra_data, 50)?;
-
-    Ok(())
-}
-
-pub fn extract_data_from_repo(
-    plugin: &PluginData,
-    license_comparer: &LicenseComparer,
-) -> Result<PluginRepoData, String> {
-    let repo_path = format!("{}/{}", PLUGIN_REPO_PATH, plugin.id);
-    if !std::path::Path::new(&repo_path).exists() {
-        return Err(format!(
-            "Repository for plugin {} does not exist at {}",
-            plugin.id, repo_path
-        ));
-    }
-
-    let manifest = fs::read_to_string(format!("{repo_path}/manifest.json"))
-        .map_err(|e| format!("Failed to read manifest for plugin {}: {}", plugin.id, e))?;
-    let manifest = match serde_json::from_str(&manifest) {
-        Ok(manifest) => manifest,
-        Err(e) => {
-            return Err(format!(
-                "Failed to parse manifest for plugin {}: {}",
-                plugin.id, e
-            ));
-        }
-    };
-
-    let files = list_files_in_repo(&repo_path);
-
-    let package_managers = PackageManager::find_package_managers(&files);
-    let has_test_files = has_test_files(&files);
-    let file_type_counts = count_file_types(&files);
-    let uses_typescript =
-        file_type_counts.contains_key("ts") || file_type_counts.contains_key("tsx");
-    let has_beta_manifest = files.contains(&"manifest-beta.json".to_string());
-    let has_package_json = files.contains(&"package.json".to_string());
-
-    let mut dependencies = Vec::new();
-    let mut dev_dependencies = Vec::new();
-    let mut testing_frameworks = Vec::new();
-    let mut bundlers = Vec::new();
-    let mut package_json_license = LicenseInfo::NotFound;
-
-    let mut has_i18n_dependencies = false;
-
-    if has_package_json {
-        let package_json =
-            fs::read_to_string(format!("{repo_path}/package.json")).map_err(|e| {
-                format!(
-                    "Failed to read package.json for plugin {}: {}",
-                    plugin.id, e
-                )
-            })?;
-        let package_json: serde_json::Value = serde_json::from_str(&package_json).map_err(|e| {
-            format!(
-                "Failed to parse package.json for plugin {}: {}",
-                plugin.id, e
-            )
-        })?;
-
-        dependencies = package_json
-            .get("dependencies")
-            .and_then(|d| d.as_object())
-            .map_or_else(Vec::new, |deps| deps.keys().cloned().collect());
-        dependencies.sort();
-
-        dev_dependencies = package_json
-            .get("devDependencies")
-            .and_then(|d| d.as_object())
-            .map_or_else(Vec::new, |dev_deps| dev_deps.keys().cloned().collect());
-        dev_dependencies.sort();
-
-        let all_dependencies = dependencies
-            .iter()
-            .chain(dev_dependencies.iter())
-            .collect::<Vec<_>>();
-
-        testing_frameworks = TestingFramework::find_testing_frameworks(&all_dependencies);
-        bundlers = Bundler::find_bundlers(&all_dependencies);
-        package_json_license = package_json
-            .get("license")
-            .and_then(|l| l.as_str())
-            .map(|l| {
-                if l.is_empty() {
-                    LicenseInfo::Unrecognized
-                } else {
-                    LicenseInfo::Known(l.to_string())
-                }
-            })
-            .into();
-
-        has_i18n_dependencies = all_dependencies
-            .iter()
-            .any(|d| I18N_DEPENDENCIES.contains(&d.as_str()));
-    }
-
-    let license_file = files.iter().find(|file| {
-        let lower_case_file = file.to_lowercase();
-        lower_case_file == "license"
-            || lower_case_file == "license.txt"
-            || lower_case_file == "license.md"
-    });
-
-    let file_license = license_file
-        .and_then(|file| {
-            fs::read_to_string(format!("{repo_path}/{file}"))
-                .map(|license_text| license_comparer.compare(&plugin.id, &license_text))
-                .ok()
-        })
-        .into();
-
-    let lines_of_code = count_lines_of_code(&repo_path);
-
-    let has_i18n_files = files.iter().any(|file| {
-        I18N_LOCALE_CODES.iter().any(|code| {
-            I18N_FILE_ENDINGS
-                .iter()
-                .any(|ending| file == &format!("{code}{ending}"))
-        })
-    });
-
-    Ok(PluginRepoData {
-        uses_typescript,
-        has_package_json,
-        package_managers,
-        dependencies,
-        dev_dependencies,
-        testing_frameworks,
-        bundlers,
-        has_test_files,
-        has_beta_manifest,
-        file_type_counts,
-        package_json_license,
-        file_license,
-        manifest,
-        lines_of_code,
-        has_i18n_dependencies,
-        has_i18n_files,
-    })
-}
-
-fn count_file_types(files: &[String]) -> HashMap<String, usize> {
-    let mut file_types = HashMap::new();
-    for file in files {
-        if let Some(ext) = file.split('.').next_back() {
-            *file_types.entry(ext.to_string()).or_insert(0) += 1;
-        }
-    }
-    file_types
-}
-
+const EXTRA_ANALYSIS_THREADS_ENV: &str = "EXTRA_ANALYSIS_THREADS";
 const LOC_EXCLUDED: &[&str] = &[
     "package-lock.json",
     "yarn.lock",
@@ -224,71 +44,152 @@ const LOC_EXCLUDED: &[&str] = &[
     "node_modules",
 ];
 
-fn count_lines_of_code(repo_path: &str) -> HashMap<String, usize> {
-    let config = tokei::Config::default();
-    let mut languages = tokei::Languages::new();
-
-    languages.get_statistics(&[repo_path], LOC_EXCLUDED, &config);
-
-    languages
+pub fn extract_extra_data() -> Result<(), Box<dyn std::error::Error>> {
+    let removed_plugins = read_removed_plugins()?;
+    let removed_reason_by_id = removed_plugins
         .into_iter()
-        .map(|(lang, stats)| (lang.name().into(), stats.code))
-        .filter(|(_, count)| *count > 0)
-        .collect()
-}
+        .map(|entry| (entry.id, entry.reason))
+        .collect::<HashMap<_, _>>();
 
-fn has_test_files(files: &[String]) -> bool {
-    files.iter().any(|file| {
-        file.ends_with(".test.ts")
-            || file.ends_with(".test.js")
-            || file.ends_with(".spec.ts")
-            || file.ends_with(".spec.js")
-    })
-}
+    let deprecated_versions_by_plugin = read_plugin_version_deprecations()?;
 
-fn list_files_in_repo(repo_path: &str) -> Vec<String> {
-    let mut files = Vec::new();
-    list_files_rec(repo_path, &mut files);
-    files
-}
+    let plugin_data = read_plugin_data()?;
+    let existing_extra_data: Vec<PluginExtraData> =
+        read_chunked_data_or_default(Path::new(PLUGIN_REPO_DATA_PATH));
 
-fn list_files_rec(path: &str, files: &mut Vec<String>) {
-    if let Ok(entries) = fs::read_dir(path) {
-        for entry in entries.flatten() {
-            let path = entry.path();
-            if path.is_dir() {
-                if path.file_name().is_some_and(|f| f == ".git") {
-                    continue; // Skip .git directory
+    let mut extra_data_by_id = existing_extra_data
+        .into_iter()
+        .map(|entry| (entry.id.clone(), entry))
+        .collect::<HashMap<_, _>>();
+
+    let active_plugin_ids = plugin_data
+        .iter()
+        .map(|plugin| plugin.id.clone())
+        .collect::<HashSet<_>>();
+    extra_data_by_id.retain(|id, _| active_plugin_ids.contains(id));
+
+    let release_state: PluginReleaseState =
+        read_json_or_default(Path::new(PLUGIN_RELEASE_ENRICHMENT_STATE_PATH));
+
+    let mut license_comparer = LicenseComparer::new();
+    license_comparer.init();
+
+    let default_threads = std::thread::available_parallelism()
+        .map(|n| n.get())
+        .unwrap_or(4);
+    let thread_count = configured_thread_count(EXTRA_ANALYSIS_THREADS_ENV, default_threads);
+
+    println!(
+        "Extra data: processing {} plugins (analysis phase, threads: {})",
+        plugin_data.len(),
+        thread_count
+    );
+
+    let processed = AtomicUsize::new(0);
+    let thread_pool = ThreadPoolBuilder::new()
+        .num_threads(thread_count)
+        .build()
+        .expect("Failed to build extra analysis thread pool");
+
+    let plugin_results = thread_pool.install(|| {
+        plugin_data
+            .par_iter()
+            .map(|plugin| {
+                let removal_reason = removed_reason_by_id.get(&plugin.id).cloned();
+                let deprecated_versions = deprecated_versions_by_plugin
+                    .0
+                    .get(&plugin.id)
+                    .map_or_else(Vec::new, |versions| versions.clone());
+
+                let mut stats = ExtraRunStats::default();
+
+                let repo = if plugin.removed_commit.is_none() {
+                    match analyze_plugin_repository(plugin, &license_comparer) {
+                        Ok(mut repo_data) => {
+                            enrich_release_metadata(
+                                plugin,
+                                &mut repo_data,
+                                &release_state,
+                                &mut stats,
+                            );
+                            Ok(repo_data)
+                        }
+                        Err(err) => {
+                            stats.repo_extract_failed += 1;
+                            Err(err)
+                        }
+                    }
+                } else {
+                    stats.removed_skipped += 1;
+                    Err(format!(
+                        "Plugin {} was removed, skipping repository extraction",
+                        plugin.id
+                    ))
+                };
+
+                let done = processed.fetch_add(1, Ordering::Relaxed) + 1;
+                if done.is_multiple_of(100) {
+                    println!("  Processed {done} / {}", plugin_data.len());
                 }
-                if path.file_name().is_some_and(|f| f == "node_modules") {
-                    continue; // Skip node_modules directory
-                }
 
-                list_files_rec(path.to_str().unwrap(), files);
-            } else if path.is_file()
-                && let Some(file_name) = path.file_name()
-            {
-                files.push(file_name.to_string_lossy().to_string());
-            }
-        }
+                ExtraPluginResult {
+                    data: PluginExtraData {
+                        id: plugin.id.clone(),
+                        repo,
+                        removal_reason,
+                        deprecated_versions,
+                    },
+                    stats,
+                }
+            })
+            .collect::<Vec<_>>()
+    });
+
+    let mut run_stats = ExtraRunStats::default();
+    for result in plugin_results {
+        run_stats.merge(result.stats);
+        extra_data_by_id.insert(result.data.id.clone(), result.data);
     }
+
+    checkpoint_extra_data(&extra_data_by_id)?;
+
+    println!("Extra data summary:");
+    println!("  Removed plugins skipped: {}", run_stats.removed_skipped);
+    println!(
+        "  Repo extraction failures: {}",
+        run_stats.repo_extract_failed
+    );
+    println!(
+        "  Missing release acquisition state: {}",
+        run_stats.release_state_missing
+    );
+    println!(
+        "  Release main.js scans (success): {}",
+        run_stats.release_main_js_scanned
+    );
+    println!(
+        "  Release main.js scans (failed/skip): {}",
+        run_stats.release_main_js_scan_failed
+    );
+
+    Ok(())
 }
 
-fn get_removed_plugins() -> Result<Vec<ObsCommunityPluginRemoved>, Box<dyn std::error::Error>> {
-    let plugin_removed_list = fs::read_to_string(Path::new(&format!(
-        "{OBS_RELEASES_REPO_PATH}/{PLUGIN_REMOVED_PATH}",
-    )))
-    .expect("Failed to read plugin removed list");
-
-    Ok(serde_json::from_str(&plugin_removed_list)?)
+fn configured_thread_count(env_var: &str, default_threads: usize) -> usize {
+    std::env::var(env_var)
+        .ok()
+        .and_then(|v| v.parse::<usize>().ok())
+        .filter(|count| *count > 0)
+        .unwrap_or(default_threads)
 }
 
-fn get_plugin_version_deprecations()
--> Result<ObsCommunityPluginDeprecations, Box<dyn std::error::Error>> {
-    let plugin_deprecations = fs::read_to_string(Path::new(&format!(
-        "{OBS_RELEASES_REPO_PATH}/{PLUGIN_DEPRECATIONS_PATH}",
-    )))
-    .expect("Failed to read plugin deprecations");
+fn checkpoint_extra_data(
+    extra_data_by_id: &HashMap<String, PluginExtraData>,
+) -> Result<(), Box<dyn std::error::Error>> {
+    let mut extra_data = extra_data_by_id.values().cloned().collect::<Vec<_>>();
+    extra_data.sort_by(|a, b| a.id.cmp(&b.id));
 
-    Ok(serde_json::from_str(&plugin_deprecations)?)
+    write_in_chunks_atomic(Path::new(PLUGIN_REPO_DATA_PATH), &extra_data, 50)?;
+
+    Ok(())
 }

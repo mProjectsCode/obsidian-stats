@@ -3,6 +3,7 @@ import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
 import BarChart from '../../components/svelte/charts/BarChart.svelte';
 import LocDistributionChart from '../../components/svelte/charts/misc/LocDistributionChart.svelte';
 import FileDistributionChart from '../../components/svelte/charts/misc/FileDistributionChart.svelte';
+import ReleaseSizeDistributionChart from '../../components/svelte/charts/misc/ReleaseSizeDistributionChart.svelte';
 import { getPluginDataArray } from '../../utils/data';
 import { toCompactString } from '../../components/svelte/charts/chartUtils';
 import PluginLink from '../../components/PluginLink.astro';
@@ -36,12 +37,49 @@ const fileTypeCounts = view.file_count_by_extension(data);
 
 const locDistribution = Array.from(view.lines_of_code_distribution(data));
 const fileCountDistribution = Array.from(view.file_count_distribution(data));
+const releaseSizeDistribution = Array.from(view.release_size_distribution(data));
+const topReleaseSizePlugins = view.top_release_size_plugins(data, 10).map(item => {
+	const pluginData = view.get_by_id(data, item.name);
+
+	return {
+		id: item.name,
+		name: pluginData?.name() ?? item.name,
+		sizeBytes: item.value,
+	};
+});
+const esVersionDistribution = view.es_version_distribution(data);
+const es5Plugins = view.es_version_plugin_ids(data, 'ES5').map(id => {
+	const pluginData = view.get_by_id(data, id);
+
+	return {
+		id,
+		name: pluginData?.name() ?? id,
+	};
+});
 
 const avgLoc = locDistribution.reduce((acc, curr) => acc + curr, 0) / locDistribution.length;
 const avgFileCount = fileCountDistribution.reduce((acc, curr) => acc + curr, 0) / fileCountDistribution.length;
+const avgReleaseSize = releaseSizeDistribution.length > 0
+	? releaseSizeDistribution.reduce((acc, curr) => acc + curr, 0) / releaseSizeDistribution.length
+	: 0;
 
 const medLoc = locDistribution.length > 0 ? locDistribution[Math.floor(locDistribution.length / 2)] : 0;
 const medFileCount = fileCountDistribution.length > 0 ? fileCountDistribution[Math.floor(fileCountDistribution.length / 2)] : 0;
+const medReleaseSize = releaseSizeDistribution.length > 0
+	? releaseSizeDistribution[Math.floor(releaseSizeDistribution.length / 2)]
+	: 0;
+
+function formatBytes(bytes: number): string {
+	if (bytes === 0) {
+		return '0 B';
+	}
+
+	const units = ['B', 'KB', 'MB', 'GB'];
+	const exponent = Math.min(Math.floor(Math.log(bytes) / Math.log(1024)), units.length - 1);
+	const value = bytes / 1024 ** exponent;
+
+	return `${value.toFixed(value >= 100 ? 0 : value >= 10 ? 1 : 2)} ${units[exponent]}`;
+}
 ---
 
 <StarlightPage
@@ -54,6 +92,9 @@ const medFileCount = fileCountDistribution.length > 0 ? fileCountDistribution[Ma
 		{ depth: 2, text: 'Programming Languages', slug: 'programming-languages' },
 		{ depth: 3, text: 'Lines of Code', slug: 'lines-of-code' },
 		{ depth: 3, text: 'Files', slug: 'files' },
+			{ depth: 2, text: 'Release Builds', slug: 'release-builds' },
+			{ depth: 3, text: 'Release Size Distribution', slug: 'release-size-distribution' },
+			{ depth: 3, text: 'ES Version', slug: 'es-version' },
 		{ depth: 2, text: 'Dependencies', slug: 'dependencies' },
 		{ depth: 3, text: 'Package Managers', slug: 'package-managers' },
 		{ depth: 3, text: 'Code Bundlers', slug: 'code-bundlers' },
@@ -123,6 +164,53 @@ const medFileCount = fileCountDistribution.length > 0 ? fileCountDistribution[Ma
 	</p>
 
 	<FileDistributionChart dataPoints={fileCountDistribution} client:idle />
+
+	<h2 id="release-builds">Release Builds</h2>
+
+	<h3 id="release-size-distribution">Release Size Distribution</h3>
+
+	<p>
+		The following chart shows the distribution of latest release <code>main.js</code> sizes per plugin. The average scanned release has a <code>main.js</code>
+		size of {formatBytes(avgReleaseSize)}, while the median is {formatBytes(medReleaseSize)}.
+	</p>
+
+	<ReleaseSizeDistributionChart dataPoints={releaseSizeDistribution} client:idle />
+
+	<details>
+		<summary>Top 10 largest plugins</summary>
+
+		<ul>
+			{
+				topReleaseSizePlugins.map(plugin => (
+					<li>
+						<PluginLink id={plugin.id} label={plugin.name} /> ({formatBytes(plugin.sizeBytes)})
+					</li>
+				))
+			}
+		</ul>
+	</details>
+
+	<h3 id="es-version">ES Version</h3>
+
+	<p>
+		The next chart shows the estimated ECMAScript target version used by plugin releases. Estimates are based on the syntax used in the release's <code>main.js</code> file.
+	</p>
+
+	<BarChart dataPoints={esVersionDistribution} xLabel="Target ES Version" yLabel="Plugins" client:idle />
+
+	<details>
+		<summary>Plugins targeting ES5 ({es5Plugins.length})</summary>
+
+		<ul>
+			{
+				es5Plugins.map(plugin => (
+					<li>
+						<PluginLink id={plugin.id} label={plugin.name} />
+					</li>
+				))
+			}
+		</ul>
+	</details>
 
 	<h2 id="dependencies">Dependencies</h2>
 

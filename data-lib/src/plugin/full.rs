@@ -275,6 +275,16 @@ impl FullPluginData {
         self.repo_data().map(|r| r.has_test_files)
     }
 
+    pub fn latest_release_main_js_size_bytes(&self) -> Option<u64> {
+        self.repo_data()
+            .and_then(|r| r.latest_release_main_js_size_bytes)
+    }
+
+    pub fn estimated_target_es_version(&self) -> Option<String> {
+        self.repo_data()
+            .and_then(|r| r.estimated_target_es_version.clone())
+    }
+
     pub fn dev_dependencies(&self) -> Option<Vec<String>> {
         self.repo_data().map(|r| r.dev_dependencies.clone())
     }

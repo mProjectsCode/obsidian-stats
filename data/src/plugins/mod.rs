@@ -14,6 +14,7 @@ pub mod clone_repos;
 pub mod data;
 pub mod extra;
 pub mod license;
+pub mod release_acquisition;
 
 #[derive(Debug, Clone)]
 pub struct PluginList {

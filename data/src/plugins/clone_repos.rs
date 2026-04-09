@@ -2,62 +2,118 @@ use std::{num::NonZero, path::Path};
 
 use data_lib::plugin::PluginData;
 use gix::prepare_clone;
-use indicatif::{MultiProgress, ProgressBar};
 use rayon::{
     ThreadPoolBuilder,
     iter::{IntoParallelIterator, ParallelIterator},
 };
+use serde::{Deserialize, Serialize};
 
-use crate::{constants::PLUGIN_REPO_PATH, file_utils::empty_dir, plugins::data::read_plugin_data};
+use hashbrown::HashMap;
+
+use crate::{
+    constants::{CLONE_STATE_PATH, DEFAULT_CLONE_REFRESH_DAYS, PLUGIN_REPO_PATH},
+    file_utils::ensure_dir,
+    plugins::{data::read_plugin_data, release_acquisition::acquire_plugin_release_main_js},
+    state::{is_fresh, now_unix_seconds, read_json_or_default, write_json_atomic},
+};
 
 enum CloneResult {
-    Success,
+    Success(String),
     Skipped(String),
     Failed(String, String),
 }
 
+#[derive(Debug, Clone, Serialize, Deserialize, Default)]
+struct CloneState {
+    entries: HashMap<String, CloneStateEntry>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+struct CloneStateEntry {
+    repo: String,
+    last_attempt_unix: i64,
+    last_success_unix: Option<i64>,
+    status: String,
+}
+
 pub fn clone_plugin_repos() -> Result<(), Box<dyn std::error::Error>> {
-    empty_dir(Path::new(PLUGIN_REPO_PATH))?;
+    ensure_dir(Path::new(PLUGIN_REPO_PATH))?;
 
     println!("Loading data...");
 
     let data = read_plugin_data()?;
+    let refresh_days = std::env::var("CLONE_REFRESH_DAYS")
+        .ok()
+        .and_then(|v| v.parse::<i64>().ok())
+        .unwrap_or(DEFAULT_CLONE_REFRESH_DAYS);
 
-    println!("Starting cloning process...");
+    let mut state: CloneState = read_json_or_default(Path::new(CLONE_STATE_PATH));
 
-    let progress = MultiProgress::new();
-    let total_progress = ProgressBar::new(data.len() as u64);
-    let success_progress = ProgressBar::new(data.len() as u64);
-    let skipped_progress = ProgressBar::new(data.len() as u64);
-    let failed_progress = ProgressBar::new(data.len() as u64);
+    println!(
+        "Starting cloning process (refresh window: {} days)...",
+        refresh_days
+    );
 
-    progress.add(total_progress.clone());
-    progress.add(success_progress.clone());
-    progress.add(skipped_progress.clone());
-    progress.add(failed_progress.clone());
+    let clone_jobs = data
+        .iter()
+        .filter(|plugin| {
+            if plugin.removed_commit.is_some() {
+                return true;
+            }
+
+            let path = Path::new(PLUGIN_REPO_PATH).join(plugin.id.clone());
+            let is_existing = path.exists();
+            if !is_existing {
+                return true;
+            }
+
+            let state_entry = state.entries.get(&plugin.id);
+            if let Some(state_entry) = state_entry
+                && state_entry.repo == plugin.current_entry.repo
+                && state_entry
+                    .last_success_unix
+                    .is_some_and(|t| is_fresh(t, refresh_days))
+            {
+                return false;
+            }
+
+            true
+        })
+        .cloned()
+        .collect::<Vec<_>>();
+
+    let fresh_skipped = data.len().saturating_sub(clone_jobs.len());
+    println!(
+        "Clone plan: total={}, queued={}, fresh_skipped={}",
+        data.len(),
+        clone_jobs.len(),
+        fresh_skipped
+    );
 
     let now = std::time::Instant::now();
 
-    let thread_pol = ThreadPoolBuilder::new()
+    let thread_pool = ThreadPoolBuilder::new()
         .num_threads(4)
         .build()
         .expect("Failed to build thread pool");
 
-    let results: Vec<_> = thread_pol.install(|| {
-        data.into_par_iter()
+    let clone_results: Vec<_> = thread_pool.install(|| {
+        clone_jobs
+            .into_par_iter()
             .map(|plugin| {
                 if plugin.removed_commit.is_some() {
-                    total_progress.inc(1);
-                    skipped_progress.inc(1);
                     return CloneResult::Skipped(plugin.id);
                 }
 
-                let clone_task = prep_clone(&plugin);
+                let target_path = Path::new(PLUGIN_REPO_PATH).join(plugin.id.clone());
+                if target_path.exists() {
+                    let _ = std::fs::remove_dir_all(&target_path);
+                }
+
+                let clone_task = prepare_shallow_clone(&plugin);
                 let mut clone_task = match clone_task {
                     Ok(task) => task,
                     Err(e) => {
-                        total_progress.inc(1);
-                        failed_progress.inc(1);
                         return CloneResult::Failed(plugin.id, e.to_string());
                     }
                 };
@@ -71,27 +127,71 @@ pub fn clone_plugin_repos() -> Result<(), Box<dyn std::error::Error>> {
                             .map_err(|e| e.to_string())
                     });
                 match clone_res {
-                    Ok(_) => {
-                        total_progress.inc(1);
-                        success_progress.inc(1);
-                        CloneResult::Success
-                    }
-                    Err(e) => {
-                        total_progress.inc(1);
-                        failed_progress.inc(1);
-                        CloneResult::Failed(plugin.id, e)
-                    }
+                    Ok(_) => CloneResult::Success(plugin.id),
+                    Err(e) => CloneResult::Failed(plugin.id, e),
                 }
             })
             .collect()
     });
 
-    total_progress.finish();
-    success_progress.finish();
-    skipped_progress.finish();
-    failed_progress.finish();
+    for result in &clone_results {
+        match result {
+            CloneResult::Success(id) => {
+                let repo = data
+                    .iter()
+                    .find(|p| &p.id == id)
+                    .map(|p| p.current_entry.repo.clone())
+                    .unwrap_or_default();
+                state.entries.insert(
+                    id.clone(),
+                    CloneStateEntry {
+                        repo,
+                        last_attempt_unix: now_unix_seconds(),
+                        last_success_unix: Some(now_unix_seconds()),
+                        status: "ok".to_string(),
+                    },
+                );
+            }
+            CloneResult::Failed(id, err) => {
+                let repo = data
+                    .iter()
+                    .find(|p| &p.id == id)
+                    .map(|p| p.current_entry.repo.clone())
+                    .unwrap_or_default();
+                state.entries.insert(
+                    id.clone(),
+                    CloneStateEntry {
+                        repo,
+                        last_attempt_unix: now_unix_seconds(),
+                        last_success_unix: None,
+                        status: format!("failed:{err}"),
+                    },
+                );
+            }
+            CloneResult::Skipped(id) => {
+                let repo = data
+                    .iter()
+                    .find(|p| &p.id == id)
+                    .map(|p| p.current_entry.repo.clone())
+                    .unwrap_or_default();
+                state.entries.insert(
+                    id.clone(),
+                    CloneStateEntry {
+                        repo,
+                        last_attempt_unix: now_unix_seconds(),
+                        last_success_unix: None,
+                        status: "skipped".to_string(),
+                    },
+                );
+            }
+        }
+    }
 
-    let failed_plugins: Vec<_> = results
+    write_json_atomic(Path::new(CLONE_STATE_PATH), &state)?;
+
+    acquire_plugin_release_main_js(&data)?;
+
+    let failed_plugins: Vec<_> = clone_results
         .iter()
         .filter_map(|result| match result {
             CloneResult::Failed(id, error) => Some((id, error)),
@@ -99,7 +199,7 @@ pub fn clone_plugin_repos() -> Result<(), Box<dyn std::error::Error>> {
         })
         .collect();
 
-    let skipped_plugins: Vec<_> = results
+    let skipped_plugins: Vec<_> = clone_results
         .iter()
         .filter_map(|result| match result {
             CloneResult::Skipped(id) => Some(id),
@@ -107,8 +207,16 @@ pub fn clone_plugin_repos() -> Result<(), Box<dyn std::error::Error>> {
         })
         .collect();
 
-    println!("Skipped plugins: {:?}", skipped_plugins.len());
-    println!("Failed plugins: {:?}", failed_plugins.len());
+    let success_count = clone_results
+        .iter()
+        .filter(|result| matches!(result, CloneResult::Success(_)))
+        .count();
+
+    println!("Clone summary:");
+    println!("  Success: {}", success_count);
+    println!("  Skipped (removed): {}", skipped_plugins.len());
+    println!("  Skipped (fresh): {}", fresh_skipped);
+    println!("  Failed: {}", failed_plugins.len());
     println!();
 
     for (id, error) in failed_plugins {
@@ -120,7 +228,9 @@ pub fn clone_plugin_repos() -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 
-fn prep_clone(plugin: &PluginData) -> Result<gix::clone::PrepareFetch, Box<dyn std::error::Error>> {
+fn prepare_shallow_clone(
+    plugin: &PluginData,
+) -> Result<gix::clone::PrepareFetch, Box<dyn std::error::Error>> {
     let clone = prepare_clone(
         gix::url::parse(
             format!("https://github.com/{}.git", plugin.current_entry.repo)
