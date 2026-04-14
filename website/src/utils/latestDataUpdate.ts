@@ -77,9 +77,7 @@ export async function getLatestDataUpdateSummary(): Promise<LatestDataUpdateSumm
 		return JSON.parse(await fs.readFile(absolutePath, 'utf8')) as LatestDataUpdateSummary;
 	} catch (error) {
 		if ((error as NodeJS.ErrnoException).code === 'ENOENT') {
-			throw new Error(
-				'Missing data/out/state/latest-data-update-summary.json. Run the Rust data pipeline to generate this file.',
-			);
+			throw new Error('Missing data/out/state/latest-data-update-summary.json. Run the Rust data pipeline to generate this file.');
 		}
 
 		throw error;

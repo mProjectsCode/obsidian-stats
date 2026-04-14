@@ -122,7 +122,9 @@ mod tests {
 
     #[test]
     fn pretty_format_enabled_for_state_path() {
-        assert!(should_pretty_format(Path::new("./out/state/clone-state.json")));
+        assert!(should_pretty_format(Path::new(
+            "./out/state/clone-state.json"
+        )));
     }
 
     #[test]

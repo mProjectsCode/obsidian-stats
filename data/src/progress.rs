@@ -1,5 +1,5 @@
 /// Returns the interval at which progress should be logged, based on the total number of items.
-/// 
+///
 /// Tries to log progress at 10% intervals, but rounds them to 10, 20, 50, 100, 200, 500, 1000 for better readability.
 pub fn progress_interval(total: usize) -> usize {
     if total == 0 {

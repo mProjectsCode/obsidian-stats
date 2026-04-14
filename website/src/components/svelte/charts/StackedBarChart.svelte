@@ -15,14 +15,16 @@
 
 	const { dataPoints, xLabel, yLabel, yDomain, skewLabels = false, percentages = false, xPadding = undefined }: Props = $props();
 
-	const mappedDataPoints = $derived.by(() => dataPoints.map((point, index) => {
-		return {
-			index: index,
-			label: point.name,
-			value: point.value,
-			stack: point.layer,
-		};
-	}));
+	const mappedDataPoints = $derived.by(() =>
+		dataPoints.map((point, index) => {
+			return {
+				index: index,
+				label: point.name,
+				value: point.value,
+				stack: point.layer,
+			};
+		}),
+	);
 </script>
 
 <ChartWrapper>

@@ -20,8 +20,7 @@ const dayFormatter = new Intl.DateTimeFormat('en-US', {
 
 const releaseStatusDescriptions: Record<string, string> = {
 	ok: 'Latest release metadata was fetched and a usable main.js cache is available.',
-	main_js_not_updated_since_success:
-		'The latest release was checked, but the last successful cached main.js stayed newer or more useful.',
+	main_js_not_updated_since_success: 'The latest release was checked, but the last successful cached main.js stayed newer or more useful.',
 	no_release: 'The repository exists, but GitHub did not expose a latest release for it.',
 	no_main_js_asset: 'A release exists, but it does not ship a main.js asset that can be analyzed.',
 	not_modified: 'GitHub returned the same release metadata as the previous run.',
@@ -98,13 +97,17 @@ function formatDay(date: string | null): string {
 		<tr>
 			<td>Plugin records</td>
 			<td>
-				{numberFormatter.format(summary.plugins.total)} total ({numberFormatter.format(summary.plugins.active)} active, {numberFormatter.format(summary.plugins.removed)} removed)
+				{numberFormatter.format(summary.plugins.total)} total ({numberFormatter.format(summary.plugins.active)} active, {
+					numberFormatter.format(summary.plugins.removed)
+				} removed)
 			</td>
 		</tr>
 		<tr>
 			<td>Theme records</td>
 			<td>
-				{numberFormatter.format(summary.themes.total)} total ({numberFormatter.format(summary.themes.active)} active, {numberFormatter.format(summary.themes.removed)} removed)
+				{numberFormatter.format(summary.themes.total)} total ({numberFormatter.format(summary.themes.active)} active, {
+					numberFormatter.format(summary.themes.removed)
+				} removed)
 			</td>
 		</tr>
 	</tbody>
@@ -123,27 +126,42 @@ function formatDay(date: string | null): string {
 		<tr>
 			<td>Community plugin dataset</td>
 			<td>{formatDay(summary.latest_plugin_download_snapshot_date)}</td>
-			<td>{numberFormatter.format(summary.plugins.total)} plugins and {numberFormatter.format(summary.plugins.version_snapshots)} version snapshots processed</td>
+			<td
+				>{numberFormatter.format(summary.plugins.total)} plugins and {numberFormatter.format(summary.plugins.version_snapshots)} version snapshots processed</td
+			>
 		</tr>
 		<tr>
 			<td>Repository cloning</td>
 			<td>{formatUnix(summary.clone_run_at_unix)}</td>
-			<td>{numberFormatter.format(summary.clone.ok)} cloned, {numberFormatter.format(summary.clone.failed)} failed, {numberFormatter.format(summary.clone.skipped)} skipped</td>
+			<td
+				>{numberFormatter.format(summary.clone.ok)} cloned, {numberFormatter.format(summary.clone.failed)} failed, {
+					numberFormatter.format(summary.clone.skipped)
+				} skipped</td
+			>
 		</tr>
 		<tr>
 			<td>Plugin releases</td>
 			<td>{formatUnix(summary.release_run_at_unix)}</td>
-			<td>{numberFormatter.format(summary.release_acquisition.main_js_coverage)} successful main.js acquisitions ({percentFormatter.format(summary.release_acquisition.main_js_coverage_rate)})</td>
+			<td
+				>{numberFormatter.format(summary.release_acquisition.main_js_coverage)} successful main.js acquisitions ({
+					percentFormatter.format(summary.release_acquisition.main_js_coverage_rate)
+				})</td
+			>
 		</tr>
 		<tr>
 			<td>Repository analysis</td>
 			<td>{formatUnix(summary.release_run_at_unix)}</td>
-			<td>{numberFormatter.format(summary.repo_analysis.active_success)} active plugins analyzed, {numberFormatter.format(summary.repo_analysis.active_failures)} misses</td>
+			<td
+				>{numberFormatter.format(summary.repo_analysis.active_success)} active plugins analyzed, {numberFormatter.format(summary.repo_analysis.active_failures)} misses</td
+			>
 		</tr>
 		<tr>
 			<td>Obsidian releases</td>
 			<td>{formatUnix(summary.obsidian_release_fetch_at_unix)}</td>
-			<td>{numberFormatter.format(summary.releases.github_release_snapshots)} GitHub releases, {numberFormatter.format(summary.releases.changelog_entries)} changelog entries</td>
+			<td
+				>{numberFormatter.format(summary.releases.github_release_snapshots)} GitHub releases, {numberFormatter.format(summary.releases.changelog_entries)} changelog
+				entries</td
+			>
 		</tr>
 	</tbody>
 </table>
@@ -164,7 +182,11 @@ function formatDay(date: string | null): string {
 <h2>Release Acquisition Status</h2>
 
 <p>
-This table breaks down the outcomes of the latest release acquisition attempts for active plugins. We only download the <code>main.js</code> asset from the latest release if there was a new release since the last successful acquisition or if we have never successfully acquired it before. This means that a status of <code>main_js_not_updated_since_success</code> is not necessarily a negative outcome, but rather an indication that the previously cached <code>main.js</code> is still considered up-to-date and useful for analysis.
+	This table breaks down the outcomes of the latest release acquisition attempts for active plugins. We only download the <code>main.js</code> asset from the latest
+	release if there was a new release since the last successful acquisition or if we have never successfully acquired it before. This means that a status of <code
+		>main_js_not_updated_since_success</code
+	> is not necessarily a negative outcome, but rather an indication that the previously cached <code>main.js</code> is still considered up-to-date and useful for
+	analysis.
 </p>
 
 <table>
@@ -176,20 +198,29 @@ This table breaks down the outcomes of the latest release acquisition attempts f
 		</tr>
 	</thead>
 	<tbody>
-		{summary.release_acquisition.status_counts.map(status => (
-			<tr>
-				<td><code>{status.label}</code></td>
-				<td>{percentFormatter.format(status.share)}</td>
-				<td>{compactReleaseStatusDescriptions[status.label] ?? releaseStatusDescriptions[status.label] ?? 'Less common edge-case status from the release fetch pipeline.'}</td>
-			</tr>
-		))}
+		{
+			summary.release_acquisition.status_counts.map(status => (
+				<tr>
+					<td>
+						<code>{status.label}</code>
+					</td>
+					<td>{percentFormatter.format(status.share)}</td>
+					<td>
+						{compactReleaseStatusDescriptions[status.label] ??
+							releaseStatusDescriptions[status.label] ??
+							'Less common edge-case status from the release fetch pipeline.'}
+					</td>
+				</tr>
+			))
+		}
 	</tbody>
 </table>
 
 <h2>Repository Analysis Errors</h2>
 
 <p>
-This table summarizes the most common errors encountered during repository analysis for active plugins in the latest run. Repository analysis involves cloning plugin repositories and extracting metadata and information from their contents.
+	This table summarizes the most common errors encountered during repository analysis for active plugins in the latest run. Repository analysis involves cloning
+	plugin repositories and extracting metadata and information from their contents.
 </p>
 
 {
@@ -207,7 +238,9 @@ This table summarizes the most common errors encountered during repository analy
 			<tbody>
 				{repoAnalysisErrorCounts.map(entry => (
 					<tr>
-						<td><code>{entry.label}</code> ({numberFormatter.format(entry.count)})</td>
+						<td>
+							<code>{entry.label}</code> ({numberFormatter.format(entry.count)})
+						</td>
 						<td>{percentFormatter.format(entry.share)}</td>
 						<td>{repoAnalysisErrorDescriptions[entry.label] ?? 'Less common edge-case status from repository analysis.'}</td>
 					</tr>

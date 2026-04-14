@@ -35,6 +35,7 @@ pub(super) struct MainJsResult {
     pub(super) estimated_target_es_version: Option<String>,
     pub(super) is_probably_minified: Option<bool>,
     pub(super) minification_score: Option<f32>,
+    pub(super) includes_sourcemap_comment: Option<bool>,
     pub(super) large_base64_blob_count: Option<u32>,
     pub(super) largest_base64_blob_length: Option<u32>,
     pub(super) worker_usage_count: Option<u32>,

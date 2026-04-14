@@ -303,6 +303,11 @@ impl FullPluginData {
         self.repo_data().and_then(|r| r.main_js_minification_score)
     }
 
+    pub fn main_js_includes_sourcemap_comment(&self) -> Option<bool> {
+        self.repo_data()
+            .and_then(|r| r.main_js_includes_sourcemap_comment)
+    }
+
     pub fn main_js_large_base64_blob_count(&self) -> Option<u32> {
         self.repo_data()
             .and_then(|r| r.main_js_large_base64_blob_count)

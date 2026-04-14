@@ -56,7 +56,6 @@ const mainJsLargeBase64BlobCount = plugin.main_js_large_base64_blob_count();
 const mainJsWorkerUsageCount = plugin.main_js_worker_usage_count();
 const mainJsWebassemblyUsageCount = plugin.main_js_webassembly_usage_count();
 
-
 function getAsideVariant(warning: PluginWarning): 'note' | 'tip' | 'caution' | 'danger' {
 	if (warning.severity === 'CAUTION') {
 		return 'caution';
@@ -389,7 +388,15 @@ function formatBytes(bytes: number | bigint): string {
 						</tr>
 						<tr>
 							<td>Includes large base64 blobs</td>
-							<td>{mainJsLargeBase64BlobCount === undefined ? <span class="muted">Unknown</span> : mainJsLargeBase64BlobCount > 0 ? `Yes (${mainJsLargeBase64BlobCount})` : 'No'}</td>
+							<td>
+								{mainJsLargeBase64BlobCount === undefined ? (
+									<span class="muted">Unknown</span>
+								) : mainJsLargeBase64BlobCount > 0 ? (
+									`Yes (${mainJsLargeBase64BlobCount})`
+								) : (
+									'No'
+								)}
+							</td>
 						</tr>
 						<tr>
 							<td>Uses Web Workers</td>
@@ -431,7 +438,8 @@ function formatBytes(bytes: number | bigint): string {
 				</table>
 
 				<p class="muted">
-					The above data may not be accurate and contain errors. For more information refer to the page about <a href="/obsidian-stats/home/data-collection">data collection</a>.
+					The above data may not be accurate and contain errors. For more information refer to the page about{' '}
+					<a href="/obsidian-stats/home/data-collection">data collection</a>.
 				</p>
 			</>
 		) : (

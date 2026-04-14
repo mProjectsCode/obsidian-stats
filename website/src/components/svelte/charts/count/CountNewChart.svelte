@@ -12,17 +12,19 @@
 
 	const { dataPoints, type }: Props = $props();
 
-	const mappedDataPoints = $derived.by(() => dataPoints
-		.filter(x => x.total_with_removed > 0)
-		.map(point => {
-			return {
-				date: new Date(point.date),
-				total: point.total,
-				total_with_removed: point.total_with_removed,
-				new: point.new,
-				new_removed: point.new_removed,
-			};
-		}));
+	const mappedDataPoints = $derived.by(() =>
+		dataPoints
+			.filter(x => x.total_with_removed > 0)
+			.map(point => {
+				return {
+					date: new Date(point.date),
+					total: point.total,
+					total_with_removed: point.total_with_removed,
+					new: point.new,
+					new_removed: point.new_removed,
+				};
+			}),
+	);
 
 	const smoothedData = $derived(smooth(mappedDataPoints, 'new', 3));
 </script>

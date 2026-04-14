@@ -61,6 +61,7 @@ pub(crate) fn analyze_plugin(
 fn apply_mainjs_fields(output: &mut PluginRepoData, result: &AnalysisResult) {
     output.main_js_is_probably_minified = result.mainjs.is_probably_minified;
     output.main_js_minification_score = result.mainjs.minification_score;
+    output.main_js_includes_sourcemap_comment = result.mainjs.includes_sourcemap_comment;
     output.main_js_large_base64_blob_count = result.mainjs.large_base64_blob_count;
     output.main_js_largest_base64_blob_length = result.mainjs.largest_base64_blob_length;
     output.main_js_worker_usage_count = result.mainjs.worker_usage_count;

@@ -9,14 +9,16 @@
 
 	const { dataPoints }: Props = $props();
 
-	const mappedDataPoints = $derived.by(() => dataPoints.map((point, index) => {
-		return {
-			index: index,
-			label: point.name,
-			value: point.value,
-			stack: point.layer,
-		};
-	}));
+	const mappedDataPoints = $derived.by(() =>
+		dataPoints.map((point, index) => {
+			return {
+				index: index,
+				label: point.name,
+				value: point.value,
+				stack: point.layer,
+			};
+		}),
+	);
 
 	function formatSize(value: any): string {
 		return `${(value / 1_000_000).toFixed()} MB`;

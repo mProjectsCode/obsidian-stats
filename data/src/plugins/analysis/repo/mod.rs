@@ -102,6 +102,7 @@ pub(super) fn into_plugin_repo_data(result: RepoResult) -> PluginRepoData {
         estimated_target_es_version: None,
         main_js_is_probably_minified: None,
         main_js_minification_score: None,
+        main_js_includes_sourcemap_comment: None,
         main_js_large_base64_blob_count: None,
         main_js_largest_base64_blob_length: None,
         main_js_worker_usage_count: None,

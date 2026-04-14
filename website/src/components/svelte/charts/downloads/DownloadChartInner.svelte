@@ -10,13 +10,15 @@
 
 	const { dataPoints, versions }: Props = $props();
 
-	const mappedData = $derived.by(() => dataPoints.map(point => {
-		return {
-			date: new Date(point.date),
-			downloads: (point.downloads ?? null) as number,
-			delta: (point.delta ?? null) as number,
-		};
-	}));
+	const mappedData = $derived.by(() =>
+		dataPoints.map(point => {
+			return {
+				date: new Date(point.date),
+				downloads: (point.downloads ?? null) as number,
+				delta: (point.delta ?? null) as number,
+			};
+		}),
+	);
 
 	const smoothedDelta = $derived(smooth(mappedData, 'delta', 2));
 
@@ -32,12 +34,14 @@
 
 	const filteredSmoothedDelta = $derived(brush.enabled ? smoothedDelta.filter(d => d.date >= brush.x1 && d.date <= brush.x2) : smoothedDelta);
 
-	const mappedVersions = $derived.by(() => versions?.map(version => {
-		return {
-			date: new Date(version.date),
-			version: version.version,
-		};
-	}));
+	const mappedVersions = $derived.by(() =>
+		versions?.map(version => {
+			return {
+				date: new Date(version.date),
+				version: version.version,
+			};
+		}),
+	);
 
 	const filteredVersions = $derived(brush.enabled ? mappedVersions?.filter(v => v.date >= brush.x1 && v.date <= brush.x2) : mappedVersions);
 

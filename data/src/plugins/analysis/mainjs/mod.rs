@@ -7,6 +7,7 @@ use super::types::MainJsResult;
 mod check_base64;
 mod check_es;
 mod check_minified;
+mod check_sourcemap;
 mod check_wasm;
 mod check_worker;
 
@@ -21,6 +22,7 @@ pub(super) fn analyze_main_js(source: &str) -> MainJsResult {
         check_minified::detect_minified(source, program.as_ref());
     result.is_probably_minified = Some(is_probably_minified);
     result.minification_score = Some(minification_score);
+    result.includes_sourcemap_comment = Some(check_sourcemap::detect_sourcemap_comment(source));
 
     let (large_base64_blob_count, largest_base64_blob_length) = check_base64::detect_base64(source);
     result.large_base64_blob_count = Some(large_base64_blob_count);

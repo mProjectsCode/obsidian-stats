@@ -4,6 +4,7 @@ import BarChart from '../../components/svelte/charts/BarChart.svelte';
 import LocDistributionChart from '../../components/svelte/charts/misc/LocDistributionChart.svelte';
 import FileDistributionChart from '../../components/svelte/charts/misc/FileDistributionChart.svelte';
 import ReleaseSizeDistributionChart from '../../components/svelte/charts/misc/ReleaseSizeDistributionChart.svelte';
+import MinificationScoreDistributionChart from '../../components/svelte/charts/misc/MinificationScoreDistributionChart.svelte';
 import { getPluginDataArray } from '../../utils/data';
 import { toCompactString } from '../../components/svelte/charts/chartUtils';
 import PluginLink from '../../components/PluginLink.astro';
@@ -49,6 +50,8 @@ const topReleaseSizePlugins = view.top_release_size_plugins(data, 10).map(item =
 });
 const esVersionDistribution = view.es_version_distribution(data);
 const mainJsMinifiedDistribution = view.main_js_minified_distribution(data);
+const mainJsMinificationScoreDistribution = Array.from(view.main_js_minification_score_distribution(data));
+const mainJsSourcemapDistribution = view.main_js_sourcemap_distribution(data);
 const mainJsBase64BlobDistribution = view.main_js_base64_blob_distribution(data);
 const mainJsWorkerUsageDistribution = view.main_js_worker_usage_distribution(data);
 const mainJsWebassemblyUsageDistribution = view.main_js_webassembly_usage_distribution(data);
@@ -63,15 +66,11 @@ const es5Plugins = view.es_version_plugin_ids(data, 'ES5').map(id => {
 
 const avgLoc = locDistribution.reduce((acc, curr) => acc + curr, 0) / locDistribution.length;
 const avgFileCount = fileCountDistribution.reduce((acc, curr) => acc + curr, 0) / fileCountDistribution.length;
-const avgReleaseSize = releaseSizeDistribution.length > 0
-	? releaseSizeDistribution.reduce((acc, curr) => acc + curr, 0) / releaseSizeDistribution.length
-	: 0;
+const avgReleaseSize = releaseSizeDistribution.length > 0 ? releaseSizeDistribution.reduce((acc, curr) => acc + curr, 0) / releaseSizeDistribution.length : 0;
 
 const medLoc = locDistribution.length > 0 ? locDistribution[Math.floor(locDistribution.length / 2)] : 0;
 const medFileCount = fileCountDistribution.length > 0 ? fileCountDistribution[Math.floor(fileCountDistribution.length / 2)] : 0;
-const medReleaseSize = releaseSizeDistribution.length > 0
-	? releaseSizeDistribution[Math.floor(releaseSizeDistribution.length / 2)]
-	: 0;
+const medReleaseSize = releaseSizeDistribution.length > 0 ? releaseSizeDistribution[Math.floor(releaseSizeDistribution.length / 2)] : 0;
 
 function formatBytes(bytes: number): string {
 	if (bytes === 0) {
@@ -94,27 +93,32 @@ function formatBytes(bytes: number): string {
 	headings={[
 		{ depth: 2, text: 'Manifest', slug: 'manifest' },
 		{ depth: 2, text: 'Programming Languages', slug: 'programming-languages' },
-			{ depth: 3, text: 'Lines of Code', slug: 'lines-of-code' },
-			{ depth: 3, text: 'Files', slug: 'files' },
+		{ depth: 3, text: 'Lines of Code', slug: 'lines-of-code' },
+		{ depth: 3, text: 'Files', slug: 'files' },
 		{ depth: 2, text: 'Release Builds', slug: 'release-builds' },
-			{ depth: 3, text: 'Release Size Distribution', slug: 'release-size-distribution' },
-			{ depth: 3, text: 'ES Version', slug: 'es-version' },
-			{ depth: 3, text: 'Minification', slug: 'minification' },
-			{ depth: 3, text: 'Embedded Base64 Blobs', slug: 'embedded-base64-blobs' },
-			{ depth: 3, text: 'Worker Usage', slug: 'worker-usage' },
-			{ depth: 3, text: 'WebAssembly Usage', slug: 'webassembly-usage' },
+		{ depth: 3, text: 'Release Size Distribution', slug: 'release-size-distribution' },
+		{ depth: 3, text: 'ES Version', slug: 'es-version' },
+		{ depth: 3, text: 'Minification', slug: 'minification' },
+		{ depth: 3, text: 'Source Map Comments', slug: 'source-map-comments' },
+		{ depth: 3, text: 'Embedded Base64 Blobs', slug: 'embedded-base64-blobs' },
+		{ depth: 3, text: 'Worker Usage', slug: 'worker-usage' },
+		{ depth: 3, text: 'WebAssembly Usage', slug: 'webassembly-usage' },
 		{ depth: 2, text: 'Dependencies', slug: 'dependencies' },
-			{ depth: 3, text: 'Package Managers', slug: 'package-managers' },
-			{ depth: 3, text: 'Code Bundlers', slug: 'code-bundlers' },
-			{ depth: 3, text: 'Developer Tooling', slug: 'developer-tooling' },
-			{ depth: 3, text: 'Testing Frameworks', slug: 'testing-frameworks' },
-			{ depth: 3, text: 'Frontend Frameworks', slug: 'frontend-frameworks' },
-			{ depth: 3, text: 'Translations', slug: 'translations' },
-			{ depth: 3, text: 'Most Used Dependencies', slug: 'most-used-dependencies' },
+		{ depth: 3, text: 'Package Managers', slug: 'package-managers' },
+		{ depth: 3, text: 'Code Bundlers', slug: 'code-bundlers' },
+		{ depth: 3, text: 'Developer Tooling', slug: 'developer-tooling' },
+		{ depth: 3, text: 'Testing Frameworks', slug: 'testing-frameworks' },
+		{ depth: 3, text: 'Frontend Frameworks', slug: 'frontend-frameworks' },
+		{ depth: 3, text: 'Translations', slug: 'translations' },
+		{ depth: 3, text: 'Most Used Dependencies', slug: 'most-used-dependencies' },
 	]}
 >
 	<p>
-		The data on this page consists of data points that are derived from the plugin repositories and releases. This includes data that is not directly available from the community plugin list, such as the programming languages used, the size of the release files, and more. This data is collected by analyzing the plugin repositories and release files using various heuristics and techniques. You can read more about them <a href="/obsidian-stats/home/data-collection">here</a>.
+		The data on this page consists of data points that are derived from the plugin repositories and releases. This includes data that is not directly available
+		from the community plugin list, such as the programming languages used, the size of the release files, and more. This data is collected by analyzing the
+		plugin repositories and release files using various heuristics and techniques. You can read more about them <a href="/obsidian-stats/home/data-collection"
+			>here</a
+		>.
 	</p>
 
 	<!-- <p><strong>Beta Manifest</strong>: {dataPoints.beta_manifest.toFixed(1)}% of plugins have a BRAT beta manifest.</p> -->
@@ -205,7 +209,9 @@ function formatBytes(bytes: number): string {
 	<h3 id="es-version">ES Version</h3>
 
 	<p>
-		The next chart shows the estimated ECMAScript target version used by plugin releases. Estimates are based on the syntax used in the release's <code>main.js</code> file.
+		The next chart shows the estimated ECMAScript target version used by plugin releases. Estimates are based on the syntax used in the release's <code
+			>main.js</code
+		> file.
 	</p>
 
 	<BarChart dataPoints={esVersionDistribution} xLabel="Target ES Version" yLabel="Plugins" client:idle />
@@ -227,11 +233,30 @@ function formatBytes(bytes: number): string {
 	<h3 id="minification">Minification</h3>
 
 	<p>
-		This chart shows whether the latest release <code>main.js</code> appears to be minified. Detection is heuristic and based on source formatting and symbol
-		patterns.
+		This chart shows whether the latest release <code>main.js</code> appears to be minified. Detection is heuristic and based on source formatting and symbol patterns.
+		It is <a href="https://docs.obsidian.md/plugins/guides/load-time">recommended</a> to minify release builds of plugins to reduce file size and improve load times
+		for users, especially for plugins with a lot of code. Additionally, since the end of 2023, the build script of the sample plugin minifies release builds.
 	</p>
 
 	<BarChart dataPoints={mainJsMinifiedDistribution} xLabel="Minification" yLabel="Plugins" client:idle />
+
+	<p>
+		This chart shows the distribution of the minification score for the same heuristic, where <code>0</code> means least likely and <code>1</code> means most likely
+		to be minified.
+	</p>
+
+	<MinificationScoreDistributionChart dataPoints={mainJsMinificationScoreDistribution} client:idle />
+
+	<h3 id="source-map-comments">Source Map Comments</h3>
+
+	<p>
+		This chart shows whether the latest release <code>main.js</code> includes a <code>sourceMappingURL</code> comment. Source maps are very useful for debugging during
+		development, but for release builds they can be a double-edged sword. On one hand, they can help with debugging and provide better error stack traces for users.
+		On the other hand, if the source map is included in the release, it can significantly increase the size of the release files, which can lead to longer load times
+		for users.
+	</p>
+
+	<BarChart dataPoints={mainJsSourcemapDistribution} xLabel="Source Map Comments" yLabel="Plugins" client:idle />
 
 	<h3 id="embedded-base64-blobs">Embedded Base64 Blobs</h3>
 

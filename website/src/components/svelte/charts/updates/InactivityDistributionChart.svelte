@@ -8,10 +8,12 @@
 
 	const { dataPoints }: Props = $props();
 
-	const mappedDataPoints = $derived.by(() => dataPoints.map((inactivity, index) => ({
-		inactivity,
-		index: index / (dataPoints.length - 1),
-	})));
+	const mappedDataPoints = $derived.by(() =>
+		dataPoints.map((inactivity, index) => ({
+			inactivity,
+			index: index / (dataPoints.length - 1),
+		})),
+	);
 
 	const maxInactivity = $derived(mappedDataPoints[0]?.inactivity || 0);
 

@@ -10,17 +10,19 @@
 
 	const { data, showDots }: Props = $props();
 
-	const mappedData = $derived.by(() => data
-		.map(plugin => {
-			return plugin.data.map(point => {
-				return {
-					id: plugin.id,
-					date: new Date(point.date),
-					downloads: point.downloads as number,
-				};
-			});
-		})
-		.flat());
+	const mappedData = $derived.by(() =>
+		data
+			.map(plugin => {
+				return plugin.data.map(point => {
+					return {
+						id: plugin.id,
+						date: new Date(point.date),
+						downloads: point.downloads as number,
+					};
+				});
+			})
+			.flat(),
+	);
 
 	function asAny(data: DownloadDataPoint[]): any[] {
 		return data;

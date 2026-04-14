@@ -10,10 +10,12 @@
 
 	const { dataPoints }: Props = $props();
 
-	const mappedDataPoints = $derived.by(() => dataPoints.map(p => ({
-		name: new Date(p.name),
-		value: p.value,
-	})));
+	const mappedDataPoints = $derived.by(() =>
+		dataPoints.map(p => ({
+			name: new Date(p.name),
+			value: p.value,
+		})),
+	);
 
 	const smoothedDataPoints = $derived(smooth(mappedDataPoints, 'value', 7));
 </script>

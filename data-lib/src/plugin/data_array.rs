@@ -891,6 +891,45 @@ impl PluginDataArrayView {
         points
     }
 
+    pub fn main_js_minification_score_distribution(&self, data: &PluginDataArray) -> Vec<f32> {
+        let mut tmp: Vec<_> = self
+            .iter_data(data)
+            .filter_map(|item| {
+                let repo_data = item.repo_data()?;
+                repo_data
+                    .main_js_minification_score
+                    .map(|score| score.clamp(0.0, 1.0))
+            })
+            .collect();
+
+        tmp.sort_by(|a, b| b.total_cmp(a));
+        tmp
+    }
+
+    pub fn main_js_sourcemap_distribution(&self, data: &PluginDataArray) -> Vec<NamedDataPoint> {
+        let mut points = Vec::new();
+
+        self.iter_data(data).for_each(|item| {
+            let Some(repo_data) = item.repo_data() else {
+                return;
+            };
+
+            match repo_data.main_js_includes_sourcemap_comment {
+                Some(true) => increment_named_data_points(
+                    &mut points,
+                    "Includes sourceMappingURL comment",
+                    1.0,
+                ),
+                Some(false) => {
+                    increment_named_data_points(&mut points, "No sourceMappingURL comment", 1.0)
+                }
+                None => increment_named_data_points(&mut points, "Unknown", 1.0),
+            }
+        });
+
+        points
+    }
+
     pub fn main_js_base64_blob_distribution(&self, data: &PluginDataArray) -> Vec<NamedDataPoint> {
         let mut points = Vec::new();
 

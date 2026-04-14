@@ -1,6 +1,6 @@
 {
-  "refreshed_at_unix": 1776160113,
-  "clone_run_at_unix": 1776160113,
+  "refreshed_at_unix": 1776163013,
+  "clone_run_at_unix": 1776163013,
   "release_run_at_unix": 1776077465,
   "obsidian_release_fetch_at_unix": 1776077487,
   "latest_plugin_download_snapshot_date": "2026-04-14",
@@ -32,8 +32,8 @@
     "failed": 2,
     "success_rate": 0.9992737835875091,
     "failed_plugins": [
-      "fleeting-notes-obsidian",
-      "obsidian-audio-notes"
+      "obsidian-audio-notes",
+      "fleeting-notes-obsidian"
     ]
   },
   "release_acquisition": {
