@@ -1,26 +1,38 @@
 use std::collections::HashSet;
+use std::error::Error;
 
 use data_lib::license::{LicenseData, LicenseDescriptionNested, Licenses};
 use serde_yaml;
 
 pub mod license_compare;
 
-pub fn process_licenses() {
-    let dir = std::fs::read_dir("../choosealicense.com/_licenses")
-        .expect("Failed to read licenses directory");
+pub fn process_licenses() -> Result<(), Box<dyn Error>> {
+    let dir = std::fs::read_dir("../choosealicense.com/_licenses")?;
+    let mut skipped_files = 0usize;
     let licenses: Vec<LicenseData> = dir
         .filter_map(|entry| {
             entry.ok().and_then(|e| {
                 let path = e.path();
                 if path.is_file() {
-                    // Bubbling error? Should it be caught?
-                    let data = std::fs::read_to_string(&path).ok()?;
+                    let data = match std::fs::read_to_string(&path) {
+                        Ok(data) => data,
+                        Err(_) => {
+                            skipped_files += 1;
+                            return None;
+                        }
+                    };
                     let parts: Vec<&str> = data.split("---").collect();
                     if parts.len() < 2 {
+                        skipped_files += 1;
                         return None;
                     }
-                    // Ignoring the error here?
-                    serde_yaml::from_str(parts[1]).ok()
+                    match serde_yaml::from_str(parts[1]) {
+                        Ok(license) => Some(license),
+                        Err(_) => {
+                            skipped_files += 1;
+                            None
+                        }
+                    }
                 } else {
                     None
                 }
@@ -44,10 +56,8 @@ pub fn process_licenses() {
         }
     }
 
-    let rules_data = std::fs::read_to_string("../choosealicense.com/_data/rules.yml")
-        .expect("Failed to read rules data");
-    let descriptions: LicenseDescriptionNested =
-        serde_yaml::from_str(&rules_data).expect("Failed to parse rules data");
+    let rules_data = std::fs::read_to_string("../choosealicense.com/_data/rules.yml")?;
+    let descriptions: LicenseDescriptionNested = serde_yaml::from_str(&rules_data)?;
 
     let licenses_data = Licenses {
         licenses,
@@ -57,8 +67,12 @@ pub fn process_licenses() {
         descriptions,
     };
 
-    let licenses_json = serde_json::to_string_pretty(&licenses_data)
-        .expect("Failed to serialize licenses data to JSON");
-    std::fs::write("./out/licenses.json", licenses_json)
-        .expect("Failed to write licenses data to file");
+    let licenses_json = serde_json::to_string_pretty(&licenses_data)?;
+    std::fs::write("./out/licenses.json", licenses_json)?;
+
+    if skipped_files > 0 {
+        eprintln!("Warning: skipped {skipped_files} license file(s) due to read/parse issues");
+    }
+
+    Ok(())
 }

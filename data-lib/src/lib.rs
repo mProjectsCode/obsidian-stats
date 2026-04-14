@@ -3,6 +3,7 @@ pub mod common;
 pub mod date;
 pub mod input_data;
 pub mod iter_ext;
+pub mod latest_data_update;
 pub mod license;
 pub mod plugin;
 pub mod release;

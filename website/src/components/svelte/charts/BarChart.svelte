@@ -16,10 +16,10 @@
 
 	const { dataPoints, xLabel, yLabel, yDomain, skewLabels = false, percentages = false, hideBarValues = false }: Props = $props();
 
-	const mappedDataPoints = dataPoints as {
+	const mappedDataPoints = $derived(dataPoints as {
 		name: string;
 		value: number;
-	}[];
+	}[]);
 
 	function sortData(a: any, b: any) {
 		return b.value - a.value; // Sort in descending order

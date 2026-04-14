@@ -1,0 +1,48 @@
+---
+title: Data Collection
+description: How plugin, theme, and release data is collected and interpreted.
+---
+
+This page explains where the data on this site comes from and how we turn it into fancy charts and tables.
+
+## Where the data comes from
+
+All of our data is collected from public sources, including:
+
+1. The public [obsidian-releases](https://github.com/obsidianmd/obsidian-releases) repository. This is also used by the Obsidian app itself to populate the community plugins list.
+2. Community plugin repositories on GitHub.
+3. The GitHub API for metadata and release files.
+
+It is important to note that we don't run any code from plugins or themes. We rely entirely on static analysis of publicly available information.
+
+## How we extract and combine data
+
+The data you see on this site is combined from the above mentioned sources. For the download counts, we step through the Git history of the [obsidian-releases](https://github.com/obsidianmd/obsidian-releases) repository. This allows us to see the download counts evolve over time. We can also see when plugins were added to the community plugins list, and when they were removed, as well as when they were updated. This gives us a very detailed picture of the plugin ecosystem.
+
+But not all data is directly available. For example, since there is no manifest field for the license of a plugin. Because of this we also analyze the plugin repositories and release files of currently listed plugins to derive additional data points. The more interesting of these data points are explained below.
+
+### License
+
+Since there is no standard way for an Obsidian plugin to specify its license besides a license file, we scan the repository for license files and try to match them to known licenses. This is done by comparing the text of the license file to a database of known licenses. If we find a match, we assign that license to the plugin. If not, we mark it as either `Unrecognized` or `Not Found` depending on whether we found a license file at all.
+
+### Dependency usage
+
+Most plugins use JavaScript or TypeScript, and they often have dependencies. We look at the `package.json` file in the plugin repository to see which dependencies are listed. This gives us insight into which libraries and frameworks are popular in the Obsidian plugin ecosystem. From this we can also derive the usage of certain categories of dependencies, such as UI frameworks, code bundlers, package managers, and more.
+
+### BRAT usage
+
+[BRAT](https://github.com/TfTHacker/obsidian42-brat) (Beta Reviewers Auto-update Tester) is a popular tool for installing plugins straight from GitHub repositories, circumventing the official Obsidian community plugins list. It can also be used by plugin authors to distribute beta or preview versions of their plugins. One way to set this up is to include a `manifest-beta.json` file in the repository. We check for the presence of such a file to estimate how many plugins are using [BRAT](https://github.com/TfTHacker/obsidian42-brat) for distribution.
+
+### ECMAScript version
+
+The ES [(ECMAScript)](https://en.wikipedia.org/wiki/ECMAScript) version that a plugin targets determines which JavaScript features it can use. Generally it is preferable to use a newer ECMAScript version, as it allows for more modern and efficient code. However, it also means that the plugin may not work in older versions of Obsidian.
+
+We estimate the ECMAScript version of a plugin by looking at the `main.js` file in the release assets. This is the file that is actually distributed to users, so it gives us a good indication of what features are being used in practice. We parse and scan the file for modern JavaScript features and use that to estimate the minimum ECMAScript version required to run the plugin. It is important to note that this is an estimate and may not be 100% accurate.
+
+### Minification and embedded content
+
+Code bundlers that turn the potentially many source code files of a plugin into a single `main.js` file often also minify the code. This makes the code more difficult to read, but results in smaller file sizes and faster load times. So it is generally advisable to minify the code for production releases. We check for minification by looking for certain patterns in the `main.js` file, such as very short variable names and a lack of whitespace. We also calculate a minification score based on the ratio of whitespace to non-whitespace characters. However, this is not an exact science and there may be false positives or false negatives.
+
+### Worker and WebAssembly usage
+
+Web Workers allow JavaScript code to run in a separate thread, which opens the door for running complex calculations without slowing down the Obsidian interface. WebAssembly (Wasm) is a low level and very difficult to read alternative language to JavaScript, that is generally faster. The usage of WebAssembly allows for plugins written in other languages than JavaScript, such as Rust or C++, to be used in Obsidian. We check for the usage of Web Workers and WebAssembly by looking for certain code pattens used to instantiate them.

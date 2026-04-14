@@ -8,12 +8,12 @@
 
 	const { dataPoints }: Props = $props();
 
-	const mappedData = dataPoints.map((y, index) => {
+	const mappedData = $derived.by(() => dataPoints.map((y, index) => {
 		return {
 			index: index,
 			y: y,
 		};
-	});
+	}));
 </script>
 
 <ChartWrapper>

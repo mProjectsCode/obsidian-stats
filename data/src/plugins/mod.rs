@@ -10,9 +10,9 @@ use hashbrown::HashMap;
 use serde::Serialize;
 use serde_json::value;
 
+pub mod analysis;
 pub mod clone_repos;
 pub mod data;
-pub mod extra;
 pub mod license;
 pub mod release_acquisition;
 

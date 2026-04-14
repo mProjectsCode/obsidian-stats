@@ -48,6 +48,10 @@ const topReleaseSizePlugins = view.top_release_size_plugins(data, 10).map(item =
 	};
 });
 const esVersionDistribution = view.es_version_distribution(data);
+const mainJsMinifiedDistribution = view.main_js_minified_distribution(data);
+const mainJsBase64BlobDistribution = view.main_js_base64_blob_distribution(data);
+const mainJsWorkerUsageDistribution = view.main_js_worker_usage_distribution(data);
+const mainJsWebassemblyUsageDistribution = view.main_js_webassembly_usage_distribution(data);
 const es5Plugins = view.es_version_plugin_ids(data, 'ES5').map(id => {
 	const pluginData = view.get_by_id(data, id);
 
@@ -85,26 +89,34 @@ function formatBytes(bytes: number): string {
 <StarlightPage
 	frontmatter={{
 		title: 'Repository Data',
-		description: `Data extracted from the repositories of Plugins.`,
+		description: `Data extracted from the repositories and releases of Plugins.`,
 	}}
 	headings={[
 		{ depth: 2, text: 'Manifest', slug: 'manifest' },
 		{ depth: 2, text: 'Programming Languages', slug: 'programming-languages' },
-		{ depth: 3, text: 'Lines of Code', slug: 'lines-of-code' },
-		{ depth: 3, text: 'Files', slug: 'files' },
-			{ depth: 2, text: 'Release Builds', slug: 'release-builds' },
+			{ depth: 3, text: 'Lines of Code', slug: 'lines-of-code' },
+			{ depth: 3, text: 'Files', slug: 'files' },
+		{ depth: 2, text: 'Release Builds', slug: 'release-builds' },
 			{ depth: 3, text: 'Release Size Distribution', slug: 'release-size-distribution' },
 			{ depth: 3, text: 'ES Version', slug: 'es-version' },
+			{ depth: 3, text: 'Minification', slug: 'minification' },
+			{ depth: 3, text: 'Embedded Base64 Blobs', slug: 'embedded-base64-blobs' },
+			{ depth: 3, text: 'Worker Usage', slug: 'worker-usage' },
+			{ depth: 3, text: 'WebAssembly Usage', slug: 'webassembly-usage' },
 		{ depth: 2, text: 'Dependencies', slug: 'dependencies' },
-		{ depth: 3, text: 'Package Managers', slug: 'package-managers' },
-		{ depth: 3, text: 'Code Bundlers', slug: 'code-bundlers' },
-		{ depth: 3, text: 'Developer Tooling', slug: 'developer-tooling' },
-		{ depth: 3, text: 'Testing Frameworks', slug: 'testing-frameworks' },
-		{ depth: 3, text: 'Frontend Frameworks', slug: 'frontend-frameworks' },
-		{ depth: 3, text: 'Translations', slug: 'translations' },
-		{ depth: 3, text: 'Most Used Dependencies', slug: 'most-used-dependencies' },
+			{ depth: 3, text: 'Package Managers', slug: 'package-managers' },
+			{ depth: 3, text: 'Code Bundlers', slug: 'code-bundlers' },
+			{ depth: 3, text: 'Developer Tooling', slug: 'developer-tooling' },
+			{ depth: 3, text: 'Testing Frameworks', slug: 'testing-frameworks' },
+			{ depth: 3, text: 'Frontend Frameworks', slug: 'frontend-frameworks' },
+			{ depth: 3, text: 'Translations', slug: 'translations' },
+			{ depth: 3, text: 'Most Used Dependencies', slug: 'most-used-dependencies' },
 	]}
 >
+	<p>
+		The data on this page consists of data points that are derived from the plugin repositories and releases. This includes data that is not directly available from the community plugin list, such as the programming languages used, the size of the release files, and more. This data is collected by analyzing the plugin repositories and release files using various heuristics and techniques. You can read more about them <a href="/obsidian-stats/home/data-collection">here</a>.
+	</p>
+
 	<!-- <p><strong>Beta Manifest</strong>: {dataPoints.beta_manifest.toFixed(1)}% of plugins have a BRAT beta manifest.</p> -->
 
 	<h2 id="manifest">Manifest</h2>
@@ -212,6 +224,39 @@ function formatBytes(bytes: number): string {
 		</ul>
 	</details>
 
+	<h3 id="minification">Minification</h3>
+
+	<p>
+		This chart shows whether the latest release <code>main.js</code> appears to be minified. Detection is heuristic and based on source formatting and symbol
+		patterns.
+	</p>
+
+	<BarChart dataPoints={mainJsMinifiedDistribution} xLabel="Minification" yLabel="Plugins" client:idle />
+
+	<h3 id="embedded-base64-blobs">Embedded Base64 Blobs</h3>
+
+	<p>
+		This chart shows whether the latest release <code>main.js</code> contains large base64-like blobs. This can indicate embedded assets or WebAssembly usage.
+	</p>
+
+	<BarChart dataPoints={mainJsBase64BlobDistribution} xLabel="Large Base64 Blobs" yLabel="Plugins" client:idle />
+
+	<h3 id="worker-usage">Worker Usage</h3>
+
+	<p>
+		The next chart shows whether plugin releases reference Worker APIs in their latest <code>main.js</code>.
+	</p>
+
+	<BarChart dataPoints={mainJsWorkerUsageDistribution} xLabel="Worker Usage" yLabel="Plugins" client:idle />
+
+	<h3 id="webassembly-usage">WebAssembly Usage</h3>
+
+	<p>
+		The next chart shows whether plugin releases reference WebAssembly APIs in their latest <code>main.js</code>.
+	</p>
+
+	<BarChart dataPoints={mainJsWebassemblyUsageDistribution} xLabel="WebAssembly Usage" yLabel="Plugins" client:idle />
+
 	<h2 id="dependencies">Dependencies</h2>
 
 	<h3 id="package-managers">Package Managers</h3>
@@ -285,11 +330,11 @@ function formatBytes(bytes: number): string {
 	<BarChart dataPoints={i18nUsage} xLabel="i18n Usage" yLabel="Number of Plugins" client:idle />
 
 	<p>
-		A total of {i18nPluginIds.length} plugins ({i18nPercentage}%) use translations. These plugins are:
+		A total of {i18nPluginIds.length} plugins ({i18nPercentage}%) use translations.
 	</p>
 
 	<details>
-		<summary>Click to expand</summary>
+		<summary>List of plugins using translations</summary>
 
 		<ul>
 			{
@@ -306,22 +351,26 @@ function formatBytes(bytes: number): string {
 
 	<p>This table shows direct dependencies of all plugins, sorted by how many plugins use them. Dependencies with less than one percent usage are not shown.</p>
 
-	<table>
-		<thead>
-			<tr>
-				<th> Name</th>
-				<th> Usage Percentage</th>
-			</tr>
-		</thead>
-		<tbody>
-			{
-				mostUsedDependencies.map(x => (
-					<tr>
-						<td>{x.name}</td>
-						<td>{x.value.toFixed(1)}%</td>
-					</tr>
-				))
-			}
-		</tbody>
-	</table>
+	<details>
+		<summary>List of most used dependencies</summary>
+
+		<table>
+			<thead>
+				<tr>
+					<th> Name</th>
+					<th> Usage Percentage</th>
+				</tr>
+			</thead>
+			<tbody>
+				{
+					mostUsedDependencies.map(x => (
+						<tr>
+							<td>{x.name}</td>
+							<td>{x.value.toFixed(1)}%</td>
+						</tr>
+					))
+				}
+			</tbody>
+		</table>
+	</details>
 </StarlightPage>

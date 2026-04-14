@@ -579,16 +579,20 @@ impl PluginDataArrayView {
             let Some(repo_data) = item.repo_data() else {
                 return;
             };
+            let Some(manifest) = repo_data.manifest.as_ref() else {
+                return;
+            };
 
-            if repo_data.manifest.description != item.data.current_entry.description {
+            if manifest.description.as_deref() != Some(item.data.current_entry.description.as_str())
+            {
                 increment_named_data_points(&mut points, "Description mismatch", 1.0);
             }
 
-            if repo_data.manifest.name != item.data.current_entry.name {
+            if manifest.name.as_deref() != Some(item.data.current_entry.name.as_str()) {
                 increment_named_data_points(&mut points, "Name mismatch", 1.0);
             }
 
-            if repo_data.manifest.author != item.data.current_entry.author {
+            if manifest.author.as_deref() != Some(item.data.current_entry.author.as_str()) {
                 increment_named_data_points(&mut points, "Author mismatch", 1.0);
             }
         });
@@ -607,14 +611,17 @@ impl PluginDataArrayView {
             let Some(repo_data) = item.repo_data() else {
                 return;
             };
+            let Some(manifest) = repo_data.manifest.as_ref() else {
+                return;
+            };
 
-            if repo_data.manifest.funding_url.is_some() {
+            if manifest.funding_url.is_some() {
                 increment_named_data_points(&mut points, "Has funding URL", 1.0);
             }
-            if repo_data.manifest.author_url.is_some() {
+            if manifest.author_url.is_some() {
                 increment_named_data_points(&mut points, "Has author URL", 1.0);
             }
-            if repo_data.manifest.help_url.is_some() {
+            if manifest.help_url.is_some() {
                 increment_named_data_points(&mut points, "Has help URL", 1.0);
             }
         });
@@ -633,8 +640,12 @@ impl PluginDataArrayView {
                 increment_named_data_points(&mut points, "Unknown", 1.0);
                 return;
             };
+            let Some(manifest) = repo_data.manifest.as_ref() else {
+                increment_named_data_points(&mut points, "Unknown", 1.0);
+                return;
+            };
 
-            match repo_data.manifest.is_desktop_only {
+            match manifest.is_desktop_only {
                 Some(true) => {
                     increment_named_data_points(&mut points, "Desktop only", 1.0);
                 }
@@ -834,6 +845,110 @@ impl PluginDataArrayView {
 
             match &repo_data.estimated_target_es_version {
                 Some(version) => increment_named_data_points(&mut points, version, 1.0),
+                None => increment_named_data_points(&mut points, "Unknown", 1.0),
+            }
+        });
+
+        points
+    }
+
+    pub fn release_fetch_status_distribution(&self, data: &PluginDataArray) -> Vec<NamedDataPoint> {
+        let mut points = Vec::new();
+
+        self.iter_data(data).for_each(|item| {
+            let Some(repo_data) = item.repo_data() else {
+                return;
+            };
+
+            match repo_data.latest_release_fetch_status.as_deref() {
+                Some(status) if !status.is_empty() => {
+                    increment_named_data_points(&mut points, status, 1.0)
+                }
+                _ => increment_named_data_points(&mut points, "unknown", 1.0),
+            }
+        });
+
+        points
+    }
+
+    pub fn main_js_minified_distribution(&self, data: &PluginDataArray) -> Vec<NamedDataPoint> {
+        let mut points = Vec::new();
+
+        self.iter_data(data).for_each(|item| {
+            let Some(repo_data) = item.repo_data() else {
+                return;
+            };
+
+            match repo_data.main_js_is_probably_minified {
+                Some(true) => increment_named_data_points(&mut points, "Probably minified", 1.0),
+                Some(false) => {
+                    increment_named_data_points(&mut points, "Probably not minified", 1.0)
+                }
+                None => increment_named_data_points(&mut points, "Unknown", 1.0),
+            }
+        });
+
+        points
+    }
+
+    pub fn main_js_base64_blob_distribution(&self, data: &PluginDataArray) -> Vec<NamedDataPoint> {
+        let mut points = Vec::new();
+
+        self.iter_data(data).for_each(|item| {
+            let Some(repo_data) = item.repo_data() else {
+                return;
+            };
+
+            match repo_data.main_js_large_base64_blob_count {
+                Some(count) if count > 0 => {
+                    increment_named_data_points(&mut points, "Has large base64 blobs", 1.0)
+                }
+                Some(_) => increment_named_data_points(&mut points, "No large base64 blobs", 1.0),
+                None => increment_named_data_points(&mut points, "Unknown", 1.0),
+            }
+        });
+
+        points
+    }
+
+    pub fn main_js_worker_usage_distribution(&self, data: &PluginDataArray) -> Vec<NamedDataPoint> {
+        let mut points = Vec::new();
+
+        self.iter_data(data).for_each(|item| {
+            let Some(repo_data) = item.repo_data() else {
+                return;
+            };
+
+            match repo_data.main_js_worker_usage_count {
+                Some(count) if count > 0 => {
+                    increment_named_data_points(&mut points, "Uses Worker APIs", 1.0)
+                }
+                Some(_) => increment_named_data_points(&mut points, "No Worker API usage", 1.0),
+                None => increment_named_data_points(&mut points, "Unknown", 1.0),
+            }
+        });
+
+        points
+    }
+
+    pub fn main_js_webassembly_usage_distribution(
+        &self,
+        data: &PluginDataArray,
+    ) -> Vec<NamedDataPoint> {
+        let mut points = Vec::new();
+
+        self.iter_data(data).for_each(|item| {
+            let Some(repo_data) = item.repo_data() else {
+                return;
+            };
+
+            match repo_data.main_js_webassembly_usage_count {
+                Some(count) if count > 0 => {
+                    increment_named_data_points(&mut points, "Uses WebAssembly APIs", 1.0)
+                }
+                Some(_) => {
+                    increment_named_data_points(&mut points, "No WebAssembly API usage", 1.0)
+                }
                 None => increment_named_data_points(&mut points, "Unknown", 1.0),
             }
         });

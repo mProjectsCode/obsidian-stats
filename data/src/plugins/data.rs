@@ -5,19 +5,28 @@ use data_lib::{
 };
 use hashbrown::{HashMap, HashSet};
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
-use std::{path::Path, process::Command};
+use std::{
+    path::Path,
+    process::Command,
+    sync::atomic::{AtomicUsize, Ordering},
+};
 
 use crate::{
     constants::{OBS_RELEASES_REPO_PATH, PLUGIN_DATA_PATH, PLUGIN_LIST_PATH, PLUGIN_STATS_PATH},
     file_utils::{read_chunked_data, write_in_chunks_atomic},
     git_utils::get_obs_repo_changes,
     plugins::{BorrowedPluginData, PluginDownloadStats, PluginList},
+    progress::should_log_progress,
 };
 
 fn load_plugin_list_history() -> Vec<PluginList> {
     let commits = get_obs_repo_changes();
+    let total_commits = commits.len();
 
     assert!(!commits.is_empty(), "No plugin list changes found");
+
+    println!("Loading plugin list history from {total_commits} commits...");
+    let processed = AtomicUsize::new(0);
 
     commits
         .par_iter()
@@ -41,8 +50,9 @@ fn load_plugin_list_history() -> Vec<PluginList> {
                 eprintln!("Empty plugin list at commit {}", commit.to_fancy_string());
                 return None;
             }
-            let list: Result<ObsPluginList, serde_json::Error> = serde_json::from_str(&list_str);
-            match list {
+            let parsed_list: Result<ObsPluginList, serde_json::Error> =
+                serde_json::from_str(&list_str);
+            let result = match parsed_list {
                 Ok(list) => Some(PluginList {
                     entries: list.to_hashmap(),
                     commit: commit.clone(),
@@ -55,7 +65,14 @@ fn load_plugin_list_history() -> Vec<PluginList> {
                     );
                     None
                 }
+            };
+
+            let done = processed.fetch_add(1, Ordering::Relaxed) + 1;
+            if should_log_progress(done, total_commits) {
+                println!("  Plugin list history progress: {done} / {total_commits}");
             }
+
+            result
         })
         .collect()
 }
@@ -74,7 +91,8 @@ fn build_plugin_change_timeline(plugin_lists: &[PluginList]) -> Vec<BorrowedPlug
         );
     }
 
-    for plugin_list in plugin_lists.iter().skip(1) {
+    let total_lists = plugin_lists.len();
+    for (idx, plugin_list) in plugin_lists.iter().enumerate().skip(1) {
         for (_, plugin) in plugin_data_map.iter_mut() {
             plugin.find_changes(plugin_list);
         }
@@ -86,6 +104,10 @@ fn build_plugin_change_timeline(plugin_lists: &[PluginList]) -> Vec<BorrowedPlug
                     BorrowedPluginData::new(id.clone(), &plugin_list.commit, entry),
                 );
             }
+        }
+
+        if should_log_progress(idx + 1, total_lists) {
+            println!("  Plugin timeline progress: {} / {}", idx + 1, total_lists);
         }
     }
 
@@ -105,6 +127,8 @@ fn backfill_download_history(
 
     let start_date = Date::new(2020, 1, 1);
     let end_date = Date::now();
+    let total_days = start_date.diff_in_days(&end_date).unsigned_abs() as usize + 1;
+    let mut processed_days = 0;
 
     // Something in May 2024 is broken in source data (for example advanced-canvas).
     let excluded_dates = [
@@ -124,11 +148,24 @@ fn backfill_download_history(
     .collect::<HashSet<_>>();
 
     for date in start_date.iterate_daily_to(&end_date) {
+        processed_days += 1;
         if excluded_dates.contains(&date) {
+            if should_log_progress(processed_days, total_days) {
+                println!(
+                    "  Download backfill progress: {} / {} days",
+                    processed_days, total_days
+                );
+            }
             continue;
         }
 
         let Some(stats) = find_recent_download_stats(&download_stats_map, &date) else {
+            if should_log_progress(processed_days, total_days) {
+                println!(
+                    "  Download backfill progress: {} / {} days",
+                    processed_days, total_days
+                );
+            }
             continue;
         };
 
@@ -139,6 +176,13 @@ fn backfill_download_history(
             }
 
             entry.update_download_history(stats);
+        }
+
+        if should_log_progress(processed_days, total_days) {
+            println!(
+                "  Download backfill progress: {} / {} days",
+                processed_days, total_days
+            );
         }
     }
 }
@@ -165,9 +209,18 @@ fn build_version_history(
 ) {
     println!("Updating version history...");
 
-    for stat in download_stats {
+    let total_stats = download_stats.len();
+    for (idx, stat) in download_stats.iter().enumerate() {
         for entry in plugin_data.iter_mut() {
             entry.update_version_history(stat);
+        }
+
+        if should_log_progress(idx + 1, total_stats) {
+            println!(
+                "  Version history progress: {} / {} snapshots",
+                idx + 1,
+                total_stats
+            );
         }
     }
 
@@ -180,6 +233,9 @@ fn load_plugin_download_stat_history() -> Vec<PluginDownloadStats> {
     println!("Fetching plugin download stats...");
 
     let commits = get_obs_repo_changes();
+    let total_commits = commits.len();
+    println!("Loading plugin download stats from {total_commits} commits...");
+    let processed = AtomicUsize::new(0);
 
     commits
         .par_iter()
@@ -199,15 +255,22 @@ fn load_plugin_download_stat_history() -> Vec<PluginDownloadStats> {
                 .expect("Failed to execute git command");
 
             let stats_str = String::from_utf8_lossy(&stats.stdout).to_string();
-            let stats: Result<ObsDownloadStats, serde_json::Error> =
+            let parsed_stats: Result<ObsDownloadStats, serde_json::Error> =
                 serde_json::from_str(&stats_str);
-            match stats {
+            let result = match parsed_stats {
                 Ok(stats) => Some(PluginDownloadStats::from_obs_data(stats, commit.clone())),
                 Err(e) => {
                     eprintln!("Error parsing plugin download stats: {e}");
                     None
                 }
+            };
+
+            let done = processed.fetch_add(1, Ordering::Relaxed) + 1;
+            if should_log_progress(done, total_commits) {
+                println!("  Plugin download history progress: {done} / {total_commits}");
             }
+
+            result
         })
         .collect()
 }

@@ -21,6 +21,7 @@ pub enum PluginWarning {
     Inactivity12Months(PluginWarningInactivity),
     Inactivity24Months(PluginWarningInactivity),
     Removed(PluginWarningRemoved),
+    MissingRequiredManifestFields(PluginWarningMissingRequiredManifestFields),
     MismatchedManifestData(PluginWarningMismatchedManifestData),
     Unlicensed(PluginWarningUnlicensed),
     NoLicense(PluginWarningNoLicense),
@@ -58,6 +59,13 @@ pub struct PluginWarningMismatchedManifestDataField {
     pub field: String,
     pub manifest_value: String,
     pub community_list_value: String,
+}
+
+#[derive(Tsify, Debug, Clone, Serialize)]
+#[tsify(into_wasm_abi)]
+pub struct PluginWarningMissingRequiredManifestFields {
+    pub severity: PluginWarningSeverity,
+    pub fields: Vec<String>,
 }
 
 #[derive(Tsify, Debug, Clone, Serialize)]
@@ -157,25 +165,60 @@ fn get_inactivity_warnings(data: &FullPluginData, warnings: &mut Vec<PluginWarni
 fn get_manifest_warnings(data: &FullPluginData, warnings: &mut Vec<PluginWarning>) {
     let manifest = if let Some(extended) = &data.extended
         && let Ok(repo) = &extended.repo
+        && let Some(manifest) = repo.manifest.as_ref()
     {
-        &repo.manifest
+        manifest
     } else {
         return;
     };
 
     let data_to_check = [
-        ("name", &manifest.name, &data.data.current_entry.name),
+        (
+            "name",
+            manifest.name.as_deref(),
+            data.data.current_entry.name.as_str(),
+        ),
         (
             "description",
-            &manifest.description,
-            &data.data.current_entry.description,
+            manifest.description.as_deref(),
+            data.data.current_entry.description.as_str(),
         ),
-        ("author", &manifest.author, &data.data.current_entry.author),
+        (
+            "author",
+            manifest.author.as_deref(),
+            data.data.current_entry.author.as_str(),
+        ),
     ];
+
+    let required_fields = [
+        ("id", manifest.id.as_deref()),
+        ("name", manifest.name.as_deref()),
+        ("version", manifest.version.as_deref()),
+        ("minAppVersion", manifest.min_app_version.as_deref()),
+        ("description", manifest.description.as_deref()),
+        ("author", manifest.author.as_deref()),
+    ];
+
+    let missing_required_fields = required_fields
+        .into_iter()
+        .filter(|(_, value)| value.is_none_or(|v| v.trim().is_empty()))
+        .map(|(field, _)| field.to_string())
+        .collect::<Vec<_>>();
+
+    if !missing_required_fields.is_empty() {
+        warnings.push(PluginWarning::MissingRequiredManifestFields(
+            PluginWarningMissingRequiredManifestFields {
+                severity: PluginWarningSeverity::DANGER,
+                fields: missing_required_fields,
+            },
+        ));
+    }
 
     let mismatched_data = data_to_check
         .into_iter()
-        .filter(|(_, manifest_value, community_value)| manifest_value != community_value)
+        .filter(|(_, manifest_value, community_value)| {
+            manifest_value.is_some_and(|manifest_value| manifest_value != *community_value)
+        })
         .collect::<Vec<_>>();
 
     if !mismatched_data.is_empty() {
@@ -187,8 +230,8 @@ fn get_manifest_warnings(data: &FullPluginData, warnings: &mut Vec<PluginWarning
                     .map(|(field, manifest_value, community_value)| {
                         PluginWarningMismatchedManifestDataField {
                             field: field.to_string(),
-                            manifest_value: manifest_value.clone(),
-                            community_list_value: community_value.clone(),
+                            manifest_value: manifest_value.map_or_else(String::new, str::to_string),
+                            community_list_value: community_value.to_string(),
                         }
                     })
                     .collect(),

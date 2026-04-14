@@ -9,14 +9,14 @@
 
 	const { dataPoints }: Props = $props();
 
-	const mappedData = dataPoints.map(point => {
+	const mappedData = $derived.by(() => dataPoints.map(point => {
 		return {
 			date: new Date(point.date),
 			category: point.category,
 			downloads: (point.downloads ?? null) as number,
 			delta: (point.delta ?? null) as number,
 		};
-	});
+	}));
 
 	let brush = $state({
 		enabled: false,

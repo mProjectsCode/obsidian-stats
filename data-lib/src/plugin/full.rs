@@ -125,23 +125,32 @@ impl FullPluginData {
 
     pub fn funding_url(&self) -> Option<FundingUrl> {
         self.repo_data()
-            .and_then(|r| r.manifest.funding_url.clone())
+            .and_then(|r| r.manifest.as_ref())
+            .and_then(|manifest| manifest.funding_url.clone())
     }
 
     pub fn author_url(&self) -> Option<String> {
-        self.repo_data().and_then(|r| r.manifest.author_url.clone())
+        self.repo_data()
+            .and_then(|r| r.manifest.as_ref())
+            .and_then(|manifest| manifest.author_url.clone())
     }
 
     pub fn help_url(&self) -> Option<String> {
-        self.repo_data().and_then(|r| r.manifest.help_url.clone())
+        self.repo_data()
+            .and_then(|r| r.manifest.as_ref())
+            .and_then(|manifest| manifest.help_url.clone())
     }
 
     pub fn min_app_version(&self) -> Option<String> {
-        self.repo_data().map(|r| r.manifest.min_app_version.clone())
+        self.repo_data()
+            .and_then(|r| r.manifest.as_ref())
+            .and_then(|manifest| manifest.min_app_version.clone())
     }
 
     pub fn is_desktop_only(&self) -> Option<bool> {
-        self.repo_data().and_then(|r| r.manifest.is_desktop_only)
+        self.repo_data()
+            .and_then(|r| r.manifest.as_ref())
+            .and_then(|manifest| manifest.is_desktop_only)
     }
 
     pub fn obsidian_url(&self) -> Option<String> {
@@ -283,6 +292,48 @@ impl FullPluginData {
     pub fn estimated_target_es_version(&self) -> Option<String> {
         self.repo_data()
             .and_then(|r| r.estimated_target_es_version.clone())
+    }
+
+    pub fn main_js_is_probably_minified(&self) -> Option<bool> {
+        self.repo_data()
+            .and_then(|r| r.main_js_is_probably_minified)
+    }
+
+    pub fn main_js_minification_score(&self) -> Option<f32> {
+        self.repo_data().and_then(|r| r.main_js_minification_score)
+    }
+
+    pub fn main_js_large_base64_blob_count(&self) -> Option<u32> {
+        self.repo_data()
+            .and_then(|r| r.main_js_large_base64_blob_count)
+    }
+
+    pub fn main_js_largest_base64_blob_length(&self) -> Option<u32> {
+        self.repo_data()
+            .and_then(|r| r.main_js_largest_base64_blob_length)
+    }
+
+    pub fn main_js_worker_usage_count(&self) -> Option<u32> {
+        self.repo_data().and_then(|r| r.main_js_worker_usage_count)
+    }
+
+    pub fn main_js_webassembly_usage_count(&self) -> Option<u32> {
+        self.repo_data()
+            .and_then(|r| r.main_js_webassembly_usage_count)
+    }
+
+    pub fn latest_release_tag(&self) -> Option<String> {
+        self.repo_data().and_then(|r| r.latest_release_tag.clone())
+    }
+
+    pub fn latest_release_published_at(&self) -> Option<String> {
+        self.repo_data()
+            .and_then(|r| r.latest_release_published_at.clone())
+    }
+
+    pub fn latest_release_fetch_status(&self) -> Option<String> {
+        self.repo_data()
+            .and_then(|r| r.latest_release_fetch_status.clone())
     }
 
     pub fn dev_dependencies(&self) -> Option<Vec<String>> {

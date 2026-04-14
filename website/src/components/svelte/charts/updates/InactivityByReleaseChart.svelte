@@ -9,7 +9,7 @@
 
 	const { dataPoints }: Props = $props();
 
-	const mappedDataPoints = dataPoints
+	const mappedDataPoints = $derived.by(() => dataPoints
 		.map(point => {
 			return [
 				{
@@ -39,7 +39,7 @@
 				},
 			];
 		})
-		.flat();
+		.flat());
 </script>
 
 <ChartWrapper>

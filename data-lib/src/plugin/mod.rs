@@ -1,5 +1,7 @@
 use hashbrown::HashMap;
 use serde::{Deserialize, Serialize};
+use std::path::PathBuf;
+use thiserror::Error;
 use tsify::Tsify;
 
 use crate::{
@@ -41,18 +43,18 @@ pub enum FundingUrl {
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PluginManifest {
-    pub author: String,
+    pub author: Option<String>,
     #[serde(rename = "minAppVersion")]
-    pub min_app_version: String,
-    pub name: String,
-    pub version: String,
+    pub min_app_version: Option<String>,
+    pub name: Option<String>,
+    pub version: Option<String>,
     #[serde(rename = "authorUrl")]
     pub author_url: Option<String>,
     #[serde(rename = "fundingUrl")]
     pub funding_url: Option<FundingUrl>,
 
-    pub description: String,
-    pub id: String,
+    pub description: Option<String>,
+    pub id: Option<String>,
     #[serde(rename = "isDesktopOnly")]
     pub is_desktop_only: Option<bool>,
 
@@ -77,15 +79,131 @@ pub struct PluginRepoData {
     pub package_json_license: LicenseInfo,
     /// The license identifier from the LICENSE file in the repository.
     pub file_license: LicenseInfo,
-    pub manifest: PluginManifest,
+    pub manifest: Option<PluginManifest>,
     pub lines_of_code: HashMap<String, usize>,
     pub has_i18n_dependencies: bool,
     pub has_i18n_files: bool,
     pub latest_release_main_js_size_bytes: Option<u64>,
     pub estimated_target_es_version: Option<String>,
+    pub main_js_is_probably_minified: Option<bool>,
+    pub main_js_minification_score: Option<f32>,
+    pub main_js_large_base64_blob_count: Option<u32>,
+    pub main_js_largest_base64_blob_length: Option<u32>,
+    pub main_js_worker_usage_count: Option<u32>,
+    pub main_js_webassembly_usage_count: Option<u32>,
     pub latest_release_tag: Option<String>,
     pub latest_release_published_at: Option<String>,
     pub latest_release_fetch_status: Option<String>,
+    #[serde(default)]
+    pub analysis_errors: Vec<PluginRepoAnalysisError>,
+}
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, Hash)]
+pub enum PluginRepoAnalysisError {
+    #[serde(rename = "manifest_read_error")]
+    ManifestRead,
+    #[serde(rename = "manifest_parse_error")]
+    ManifestParse,
+    #[serde(rename = "package_json_read_error")]
+    PackageJsonRead,
+    #[serde(rename = "package_json_parse_error")]
+    PackageJsonParse,
+    #[serde(rename = "repository_missing")]
+    RepositoryMissing,
+    #[serde(rename = "repo_missing")]
+    RepoMissing,
+    #[serde(rename = "repo_analysis_error")]
+    RepoAnalysis,
+}
+
+#[derive(Debug, Error)]
+pub enum PluginRepoAnalysisDetailError {
+    #[error("repository_missing: plugin {plugin_id}: {path}")]
+    RepositoryMissing { plugin_id: String, path: PathBuf },
+
+    #[error("manifest_read_error: plugin {plugin_id}: {source}")]
+    ManifestRead {
+        plugin_id: String,
+        #[source]
+        source: std::io::Error,
+    },
+
+    #[error("manifest_parse_error: plugin {plugin_id}: {source}")]
+    ManifestParse {
+        plugin_id: String,
+        #[source]
+        source: serde_json::Error,
+    },
+
+    #[error("package_json_read_error: plugin {plugin_id}: {source}")]
+    PackageJsonRead {
+        plugin_id: String,
+        #[source]
+        source: std::io::Error,
+    },
+
+    #[error("package_json_parse_error: plugin {plugin_id}: {source}")]
+    PackageJsonParse {
+        plugin_id: String,
+        #[source]
+        source: serde_json::Error,
+    },
+}
+
+impl PluginRepoAnalysisDetailError {
+    pub fn code(&self) -> PluginRepoAnalysisError {
+        match self {
+            Self::RepositoryMissing { .. } => PluginRepoAnalysisError::RepositoryMissing,
+            Self::ManifestRead { .. } => PluginRepoAnalysisError::ManifestRead,
+            Self::ManifestParse { .. } => PluginRepoAnalysisError::ManifestParse,
+            Self::PackageJsonRead { .. } => PluginRepoAnalysisError::PackageJsonRead,
+            Self::PackageJsonParse { .. } => PluginRepoAnalysisError::PackageJsonParse,
+        }
+    }
+}
+
+impl PluginRepoAnalysisError {
+    pub fn as_label(self) -> &'static str {
+        match self {
+            Self::ManifestRead => "manifest_read_error",
+            Self::ManifestParse => "manifest_parse_error",
+            Self::PackageJsonRead => "package_json_read_error",
+            Self::PackageJsonParse => "package_json_parse_error",
+            Self::RepositoryMissing => "repository_missing",
+            Self::RepoMissing => "repo_missing",
+            Self::RepoAnalysis => "repo_analysis_error",
+        }
+    }
+
+    pub fn from_raw(error: &str) -> Self {
+        if let Some((prefix, _)) = error.split_once(':') {
+            return Self::from_raw(prefix);
+        }
+
+        match error {
+            "manifest_read_error" => Self::ManifestRead,
+            "manifest_parse_error" => Self::ManifestParse,
+            "package_json_read_error" => Self::PackageJsonRead,
+            "package_json_parse_error" => Self::PackageJsonParse,
+            "repository_missing" => Self::RepositoryMissing,
+            "repo_missing" => Self::RepoMissing,
+            _ => {
+                if error.contains("does not exist") {
+                    Self::RepoMissing
+                } else if error.contains("Failed to read manifest") {
+                    Self::ManifestRead
+                } else if error.contains("Failed to parse manifest") {
+                    Self::ManifestParse
+                } else if error.contains("Failed to read package.json") {
+                    Self::PackageJsonRead
+                } else if error.contains("Failed to parse package.json") {
+                    Self::PackageJsonParse
+                } else {
+                    Self::RepoAnalysis
+                }
+            }
+        }
+    }
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

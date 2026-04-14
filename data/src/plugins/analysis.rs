@@ -11,10 +11,8 @@ use rayon::{
 };
 
 use self::{
-    release_enrichment::enrich_release_metadata,
-    repo_analysis::{
-        analyze_plugin_repository, read_plugin_version_deprecations, read_removed_plugins,
-    },
+    pipeline::analyze_plugin,
+    repo_analysis::{read_plugin_version_deprecations, read_removed_plugins},
     run_stats::{ExtraPluginResult, ExtraRunStats},
 };
 
@@ -25,26 +23,20 @@ use crate::{
         data::read_plugin_data, license::license_compare::LicenseComparer,
         release_acquisition::PluginReleaseState,
     },
+    progress::should_log_progress,
     state::read_json_or_default,
 };
 
-mod es_inference;
-mod release_enrichment;
+mod mainjs;
+mod pipeline;
+mod repo;
 mod repo_analysis;
 mod run_stats;
+mod types;
 
 const EXTRA_ANALYSIS_THREADS_ENV: &str = "EXTRA_ANALYSIS_THREADS";
-const LOC_EXCLUDED: &[&str] = &[
-    "package-lock.json",
-    "yarn.lock",
-    "pnpm-lock.yaml",
-    "bun.lockb",
-    "bun.lock",
-    "lock.json",
-    "node_modules",
-];
 
-pub fn extract_extra_data() -> Result<(), Box<dyn std::error::Error>> {
+pub fn extract_analysis_data() -> Result<(), Box<dyn std::error::Error>> {
     let removed_plugins = read_removed_plugins()?;
     let removed_reason_by_id = removed_plugins
         .into_iter()
@@ -104,18 +96,13 @@ pub fn extract_extra_data() -> Result<(), Box<dyn std::error::Error>> {
                 let mut stats = ExtraRunStats::default();
 
                 let repo = if plugin.removed_commit.is_none() {
-                    match analyze_plugin_repository(plugin, &license_comparer) {
-                        Ok(mut repo_data) => {
-                            enrich_release_metadata(
-                                plugin,
-                                &mut repo_data,
-                                &release_state,
-                                &mut stats,
-                            );
-                            Ok(repo_data)
-                        }
+                    match analyze_plugin(plugin, &license_comparer, &release_state, &mut stats) {
+                        Ok(repo_data) => Ok(repo_data),
                         Err(err) => {
                             stats.repo_extract_failed += 1;
+
+                            println!("Failed to analyze plugin {}: {}", plugin.id, err);
+
                             Err(err)
                         }
                     }
@@ -128,7 +115,7 @@ pub fn extract_extra_data() -> Result<(), Box<dyn std::error::Error>> {
                 };
 
                 let done = processed.fetch_add(1, Ordering::Relaxed) + 1;
-                if done.is_multiple_of(100) {
+                if should_log_progress(done, plugin_data.len()) {
                     println!("  Processed {done} / {}", plugin_data.len());
                 }
 

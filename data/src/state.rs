@@ -37,7 +37,11 @@ pub fn write_json_atomic<T: Serialize>(
 
     let tmp_file = File::create(&tmp_path)?;
     let mut writer = BufWriter::new(tmp_file);
-    serde_json::to_writer(&mut writer, data)?;
+    if should_pretty_format(path) {
+        serde_json::to_writer_pretty(&mut writer, data)?;
+    } else {
+        serde_json::to_writer(&mut writer, data)?;
+    }
     writer.flush()?;
 
     if path.exists() {
@@ -63,6 +67,23 @@ pub fn write_json_atomic<T: Serialize>(
     }
 }
 
+fn should_pretty_format(path: &Path) -> bool {
+    let mut components = path
+        .components()
+        .filter_map(|component| component.as_os_str().to_str());
+
+    while let Some(component) = components.next() {
+        if component == "out"
+            && let Some(next_component) = components.next()
+            && next_component == "state"
+        {
+            return true;
+        }
+    }
+
+    false
+}
+
 pub fn now_unix_seconds() -> i64 {
     std::time::SystemTime::now()
         .duration_since(std::time::UNIX_EPOCH)
@@ -77,7 +98,9 @@ pub fn is_fresh(last_checked_unix: i64, refresh_days: i64) -> bool {
 
 #[cfg(test)]
 mod tests {
-    use super::{is_fresh, now_unix_seconds};
+    use std::path::Path;
+
+    use super::{is_fresh, now_unix_seconds, should_pretty_format};
 
     #[test]
     fn is_fresh_for_recent_timestamp() {
@@ -95,5 +118,17 @@ mod tests {
     fn future_timestamp_is_not_fresh() {
         let now = now_unix_seconds();
         assert!(!is_fresh(now + 120, 1));
+    }
+
+    #[test]
+    fn pretty_format_enabled_for_state_path() {
+        assert!(should_pretty_format(Path::new("./out/state/clone-state.json")));
+    }
+
+    #[test]
+    fn pretty_format_disabled_for_non_state_path() {
+        assert!(!should_pretty_format(Path::new(
+            "./out/plugin-repo-data/chunk_0.json"
+        )));
     }
 }

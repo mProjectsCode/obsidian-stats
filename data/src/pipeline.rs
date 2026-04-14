@@ -1,8 +1,10 @@
 use std::error::Error;
 
 use crate::{
+    alerts,
+    latest_data_update::build_latest_data_update_summary,
     plugins::{
-        clone_repos::clone_plugin_repos, data::build_plugin_stats, extra::extract_extra_data,
+        analysis::extract_analysis_data, clone_repos::clone_plugin_repos, data::build_plugin_stats,
         license::process_licenses,
     },
     release::data::build_release_stats,
@@ -18,14 +20,19 @@ struct PipelineStep {
 
 fn run_pipeline_step(step: &PipelineStep) -> Result<(), Box<dyn Error>> {
     println!("{}...", step.label);
-    (step.run)()?;
+    let alert_count_before = alerts::alert_count();
+    if let Err(error) = (step.run)() {
+        if alerts::alert_count() == alert_count_before {
+            alerts::record_unexpected_error(step.label, error.to_string());
+        }
+        return Err(error);
+    }
     println!();
     Ok(())
 }
 
 fn process_plugin_licenses_step() -> Result<(), Box<dyn Error>> {
-    process_licenses();
-    Ok(())
+    process_licenses()
 }
 
 pub fn run_data_pipeline() -> Result<(), Box<dyn Error>> {
@@ -44,7 +51,7 @@ pub fn run_data_pipeline() -> Result<(), Box<dyn Error>> {
         },
         PipelineStep {
             label: "Extracting repository data",
-            run: extract_extra_data,
+            run: extract_analysis_data,
         },
         PipelineStep {
             label: "Extracting licenses data",
@@ -53,6 +60,10 @@ pub fn run_data_pipeline() -> Result<(), Box<dyn Error>> {
         PipelineStep {
             label: "Building release data",
             run: build_release_stats,
+        },
+        PipelineStep {
+            label: "Building latest data update summary",
+            run: build_latest_data_update_summary,
         },
     ];
 

@@ -1,6 +1,7 @@
 use std::path::Path;
 
 use crate::{
+    alerts,
     constants::{
         DEFAULT_RELEASE_STATS_REFRESH_DAYS, GITHUB_RATE_LIMIT_MODE_ENV, RELEASE_CHANGELOG_PATH,
         RELEASE_GITHUB_INTERPOLATED_PATH, RELEASE_GITHUB_RAW_PATH, RELEASE_INFO_URL,
@@ -48,9 +49,15 @@ impl RateLimitMode {
 struct FetchOutcome {
     entries: Vec<GithubReleaseEntry>,
     hit_rate_limit: bool,
+    hit_unexpected_error: bool,
     not_modified: bool,
     page_count: usize,
     latest_etag: Option<String>,
+}
+
+fn refresh_completed(fetch_outcome: &FetchOutcome) -> bool {
+    fetch_outcome.not_modified
+        || (!fetch_outcome.hit_rate_limit && !fetch_outcome.hit_unexpected_error)
 }
 
 fn extract_next_link(headers: &HeaderMap) -> Option<String> {
@@ -81,6 +88,7 @@ fn fetch_github_release_entries(
     let mut current_link = Some(RELEASE_STATS_URL.to_string());
     let mut release_entries: Vec<GithubReleaseEntry> = vec![];
     let mut hit_rate_limit = false;
+    let mut hit_unexpected_error = false;
     let mut not_modified = false;
     let mut page_count = 0;
     let mut latest_etag = None;
@@ -106,6 +114,8 @@ fn fetch_github_release_entries(
         let response = match request.send() {
             Ok(response) => response,
             Err(error) => {
+                hit_unexpected_error = true;
+                alerts::record_unexpected_error("release stats fetch", error.to_string());
                 eprintln!("Failed to fetch release stats: {error}");
                 break;
             }
@@ -121,6 +131,10 @@ fn fetch_github_release_entries(
 
         if response.status().as_u16() == 403 || response.status().as_u16() == 429 {
             hit_rate_limit = true;
+            alerts::record_rate_limit(
+                "release stats fetch",
+                format!("GitHub returned HTTP {}", response.status().as_u16()),
+            );
 
             if matches!(rate_limit_mode, RateLimitMode::Sleep)
                 && let Some(wait) = extract_retry_wait_seconds(response.headers())
@@ -142,12 +156,25 @@ fn fetch_github_release_entries(
         if response.status().is_success() {
             page_count += 1;
             current_link = extract_next_link(response.headers());
+            println!("  Release stats page {page_count} fetched");
 
-            let json: Vec<GithubReleaseEntry> =
-                response.json().expect("Failed to parse release stats JSON");
+            let json: Vec<GithubReleaseEntry> = match response.json() {
+                Ok(json) => json,
+                Err(error) => {
+                    hit_unexpected_error = true;
+                    alerts::record_unexpected_error("release stats parse", error.to_string());
+                    eprintln!("Failed to parse release stats JSON: {error}");
+                    break;
+                }
+            };
             release_entries.extend(json);
             first_request = false;
         } else {
+            hit_unexpected_error = true;
+            alerts::record_unexpected_error(
+                "release stats fetch",
+                format!("GitHub returned HTTP {}", response.status().as_u16()),
+            );
             eprintln!("Failed to fetch release stats: {}", response.status());
             break;
         }
@@ -156,6 +183,7 @@ fn fetch_github_release_entries(
     FetchOutcome {
         entries: release_entries,
         hit_rate_limit,
+        hit_unexpected_error,
         not_modified,
         page_count,
         latest_etag,
@@ -187,7 +215,13 @@ fn get_github_release_info(
     let today = Date::now();
 
     new_entries.into_iter().for_each(|entry| {
-        let version = Version::parse(&entry.tag_name).expect("Failed to parse version");
+        let Some(version) = Version::parse(&entry.tag_name) else {
+            eprintln!(
+                "Warning: skipping GitHub release entry with invalid version tag: {}",
+                entry.tag_name
+            );
+            return;
+        };
 
         let existing_entry = release_entries.iter_mut().find(|e| e.version == version);
 
@@ -213,10 +247,17 @@ fn get_github_release_info(
                 }
             });
         } else {
+            let Some(date) = Date::from_string(&entry.published_at.date_naive().to_string()) else {
+                eprintln!(
+                    "Warning: skipping GitHub release entry with invalid publish date: {}",
+                    entry.tag_name
+                );
+                return;
+            };
+
             release_entries.push(GithubReleaseInfo {
                 version: version.clone(),
-                date: Date::from_string(&entry.published_at.date_naive().to_string())
-                    .expect("Failed to parse date"),
+                date,
                 time: entry.published_at.time().to_string(),
                 assets: entry
                     .assets
@@ -261,17 +302,29 @@ fn interpolate_github_release_info(full_data: &[GithubReleaseInfo]) -> Vec<Githu
                         return asset.clone();
                     }
 
+                    let mut had_invalid_dates = false;
                     let mut updates = asset
                         .downloads
                         .keys()
-                        .map(|x| Date::from_string(x).expect("valid date"))
+                        .filter_map(|x| match Date::from_string(x) {
+                            Some(date) => Some(date),
+                            None => {
+                                had_invalid_dates = true;
+                                None
+                            }
+                        })
                         .collect::<Vec<_>>();
                     updates.sort();
 
-                    let mut first_update = updates
-                        .first()
-                        .expect("Expected at least one download entry")
-                        .clone();
+                    let Some(mut first_update) = updates.first().cloned() else {
+                        if had_invalid_dates {
+                            eprintln!(
+                                "Warning: skipping interpolation for asset {} due to invalid date keys",
+                                asset.name
+                            );
+                        }
+                        return asset.clone();
+                    };
 
                     first_update.reverse_days(7);
                     first_update.advance_to_weekday(0);
@@ -288,10 +341,8 @@ fn interpolate_github_release_info(full_data: &[GithubReleaseInfo]) -> Vec<Githu
                                 pre_diff as f64 / (pre_diff + post_diff) as f64
                             };
 
-                            let pre_downloads =
-                                asset.downloads.get(&pre.to_fancy_string()).unwrap();
-                            let post_downloads =
-                                asset.downloads.get(&post.to_fancy_string()).unwrap();
+                            let pre_downloads = asset.downloads.get(&pre.to_fancy_string())?;
+                            let post_downloads = asset.downloads.get(&post.to_fancy_string())?;
 
                             let downloads = interpolate(*pre_downloads, *post_downloads, ratio);
 
@@ -317,16 +368,15 @@ fn interpolate_github_release_info(full_data: &[GithubReleaseInfo]) -> Vec<Githu
         .collect()
 }
 
-fn get_obs_release_info() -> Vec<ObsidianReleaseInfo> {
-    let response = reqwest::blocking::get(RELEASE_INFO_URL).expect("Failed to fetch release info");
-    let text = response.text().expect("Failed to read response text");
+fn get_obs_release_info() -> Result<Vec<ObsidianReleaseInfo>, Box<dyn std::error::Error>> {
+    let response = reqwest::blocking::get(RELEASE_INFO_URL)?.error_for_status()?;
+    let text = response.text()?;
 
     // dbg!(&text);
 
-    let feed_data: ObsReleasesFeedInner =
-        quick_xml::de::from_str(&text).expect("Failed to parse release feed");
+    let feed_data: ObsReleasesFeedInner = quick_xml::de::from_str(&text)?;
 
-    feed_data
+    Ok(feed_data
         .entries
         .into_iter()
         .filter_map(|entry| {
@@ -365,7 +415,7 @@ fn get_obs_release_info() -> Vec<ObsidianReleaseInfo> {
                 major_release,
             })
         })
-        .collect()
+        .collect())
 }
 
 pub fn build_release_stats() -> Result<(), Box<dyn std::error::Error>> {
@@ -395,6 +445,7 @@ pub fn build_release_stats() -> Result<(), Box<dyn std::error::Error>> {
     if should_refresh {
         let fetch_outcome =
             fetch_github_release_entries(&rate_limit_mode, state.latest_etag.as_deref());
+        let refresh_was_completed = refresh_completed(&fetch_outcome);
         let new_entry_count = fetch_outcome.entries.len();
 
         if fetch_outcome.not_modified {
@@ -408,14 +459,18 @@ pub fn build_release_stats() -> Result<(), Box<dyn std::error::Error>> {
                 "Warning: hit GitHub rate limit while refreshing release stats. Saved partial update."
             );
         }
+        if fetch_outcome.hit_unexpected_error {
+            eprintln!(
+                "Warning: unexpected error while refreshing release stats. Saved partial update."
+            );
+        }
 
         println!(
             "Release stats fetch summary: pages={}, entries_received={}, not_modified={}",
             fetch_outcome.page_count, new_entry_count, fetch_outcome.not_modified
         );
 
-        let refresh_completed = fetch_outcome.not_modified || !fetch_outcome.hit_rate_limit;
-        if refresh_completed {
+        if refresh_was_completed {
             state.last_fetch_unix = Some(now_unix_seconds());
         } else {
             eprintln!(
@@ -443,7 +498,9 @@ pub fn build_release_stats() -> Result<(), Box<dyn std::error::Error>> {
     println!("Github release data: {:#?}", time2.elapsed());
     time2 = std::time::Instant::now();
 
-    let release_changelog = get_obs_release_info();
+    let release_changelog = get_obs_release_info().inspect_err(|error| {
+        alerts::record_unexpected_error("release changelog fetch", error.to_string());
+    })?;
 
     write_in_chunks_atomic(Path::new(RELEASE_CHANGELOG_PATH), &release_changelog, 50)?;
 
@@ -452,4 +509,32 @@ pub fn build_release_stats() -> Result<(), Box<dyn std::error::Error>> {
     println!("Release stats built in {:#?}", time.elapsed());
 
     Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::{FetchOutcome, refresh_completed};
+
+    fn outcome(
+        hit_rate_limit: bool,
+        hit_unexpected_error: bool,
+        not_modified: bool,
+    ) -> FetchOutcome {
+        FetchOutcome {
+            entries: Vec::new(),
+            hit_rate_limit,
+            hit_unexpected_error,
+            not_modified,
+            page_count: 0,
+            latest_etag: None,
+        }
+    }
+
+    #[test]
+    fn unexpected_errors_do_not_count_as_completed_refresh() {
+        assert!(!refresh_completed(&outcome(false, true, false)));
+        assert!(!refresh_completed(&outcome(true, false, false)));
+        assert!(refresh_completed(&outcome(false, false, false)));
+        assert!(refresh_completed(&outcome(false, true, true)));
+    }
 }

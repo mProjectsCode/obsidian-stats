@@ -10,12 +10,12 @@
 
 	const { dataPoints }: Props = $props();
 
-	const mappedDataPoints = dataPoints.map(p => ({
+	const mappedDataPoints = $derived.by(() => dataPoints.map(p => ({
 		name: new Date(p.name),
 		value: p.value,
-	}));
+	})));
 
-	const smoothedDataPoints = smooth(mappedDataPoints, 'value', 7);
+	const smoothedDataPoints = $derived(smooth(mappedDataPoints, 'value', 7));
 </script>
 
 <ChartWrapper>

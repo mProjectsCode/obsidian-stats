@@ -12,10 +12,10 @@
 
 	const { dataPoints }: Props = $props();
 
-	const mappedData = dataPoints.map(d => ({
+	const mappedData = $derived.by(() => dataPoints.map(d => ({
 		...d,
 		date: new Date(d.date),
-	}));
+	})));
 </script>
 
 <Plot grid x={{ label: 'Release Date →' }} y={{ label: '↑ Downloads', type: 'log', domain: [1, 10_000_000] }} class="no-overflow-clip">

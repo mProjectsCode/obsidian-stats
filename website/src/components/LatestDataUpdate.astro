@@ -1,0 +1,218 @@
+---
+import { getLatestDataUpdateSummary } from '../utils/latestDataUpdate';
+
+const summary = await getLatestDataUpdateSummary();
+
+const numberFormatter = new Intl.NumberFormat('en-US');
+const percentFormatter = new Intl.NumberFormat('en-US', {
+	style: 'percent',
+	maximumFractionDigits: 1,
+});
+const dateFormatter = new Intl.DateTimeFormat('en-US', {
+	dateStyle: 'long',
+	timeStyle: 'short',
+	timeZone: 'UTC',
+});
+const dayFormatter = new Intl.DateTimeFormat('en-US', {
+	dateStyle: 'long',
+	timeZone: 'UTC',
+});
+
+const releaseStatusDescriptions: Record<string, string> = {
+	ok: 'Latest release metadata was fetched and a usable main.js cache is available.',
+	main_js_not_updated_since_success:
+		'The latest release was checked, but the last successful cached main.js stayed newer or more useful.',
+	no_release: 'The repository exists, but GitHub did not expose a latest release for it.',
+	no_main_js_asset: 'A release exists, but it does not ship a main.js asset that can be analyzed.',
+	not_modified: 'GitHub returned the same release metadata as the previous run.',
+};
+
+const compactReleaseStatusDescriptions: Record<string, string> = {
+	ok: 'Release and analyzable main.js fetched.',
+	main_js_not_updated_since_success: 'Checked, but kept the previous main.js cache.',
+	no_release: 'No latest release was available on GitHub.',
+	no_main_js_asset: 'Release exists, but no main.js asset was found.',
+	not_modified: 'Release metadata was unchanged from the last run.',
+};
+
+const repoAnalysisErrorDescriptions: Record<string, string> = {
+	manifest_read_error: 'manifest.json could not be read from a cloned repository.',
+	manifest_parse_error: 'manifest.json exists but is not valid JSON for the expected schema.',
+	package_json_read_error: 'package.json could not be read even though it was detected in the repository.',
+	package_json_parse_error: 'package.json exists but is not valid JSON.',
+	repo_missing: 'The plugin repository was not present locally during analysis.',
+	repo_analysis_error: 'Fallback bucket for uncommon analysis failures.',
+};
+
+const repoAnalysisErrorCounts = summary.repo_analysis.error_counts ?? [];
+
+const issueLines = [
+	summary.clone.failed > 0
+		? `${numberFormatter.format(summary.clone.failed)} repo clone failures${summary.clone.failed_plugins.length > 0 ? `: ${summary.clone.failed_plugins.join(', ')}` : ''}.`
+		: null,
+	summary.repo_analysis.active_failures > 0
+		? `${numberFormatter.format(summary.repo_analysis.active_failures)} active plugins did not produce repo analysis data${summary.repo_analysis.failure_samples.length > 0 ? `, including ${summary.repo_analysis.failure_samples.join(', ')}` : ''}.`
+		: null,
+	summary.release_acquisition.error_count > 0
+		? `${numberFormatter.format(summary.release_acquisition.error_count)} plugin release checks ended in an error or rate-limit state.`
+		: null,
+].filter((line): line is string => line !== null);
+
+function formatUnix(unix: number | null): string {
+	if (unix === null) {
+		return 'Not available';
+	}
+
+	return `${dateFormatter.format(new Date(unix * 1000))} UTC`;
+}
+
+function formatDay(date: string | null): string {
+	if (date === null) {
+		return 'Not available';
+	}
+
+	return dayFormatter.format(new Date(`${date}T00:00:00Z`));
+}
+---
+
+<table>
+	<thead>
+		<tr>
+			<th>Metric</th>
+			<th>Value</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>Latest pipeline activity</td>
+			<td>{formatUnix(summary.refreshed_at_unix)}</td>
+		</tr>
+		<tr>
+			<td>Latest plugin download snapshot</td>
+			<td>{formatDay(summary.latest_plugin_download_snapshot_date)}</td>
+		</tr>
+		<tr>
+			<td>Latest Obsidian release tracked</td>
+			<td>{summary.latest_obsidian_version ?? 'Unknown'} on {formatDay(summary.latest_obsidian_release_date)}</td>
+		</tr>
+		<tr>
+			<td>Plugin records</td>
+			<td>
+				{numberFormatter.format(summary.plugins.total)} total ({numberFormatter.format(summary.plugins.active)} active, {numberFormatter.format(summary.plugins.removed)} removed)
+			</td>
+		</tr>
+		<tr>
+			<td>Theme records</td>
+			<td>
+				{numberFormatter.format(summary.themes.total)} total ({numberFormatter.format(summary.themes.active)} active, {numberFormatter.format(summary.themes.removed)} removed)
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<h2>Pipeline Status</h2>
+<table>
+	<thead>
+		<tr>
+			<th>Stage</th>
+			<th>Freshness</th>
+			<th>Status</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>Community plugin dataset</td>
+			<td>{formatDay(summary.latest_plugin_download_snapshot_date)}</td>
+			<td>{numberFormatter.format(summary.plugins.total)} plugins and {numberFormatter.format(summary.plugins.version_snapshots)} version snapshots processed</td>
+		</tr>
+		<tr>
+			<td>Repository cloning</td>
+			<td>{formatUnix(summary.clone_run_at_unix)}</td>
+			<td>{numberFormatter.format(summary.clone.ok)} cloned, {numberFormatter.format(summary.clone.failed)} failed, {numberFormatter.format(summary.clone.skipped)} skipped</td>
+		</tr>
+		<tr>
+			<td>Plugin releases</td>
+			<td>{formatUnix(summary.release_run_at_unix)}</td>
+			<td>{numberFormatter.format(summary.release_acquisition.main_js_coverage)} successful main.js acquisitions ({percentFormatter.format(summary.release_acquisition.main_js_coverage_rate)})</td>
+		</tr>
+		<tr>
+			<td>Repository analysis</td>
+			<td>{formatUnix(summary.release_run_at_unix)}</td>
+			<td>{numberFormatter.format(summary.repo_analysis.active_success)} active plugins analyzed, {numberFormatter.format(summary.repo_analysis.active_failures)} misses</td>
+		</tr>
+		<tr>
+			<td>Obsidian releases</td>
+			<td>{formatUnix(summary.obsidian_release_fetch_at_unix)}</td>
+			<td>{numberFormatter.format(summary.releases.github_release_snapshots)} GitHub releases, {numberFormatter.format(summary.releases.changelog_entries)} changelog entries</td>
+		</tr>
+	</tbody>
+</table>
+
+{
+	issueLines.length > 0 && (
+		<>
+			<h2>Pipeline Errors</h2>
+			<ul>
+				{issueLines.map(line => (
+					<li>{line}</li>
+				))}
+			</ul>
+		</>
+	)
+}
+
+<h2>Release Acquisition Status</h2>
+
+<p>
+This table breaks down the outcomes of the latest release acquisition attempts for active plugins. We only download the <code>main.js</code> asset from the latest release if there was a new release since the last successful acquisition or if we have never successfully acquired it before. This means that a status of <code>main_js_not_updated_since_success</code> is not necessarily a negative outcome, but rather an indication that the previously cached <code>main.js</code> is still considered up-to-date and useful for analysis.
+</p>
+
+<table>
+	<thead>
+		<tr>
+			<th>Status</th>
+			<th>Share</th>
+			<th>Meaning</th>
+		</tr>
+	</thead>
+	<tbody>
+		{summary.release_acquisition.status_counts.map(status => (
+			<tr>
+				<td><code>{status.label}</code></td>
+				<td>{percentFormatter.format(status.share)}</td>
+				<td>{compactReleaseStatusDescriptions[status.label] ?? releaseStatusDescriptions[status.label] ?? 'Less common edge-case status from the release fetch pipeline.'}</td>
+			</tr>
+		))}
+	</tbody>
+</table>
+
+<h2>Repository Analysis Errors</h2>
+
+<p>
+This table summarizes the most common errors encountered during repository analysis for active plugins in the latest run. Repository analysis involves cloning plugin repositories and extracting metadata and information from their contents.
+</p>
+
+{
+	repoAnalysisErrorCounts.length === 0 ? (
+		<p>No repository analysis errors were recorded for active plugins in the latest run.</p>
+	) : (
+		<table>
+			<thead>
+				<tr>
+					<th>Error</th>
+					<th>Share</th>
+					<th>Meaning</th>
+				</tr>
+			</thead>
+			<tbody>
+				{repoAnalysisErrorCounts.map(entry => (
+					<tr>
+						<td><code>{entry.label}</code> ({numberFormatter.format(entry.count)})</td>
+						<td>{percentFormatter.format(entry.share)}</td>
+						<td>{repoAnalysisErrorDescriptions[entry.label] ?? 'Less common edge-case status from repository analysis.'}</td>
+					</tr>
+				))}
+			</tbody>
+		</table>
+	)
+}

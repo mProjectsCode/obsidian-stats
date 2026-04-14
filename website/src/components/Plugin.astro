@@ -51,6 +51,11 @@ const versions = plugin.versions();
 const changes = plugin.changes();
 const latestReleaseSizeBytes = plugin.latest_release_main_js_size_bytes();
 const estimatedTargetEsVersion = plugin.estimated_target_es_version();
+const mainJsProbablyMinified = plugin.main_js_is_probably_minified();
+const mainJsLargeBase64BlobCount = plugin.main_js_large_base64_blob_count();
+const mainJsWorkerUsageCount = plugin.main_js_worker_usage_count();
+const mainJsWebassemblyUsageCount = plugin.main_js_webassembly_usage_count();
+
 
 function getAsideVariant(warning: PluginWarning): 'note' | 'tip' | 'caution' | 'danger' {
 	if (warning.severity === 'CAUTION') {
@@ -100,6 +105,17 @@ function formatBytes(bytes: number | bigint): string {
 	{
 		warnings.map(warning => {
 			switch (warning.id) {
+				case 'MissingRequiredManifestFields':
+					return (
+						<Aside type={getAsideVariant(warning)} title="Invalid Manifest">
+							<p>
+								The plugin <code>manifest.json</code> is missing required fields. This may cause compatibility or installation issues.
+							</p>
+							<p>
+								Missing required fields: <code>{warning.fields.join(', ')}</code>
+							</p>
+						</Aside>
+					);
 				case 'Inactivity12Months':
 					return (
 						<Aside type={getAsideVariant(warning)} title="Inactivity Warning">
@@ -368,6 +384,22 @@ function formatBytes(bytes: number | bigint): string {
 							<td>{estimatedTargetEsVersion ?? <span class="muted">Unknown</span>}</td>
 						</tr>
 						<tr>
+							<td>Probably uses Minification</td>
+							<td>{mainJsProbablyMinified === undefined ? <span class="muted">Unknown</span> : mainJsProbablyMinified ? 'Yes' : 'No'}</td>
+						</tr>
+						<tr>
+							<td>Includes large base64 blobs</td>
+							<td>{mainJsLargeBase64BlobCount === undefined ? <span class="muted">Unknown</span> : mainJsLargeBase64BlobCount > 0 ? `Yes (${mainJsLargeBase64BlobCount})` : 'No'}</td>
+						</tr>
+						<tr>
+							<td>Uses Web Workers</td>
+							<td>{mainJsWorkerUsageCount === undefined ? <span class="muted">Unknown</span> : mainJsWorkerUsageCount > 0 ? 'Yes' : 'No'}</td>
+						</tr>
+						<tr>
+							<td>Uses WebAssembly</td>
+							<td>{mainJsWebassemblyUsageCount === undefined ? <span class="muted">Unknown</span> : mainJsWebassemblyUsageCount > 0 ? 'Yes' : 'No'}</td>
+						</tr>
+						<tr>
 							<td>Uses BRAT beta releases</td>
 							<td>{plugin.has_beta_manifest() ? 'Yes' : 'No'}</td>
 						</tr>
@@ -399,20 +431,7 @@ function formatBytes(bytes: number | bigint): string {
 				</table>
 
 				<p class="muted">
-					<i>License</i> information is extracted from the <code>package.json</code> and the <code>LICENSE</code> file. If they do not match, say{' '}
-					<code>unknown</code>, or say <code>not found</code>, please check the repository or contact the author for clarification. This is not legal advice.
-				</p>
-				<p class="muted">
-					<i>Has Test Files</i> looks for files ending in <code>.test.js</code>, <code>.test.ts</code>, <code>.spec.js</code> or <code>.spec.ts</code>.
-				</p>
-				<p class="muted">
-					<i>Installed Testing Frameworks</i> looks at installed dependencies. This does not mean that a plugin is actually using the testing framework.
-				</p>
-				<p class="muted">
-					<i>Detected ES Version</i> is the estimated used ECMAScript version based on the syntax used in the main JavaScript file of the latest release. This is just an estimation and might underestimate the actual target version.
-				</p>
-				<p class="muted">
-					<i>Dependencies</i> and <i>Dev Dependencies</i> only list the direct dependencies of the plugin.
+					The above data may not be accurate and contain errors. For more information refer to the page about <a href="/obsidian-stats/home/data-collection">data collection</a>.
 				</p>
 			</>
 		) : (

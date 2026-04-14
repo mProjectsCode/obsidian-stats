@@ -12,7 +12,7 @@
 
 	const { dataPoints, type }: Props = $props();
 
-	const mappedDataPoints = dataPoints
+	const mappedDataPoints = $derived.by(() => dataPoints
 		.filter(x => x.total_with_removed > 0)
 		.map(point => {
 			return {
@@ -22,7 +22,7 @@
 				new: point.new,
 				new_removed: point.new_removed,
 			};
-		});
+		}));
 </script>
 
 <ChartWrapper>

@@ -1,19 +1,28 @@
 use data_lib::{input_data::ObsThemeList, theme::ThemeData};
 use hashbrown::HashMap;
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
-use std::{path::Path, process::Command};
+use std::{
+    path::Path,
+    process::Command,
+    sync::atomic::{AtomicUsize, Ordering},
+};
 
 use crate::{
     constants::{OBS_RELEASES_REPO_PATH, THEME_DATA_PATH, THEME_LIST_PATH},
     file_utils::{read_chunked_data, write_in_chunks_atomic},
     git_utils::get_obs_repo_changes,
+    progress::should_log_progress,
     theme::{BorrowedThemeData, ThemeIdCounter, ThemeList},
 };
 
 fn get_theme_lists() -> Vec<ThemeList> {
     let commits = get_obs_repo_changes();
+    let total_commits = commits.len();
 
     assert!(!commits.is_empty(), "No theme list changes found");
+
+    println!("Loading theme list history from {total_commits} commits...");
+    let processed = AtomicUsize::new(0);
 
     commits
         .par_iter()
@@ -37,8 +46,9 @@ fn get_theme_lists() -> Vec<ThemeList> {
                 eprintln!("Empty theme list at commit {}", commit.to_fancy_string());
                 return None;
             }
-            let list: Result<ObsThemeList, serde_json::Error> = serde_json::from_str(&list_str);
-            match list {
+            let parsed_list: Result<ObsThemeList, serde_json::Error> =
+                serde_json::from_str(&list_str);
+            let result = match parsed_list {
                 Ok(list) => Some(ThemeList {
                     entries: list.to_hashmap(),
                     commit: commit.clone(),
@@ -51,7 +61,14 @@ fn get_theme_lists() -> Vec<ThemeList> {
                     );
                     None
                 }
+            };
+
+            let done = processed.fetch_add(1, Ordering::Relaxed) + 1;
+            if should_log_progress(done, total_commits) {
+                println!("  Theme list history progress: {done} / {total_commits}");
             }
+
+            result
         })
         .collect()
 }
@@ -72,7 +89,8 @@ fn build_theme_data(theme_lists: &[ThemeList]) -> Vec<BorrowedThemeData<'_>> {
         );
     }
 
-    for theme_list in theme_lists.iter().skip(1) {
+    let total_lists = theme_lists.len();
+    for (idx, theme_list) in theme_lists.iter().enumerate().skip(1) {
         for (_, theme) in theme_data_map.iter_mut() {
             theme.find_changes(theme_list);
         }
@@ -84,6 +102,10 @@ fn build_theme_data(theme_lists: &[ThemeList]) -> Vec<BorrowedThemeData<'_>> {
                     BorrowedThemeData::new(id.clone(), &theme_list.commit, entry, &mut id_counter),
                 );
             }
+        }
+
+        if should_log_progress(idx + 1, total_lists) {
+            println!("  Theme timeline progress: {} / {}", idx + 1, total_lists);
         }
     }
 

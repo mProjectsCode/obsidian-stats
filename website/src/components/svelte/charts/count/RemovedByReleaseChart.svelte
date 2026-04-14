@@ -11,12 +11,12 @@
 
 	const { dataPoints, type }: Props = $props();
 
-	const mappedDataPoints = dataPoints.map(point => {
+	const mappedDataPoints = $derived.by(() => dataPoints.map(point => {
 		return {
 			date: point.date.substring(0, 7), // Extract YYYY-MM from date string
 			percentage: point.percentage,
 		};
-	});
+	}));
 </script>
 
 <ChartWrapper>

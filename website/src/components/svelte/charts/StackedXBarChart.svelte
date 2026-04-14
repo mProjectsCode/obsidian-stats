@@ -12,14 +12,14 @@
 
 	const { dataPoints, yDomain, skewLabels = false, percentages = false }: Props = $props();
 
-	const mappedDataPoints = dataPoints.map((point, index) => {
+	const mappedDataPoints = $derived.by(() => dataPoints.map((point, index) => {
 		return {
 			index: index,
 			label: point.name,
 			value: point.value,
 			stack: point.layer,
 		};
-	});
+	}));
 </script>
 
 <ChartWrapper>

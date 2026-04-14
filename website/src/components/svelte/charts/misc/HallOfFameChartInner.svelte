@@ -10,7 +10,7 @@
 
 	const { data, showDots }: Props = $props();
 
-	const mappedData = data
+	const mappedData = $derived.by(() => data
 		.map(plugin => {
 			return plugin.data.map(point => {
 				return {
@@ -20,7 +20,7 @@
 				};
 			});
 		})
-		.flat();
+		.flat());
 
 	function asAny(data: DownloadDataPoint[]): any[] {
 		return data;

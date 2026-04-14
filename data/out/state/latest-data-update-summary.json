@@ -1,0 +1,105 @@
+{
+  "refreshed_at_unix": 1776160113,
+  "clone_run_at_unix": 1776160113,
+  "release_run_at_unix": 1776077465,
+  "obsidian_release_fetch_at_unix": 1776077487,
+  "latest_plugin_download_snapshot_date": "2026-04-14",
+  "latest_obsidian_release_date": "2026-03-23",
+  "latest_obsidian_version": "1.12.7",
+  "plugins": {
+    "total": 2924,
+    "active": 2754,
+    "removed": 170,
+    "total_downloads": 116460277,
+    "version_snapshots": 48287
+  },
+  "themes": {
+    "total": 470,
+    "active": 416,
+    "removed": 54
+  },
+  "releases": {
+    "changelog_entries": 453,
+    "github_release_snapshots": 168,
+    "interpolated_release_snapshots": 168,
+    "asset_count": 946,
+    "download_snapshots": 34204
+  },
+  "clone": {
+    "tracked": 2924,
+    "ok": 2752,
+    "skipped": 170,
+    "failed": 2,
+    "success_rate": 0.9992737835875091,
+    "failed_plugins": [
+      "fleeting-notes-obsidian",
+      "obsidian-audio-notes"
+    ]
+  },
+  "release_acquisition": {
+    "tracked": 2754,
+    "ok": 2631,
+    "retained_previous_main_js": 96,
+    "no_release": 17,
+    "no_main_js_asset": 10,
+    "error_count": 0,
+    "main_js_coverage": 2727,
+    "main_js_coverage_rate": 0.9901960784313726,
+    "total_main_js_bytes": 2724619503,
+    "average_main_js_bytes": 999127,
+    "largest_main_js": {
+      "repo": "SalokinGreen/NAI4Obsidian",
+      "size_bytes": 127704263
+    },
+    "status_counts": [
+      {
+        "label": "ok",
+        "count": 2631,
+        "share": 0.9553376906318083
+      },
+      {
+        "label": "main_js_not_updated_since_success",
+        "count": 96,
+        "share": 0.034858387799564274
+      },
+      {
+        "label": "no_release",
+        "count": 17,
+        "share": 0.006172839506172839
+      },
+      {
+        "label": "no_main_js_asset",
+        "count": 10,
+        "share": 0.0036310820624546117
+      }
+    ]
+  },
+  "repo_analysis": {
+    "tracked": 2924,
+    "active_success": 2752,
+    "active_failures": 2,
+    "removed_skipped": 170,
+    "coverage_rate": 0.9992737835875091,
+    "failure_samples": [
+      "obsidian-audio-notes",
+      "fleeting-notes-obsidian"
+    ],
+    "error_counts": [
+      {
+        "label": "package_json_read_error",
+        "count": 10,
+        "share": 0.0036310820624546117
+      },
+      {
+        "label": "manifest_parse_error",
+        "count": 3,
+        "share": 0.0010893246187363835
+      },
+      {
+        "label": "repository_missing",
+        "count": 2,
+        "share": 0.0007262164124909223
+      }
+    ]
+  }
+}

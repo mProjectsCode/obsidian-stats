@@ -1,15 +1,9 @@
-use std::fs;
-
-use swc_common::{FileName, SourceMap, sync::Lrc};
 use swc_ecma_ast::{
     ArrayPat, ArrowExpr, AssignExpr, AssignOp, AwaitExpr, BinExpr, BinaryOp, CatchClause, Class,
-    ClassMember, EsVersion as SwcEsVersion, ExportDecl, ForOfStmt, Function, ImportDecl, ObjectLit,
-    ObjectPat, OptChainExpr, PrivateName, Program, StaticBlock, VarDecl, VarDeclKind,
+    ClassMember, ExportDecl, ForOfStmt, Function, ImportDecl, ObjectLit, ObjectPat, OptChainExpr,
+    PrivateName, Program, StaticBlock, VarDecl, VarDeclKind,
 };
-use swc_ecma_parser::{EsSyntax, Parser, StringInput, Syntax, lexer::Lexer};
 use swc_ecma_visit::{Visit, VisitWith};
-
-use crate::plugins::release_acquisition::release_main_js_cache_path;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
 enum DetectedEsVersion {
@@ -215,133 +209,9 @@ impl Visit for EsFeatureDetector {
     }
 }
 
-fn parse_program(source: &str) -> Option<Program> {
-    let cm = Lrc::new(SourceMap::default());
-    let fm = cm.new_source_file(
-        FileName::Custom("main.js".into()).into(),
-        source.to_string(),
-    );
-
-    let mut parser = Parser::new_from(Lexer::new(
-        Syntax::Es(EsSyntax {
-            jsx: true,
-            fn_bind: true,
-            decorators: true,
-            decorators_before_export: true,
-            export_default_from: true,
-            import_attributes: true,
-            allow_super_outside_method: true,
-            allow_return_outside_function: true,
-            auto_accessors: true,
-            explicit_resource_management: true,
-        }),
-        SwcEsVersion::EsNext,
-        StringInput::from(&*fm),
-        None,
-    ));
-
-    parser.parse_program().ok()
-}
-
-pub(super) fn infer_es_from_main_js(plugin_id: &str, release_tag: &str) -> Option<String> {
-    let path = release_main_js_cache_path(plugin_id, release_tag);
-    let bytes = fs::read(path).ok()?;
-    let source = std::str::from_utf8(&bytes).ok()?;
-
-    infer_es_from_js_source(source)
-}
-
-pub(super) fn infer_es_from_js_source(source: &str) -> Option<String> {
-    let program = parse_program(source)?;
-
+pub(super) fn detect_es_version(program: &Program) -> Option<String> {
     let mut detector = EsFeatureDetector::default();
     program.visit_with(&mut detector);
 
     Some(detector.detected.as_label().to_string())
-}
-
-#[cfg(test)]
-mod tests {
-    use super::infer_es_from_js_source;
-
-    #[test]
-    fn defaults_to_es5_when_no_modern_syntax() {
-        let src = r#"var total = 1 + 2; function f() { return total; }"#;
-
-        assert_eq!(infer_es_from_js_source(src).as_deref(), Some("ES5"));
-    }
-
-    #[test]
-    fn detects_es2015_features() {
-        let src = r#"const map = values => values.map(v => v * 2);"#;
-
-        assert_eq!(infer_es_from_js_source(src).as_deref(), Some("ES6"));
-    }
-
-    #[test]
-    fn detects_es2016_features() {
-        let src = r#"let value = 2 ** 4; value **= 2;"#;
-
-        assert_eq!(infer_es_from_js_source(src).as_deref(), Some("ES2016"));
-    }
-
-    #[test]
-    fn detects_es2017_features() {
-        let src = r#"async function load() { await fetch('x'); }"#;
-
-        assert_eq!(infer_es_from_js_source(src).as_deref(), Some("ES2017"));
-    }
-
-    #[test]
-    fn detects_es2018_features() {
-        let src = r#"const merged = { ...a, b: 1 };"#;
-
-        assert_eq!(infer_es_from_js_source(src).as_deref(), Some("ES2018"));
-    }
-
-    #[test]
-    fn detects_es2019_features() {
-        let src = r#"try { fn(); } catch { noop(); }"#;
-
-        assert_eq!(infer_es_from_js_source(src).as_deref(), Some("ES2019"));
-    }
-
-    #[test]
-    fn detects_es2020_features() {
-        let src = r#"const value = user?.profile ?? fallback;"#;
-
-        assert_eq!(infer_es_from_js_source(src).as_deref(), Some("ES2020"));
-    }
-
-    #[test]
-    fn detects_es2021_features() {
-        let src = r#"config.enabled &&= true; count ||= 1; result ??= 0;"#;
-
-        assert_eq!(infer_es_from_js_source(src).as_deref(), Some("ES2021"));
-    }
-
-    #[test]
-    fn detects_es2022_features() {
-        let src = r#"class Example { #value = 1; }"#;
-
-        assert_eq!(infer_es_from_js_source(src).as_deref(), Some("ES2022"));
-    }
-
-    #[test]
-    fn ignores_runtime_api_mentions_inside_strings_and_comments() {
-        let src = r#"
-            // Promise.allSettled and Object.fromEntries are runtime APIs, not syntax.
-            const text = "Promise.allSettled Object.fromEntries";
-            var keep = 1;
-        "#;
-
-        assert_eq!(infer_es_from_js_source(src).as_deref(), Some("ES6"));
-    }
-
-    #[test]
-    fn returns_none_for_unparseable_source() {
-        let src = "function (";
-
-        assert_eq!(infer_es_from_js_source(src), None);
-    }
 }
