@@ -1,53 +1,51 @@
 {
-  "refreshed_at_unix": 1776676604,
-  "clone_run_at_unix": 1776676553,
-  "release_run_at_unix": 1776676578,
-  "obsidian_release_fetch_at_unix": 1776676604,
-  "latest_plugin_download_snapshot_date": "2026-04-20",
+  "refreshed_at_unix": 1777275104,
+  "clone_run_at_unix": 1777275057,
+  "release_run_at_unix": 1777275083,
+  "obsidian_release_fetch_at_unix": 1777275104,
+  "latest_plugin_download_snapshot_date": "2026-04-27",
   "latest_obsidian_release_date": "2026-03-23",
   "latest_obsidian_version": "1.12.7",
   "plugins": {
     "total": 2924,
-    "active": 2754,
-    "removed": 170,
-    "total_downloads": 117505655,
-    "version_snapshots": 48401
+    "active": 2750,
+    "removed": 174,
+    "total_downloads": 118704856,
+    "version_snapshots": 48523
   },
   "themes": {
     "total": 470,
-    "active": 416,
-    "removed": 54
+    "active": 415,
+    "removed": 55
   },
   "releases": {
     "changelog_entries": 453,
     "github_release_snapshots": 168,
     "interpolated_release_snapshots": 168,
     "asset_count": 946,
-    "download_snapshots": 35150
+    "download_snapshots": 36096
   },
   "clone": {
     "tracked": 2924,
-    "ok": 2751,
-    "skipped": 170,
-    "failed": 3,
-    "success_rate": 0.9989106753812637,
+    "ok": 2749,
+    "skipped": 174,
+    "failed": 1,
+    "success_rate": 0.9996363636363637,
     "failed_plugins": [
-      "fleeting-notes-obsidian",
-      "obsidian-audio-notes",
-      "obsidian-autoscroll"
+      "obsidian-audio-notes"
     ]
   },
   "release_acquisition": {
     "tracked": 2754,
-    "ok": 93,
-    "retained_previous_main_js": 2633,
-    "no_release": 17,
+    "ok": 75,
+    "retained_previous_main_js": 2651,
+    "no_release": 14,
     "no_main_js_asset": 11,
-    "error_count": 0,
+    "error_count": 3,
     "main_js_coverage": 2726,
     "main_js_coverage_rate": 0.9898329702251271,
-    "total_main_js_bytes": 2752301797,
-    "average_main_js_bytes": 1009648,
+    "total_main_js_bytes": 2753588932,
+    "average_main_js_bytes": 1010120,
     "largest_main_js": {
       "repo": "SalokinGreen/NAI4Obsidian",
       "size_bytes": 127704263
@@ -55,51 +53,55 @@
     "status_counts": [
       {
         "label": "main_js_not_updated_since_success",
-        "count": 2633,
-        "share": 0.9560639070442992
+        "count": 2651,
+        "share": 0.9625998547567175
       },
       {
         "label": "ok",
-        "count": 93,
-        "share": 0.03376906318082789
+        "count": 75,
+        "share": 0.027233115468409588
       },
       {
         "label": "no_release",
-        "count": 17,
-        "share": 0.006172839506172839
+        "count": 14,
+        "share": 0.005083514887436456
       },
       {
         "label": "no_main_js_asset",
         "count": 11,
         "share": 0.0039941902687000725
+      },
+      {
+        "label": "rate_limited",
+        "count": 3,
+        "share": 0.0010893246187363835
       }
     ]
   },
   "repo_analysis": {
     "tracked": 2924,
-    "active_success": 2752,
-    "active_failures": 2,
-    "removed_skipped": 170,
-    "coverage_rate": 0.9992737835875091,
+    "active_success": 2749,
+    "active_failures": 1,
+    "removed_skipped": 174,
+    "coverage_rate": 0.9996363636363637,
     "failure_samples": [
-      "obsidian-audio-notes",
-      "fleeting-notes-obsidian"
+      "obsidian-audio-notes"
     ],
     "error_counts": [
       {
         "label": "package_json_read_error",
         "count": 10,
-        "share": 0.0036310820624546117
+        "share": 0.0036363636363636364
       },
       {
         "label": "manifest_parse_error",
         "count": 3,
-        "share": 0.0010893246187363835
+        "share": 0.001090909090909091
       },
       {
         "label": "repository_missing",
-        "count": 2,
-        "share": 0.0007262164124909223
+        "count": 1,
+        "share": 0.0003636363636363636
       }
     ]
   }
