@@ -1,17 +1,17 @@
 {
-  "refreshed_at_unix": 1777275104,
-  "clone_run_at_unix": 1777275057,
-  "release_run_at_unix": 1777275083,
-  "obsidian_release_fetch_at_unix": 1777275104,
-  "latest_plugin_download_snapshot_date": "2026-04-27",
+  "refreshed_at_unix": 1777883484,
+  "clone_run_at_unix": 1777883458,
+  "release_run_at_unix": 1777883484,
+  "obsidian_release_fetch_at_unix": 1777718433,
+  "latest_plugin_download_snapshot_date": "2026-05-04",
   "latest_obsidian_release_date": "2026-03-23",
   "latest_obsidian_version": "1.12.7",
   "plugins": {
     "total": 2924,
     "active": 2750,
     "removed": 174,
-    "total_downloads": 118704856,
-    "version_snapshots": 48523
+    "total_downloads": 119906812,
+    "version_snapshots": 48682
   },
   "themes": {
     "total": 470,
@@ -23,7 +23,7 @@
     "github_release_snapshots": 168,
     "interpolated_release_snapshots": 168,
     "asset_count": 946,
-    "download_snapshots": 36096
+    "download_snapshots": 37042
   },
   "clone": {
     "tracked": 2924,
@@ -37,15 +37,15 @@
   },
   "release_acquisition": {
     "tracked": 2754,
-    "ok": 75,
-    "retained_previous_main_js": 2651,
+    "ok": 95,
+    "retained_previous_main_js": 2632,
     "no_release": 14,
-    "no_main_js_asset": 11,
+    "no_main_js_asset": 10,
     "error_count": 3,
-    "main_js_coverage": 2726,
-    "main_js_coverage_rate": 0.9898329702251271,
-    "total_main_js_bytes": 2753588932,
-    "average_main_js_bytes": 1010120,
+    "main_js_coverage": 2727,
+    "main_js_coverage_rate": 0.9901960784313726,
+    "total_main_js_bytes": 2761286602,
+    "average_main_js_bytes": 1012573,
     "largest_main_js": {
       "repo": "SalokinGreen/NAI4Obsidian",
       "size_bytes": 127704263
@@ -53,13 +53,13 @@
     "status_counts": [
       {
         "label": "main_js_not_updated_since_success",
-        "count": 2651,
-        "share": 0.9625998547567175
+        "count": 2632,
+        "share": 0.9557007988380537
       },
       {
         "label": "ok",
-        "count": 75,
-        "share": 0.027233115468409588
+        "count": 95,
+        "share": 0.03449527959331881
       },
       {
         "label": "no_release",
@@ -68,8 +68,8 @@
       },
       {
         "label": "no_main_js_asset",
-        "count": 11,
-        "share": 0.0039941902687000725
+        "count": 10,
+        "share": 0.0036310820624546117
       },
       {
         "label": "rate_limited",

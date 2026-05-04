@@ -13,6 +13,7 @@ use serde_json::value;
 pub mod analysis;
 pub mod clone_repos;
 pub mod data;
+pub mod download_backfill;
 pub mod license;
 pub mod release_acquisition;
 

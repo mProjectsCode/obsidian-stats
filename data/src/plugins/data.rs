@@ -3,7 +3,7 @@ use data_lib::{
     input_data::{ObsDownloadStats, ObsPluginList},
     plugin::PluginData,
 };
-use hashbrown::{HashMap, HashSet};
+use hashbrown::HashMap;
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 use std::{
     path::Path,
@@ -15,7 +15,7 @@ use crate::{
     constants::{OBS_RELEASES_REPO_PATH, PLUGIN_DATA_PATH, PLUGIN_LIST_PATH, PLUGIN_STATS_PATH},
     file_utils::{read_chunked_data, write_in_chunks_atomic},
     git_utils::get_obs_repo_changes,
-    plugins::{BorrowedPluginData, PluginDownloadStats, PluginList},
+    plugins::{BorrowedPluginData, PluginDownloadStats, PluginList, download_backfill},
     progress::should_log_progress,
 };
 
@@ -112,95 +112,6 @@ fn build_plugin_change_timeline(plugin_lists: &[PluginList]) -> Vec<BorrowedPlug
     }
 
     plugin_data_map.into_iter().map(|(_, data)| data).collect()
-}
-
-fn backfill_download_history(
-    plugin_data: &mut [BorrowedPluginData],
-    download_stats: &[PluginDownloadStats],
-) {
-    println!("Updating weekly download stats...");
-
-    let mut download_stats_map = HashMap::new();
-    for stat in download_stats {
-        download_stats_map.insert(stat.get_date(), stat);
-    }
-
-    let start_date = Date::new(2020, 1, 1);
-    let end_date = Date::now();
-    let total_days = start_date.diff_in_days(&end_date).unsigned_abs() as usize + 1;
-    let mut processed_days = 0;
-
-    // Something in May 2024 is broken in source data (for example advanced-canvas).
-    let excluded_dates = [
-        Date::new(2024, 5, 18),
-        Date::new(2024, 5, 19),
-        Date::new(2024, 5, 20),
-        Date::new(2024, 5, 21),
-        Date::new(2024, 5, 22),
-        Date::new(2024, 5, 23),
-        Date::new(2024, 5, 24),
-        Date::new(2024, 5, 25),
-        Date::new(2024, 5, 26),
-        Date::new(2024, 5, 27),
-        Date::new(2024, 5, 28),
-    ]
-    .into_iter()
-    .collect::<HashSet<_>>();
-
-    for date in start_date.iterate_daily_to(&end_date) {
-        processed_days += 1;
-        if excluded_dates.contains(&date) {
-            if should_log_progress(processed_days, total_days) {
-                println!(
-                    "  Download backfill progress: {} / {} days",
-                    processed_days, total_days
-                );
-            }
-            continue;
-        }
-
-        let Some(stats) = find_recent_download_stats(&download_stats_map, &date) else {
-            if should_log_progress(processed_days, total_days) {
-                println!(
-                    "  Download backfill progress: {} / {} days",
-                    processed_days, total_days
-                );
-            }
-            continue;
-        };
-
-        for entry in plugin_data.iter_mut() {
-            // Don't update downloads for plugins that were not yet released
-            if entry.added_commit.date > date {
-                continue;
-            }
-
-            entry.update_download_history(stats);
-        }
-
-        if should_log_progress(processed_days, total_days) {
-            println!(
-                "  Download backfill progress: {} / {} days",
-                processed_days, total_days
-            );
-        }
-    }
-}
-
-fn find_recent_download_stats<'a>(
-    download_stats_map: &'a HashMap<Date, &'a PluginDownloadStats>,
-    date: &Date,
-) -> Option<&'a PluginDownloadStats> {
-    for i in 0..6 {
-        let mut current_date = date.clone();
-        current_date.advance_days(i);
-
-        if let Some(stats) = download_stats_map.get(&current_date) {
-            return Some(stats);
-        }
-    }
-
-    None
 }
 
 fn build_version_history(
@@ -316,7 +227,7 @@ pub fn build_plugin_stats() -> Result<(), Box<dyn std::error::Error>> {
     println!("Get plugin download stats: {:#?}", time2.elapsed());
     time2 = std::time::Instant::now();
 
-    backfill_download_history(&mut plugin_data, &download_stats);
+    download_backfill::backfill_download_history(&mut plugin_data, &download_stats);
 
     println!("Update weekly download stats: {:#?}", time2.elapsed());
     time2 = std::time::Instant::now();

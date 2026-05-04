@@ -7,5 +7,6 @@ pub mod latest_data_update;
 pub mod license;
 pub mod plugin;
 pub mod release;
+pub mod spline;
 pub mod theme;
 pub mod version;
