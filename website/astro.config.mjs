@@ -23,8 +23,8 @@ export default defineConfig({
 					label: 'Home',
 					items: [
 						{
-							autogenerate: { directory: "home" }
-						}
+							autogenerate: { directory: 'home' },
+						},
 					],
 				},
 				{
