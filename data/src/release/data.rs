@@ -10,6 +10,7 @@ use crate::{
     file_utils::{read_chunked_data_or_default, write_in_chunks_atomic},
     github::RateLimitMode,
     release::GithubReleaseEntry,
+    security::http_client,
     state::{is_fresh, now_unix_seconds, read_json_or_default, write_json_atomic},
 };
 use data_lib::{
@@ -19,7 +20,7 @@ use data_lib::{
     version::Version,
 };
 use hashbrown::HashMap;
-use reqwest::{blocking::Client, header::HeaderMap};
+use reqwest::header::HeaderMap;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
@@ -74,7 +75,20 @@ fn fetch_github_release_entries(
     let mut not_modified = false;
     let mut page_count = 0;
     let mut latest_etag = None;
-    let client = Client::new();
+    let client = match http_client() {
+        Ok(client) => client,
+        Err(error) => {
+            alerts::record_unexpected_error("release stats HTTP client", error.to_string());
+            return FetchOutcome {
+                entries: release_entries,
+                hit_rate_limit,
+                hit_unexpected_error: true,
+                not_modified,
+                page_count,
+                latest_etag,
+            };
+        }
+    };
     let mut first_request = true;
 
     while let Some(api_link) = current_link.clone() {
@@ -351,7 +365,10 @@ fn interpolate_github_release_info(full_data: &[GithubReleaseInfo]) -> Vec<Githu
 }
 
 fn get_obs_release_info() -> Result<Vec<ObsidianReleaseInfo>, Box<dyn std::error::Error>> {
-    let response = reqwest::blocking::get(RELEASE_INFO_URL)?.error_for_status()?;
+    let response = http_client()?
+        .get(RELEASE_INFO_URL)
+        .send()?
+        .error_for_status()?;
     let text = response.text()?;
 
     // dbg!(&text);

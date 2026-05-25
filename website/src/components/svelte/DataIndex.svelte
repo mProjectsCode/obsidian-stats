@@ -189,14 +189,18 @@
 			<div class="vt-cell"><span>{datum.name}</span></div>
 			<div class="vt-cell"><span>{datum.author}</span></div>
 			<div class="vt-cell">
-				<a href={'https://github.com/' + datum.repo} target="_blank">{datum.repo}</a>
+				<a href={'https://github.com/' + datum.repo} target="_blank" rel="noopener noreferrer">{datum.repo}</a>
 			</div>
 			<div class="vt-cell">
-				<a href={'https://github.com/obsidianmd/obsidian-releases/commit/' + datum.added_commit.hash} target="_blank">{datum.added_commit.date}</a>
+				<a href={'https://github.com/obsidianmd/obsidian-releases/commit/' + datum.added_commit.hash} target="_blank" rel="noopener noreferrer"
+					>{datum.added_commit.date}</a
+				>
 			</div>
 			<div class="vt-cell">
 				{#if datum.removed_commit}
-					<a href={'https://github.com/obsidianmd/obsidian-releases/commit/' + datum.removed_commit.hash} target="_blank">{datum.removed_commit.date}</a>
+					<a href={'https://github.com/obsidianmd/obsidian-releases/commit/' + datum.removed_commit.hash} target="_blank" rel="noopener noreferrer"
+						>{datum.removed_commit.date}</a
+					>
 				{/if}
 			</div>
 		{/snippet}

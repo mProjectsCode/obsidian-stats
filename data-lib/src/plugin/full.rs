@@ -341,6 +341,15 @@ impl FullPluginData {
             .and_then(|r| r.latest_release_fetch_status.clone())
     }
 
+    pub fn analysis_errors(&self) -> Option<Vec<String>> {
+        self.repo_data().map(|r| {
+            r.analysis_errors
+                .iter()
+                .map(|error| error.as_label().to_string())
+                .collect()
+        })
+    }
+
     pub fn dev_dependencies(&self) -> Option<Vec<String>> {
         self.repo_data().map(|r| r.dev_dependencies.clone())
     }

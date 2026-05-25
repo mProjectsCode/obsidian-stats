@@ -4,6 +4,8 @@ use data_lib::plugin::LicenseInfo;
 
 use crate::plugins::license::license_compare::LicenseComparer;
 
+use super::safe_repo_file_path;
+
 const LICENSE_FILE_CANDIDATES: &[&str] = &["license", "license.txt", "license.md"];
 
 pub(super) fn run(
@@ -35,7 +37,8 @@ pub(super) fn run(
 
     let file_license = license_file
         .and_then(|file| {
-            fs::read_to_string(format!("{repo_path}/{file}"))
+            let path = safe_repo_file_path(repo_path, file).ok()?;
+            fs::read_to_string(path)
                 .map(|license_text| license_comparer.compare(plugin_id, &license_text))
                 .ok()
         })

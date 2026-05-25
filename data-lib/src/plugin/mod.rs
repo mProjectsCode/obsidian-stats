@@ -115,6 +115,10 @@ pub enum PluginRepoAnalysisError {
     RepoMissing,
     #[serde(rename = "repo_analysis_error")]
     RepoAnalysis,
+    #[serde(rename = "repository_scan_error")]
+    RepositoryScan,
+    #[serde(rename = "main_js_analysis_too_large")]
+    MainJsAnalysisTooLarge,
 }
 
 #[derive(Debug, Error)]
@@ -173,6 +177,8 @@ impl PluginRepoAnalysisError {
             Self::RepositoryMissing => "repository_missing",
             Self::RepoMissing => "repo_missing",
             Self::RepoAnalysis => "repo_analysis_error",
+            Self::RepositoryScan => "repository_scan_error",
+            Self::MainJsAnalysisTooLarge => "main_js_analysis_too_large",
         }
     }
 
@@ -188,6 +194,8 @@ impl PluginRepoAnalysisError {
             "package_json_parse_error" => Self::PackageJsonParse,
             "repository_missing" => Self::RepositoryMissing,
             "repo_missing" => Self::RepoMissing,
+            "repository_scan_error" => Self::RepositoryScan,
+            "main_js_analysis_too_large" => Self::MainJsAnalysisTooLarge,
             _ => {
                 if error.contains("does not exist") {
                     Self::RepoMissing

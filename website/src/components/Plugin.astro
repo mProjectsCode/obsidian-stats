@@ -26,10 +26,31 @@ function getFundingLinks(urls: string | Map<string, string> | undefined): { text
 	}
 
 	if (typeof urls === 'string') {
-		return [{ text: 'Support the Author', href: urls }];
+		const href = safeExternalHref(urls);
+		return href ? [{ text: 'Support the Author', href }] : [];
 	}
 
-	return Array.from(urls.entries()).map(([text, href]) => ({ text: `Support the Author via ${text}`, href }));
+	return Array.from(urls.entries())
+		.map(([text, href]) => {
+			const safeHref = safeExternalHref(href);
+			return safeHref ? { text: `Support the Author via ${text}`, href: safeHref } : undefined;
+		})
+		.filter((link): link is { text: string; href: string } => link !== undefined);
+}
+
+function safeExternalHref(href: string | undefined): string | undefined {
+	if (!href) return undefined;
+
+	try {
+		const url = new URL(href);
+		if (url.protocol === 'https:' || url.protocol === 'http:' || url.protocol === 'mailto:') {
+			return url.toString();
+		}
+	} catch {
+		return undefined;
+	}
+
+	return undefined;
 }
 
 const helpUrl = plugin.help_url();
@@ -40,14 +61,16 @@ const obsidianCommunityUrl = isRemoved ? undefined : `https://community.obsidian
 const obsidianHubUrl = plugin.obsidian_hub_url();
 const authorUrl = plugin.author_url();
 const fundingUrl = plugin.funding_url();
+const safeHelpUrl = safeExternalHref(helpUrl);
+const safeAuthorUrl = safeExternalHref(authorUrl);
 
 const external_links: { text: string; href: string }[] = [
-	helpUrl ? { text: 'Plugin Docs', href: helpUrl } : undefined,
+	safeHelpUrl ? { text: 'Plugin Docs', href: safeHelpUrl } : undefined,
 	{ text: 'GitHub Repo', href: plugin.repo_url() },
 	obsidianUrl ? { text: 'View in Obsidian', href: obsidianUrl } : undefined,
 	obsidianCommunityUrl ? { text: 'View on Obsidian Community', href: obsidianCommunityUrl } : undefined,
 	obsidianHubUrl ? { text: 'View on the Obsidian Hub', href: obsidianHubUrl } : undefined,
-	authorUrl ? { text: 'Author Website', href: authorUrl } : undefined,
+	safeAuthorUrl ? { text: 'Author Website', href: safeAuthorUrl } : undefined,
 	...getFundingLinks(fundingUrl),
 ].filter(x => x !== undefined);
 
@@ -139,6 +162,8 @@ function formatReleaseFreshness(): string {
 		case 'main_js_not_updated_since_success':
 		case 'not_modified':
 			return `release metadata checked ${checkedAt}; existing successful main.js cache reused`;
+		case 'no_release_for_version':
+			return `release metadata checked ${checkedAt}; no matching GitHub release was available for the latest known plugin version`;
 		case 'no_release':
 			return `release metadata checked ${checkedAt}; no GitHub release was available`;
 		case 'no_main_js_asset':
@@ -261,7 +286,7 @@ function formatReleaseFreshness(): string {
 							<p>
 								This plugin intentionally or unintentionally specified no license. This means that it can not be forked or maintained by another developer
 								without explicit approval be the current author. Please consider asking the developer to add a license to{' '}
-								<a href={`https://github.com/${plugin.repo_url()}`} target="_blank">
+								<a href={plugin.repo_url()} target="_blank" rel="noopener noreferrer">
 									their repository
 								</a>
 								.
@@ -318,8 +343,8 @@ function formatReleaseFreshness(): string {
 				<td>Author</td>
 				<td
 					>{
-						authorUrl ? (
-							<a href={authorUrl} target="_blank">
+						safeAuthorUrl ? (
+							<a href={safeAuthorUrl} target="_blank" rel="noopener noreferrer">
 								{plugin.author()}
 							</a>
 						) : (
@@ -335,7 +360,10 @@ function formatReleaseFreshness(): string {
 						<td>
 							{getFundingLinks(fundingUrl).map(link => (
 								<>
-									<a href={link.href}>{link.text}</a> <br />
+									<a href={link.href} target="_blank" rel="noopener noreferrer">
+										{link.text}
+									</a>{' '}
+									<br />
 								</>
 							))}
 						</td>
@@ -389,7 +417,7 @@ function formatReleaseFreshness(): string {
 		{
 			external_links.map(link => (
 				<li>
-					<a href={link.href} target="_blank">
+					<a href={link.href} target="_blank" rel="noopener noreferrer">
 						{link.text}
 					</a>
 				</li>

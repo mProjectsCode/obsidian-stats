@@ -1,9 +1,13 @@
-use std::path::Path;
+use std::path::{Path, PathBuf};
 
 use data_lib::plugin::{PluginData, PluginRepoAnalysisDetailError, PluginRepoData};
 
 use super::types::RepoResult;
-use crate::{constants::PLUGIN_REPO_PATH, plugins::license::license_compare::LicenseComparer};
+use crate::{
+    constants::PLUGIN_REPO_PATH,
+    plugins::license::license_compare::LicenseComparer,
+    security::{validate_existing_path_under, validate_relative_repo_path, validated_plugin_path},
+};
 
 mod check_files;
 mod check_i18n;
@@ -25,15 +29,23 @@ pub(super) fn analyze_repo(
     plugin: &PluginData,
     license_comparer: &LicenseComparer,
 ) -> Result<RepoResult, PluginRepoAnalysisDetailError> {
-    let repo_path = format!("{}/{}", PLUGIN_REPO_PATH, plugin.id);
-    if !Path::new(&repo_path).exists() {
+    let repo_path =
+        validated_plugin_path(Path::new(PLUGIN_REPO_PATH), &plugin.id).map_err(|error| {
+            PluginRepoAnalysisDetailError::RepositoryMissing {
+                plugin_id: plugin.id.clone(),
+                path: PathBuf::from(error),
+            }
+        })?;
+    if !repo_path.exists() {
         return Err(PluginRepoAnalysisDetailError::RepositoryMissing {
             plugin_id: plugin.id.clone(),
-            path: repo_path.into(),
+            path: repo_path.clone(),
         });
     }
+    let repo_path = repo_path.to_string_lossy().to_string();
 
-    let mut analysis_errors = Vec::new();
+    let file_data = check_files::run(&repo_path);
+    let mut analysis_errors = file_data.analysis_errors.clone();
 
     let manifest = match check_manifest::run(&repo_path, &plugin.id) {
         Ok(manifest) => Some(manifest),
@@ -42,7 +54,6 @@ pub(super) fn analyze_repo(
             None
         }
     };
-    let file_data = check_files::run(&repo_path);
     let package_data = match check_package::run(&repo_path, &plugin.id, &file_data.files) {
         Ok(package_data) => package_data,
         Err(error) => {
@@ -78,6 +89,26 @@ pub(super) fn analyze_repo(
         has_i18n_files: check_i18n::has_i18n_files(&file_data.files),
         analysis_errors,
     })
+}
+
+pub(super) fn safe_repo_file_path(
+    repo_path: &str,
+    relative_path: &str,
+) -> Result<PathBuf, std::io::Error> {
+    validate_relative_repo_path(relative_path).map_err(std::io::Error::other)?;
+
+    let root = Path::new(repo_path);
+    let path = root.join(relative_path);
+    let metadata = std::fs::symlink_metadata(&path)?;
+    if metadata.file_type().is_symlink() {
+        return Err(std::io::Error::other(format!(
+            "refusing to read symlinked repository file: {relative_path}"
+        )));
+    }
+
+    validate_existing_path_under(root, &path).map_err(std::io::Error::other)?;
+
+    Ok(path)
 }
 
 pub(super) fn into_plugin_repo_data(result: RepoResult) -> PluginRepoData {

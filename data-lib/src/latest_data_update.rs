@@ -11,13 +11,6 @@ use crate::{
 };
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct CloneStateEntryInput {
-    pub plugin_id: String,
-    pub status: String,
-    pub last_attempt_unix: i64,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PluginReleaseStateEntryInput {
     pub repo: String,
     pub last_checked_unix: i64,
@@ -215,7 +208,7 @@ pub struct BuildLatestDataUpdateSummaryInputs<'a> {
     pub changelog_releases: &'a [ObsidianReleaseInfo],
     pub github_releases: &'a [GithubReleaseInfo],
     pub interpolated_releases: &'a [GithubReleaseInfo],
-    pub clone_entries: &'a [CloneStateEntryInput],
+    pub clone_entries: &'a HashMap<String, PluginPageCloneFreshness>,
     pub release_entries: &'a [PluginReleaseStateEntryInput],
     pub release_stats_state: &'a ReleaseStatsStateInput,
 }
@@ -332,24 +325,24 @@ pub fn build_latest_data_update_summary(
 
     let clone_failed_entries = clone_entries
         .iter()
-        .filter(|entry| entry.status.starts_with("failed:"))
+        .filter(|(_, entry)| entry.status.starts_with("failed:"))
         .collect::<Vec<_>>();
     let clone_ok = clone_entries
-        .iter()
+        .values()
         .filter(|entry| entry.status == "ok")
         .count();
     let clone_skipped = clone_entries
-        .iter()
+        .values()
         .filter(|entry| matches!(entry.status.as_str(), "skipped" | "skipped_removed"))
         .count();
     let clone_failed = clone_failed_entries.len();
     let clone_attempted = clone_ok + clone_failed;
     let clone_run_at_unix = clone_entries
-        .iter()
+        .values()
         .map(|entry| entry.last_attempt_unix)
         .max();
     let mut clone_status_counts: HashMap<String, usize> = HashMap::new();
-    for entry in clone_entries {
+    for entry in clone_entries.values() {
         *clone_status_counts
             .entry(clone_status_label(&entry.status).to_string())
             .or_insert(0) += 1;
@@ -496,7 +489,7 @@ pub fn build_latest_data_update_summary(
             success_rate: clamp_rate(clone_ok, clone_attempted),
             failed_plugins: clone_failed_entries
                 .iter()
-                .map(|entry| entry.plugin_id.clone())
+                .map(|(plugin_id, _)| (*plugin_id).clone())
                 .take(5)
                 .collect(),
             status_counts: clone_statuses,
@@ -507,7 +500,10 @@ pub fn build_latest_data_update_summary(
             retained_previous_main_js: *release_status_counts
                 .get("main_js_not_updated_since_success")
                 .unwrap_or(&0),
-            no_release: *release_status_counts.get("no_release").unwrap_or(&0),
+            no_release: *release_status_counts.get("no_release").unwrap_or(&0)
+                + *release_status_counts
+                    .get("no_release_for_version")
+                    .unwrap_or(&0),
             no_main_js_asset: *release_status_counts.get("no_main_js_asset").unwrap_or(&0),
             error_count: release_entries
                 .iter()
@@ -583,6 +579,14 @@ mod tests {
         assert_eq!(
             PluginRepoAnalysisError::from_raw("package_json_parse_error"),
             PluginRepoAnalysisError::PackageJsonParse
+        );
+        assert_eq!(
+            PluginRepoAnalysisError::from_raw("repository_scan_error"),
+            PluginRepoAnalysisError::RepositoryScan
+        );
+        assert_eq!(
+            PluginRepoAnalysisError::from_raw("main_js_analysis_too_large"),
+            PluginRepoAnalysisError::MainJsAnalysisTooLarge
         );
     }
 

@@ -21,7 +21,8 @@ const dayFormatter = new Intl.DateTimeFormat('en-US', {
 const releaseStatusDescriptions: Record<string, string> = {
 	ok: 'Latest release metadata was fetched and a usable main.js cache is available.',
 	main_js_not_updated_since_success: 'The latest release was checked, but the last successful cached main.js stayed newer or more useful.',
-	no_release: 'The repository exists, but GitHub did not expose a latest release for it.',
+	no_release_for_version: 'No release was found that satisfied the latest known plugin version.',
+	no_release: 'Legacy status: no release was available for this plugin.',
 	no_main_js_asset: 'A release exists, but it does not ship a main.js asset that can be analyzed.',
 	not_modified: 'GitHub returned the same release metadata as the previous run.',
 };
@@ -29,10 +30,10 @@ const releaseStatusDescriptions: Record<string, string> = {
 const compactReleaseStatusDescriptions: Record<string, string> = {
 	ok: 'Release and analyzable main.js fetched.',
 	main_js_not_updated_since_success: 'Checked, but kept the previous main.js cache.',
-	no_release: 'No latest release was available on GitHub.',
+	no_release_for_version: 'No matching GitHub release was found for the latest known plugin version.',
+	no_release: 'Legacy status: no release was available on GitHub.',
 	no_main_js_asset: 'Release exists, but no main.js asset was found.',
 	not_modified: 'Release metadata was unchanged from the last run.',
-	no_release_for_version: 'No release was found that satisfied the version requirement for this plugin.',
 	rate_limited: 'The release acquisition attempt was blocked by GitHub rate limits.',
 	version_history_missing:
 		'The plugin entry did not have a version history available during release acquisition, which is required to determine the latest version.',
@@ -50,8 +51,11 @@ const repoAnalysisErrorDescriptions: Record<string, string> = {
 	manifest_parse_error: 'manifest.json exists but is not valid JSON for the expected schema.',
 	package_json_read_error: 'package.json could not be read even though it was detected in the repository.',
 	package_json_parse_error: 'package.json exists but is not valid JSON.',
+	repository_missing: 'The expected local plugin repository checkout was missing during analysis.',
 	repo_missing: 'The plugin repository was not present locally during analysis.',
 	repo_analysis_error: 'Fallback bucket for uncommon analysis failures.',
+	repository_scan_error: 'One or more repository directories or files could not be scanned.',
+	main_js_analysis_too_large: 'The cached release main.js was too large to parse safely, so main.js-specific analysis was skipped.',
 };
 
 const repoAnalysisErrorCounts = summary.repo_analysis.error_counts ?? [];

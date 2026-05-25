@@ -7,7 +7,7 @@ use std::{
     time::{Duration, Instant},
 };
 
-use data_lib::plugin::PluginData;
+use data_lib::{latest_data_update::PluginPageCloneFreshness, plugin::PluginData};
 use rayon::{
     ThreadPoolBuilder,
     iter::{IntoParallelIterator, ParallelIterator},
@@ -25,8 +25,11 @@ use crate::{
         release_acquisition::{acquire_plugin_release_main_js, latest_version_from_history},
     },
     progress::should_log_progress,
+    security::{github_repo_url, validated_plugin_path},
     state::{now_unix_seconds, read_json_or_default, write_json_atomic},
 };
+
+const CLONE_THREADS_ENV: &str = "CLONE_THREADS";
 
 enum CloneResult {
     Success {
@@ -61,6 +64,8 @@ impl CloneStatus {
 
 #[derive(Debug, Clone)]
 enum CloneError {
+    InvalidPluginId(String),
+    InvalidRepoSlug(String),
     GitStart(String),
     GitOutput(String),
     GitFailed(String),
@@ -85,6 +90,8 @@ impl CloneError {
 impl fmt::Display for CloneError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
+            Self::InvalidPluginId(error) => write!(f, "{error}"),
+            Self::InvalidRepoSlug(error) => write!(f, "{error}"),
             Self::GitStart(error) => write!(f, "failed to start git clone: {error}"),
             Self::GitOutput(error) => write!(f, "failed to read git clone output: {error}"),
             Self::GitFailed(error) => f.write_str(error),
@@ -125,14 +132,7 @@ struct CloneState {
     entries: HashMap<String, CloneStateEntry>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
-struct CloneStateEntry {
-    repo: String,
-    target_release_tag: Option<String>,
-    last_attempt_unix: i64,
-    last_success_unix: Option<i64>,
-    status: String,
-}
+type CloneStateEntry = PluginPageCloneFreshness;
 
 pub fn clone_plugin_repos(force: bool, no_clone: bool) -> Result<(), Box<dyn std::error::Error>> {
     ensure_dir(Path::new(PLUGIN_REPO_PATH))?;
@@ -146,15 +146,20 @@ pub fn clone_plugin_repos(force: bool, no_clone: bool) -> Result<(), Box<dyn std
             .and_then(|v| v.parse::<u64>().ok())
             .unwrap_or(DEFAULT_CLONE_TIMEOUT_SECONDS),
     );
+    let default_threads = std::thread::available_parallelism()
+        .map(|n| n.get())
+        .unwrap_or(4);
+    let thread_count = configured_thread_count(CLONE_THREADS_ENV, default_threads);
 
     let mut state: CloneState = read_json_or_default(Path::new(CLONE_STATE_PATH));
     let run_started_unix = now_unix_seconds();
 
     println!(
-        "Starting cloning process (clone timeout: {}s, force: {}, no_clone: {})...",
+        "Starting cloning process (clone timeout: {}s, force: {}, no_clone: {}, threads: {})...",
         clone_timeout.as_secs(),
         force,
-        no_clone
+        no_clone,
+        thread_count
     );
 
     if no_clone {
@@ -211,9 +216,9 @@ pub fn clone_plugin_repos(force: bool, no_clone: bool) -> Result<(), Box<dyn std
             }
         };
 
-        let path = Path::new(PLUGIN_REPO_PATH).join(&plugin.id);
+        let path = validated_plugin_path(Path::new(PLUGIN_REPO_PATH), &plugin.id);
         let state_entry = state.entries.get(&plugin.id);
-        if path.exists()
+        if path.as_ref().is_ok_and(|path| path.exists())
             && !force
             && let Some(state_entry) = state_entry
             && state_entry.repo == plugin.current_entry.repo
@@ -242,7 +247,7 @@ pub fn clone_plugin_repos(force: bool, no_clone: bool) -> Result<(), Box<dyn std
     let now = std::time::Instant::now();
 
     let thread_pool = ThreadPoolBuilder::new()
-        .num_threads(4)
+        .num_threads(thread_count)
         .build()
         .expect("Failed to build thread pool");
     let total_jobs = clone_jobs.len();
@@ -387,7 +392,17 @@ fn clone_repo_preserving_previous(
     target_release_tag: &str,
     clone_timeout: Duration,
 ) -> CloneResult {
-    let target_path = Path::new(PLUGIN_REPO_PATH).join(&plugin.id);
+    let target_path = match validated_plugin_path(Path::new(PLUGIN_REPO_PATH), &plugin.id) {
+        Ok(path) => path,
+        Err(error) => {
+            return CloneResult::Failed {
+                id: plugin.id.clone(),
+                repo: plugin.current_entry.repo.clone(),
+                target_release_tag: target_release_tag.to_string(),
+                error: CloneError::InvalidPluginId(error),
+            };
+        }
+    };
     let timestamp = now_unix_seconds();
     let tmp_path = Path::new(PLUGIN_REPO_PATH).join(format!(".tmp-{}-{timestamp}", plugin.id));
     let backup_path = Path::new(PLUGIN_REPO_PATH).join(format!(".bak-{}-{timestamp}", plugin.id));
@@ -462,7 +477,8 @@ fn run_git_clone(
     tmp_path: &Path,
     clone_timeout: Duration,
 ) -> Result<(), CloneError> {
-    let repo_url = format!("https://github.com/{}.git", plugin.current_entry.repo);
+    let repo_url =
+        github_repo_url(&plugin.current_entry.repo).map_err(CloneError::InvalidRepoSlug)?;
     let mut child = Command::new("git")
         .args([
             "clone",
@@ -542,6 +558,14 @@ fn command_output_tail(output: &[u8]) -> String {
         .rev()
         .collect::<String>();
     format!("...{tail}")
+}
+
+fn configured_thread_count(env_var: &str, default_threads: usize) -> usize {
+    std::env::var(env_var)
+        .ok()
+        .and_then(|v| v.parse::<usize>().ok())
+        .filter(|count| *count > 0)
+        .unwrap_or(default_threads)
 }
 
 #[cfg(test)]

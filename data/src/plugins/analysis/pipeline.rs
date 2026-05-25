@@ -1,6 +1,6 @@
 use std::fs;
 
-use data_lib::plugin::{PluginData, PluginRepoData};
+use data_lib::plugin::{PluginData, PluginRepoAnalysisError, PluginRepoData};
 
 use super::{
     mainjs::analyze_main_js,
@@ -14,6 +14,8 @@ use crate::plugins::{
         PluginReleaseState, PluginReleaseStateEntry, release_main_js_cache_path,
     },
 };
+
+const MAX_MAIN_JS_ANALYSIS_BYTES: u64 = 10 * 1024 * 1024;
 
 pub(crate) fn analyze_plugin(
     plugin: &PluginData,
@@ -35,13 +37,25 @@ pub(crate) fn analyze_plugin(
 
     if let Some(tag) = state_entry.latest_release_tag.as_deref() {
         let path = release_main_js_cache_path(&plugin.id, tag);
-        if let Ok(bytes) = fs::read(path) {
-            if let Ok(source) = std::str::from_utf8(&bytes) {
-                let mainjs = analyze_main_js(source);
-                analysis_result.mainjs = mainjs;
-                apply_mainjs_fields(&mut output, &analysis_result);
-                run_stats.release_main_js_scanned += 1;
-            } else {
+        if let Ok(path) = path {
+            let too_large = fs::metadata(&path)
+                .map(|metadata| metadata.len() > MAX_MAIN_JS_ANALYSIS_BYTES)
+                .unwrap_or(false);
+            if too_large {
+                output
+                    .analysis_errors
+                    .push(PluginRepoAnalysisError::MainJsAnalysisTooLarge);
+                run_stats.release_main_js_scan_failed += 1;
+            } else if let Ok(bytes) = fs::read(path) {
+                if let Ok(source) = std::str::from_utf8(&bytes) {
+                    let mainjs = analyze_main_js(source);
+                    analysis_result.mainjs = mainjs;
+                    apply_mainjs_fields(&mut output, &analysis_result);
+                    run_stats.release_main_js_scanned += 1;
+                } else {
+                    run_stats.release_main_js_scan_failed += 1;
+                }
+            } else if output.estimated_target_es_version.is_none() {
                 run_stats.release_main_js_scan_failed += 1;
             }
         } else if output.estimated_target_es_version.is_none() {

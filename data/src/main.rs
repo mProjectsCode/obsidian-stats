@@ -10,6 +10,7 @@ pub mod pipeline;
 pub mod plugins;
 pub mod progress;
 pub mod release;
+pub mod security;
 pub mod state;
 pub mod theme;
 

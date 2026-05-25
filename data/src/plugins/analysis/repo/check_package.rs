@@ -8,6 +8,8 @@ use data_lib::{
     },
 };
 
+use super::safe_repo_file_path;
+
 pub(super) struct PackageResult {
     pub(super) package_managers: Vec<PackageManager>,
     pub(super) dependencies: Vec<String>,
@@ -72,13 +74,18 @@ fn read_package_json(
     repo_path: &str,
     plugin_id: &str,
 ) -> Result<serde_json::Value, PluginRepoAnalysisDetailError> {
-    let package_json =
-        fs::read_to_string(format!("{repo_path}/package.json")).map_err(|source| {
-            PluginRepoAnalysisDetailError::PackageJsonRead {
-                plugin_id: plugin_id.to_string(),
-                source,
-            }
-        })?;
+    let package_json_path = safe_repo_file_path(repo_path, "package.json").map_err(|source| {
+        PluginRepoAnalysisDetailError::PackageJsonRead {
+            plugin_id: plugin_id.to_string(),
+            source,
+        }
+    })?;
+    let package_json = fs::read_to_string(package_json_path).map_err(|source| {
+        PluginRepoAnalysisDetailError::PackageJsonRead {
+            plugin_id: plugin_id.to_string(),
+            source,
+        }
+    })?;
 
     let package_json = package_json.trim_start_matches('\u{feff}');
 

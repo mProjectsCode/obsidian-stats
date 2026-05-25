@@ -6,7 +6,11 @@ use std::{
 
 use reqwest::blocking::Client;
 
-use crate::{constants::PLUGIN_RELEASE_MAIN_JS_PATH, state::now_unix_seconds};
+use crate::{
+    constants::PLUGIN_RELEASE_MAIN_JS_PATH,
+    security::{validate_github_download_url, validated_plugin_path},
+    state::now_unix_seconds,
+};
 
 use super::ReleaseFetchStatus;
 
@@ -20,6 +24,8 @@ pub(super) enum MainJsCacheOutcome {
 
 pub(super) enum MainJsDownloadError {
     RateLimited(u16),
+    InvalidCachePath(String),
+    InvalidDownloadUrl(String),
     InvalidSize(u64),
     Request(String),
     Http(u16),
@@ -32,6 +38,12 @@ impl MainJsDownloadError {
     pub(super) fn status(&self) -> ReleaseFetchStatus {
         match self {
             Self::RateLimited(_) => ReleaseFetchStatus::MainJsRateLimited,
+            Self::InvalidCachePath(err) => {
+                ReleaseFetchStatus::MainJsDownloadFailed(format!("invalid_cache_path:{err}"))
+            }
+            Self::InvalidDownloadUrl(err) => {
+                ReleaseFetchStatus::MainJsDownloadFailed(format!("invalid_download_url:{err}"))
+            }
             Self::InvalidSize(size) => {
                 ReleaseFetchStatus::MainJsDownloadFailed(format!("invalid_size:{size}"))
             }
@@ -52,6 +64,8 @@ impl MainJsDownloadError {
     pub(super) fn detail_message(&self) -> String {
         match self {
             Self::RateLimited(status) => format!("GitHub returned HTTP {status}"),
+            Self::InvalidCachePath(err) => err.clone(),
+            Self::InvalidDownloadUrl(err) => err.clone(),
             Self::InvalidSize(size) => format!("asset size {size} bytes is outside allowed bounds"),
             Self::Request(err) => err.clone(),
             Self::Http(status) => format!("GitHub returned HTTP {status}"),
@@ -75,7 +89,10 @@ pub(super) fn save_main_js_to_cache(
         return Err(MainJsDownloadError::InvalidSize(size));
     }
 
-    let cache_path = release_main_js_cache_path(plugin_id, release_tag);
+    validate_github_download_url(download_url).map_err(MainJsDownloadError::InvalidDownloadUrl)?;
+
+    let cache_path = release_main_js_cache_path(plugin_id, release_tag)
+        .map_err(MainJsDownloadError::InvalidCachePath)?;
     if let Ok(meta) = fs::metadata(&cache_path)
         && meta.len() == size
     {
@@ -177,7 +194,7 @@ fn stream_response_to_file(
     Ok(total)
 }
 
-pub fn release_main_js_cache_path(plugin_id: &str, release_tag: &str) -> PathBuf {
+pub fn release_main_js_cache_path(plugin_id: &str, release_tag: &str) -> Result<PathBuf, String> {
     let sanitized_tag = release_tag
         .chars()
         .map(|ch| {
@@ -189,7 +206,8 @@ pub fn release_main_js_cache_path(plugin_id: &str, release_tag: &str) -> PathBuf
         })
         .collect::<String>();
 
-    Path::new(PLUGIN_RELEASE_MAIN_JS_PATH)
-        .join(plugin_id)
-        .join(format!("{sanitized_tag}-main.js"))
+    Ok(
+        validated_plugin_path(Path::new(PLUGIN_RELEASE_MAIN_JS_PATH), plugin_id)?
+            .join(format!("{sanitized_tag}-main.js")),
+    )
 }

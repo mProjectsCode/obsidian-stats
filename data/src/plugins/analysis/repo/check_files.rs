@@ -2,6 +2,8 @@ use std::{fs, path::Path};
 
 use hashbrown::HashMap;
 
+use data_lib::plugin::PluginRepoAnalysisError;
+
 use super::LOC_EXCLUDED;
 
 const TEST_FILE_SUFFIXES: &[&str] = &[".test.ts", ".test.js", ".spec.ts", ".spec.js"];
@@ -14,11 +16,13 @@ pub(super) struct FilesResult {
     pub(super) has_package_json: bool,
     pub(super) uses_typescript: bool,
     pub(super) lines_of_code: HashMap<String, usize>,
+    pub(super) analysis_errors: Vec<PluginRepoAnalysisError>,
 }
 
 pub(super) fn run(repo_path: &str) -> FilesResult {
-    let files = list_files_in_repo(repo_path);
+    let (files, had_scan_errors) = list_files_in_repo(repo_path);
     let file_type_counts = count_file_types(&files);
+    let lines_of_code = count_lines_of_code(repo_path, &files);
 
     let uses_typescript =
         file_type_counts.contains_key("ts") || file_type_counts.contains_key("tsx");
@@ -27,10 +31,15 @@ pub(super) fn run(repo_path: &str) -> FilesResult {
         has_test_files: has_test_files(&files),
         has_beta_manifest: has_file_named(&files, "manifest-beta.json"),
         has_package_json: has_file_named(&files, "package.json"),
-        lines_of_code: count_lines_of_code(repo_path),
+        lines_of_code,
         files,
         file_type_counts,
         uses_typescript,
+        analysis_errors: if had_scan_errors {
+            vec![PluginRepoAnalysisError::RepositoryScan]
+        } else {
+            Vec::new()
+        },
     }
 }
 
@@ -44,11 +53,15 @@ fn count_file_types(files: &[String]) -> HashMap<String, usize> {
     file_types
 }
 
-fn count_lines_of_code(repo_path: &str) -> HashMap<String, usize> {
+fn count_lines_of_code(repo_path: &str, files: &[String]) -> HashMap<String, usize> {
     let config = tokei::Config::default();
     let mut languages = tokei::Languages::new();
+    let paths = files
+        .iter()
+        .map(|file| Path::new(repo_path).join(file))
+        .collect::<Vec<_>>();
 
-    languages.get_statistics(&[repo_path], LOC_EXCLUDED, &config);
+    languages.get_statistics(&paths, LOC_EXCLUDED, &config);
 
     languages
         .into_iter()
@@ -65,36 +78,53 @@ fn has_test_files(files: &[String]) -> bool {
     })
 }
 
-fn list_files_in_repo(repo_path: &str) -> Vec<String> {
+fn list_files_in_repo(repo_path: &str) -> (Vec<String>, bool) {
     let mut files = Vec::new();
+    let mut had_scan_errors = false;
     let root = Path::new(repo_path);
-    list_files_rec(root, root, &mut files);
+    list_files_rec(root, root, &mut files, &mut had_scan_errors);
     files.sort();
-    files
+    (files, had_scan_errors)
 }
 
 fn has_file_named(files: &[String], target: &str) -> bool {
     files.iter().any(|file| file == target)
 }
 
-fn list_files_rec(root: &Path, path: &Path, files: &mut Vec<String>) {
-    if let Ok(entries) = fs::read_dir(path) {
-        for entry in entries.flatten() {
-            let path = entry.path();
-            if path.is_dir() {
-                if path.file_name().is_some_and(|f| f == ".git") {
-                    continue;
-                }
-                if path.file_name().is_some_and(|f| f == "node_modules") {
-                    continue;
-                }
+fn list_files_rec(root: &Path, path: &Path, files: &mut Vec<String>, had_scan_errors: &mut bool) {
+    let Ok(entries) = fs::read_dir(path) else {
+        *had_scan_errors = true;
+        return;
+    };
 
-                list_files_rec(root, &path, files);
-            } else if path.is_file()
-                && let Some(relative_path) = repo_relative_path(root, &path)
-            {
-                files.push(relative_path);
+    for entry in entries {
+        let Ok(entry) = entry else {
+            *had_scan_errors = true;
+            continue;
+        };
+        let path = entry.path();
+        let Ok(metadata) = fs::symlink_metadata(&path) else {
+            *had_scan_errors = true;
+            continue;
+        };
+        let file_type = metadata.file_type();
+        if file_type.is_symlink() {
+            continue;
+        }
+
+        if file_type.is_dir() {
+            if path.file_name().is_some_and(|f| f == ".git") {
+                continue;
             }
+            if path.file_name().is_some_and(|f| f == "node_modules") {
+                continue;
+            }
+
+            list_files_rec(root, &path, files, had_scan_errors);
+        } else if file_type.is_file()
+            && let Some(relative_path) = repo_relative_path(root, &path)
+        {
+            files.push(relative_path);
         }
     }
 }

@@ -16,6 +16,7 @@ use crate::{
     constants::{DEFAULT_PLUGIN_RELEASE_REFRESH_DAYS, PLUGIN_RELEASE_ENRICHMENT_STATE_PATH},
     github::RateLimitMode,
     progress::should_log_progress,
+    security::http_client,
     state::{is_fresh, now_unix_seconds, read_json_or_default, write_json_atomic},
 };
 
@@ -243,7 +244,7 @@ pub fn acquire_plugin_release_main_js(
         stats.fetched_http += jobs.len();
         let total_jobs = jobs.len();
 
-        let client = Client::new();
+        let client = http_client()?;
         let thread_pool = ThreadPoolBuilder::new()
             .num_threads(thread_count)
             .build()

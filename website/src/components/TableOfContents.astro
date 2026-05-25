@@ -13,7 +13,7 @@ const { entry } = Astro.locals.starlightRoute;
 			<ul style="padding: 0; list-style: none;">
 				{entry.data.links.map((link: { text: string; href: string }) => (
 					<li>
-						<a class="right-sidebar-link" href={link.href} target="_blank">
+						<a class="right-sidebar-link" href={link.href} target="_blank" rel="noopener noreferrer">
 							<span>{link.text}</span>
 						</a>
 					</li>
