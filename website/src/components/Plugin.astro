@@ -4,7 +4,7 @@ import { Aside } from '@astrojs/starlight/components';
 import Commit from './Commit.astro';
 import DownloadChart from './svelte/charts/downloads/DownloadChart.svelte';
 import BarChart from './svelte/charts/BarChart.svelte';
-import { getPluginDataArray } from '../utils/data';
+import { getPluginDataArray, getPluginPageFreshness } from '../utils/data';
 import type { PluginWarning } from '../../../data-wasm/pkg/data_wasm';
 
 const { pluginId } = Astro.props as { pluginId: string };
@@ -13,6 +13,7 @@ if (!pluginId) {
 }
 
 const data = await getPluginDataArray();
+const pageFreshness = await getPluginPageFreshness(pluginId);
 const view = data.view();
 const plugin = view.get_by_id(data, pluginId);
 if (!plugin) {
@@ -32,7 +33,10 @@ function getFundingLinks(urls: string | Map<string, string> | undefined): { text
 }
 
 const helpUrl = plugin.help_url();
+const addedCommit = plugin.added_commit();
+const isRemoved = plugin.removed_commit() !== undefined;
 const obsidianUrl = plugin.obsidian_url();
+const obsidianCommunityUrl = isRemoved ? undefined : `https://community.obsidian.md/plugins/${plugin.id()}`;
 const obsidianHubUrl = plugin.obsidian_hub_url();
 const authorUrl = plugin.author_url();
 const fundingUrl = plugin.funding_url();
@@ -41,6 +45,7 @@ const external_links: { text: string; href: string }[] = [
 	helpUrl ? { text: 'Plugin Docs', href: helpUrl } : undefined,
 	{ text: 'GitHub Repo', href: plugin.repo_url() },
 	obsidianUrl ? { text: 'View in Obsidian', href: obsidianUrl } : undefined,
+	obsidianCommunityUrl ? { text: 'View on Obsidian Community', href: obsidianCommunityUrl } : undefined,
 	obsidianHubUrl ? { text: 'View on the Obsidian Hub', href: obsidianHubUrl } : undefined,
 	authorUrl ? { text: 'Author Website', href: authorUrl } : undefined,
 	...getFundingLinks(fundingUrl),
@@ -82,6 +87,69 @@ function formatBytes(bytes: number | bigint): string {
 
 	return `${value.toFixed(value >= 100 ? 0 : value >= 10 ? 1 : 2)} ${units[exponent]}`;
 }
+
+const dateFormatter = new Intl.DateTimeFormat('en-US', {
+	dateStyle: 'medium',
+	timeZone: 'UTC',
+});
+
+function formatUnix(unix: number | null | undefined): string {
+	if (unix === null || unix === undefined) {
+		return 'Not available';
+	}
+
+	return dateFormatter.format(new Date(unix * 1000));
+}
+
+function formatDay(date: string | null | undefined): string {
+	if (!date) {
+		return 'Not available';
+	}
+
+	return dateFormatter.format(new Date(`${date}T00:00:00Z`));
+}
+
+function formatCloneFreshness(): string {
+	const clone = pageFreshness.clone;
+	if (!clone) {
+		return 'No repository clone state recorded for this plugin.';
+	}
+
+	if (clone.last_success_unix !== null && clone.last_success_unix !== undefined) {
+		return `last successful checkout ${formatUnix(clone.last_success_unix)}${clone.status === 'ok' ? '' : `; latest status: ${clone.status}`}`;
+	}
+
+	if (clone.status === 'skipped_removed') {
+		return 'skipped because the plugin is removed from the community list';
+	}
+
+	return `no successful checkout recorded (latest status: ${clone.status})`;
+}
+
+function formatReleaseFreshness(): string {
+	const release = pageFreshness.release;
+	if (!release) {
+		return 'No release acquisition state recorded for this plugin.';
+	}
+
+	const checkedAt = formatUnix(release.last_checked_unix);
+	switch (release.latest_release_fetch_status) {
+		case 'ok':
+			return `release metadata checked ${checkedAt}; latest main.js acquired`;
+		case 'main_js_not_updated_since_success':
+		case 'not_modified':
+			return `release metadata checked ${checkedAt}; existing successful main.js cache reused`;
+		case 'no_release':
+			return `release metadata checked ${checkedAt}; no GitHub release was available`;
+		case 'no_main_js_asset':
+			return `release metadata checked ${checkedAt}; no main.js release asset was available`;
+		case undefined:
+		case null:
+			return `release metadata checked ${checkedAt}`;
+		default:
+			return `release metadata checked ${checkedAt}; latest status: ${release.latest_release_fetch_status}`;
+	}
+}
 ---
 
 <StarlightPage
@@ -92,6 +160,7 @@ function formatBytes(bytes: number | bigint): string {
 	}}
 	headings={[
 		{ depth: 2, text: 'Data', slug: 'data' },
+		{ depth: 3, text: 'Last Refresh', slug: 'last-refresh' },
 		{ depth: 3, text: 'Changes', slug: 'changes' },
 		{ depth: 3, text: 'Repository Data', slug: 'repository-data' },
 		{ depth: 3, text: 'Lines of Code', slug: 'loc' },
@@ -283,11 +352,34 @@ function formatBytes(bytes: number | bigint): string {
 			}
 			<tr>
 				<td>Official Release Date</td>
-				<td><Commit commit={plugin.added_commit()} /></td>
+				<td><Commit commit={addedCommit} /></td>
 			</tr>
 			<tr>
 				<td>Last update</td>
 				<td>{plugin.last_updated_date()}</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<h3 id="last-refresh">Last Refresh</h3>
+
+	<p>
+		Obsidian Stats last refreshed the data behind this page on {formatUnix(pageFreshness.summary.refreshed_at_unix)}.
+	</p>
+
+	<table class="full-width">
+		<tbody>
+			<tr>
+				<td>Community plugin snapshot</td>
+				<td>{formatDay(pageFreshness.summary.latest_plugin_download_snapshot_date)}</td>
+			</tr>
+			<tr>
+				<td>Repository clone</td>
+				<td>{formatCloneFreshness()}</td>
+			</tr>
+			<tr>
+				<td>Release acquisition</td>
+				<td>{formatReleaseFreshness()}</td>
 			</tr>
 		</tbody>
 	</table>

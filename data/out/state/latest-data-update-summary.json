@@ -1,7 +1,7 @@
 {
-  "refreshed_at_unix": 1779706346,
-  "clone_run_at_unix": 1779706256,
-  "release_run_at_unix": 1779706315,
+  "refreshed_at_unix": 1779707129,
+  "clone_run_at_unix": 1779707128,
+  "release_run_at_unix": 1779707129,
   "obsidian_release_fetch_at_unix": 1779706346,
   "latest_plugin_download_snapshot_date": "2026-05-25",
   "latest_obsidian_release_date": "2026-03-23",
@@ -27,22 +27,22 @@
   },
   "clone": {
     "tracked": 4477,
-    "ok": 4145,
+    "ok": 4148,
     "skipped": 262,
-    "failed": 19,
-    "success_rate": 0.9954370797310279,
+    "failed": 16,
+    "success_rate": 0.9961575408261287,
     "failed_plugins": [
-      "contextual-sidecar",
-      "kanban-status-updater",
+      "duplicate-line",
+      "vim-toggle",
       "hackerone",
-      "hide-tags",
-      "augmented-canvas"
+      "tasks-calendar-wrapper",
+      "mapbox-location"
     ],
     "status_counts": [
       {
         "label": "ok",
-        "count": 4145,
-        "share": 0.9258431985704713
+        "count": 4148,
+        "share": 0.9265132901496538
       },
       {
         "label": "skipped_removed",
@@ -56,8 +56,8 @@
       },
       {
         "label": "failed",
-        "count": 19,
-        "share": 0.004243913334822426
+        "count": 16,
+        "share": 0.0035738217556399374
       }
     ]
   },
@@ -70,8 +70,8 @@
     "error_count": 5,
     "main_js_coverage": 4199,
     "main_js_coverage_rate": 0.9785597762759264,
-    "total_main_js_bytes": 3285449773,
-    "average_main_js_bytes": 782436,
+    "total_main_js_bytes": 3284023241,
+    "average_main_js_bytes": 782096,
     "largest_main_js": {
       "repo": "salokingreen/NAI4Obsidian",
       "size_bytes": 127704263

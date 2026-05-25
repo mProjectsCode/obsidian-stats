@@ -8,6 +8,10 @@ async function readChunksInDir(dir: string): Promise<string[]> {
 	return Promise.all(jsonFiles.map(file => fs.readFile(path.resolve(process.cwd(), dir, file), 'utf-8')));
 }
 
+async function readDataFile(file: string): Promise<string> {
+	return fs.readFile(path.resolve(process.cwd(), file), 'utf-8');
+}
+
 // ---------------------------------
 // PLUGIN DATA
 // ---------------------------------
@@ -117,4 +121,85 @@ async function loadReleaseData(): Promise<wasm.ReleaseDataArray> {
 	await loadWasm();
 
 	return wasm.load_release_data_from_chunks(releasesRawDataChunks, releasesInterpolatedDataChunks, releasesChangelogChunks);
+}
+
+// ---------------------------------
+// LATEST DATA UPDATE SUMMARY
+// ---------------------------------
+
+let latestDataUpdateSummary: wasm.LatestDataUpdateSummary | null = null;
+let latestDataUpdateSummaryPromise: Promise<wasm.LatestDataUpdateSummary> | null = null;
+
+export async function getLatestDataUpdateSummary(): Promise<wasm.LatestDataUpdateSummary> {
+	if (latestDataUpdateSummary) {
+		return latestDataUpdateSummary;
+	}
+
+	if (latestDataUpdateSummaryPromise) {
+		return latestDataUpdateSummaryPromise;
+	}
+
+	latestDataUpdateSummaryPromise = loadLatestDataUpdateSummary()
+		.then(summary => {
+			latestDataUpdateSummary = summary;
+			return summary;
+		})
+		.finally(() => {
+			latestDataUpdateSummaryPromise = null;
+		});
+
+	return latestDataUpdateSummaryPromise;
+}
+
+async function loadLatestDataUpdateSummary(): Promise<wasm.LatestDataUpdateSummary> {
+	const latestDataUpdateSummary = await readDataFile('../data/out/state/latest-data-update-summary.json');
+
+	await loadWasm();
+
+	return wasm.load_latest_data_update_summary(latestDataUpdateSummary);
+}
+
+// ---------------------------------
+// PLUGIN PAGE FRESHNESS DATA
+// ---------------------------------
+
+let pluginPageFreshnessData: wasm.PluginPageFreshnessData | null = null;
+let pluginPageFreshnessDataPromise: Promise<wasm.PluginPageFreshnessData> | null = null;
+
+export async function getPluginPageFreshnessData(): Promise<wasm.PluginPageFreshnessData> {
+	if (pluginPageFreshnessData) {
+		return pluginPageFreshnessData;
+	}
+
+	if (pluginPageFreshnessDataPromise) {
+		return pluginPageFreshnessDataPromise;
+	}
+
+	pluginPageFreshnessDataPromise = loadPluginPageFreshnessData()
+		.then(loadedData => {
+			pluginPageFreshnessData = loadedData;
+			return pluginPageFreshnessData;
+		})
+		.finally(() => {
+			pluginPageFreshnessDataPromise = null;
+		});
+
+	return pluginPageFreshnessDataPromise;
+}
+
+export async function getPluginPageFreshness(pluginId: string): Promise<wasm.PluginPageFreshness> {
+	const data = await getPluginPageFreshnessData();
+	return data.get(pluginId);
+}
+
+async function loadPluginPageFreshnessData(): Promise<wasm.PluginPageFreshnessData> {
+	const [latestDataUpdateSummary, cloneState, releaseState] = await Promise.all([
+		readDataFile('../data/out/state/latest-data-update-summary.json'),
+		readDataFile('../data/out/state/clone-state.json'),
+		readDataFile('../data/out/state/plugin-release-enrichment-state.json'),
+	]);
+
+	await loadWasm();
+
+	return wasm.load_plugin_page_freshness_data(latestDataUpdateSummary, cloneState, releaseState);
 }

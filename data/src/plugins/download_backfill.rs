@@ -38,6 +38,23 @@ impl ExcludedDates {
     }
 }
 
+fn excluded_download_dates() -> ExcludedDates {
+    // These source windows produce spline artifacts in generated weekly download histories.
+    // The ranges intentionally cover the following Monday sample date and are long enough to
+    // split interpolation segments across the suspect source snapshots.
+    ExcludedDates::new(
+        Vec::new(),
+        vec![
+            // Something in May 2024 is broken in source data (for example advanced-canvas).
+            DateRange::new(Date::new(2024, 5, 18), Date::new(2024, 5, 28)),
+            // Source snapshots around 2025-01-22 create spikes for almost all plugins.
+            DateRange::new(Date::new(2025, 1, 22), Date::new(2025, 1, 28)),
+            // Source snapshots around 2025-04-09 create spikes for almost all plugins.
+            DateRange::new(Date::new(2025, 4, 9), Date::new(2025, 4, 15)),
+        ],
+    )
+}
+
 struct DownloadPoint {
     date: Date,
     day: i32,
@@ -270,14 +287,7 @@ pub fn backfill_download_history(
     println!("Updating weekly download stats...");
     let end_date = Date::now();
 
-    // Something in May 2024 is broken in source data (for example advanced-canvas).
-    let excluded = ExcludedDates::new(
-        Vec::new(),
-        vec![DateRange::new(
-            Date::new(2024, 5, 18),
-            Date::new(2024, 5, 28),
-        )],
-    );
+    let excluded = excluded_download_dates();
 
     let mut points_by_plugin = build_points_by_plugin(plugin_data, download_stats, &excluded);
     let total_plugins = plugin_data.len();
@@ -410,6 +420,23 @@ mod tests {
         assert_eq!(p.len(), 2);
         assert_eq!(p[0].day, 10);
         assert_eq!(p[0].downloads, 7);
+    }
+
+    #[test]
+    fn excluded_download_dates_cover_known_artifact_windows() {
+        let excluded = excluded_download_dates();
+
+        assert!(!excluded.contains(&Date::new(2025, 1, 21)));
+        assert!(excluded.contains(&Date::new(2025, 1, 22)));
+        assert!(excluded.contains(&Date::new(2025, 1, 27)));
+        assert!(excluded.contains(&Date::new(2025, 1, 28)));
+        assert!(!excluded.contains(&Date::new(2025, 1, 29)));
+
+        assert!(!excluded.contains(&Date::new(2025, 4, 8)));
+        assert!(excluded.contains(&Date::new(2025, 4, 9)));
+        assert!(excluded.contains(&Date::new(2025, 4, 14)));
+        assert!(excluded.contains(&Date::new(2025, 4, 15)));
+        assert!(!excluded.contains(&Date::new(2025, 4, 16)));
     }
 
     #[test]

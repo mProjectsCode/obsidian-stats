@@ -1,5 +1,5 @@
 ---
-import { getLatestDataUpdateSummary } from '../utils/latestDataUpdate';
+import { getLatestDataUpdateSummary } from '../utils/data';
 
 const summary = await getLatestDataUpdateSummary();
 
@@ -34,7 +34,8 @@ const compactReleaseStatusDescriptions: Record<string, string> = {
 	not_modified: 'Release metadata was unchanged from the last run.',
 	no_release_for_version: 'No release was found that satisfied the version requirement for this plugin.',
 	rate_limited: 'The release acquisition attempt was blocked by GitHub rate limits.',
-	version_history_missing: 'The plugin entry did not have a version history available during release acquisition, which is required to determine the latest version.',
+	version_history_missing:
+		'The plugin entry did not have a version history available during release acquisition, which is required to determine the latest version.',
 };
 
 const cloneStatusDescriptions: Record<string, string> = {
@@ -67,16 +68,16 @@ const issueLines = [
 		: null,
 ].filter((line): line is string => line !== null);
 
-function formatUnix(unix: number | null): string {
-	if (unix === null) {
+function formatUnix(unix: number | null | undefined): string {
+	if (unix === null || unix === undefined) {
 		return 'Not available';
 	}
 
 	return `${dateFormatter.format(new Date(unix * 1000))} UTC`;
 }
 
-function formatDay(date: string | null): string {
-	if (date === null) {
+function formatDay(date: string | null | undefined): string {
+	if (date === null || date === undefined) {
 		return 'Not available';
 	}
 
@@ -192,8 +193,8 @@ function formatDay(date: string | null): string {
 <h2>Repository Clone Status</h2>
 
 <p>
-	This table breaks down local plugin repository checkouts. Active plugin repositories are shallow cloned at the latest known plugin version tag, and an existing
-	checkout is reused while that tag stays current.
+	This table breaks down local plugin repository checkouts. Active plugin repositories are shallow cloned at the latest known plugin version tag, and an
+	existing checkout is reused while that tag stays current.
 </p>
 
 <table>

@@ -1,6 +1,10 @@
 mod utils;
 
 use data_lib::{
+    latest_data_update::{
+        LatestDataUpdateSummary, PluginPageCloneState, PluginPageFreshnessData,
+        PluginPageReleaseState,
+    },
     plugin::{PluginData, PluginExtraData, data_array::PluginDataArray},
     release::{GithubReleaseInfo, ObsidianReleaseInfo, data_array::ReleaseDataArray},
     theme::{ThemeData, data_array::ThemeDataArray},
@@ -95,4 +99,38 @@ pub fn load_release_data_from_chunks(
         interpolated_data,
         changelog,
     ))
+}
+
+#[wasm_bindgen]
+pub fn load_plugin_page_freshness_data(
+    latest_data_update_summary: &str,
+    clone_state: &str,
+    release_state: &str,
+) -> Result<PluginPageFreshnessData, JsValue> {
+    set_panic_hook();
+
+    let latest_data_update_summary = serde_json::from_str::<LatestDataUpdateSummary>(
+        latest_data_update_summary,
+    )
+    .map_err(|e| JsValue::from_str(&format!("Failed to parse latest data update summary: {e}")))?;
+    let clone_state = serde_json::from_str::<PluginPageCloneState>(clone_state)
+        .map_err(|e| JsValue::from_str(&format!("Failed to parse clone state: {e}")))?;
+    let release_state = serde_json::from_str::<PluginPageReleaseState>(release_state)
+        .map_err(|e| JsValue::from_str(&format!("Failed to parse plugin release state: {e}")))?;
+
+    Ok(PluginPageFreshnessData::new(
+        latest_data_update_summary,
+        clone_state,
+        release_state,
+    ))
+}
+
+#[wasm_bindgen]
+pub fn load_latest_data_update_summary(
+    latest_data_update_summary: &str,
+) -> Result<LatestDataUpdateSummary, JsValue> {
+    set_panic_hook();
+
+    serde_json::from_str::<LatestDataUpdateSummary>(latest_data_update_summary)
+        .map_err(|e| JsValue::from_str(&format!("Failed to parse latest data update summary: {e}")))
 }
