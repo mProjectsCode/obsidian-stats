@@ -41,6 +41,7 @@ export interface LatestDataUpdateSummary {
 		failed: number;
 		success_rate: number;
 		failed_plugins: string[];
+		status_counts: CountShare[];
 	};
 	release_acquisition: {
 		tracked: number;

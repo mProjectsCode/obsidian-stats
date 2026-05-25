@@ -32,7 +32,7 @@ impl Visit for WasmVisitor {
 
     fn visit_new_expr(&mut self, expr: &NewExpr) {
         if let Expr::Member(member) = &*expr.callee
-            && is_webassembly_module(member)
+            && is_webassembly_constructor(member)
         {
             self.count += 1;
         }
@@ -51,15 +51,27 @@ fn is_webassembly_method(member: &MemberExpr) -> bool {
             ident.sym == *"instantiate"
                 || ident.sym == *"instantiateStreaming"
                 || ident.sym == *"compile"
-                || ident.sym == *"initiate"
+                || ident.sym == *"compileStreaming"
+                || ident.sym == *"validate"
         }
         _ => false,
     }
 }
 
-fn is_webassembly_module(member: &MemberExpr) -> bool {
-    is_webassembly_object(&member.obj)
-        && matches!(&member.prop, MemberProp::Ident(ident) if ident.sym == *"Module")
+fn is_webassembly_constructor(member: &MemberExpr) -> bool {
+    if !is_webassembly_object(&member.obj) {
+        return false;
+    }
+
+    matches!(
+        &member.prop,
+        MemberProp::Ident(ident)
+            if ident.sym == *"Module"
+                || ident.sym == *"Instance"
+                || ident.sym == *"Memory"
+                || ident.sym == *"Table"
+                || ident.sym == *"Global"
+    )
 }
 
 fn is_webassembly_object(expr: &Expr) -> bool {
@@ -67,5 +79,32 @@ fn is_webassembly_object(expr: &Expr) -> bool {
         ident.sym == *"WebAssembly"
     } else {
         false
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::detect_webassembly_usage;
+    use crate::plugins::analysis::mainjs::parse_program;
+
+    #[test]
+    fn detects_common_webassembly_calls_and_constructors() {
+        let source = r#"
+            WebAssembly.compileStreaming(fetch("mod.wasm"));
+            WebAssembly.validate(bytes);
+            new WebAssembly.Instance(module, imports);
+            new WebAssembly.Memory({ initial: 1 });
+        "#;
+        let program = parse_program(source);
+
+        assert_eq!(detect_webassembly_usage(source, program.as_ref()), 4);
+    }
+
+    #[test]
+    fn does_not_count_misspelled_initiate_api() {
+        let source = "WebAssembly.initiate(bytes)";
+        let program = parse_program(source);
+
+        assert_eq!(detect_webassembly_usage(source, program.as_ref()), 0);
     }
 }

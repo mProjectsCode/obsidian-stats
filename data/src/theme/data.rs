@@ -140,6 +140,7 @@ pub fn build_theme_stats() -> Result<(), Box<dyn std::error::Error>> {
     time2 = std::time::Instant::now();
 
     theme_data = filter_themes(theme_data);
+    theme_data.sort_by(|a, b| a.id.cmp(&b.id));
 
     write_in_chunks_atomic(Path::new(THEME_DATA_PATH), &theme_data, 50)?;
 

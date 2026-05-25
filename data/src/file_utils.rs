@@ -90,10 +90,20 @@ pub fn read_chunked_data<T: serde::de::DeserializeOwned>(
     path: &Path,
 ) -> Result<Vec<T>, Box<dyn std::error::Error>> {
     let mut data = Vec::new();
-    for entry in std::fs::read_dir(path)? {
-        let entry = entry?;
-        if entry.path().extension().and_then(|s| s.to_str()) == Some("json") {
-            let file = File::open(entry.path())?;
+    let mut entries = std::fs::read_dir(path)?.collect::<Result<Vec<_>, _>>()?;
+    entries.sort_by(|left, right| {
+        let left_path = left.path();
+        let right_path = right.path();
+        match (chunk_index(&left_path), chunk_index(&right_path)) {
+            (Some(left_idx), Some(right_idx)) => left_idx.cmp(&right_idx),
+            _ => left_path.cmp(&right_path),
+        }
+    });
+
+    for entry in entries {
+        let path = entry.path();
+        if path.extension().and_then(|s| s.to_str()) == Some("json") {
+            let file = File::open(path)?;
             let mut reader = BufReader::new(file);
             let mut bytes = Vec::new();
             reader.read_to_end(&mut bytes)?;
@@ -102,6 +112,16 @@ pub fn read_chunked_data<T: serde::de::DeserializeOwned>(
         }
     }
     Ok(data)
+}
+
+fn chunk_index(path: &Path) -> Option<usize> {
+    path.file_stem()
+        .and_then(|stem| stem.to_str())
+        .and_then(|stem| {
+            stem.strip_prefix("chunk_")
+                .or_else(|| stem.strip_prefix("chunk-"))
+        })
+        .and_then(|idx| idx.parse().ok())
 }
 
 pub fn read_chunked_data_or_default<T: serde::de::DeserializeOwned>(path: &Path) -> Vec<T> {

@@ -23,12 +23,15 @@ pub(super) fn run(
         })
         .into();
 
-    let license_file = files.iter().find(|file| {
-        let lower_case_file = file.to_lowercase();
-        LICENSE_FILE_CANDIDATES
-            .iter()
-            .any(|candidate| lower_case_file == *candidate)
-    });
+    let license_file = files
+        .iter()
+        .filter(|file| {
+            let lower_case_file = file.rsplit('/').next().unwrap_or(file).to_lowercase();
+            LICENSE_FILE_CANDIDATES
+                .iter()
+                .any(|candidate| lower_case_file == *candidate)
+        })
+        .min_by_key(|file| file.matches('/').count());
 
     let file_license = license_file
         .and_then(|file| {

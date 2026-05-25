@@ -170,14 +170,18 @@ impl<'a> BorrowedPluginData<'a> {
             return;
         };
 
-        for version in entry.versions.iter() {
+        self.update_version_history_from_versions(&stats.get_date(), &entry.versions);
+    }
+
+    pub fn update_version_history_from_versions(&mut self, date: &Date, versions: &[String]) {
+        for version in versions {
             if !Version::validate(version) {
                 continue;
             }
 
             if !self.version_history_map.contains_key(version) {
                 self.version_history_map
-                    .insert(version.clone(), stats.get_date());
+                    .insert(version.clone(), date.clone());
             }
         }
     }

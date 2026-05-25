@@ -14,7 +14,7 @@ pub fn get_obs_repo_changes() -> Vec<Commit> {
             "--reverse",
             "--format=\"%ad %H\"",
             "--date=iso-strict",
-            "--grep=stats",
+            "--grep=stats\\|chore",
         ])
         .current_dir(
             Path::new(OBS_RELEASES_REPO_PATH)

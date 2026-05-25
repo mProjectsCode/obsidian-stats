@@ -1,107 +1,147 @@
 {
-  "refreshed_at_unix": 1777883484,
-  "clone_run_at_unix": 1777883458,
-  "release_run_at_unix": 1777883484,
-  "obsidian_release_fetch_at_unix": 1777718433,
-  "latest_plugin_download_snapshot_date": "2026-05-04",
+  "refreshed_at_unix": 1779706346,
+  "clone_run_at_unix": 1779706256,
+  "release_run_at_unix": 1779706315,
+  "obsidian_release_fetch_at_unix": 1779706346,
+  "latest_plugin_download_snapshot_date": "2026-05-25",
   "latest_obsidian_release_date": "2026-03-23",
   "latest_obsidian_version": "1.12.7",
   "plugins": {
-    "total": 2924,
-    "active": 2750,
-    "removed": 174,
-    "total_downloads": 119906812,
-    "version_snapshots": 48682
+    "total": 4471,
+    "active": 4209,
+    "removed": 262,
+    "total_downloads": 125835678,
+    "version_snapshots": 60065
   },
   "themes": {
-    "total": 470,
-    "active": 415,
-    "removed": 55
+    "total": 589,
+    "active": 528,
+    "removed": 61
   },
   "releases": {
     "changelog_entries": 453,
     "github_release_snapshots": 168,
     "interpolated_release_snapshots": 168,
     "asset_count": 946,
-    "download_snapshots": 37042
+    "download_snapshots": 38934
   },
   "clone": {
-    "tracked": 2924,
-    "ok": 2749,
-    "skipped": 174,
-    "failed": 1,
-    "success_rate": 0.9996363636363637,
+    "tracked": 4477,
+    "ok": 4145,
+    "skipped": 262,
+    "failed": 19,
+    "success_rate": 0.9954370797310279,
     "failed_plugins": [
-      "obsidian-audio-notes"
+      "contextual-sidecar",
+      "kanban-status-updater",
+      "hackerone",
+      "hide-tags",
+      "augmented-canvas"
+    ],
+    "status_counts": [
+      {
+        "label": "ok",
+        "count": 4145,
+        "share": 0.9258431985704713
+      },
+      {
+        "label": "skipped_removed",
+        "count": 262,
+        "share": 0.058521331248603974
+      },
+      {
+        "label": "version_history_missing",
+        "count": 51,
+        "share": 0.0113915568461023
+      },
+      {
+        "label": "failed",
+        "count": 19,
+        "share": 0.004243913334822426
+      }
     ]
   },
   "release_acquisition": {
-    "tracked": 2754,
-    "ok": 95,
-    "retained_previous_main_js": 2632,
-    "no_release": 14,
-    "no_main_js_asset": 10,
-    "error_count": 3,
-    "main_js_coverage": 2727,
-    "main_js_coverage_rate": 0.9901960784313726,
-    "total_main_js_bytes": 2761286602,
-    "average_main_js_bytes": 1012573,
+    "tracked": 4291,
+    "ok": 1739,
+    "retained_previous_main_js": 2460,
+    "no_release": 1,
+    "no_main_js_asset": 1,
+    "error_count": 5,
+    "main_js_coverage": 4199,
+    "main_js_coverage_rate": 0.9785597762759264,
+    "total_main_js_bytes": 3285449773,
+    "average_main_js_bytes": 782436,
     "largest_main_js": {
-      "repo": "SalokinGreen/NAI4Obsidian",
+      "repo": "salokingreen/NAI4Obsidian",
       "size_bytes": 127704263
     },
     "status_counts": [
       {
         "label": "main_js_not_updated_since_success",
-        "count": 2632,
-        "share": 0.9557007988380537
+        "count": 2460,
+        "share": 0.5732929387089256
       },
       {
         "label": "ok",
-        "count": 95,
-        "share": 0.03449527959331881
+        "count": 1739,
+        "share": 0.4052668375670007
       },
       {
-        "label": "no_release",
-        "count": 14,
-        "share": 0.005083514887436456
+        "label": "version_history_missing",
+        "count": 67,
+        "share": 0.015614075972966674
       },
       {
-        "label": "no_main_js_asset",
-        "count": 10,
-        "share": 0.0036310820624546117
+        "label": "no_release_for_version",
+        "count": 18,
+        "share": 0.004194826380797017
       },
       {
         "label": "rate_limited",
-        "count": 3,
-        "share": 0.0010893246187363835
+        "count": 5,
+        "share": 0.0011652295502213937
+      },
+      {
+        "label": "no_main_js_asset",
+        "count": 1,
+        "share": 0.00023304591004427873
+      },
+      {
+        "label": "no_release",
+        "count": 1,
+        "share": 0.00023304591004427873
       }
     ]
   },
   "repo_analysis": {
-    "tracked": 2924,
-    "active_success": 2749,
-    "active_failures": 1,
-    "removed_skipped": 174,
-    "coverage_rate": 0.9996363636363637,
+    "tracked": 4471,
+    "active_success": 4198,
+    "active_failures": 11,
+    "removed_skipped": 262,
+    "coverage_rate": 0.9973865526253267,
     "failure_samples": [
-      "obsidian-audio-notes"
+      "bojubot",
+      "book-tracker",
+      "bujuan",
+      "cevent-planner",
+      "cevent-planner-extra"
     ],
     "error_counts": [
       {
-        "label": "package_json_read_error",
-        "count": 10,
-        "share": 0.0036363636363636364
+        "label": "repository_missing",
+        "count": 11,
+        "share": 0.002613447374673319
       },
       {
         "label": "manifest_parse_error",
-        "count": 3,
-        "share": 0.001090909090909091
+        "count": 2,
+        "share": 0.0004751722499406035
       },
       {
-        "label": "repository_missing",
+        "label": "manifest_read_error",
         "count": 1,
-        "share": 0.0003636363636363636
+        "share": 0.00023758612497030174
       }
     ]
   }

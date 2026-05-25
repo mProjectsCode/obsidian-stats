@@ -3,11 +3,12 @@ use std::path::Path;
 use crate::{
     alerts,
     constants::{
-        DEFAULT_RELEASE_STATS_REFRESH_DAYS, GITHUB_RATE_LIMIT_MODE_ENV, RELEASE_CHANGELOG_PATH,
+        DEFAULT_RELEASE_STATS_REFRESH_DAYS, RELEASE_CHANGELOG_PATH,
         RELEASE_GITHUB_INTERPOLATED_PATH, RELEASE_GITHUB_RAW_PATH, RELEASE_INFO_URL,
         RELEASE_STATS_STATE_PATH, RELEASE_STATS_URL,
     },
     file_utils::{read_chunked_data_or_default, write_in_chunks_atomic},
+    github::RateLimitMode,
     release::GithubReleaseEntry,
     state::{is_fresh, now_unix_seconds, read_json_or_default, write_json_atomic},
 };
@@ -25,25 +26,6 @@ use serde::{Deserialize, Serialize};
 struct ReleaseStatsState {
     last_fetch_unix: Option<i64>,
     latest_etag: Option<String>,
-}
-
-#[derive(Debug, Clone)]
-enum RateLimitMode {
-    Defer,
-    Sleep,
-}
-
-impl RateLimitMode {
-    fn from_env() -> Self {
-        match std::env::var(GITHUB_RATE_LIMIT_MODE_ENV)
-            .unwrap_or_else(|_| "defer".to_string())
-            .to_lowercase()
-            .as_str()
-        {
-            "sleep" => Self::Sleep,
-            _ => Self::Defer,
-        }
-    }
 }
 
 struct FetchOutcome {
@@ -418,7 +400,7 @@ fn get_obs_release_info() -> Result<Vec<ObsidianReleaseInfo>, Box<dyn std::error
         .collect())
 }
 
-pub fn build_release_stats() -> Result<(), Box<dyn std::error::Error>> {
+pub fn build_release_stats(force: bool) -> Result<(), Box<dyn std::error::Error>> {
     let time = std::time::Instant::now();
     let mut time2 = std::time::Instant::now();
 
@@ -432,14 +414,15 @@ pub fn build_release_stats() -> Result<(), Box<dyn std::error::Error>> {
     let mut raw_github_info: Vec<GithubReleaseInfo> =
         read_chunked_data_or_default(Path::new(RELEASE_GITHUB_RAW_PATH));
 
-    let should_refresh = raw_github_info.is_empty()
+    let should_refresh = force
+        || raw_github_info.is_empty()
         || !state
             .last_fetch_unix
             .is_some_and(|last| is_fresh(last, refresh_days));
 
     println!(
-        "Release stats: refresh window={} days, should_refresh={}",
-        refresh_days, should_refresh
+        "Release stats: refresh window={} days, force={}, should_refresh={}",
+        refresh_days, force, should_refresh
     );
 
     if should_refresh {

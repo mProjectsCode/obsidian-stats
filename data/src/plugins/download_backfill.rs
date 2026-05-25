@@ -405,7 +405,7 @@ mod tests {
                 downloads: 3,
             },
         ];
-        p.sort_by(|a, b| a.day.cmp(&b.day));
+        p.sort_by_key(|a| a.day);
         dedup_points_by_day_max(&mut p);
         assert_eq!(p.len(), 2);
         assert_eq!(p[0].day, 10);

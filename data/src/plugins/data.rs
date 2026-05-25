@@ -120,10 +120,20 @@ fn build_version_history(
 ) {
     println!("Updating version history...");
 
+    let index_by_id = plugin_data
+        .iter()
+        .enumerate()
+        .map(|(idx, entry)| (entry.id.clone(), idx))
+        .collect::<HashMap<_, _>>();
+
     let total_stats = download_stats.len();
     for (idx, stat) in download_stats.iter().enumerate() {
-        for entry in plugin_data.iter_mut() {
-            entry.update_version_history(stat);
+        let date = stat.get_date();
+        for (id, entry) in stat.entries.iter() {
+            if let Some(&plugin_idx) = index_by_id.get(id) {
+                plugin_data[plugin_idx]
+                    .update_version_history_from_versions(&date, &entry.versions);
+            }
         }
 
         if should_log_progress(idx + 1, total_stats) {
@@ -238,6 +248,7 @@ pub fn build_plugin_stats() -> Result<(), Box<dyn std::error::Error>> {
     time2 = std::time::Instant::now();
 
     plugin_data = filter_low_signal_plugins(plugin_data);
+    plugin_data.sort_by(|a, b| a.id.cmp(&b.id));
 
     write_in_chunks_atomic(Path::new(PLUGIN_DATA_PATH), &plugin_data, 50)?;
 

@@ -85,6 +85,7 @@ pub struct CloneSummary {
     pub failed: usize,
     pub success_rate: f64,
     pub failed_plugins: Vec<String>,
+    pub status_counts: Vec<CountShare>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -145,6 +146,18 @@ fn is_release_acquisition_error(status: &str) -> bool {
         || status.contains("failed")
         || status.contains("rate_limit")
         || status.contains("rate_limited")
+}
+
+fn clone_status_label(status: &str) -> &str {
+    if status.starts_with("failed:") {
+        return "failed";
+    }
+
+    if status == "skipped" {
+        return "skipped_removed";
+    }
+
+    status
 }
 
 pub fn build_latest_data_update_summary(
@@ -240,7 +253,7 @@ pub fn build_latest_data_update_summary(
         .count();
     let clone_skipped = clone_entries
         .iter()
-        .filter(|entry| entry.status == "skipped")
+        .filter(|entry| matches!(entry.status.as_str(), "skipped" | "skipped_removed"))
         .count();
     let clone_failed = clone_failed_entries.len();
     let clone_attempted = clone_ok + clone_failed;
@@ -248,6 +261,26 @@ pub fn build_latest_data_update_summary(
         .iter()
         .map(|entry| entry.last_attempt_unix)
         .max();
+    let mut clone_status_counts: HashMap<String, usize> = HashMap::new();
+    for entry in clone_entries {
+        *clone_status_counts
+            .entry(clone_status_label(&entry.status).to_string())
+            .or_insert(0) += 1;
+    }
+    let mut clone_statuses = clone_status_counts
+        .iter()
+        .map(|(label, count)| CountShare {
+            label: label.clone(),
+            count: *count,
+            share: clamp_rate(*count, clone_entries.len()),
+        })
+        .collect::<Vec<_>>();
+    clone_statuses.sort_by(|left, right| {
+        right
+            .count
+            .cmp(&left.count)
+            .then(left.label.cmp(&right.label))
+    });
 
     let mut release_status_counts: HashMap<String, usize> = HashMap::new();
     for entry in release_entries {
@@ -379,6 +412,7 @@ pub fn build_latest_data_update_summary(
                 .map(|entry| entry.plugin_id.clone())
                 .take(5)
                 .collect(),
+            status_counts: clone_statuses,
         },
         release_acquisition: ReleaseAcquisitionSummary {
             tracked: release_entries.len(),
@@ -437,7 +471,7 @@ pub fn build_latest_data_update_summary(
 
 #[cfg(test)]
 mod tests {
-    use super::{PluginRepoAnalysisError, is_release_acquisition_error};
+    use super::{PluginRepoAnalysisError, clone_status_label, is_release_acquisition_error};
 
     #[test]
     fn classifies_repository_missing_code() {
@@ -473,5 +507,15 @@ mod tests {
         ));
         assert!(is_release_acquisition_error("rate_limited"));
         assert!(!is_release_acquisition_error("ok"));
+    }
+
+    #[test]
+    fn normalizes_clone_status_labels() {
+        assert_eq!(clone_status_label("failed:timeout"), "failed");
+        assert_eq!(clone_status_label("skipped"), "skipped_removed");
+        assert_eq!(
+            clone_status_label("version_history_missing"),
+            "version_history_missing"
+        );
     }
 }

@@ -1,12 +1,7 @@
 ---
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
 import DataIndex from '../../components/svelte/DataIndex.svelte';
-import { getPluginDataArray } from '../../utils/data';
 import { ItemType } from '../../utils/misc';
-
-const dataArray = await getPluginDataArray();
-const view = dataArray.view();
-const data = view.overview(dataArray);
 ---
 
 <StarlightPage
@@ -27,5 +22,5 @@ const data = view.overview(dataArray);
 		<code>name:</code>, <code>author:</code>, <code>repo:</code>, and <code>id:</code>.
 	</p>
 
-	<DataIndex data={data} type={ItemType.Plugin} client:only="svelte" />
+	<DataIndex dataUrl="/obsidian-stats/data/plugins/overview.json" type={ItemType.Plugin} client:only="svelte" />
 </StarlightPage>

@@ -1,9 +1,4 @@
-use std::cell::LazyCell;
-
-use chumsky::{
-    cache::{Cache, Cached},
-    prelude::*,
-};
+use chumsky::prelude::*;
 use serde::{Deserialize, Serialize};
 use wasm_bindgen::prelude::*;
 
@@ -30,20 +25,6 @@ fn version_parser<'a>() -> impl Parser<'a, &'a str, Version> {
     })
 }
 
-#[derive(Default)]
-struct VersionParser;
-impl Cached for VersionParser {
-    type Parser<'a> = Box<dyn Parser<'a, &'a str, Version> + 'a>;
-
-    fn make_parser<'a>(self) -> Self::Parser<'a> {
-        Box::new(version_parser())
-    }
-}
-
-thread_local! {
-    static VERSION_PARSER: LazyCell<Cache<VersionParser>> = LazyCell::new(Cache::default);
-}
-
 #[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize, Hash)]
 #[wasm_bindgen]
 pub struct Version {
@@ -67,11 +48,11 @@ impl Version {
     }
 
     pub fn parse(input: &str) -> Option<Self> {
-        VERSION_PARSER.with(|parser| parser.get().parse(input).into_output())
+        version_parser().parse(input).into_output()
     }
 
     pub fn validate(input: &str) -> bool {
-        VERSION_PARSER.with(|parser| parser.get().parse(input).has_output())
+        version_parser().parse(input).has_output()
     }
 
     pub fn to_fancy_string(&self) -> String {

@@ -67,7 +67,9 @@ fn has_test_files(files: &[String]) -> bool {
 
 fn list_files_in_repo(repo_path: &str) -> Vec<String> {
     let mut files = Vec::new();
-    list_files_rec(repo_path, &mut files);
+    let root = Path::new(repo_path);
+    list_files_rec(root, root, &mut files);
+    files.sort();
     files
 }
 
@@ -75,7 +77,7 @@ fn has_file_named(files: &[String], target: &str) -> bool {
     files.iter().any(|file| file == target)
 }
 
-fn list_files_rec(path: &str, files: &mut Vec<String>) {
+fn list_files_rec(root: &Path, path: &Path, files: &mut Vec<String>) {
     if let Ok(entries) = fs::read_dir(path) {
         for entry in entries.flatten() {
             let path = entry.path();
@@ -87,14 +89,22 @@ fn list_files_rec(path: &str, files: &mut Vec<String>) {
                     continue;
                 }
 
-                if let Some(path_str) = path.to_str() {
-                    list_files_rec(path_str, files);
-                }
+                list_files_rec(root, &path, files);
             } else if path.is_file()
-                && let Some(file_name) = path.file_name()
+                && let Some(relative_path) = repo_relative_path(root, &path)
             {
-                files.push(file_name.to_string_lossy().to_string());
+                files.push(relative_path);
             }
         }
     }
+}
+
+fn repo_relative_path(root: &Path, path: &Path) -> Option<String> {
+    path.strip_prefix(root).ok().map(|relative| {
+        relative
+            .components()
+            .filter_map(|component| component.as_os_str().to_str())
+            .collect::<Vec<_>>()
+            .join("/")
+    })
 }

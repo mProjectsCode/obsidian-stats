@@ -1,23 +1,25 @@
 <script lang="ts">
-	import { onMount, onDestroy } from 'svelte';
+	import { onMount } from 'svelte';
 	import type { OverviewDataPoint } from '../../../../data-wasm/pkg/data_wasm';
 	import type { ItemType } from '../../utils/misc';
 	import VirtualTable from './VirtualTable.svelte';
 
 	interface Props {
 		data?: OverviewDataPoint[];
+		dataUrl?: string;
 		type: ItemType;
 	}
 
-	const { data = [], type }: Props = $props();
+	let { data: initialData = [], dataUrl, type }: Props = $props();
 
 	type SortBy = 'id' | 'name' | 'author' | 'repo' | 'added' | 'removed';
 
+	let data: OverviewDataPoint[] = $state([]);
 	let sortBy: SortBy = $state('id');
 	let ascending = $state(false);
 	let searchQuery = $state('');
-	// svelte-ignore state_referenced_locally
-	let filtered: OverviewDataPoint[] = $state([...data]);
+	let filtered: OverviewDataPoint[] = $state([]);
+	let isLoading = $state(true);
 	let worker: Worker | null = null;
 
 	function initWorker(): void {
@@ -74,101 +76,132 @@
 	});
 
 	onMount(() => {
-		initWorker();
-		processData();
-	});
+		let cancelled = false;
 
-	onDestroy(() => {
-		worker?.terminate();
+		async function setupTable(): Promise<void> {
+			let loadedData = initialData;
+
+			if (dataUrl) {
+				const response = await fetch(dataUrl);
+				if (!response.ok) {
+					throw new Error(`Failed to load table data from ${dataUrl}: ${response.status}`);
+				}
+
+				loadedData = (await response.json()) as OverviewDataPoint[];
+			}
+
+			if (cancelled) return;
+
+			data = loadedData;
+			filtered = [...loadedData];
+
+			initWorker();
+			processData();
+			isLoading = false;
+		}
+
+		setupTable().catch(error => {
+			isLoading = false;
+			throw error;
+		});
+
+		return () => {
+			cancelled = true;
+			worker?.terminate();
+		};
 	});
 </script>
 
-<div class="table-controls">
-	<input type="text" placeholder="Search... (e.g. name:tasks author:clare)" bind:value={searchQuery} />
-	<span class="count">{filtered.length} of {data.length} items</span>
-</div>
+{#if isLoading}
+	<div class="table-placeholder" role="status" aria-label="Loading table data"></div>
+{:else}
+	<div class="table-controls">
+		<input type="text" placeholder="Search... (e.g. name:tasks author:clare)" bind:value={searchQuery} />
+		<span class="count">{filtered.length} of {data.length} items</span>
+	</div>
 
-<VirtualTable items={filtered} colCount={6} colWidths={['16%', '22%', '18%', '22%', '11%', '11%']} minWidth={'72rem'} itemHeight={50} height={600}>
-	{#snippet header()}
-		<div
-			class="vt-cell vt-header-cell"
-			role="button"
-			tabindex="0"
-			onclick={() => sort('id')}
-			onkeydown={e => (e.key === 'Enter' || e.key === ' ') && sort('id')}
-		>
-			Id{getSortIndicator('id')}
-		</div>
-		<div
-			class="vt-cell vt-header-cell"
-			role="button"
-			tabindex="0"
-			onclick={() => sort('name')}
-			onkeydown={e => (e.key === 'Enter' || e.key === ' ') && sort('name')}
-		>
-			Name{getSortIndicator('name')}
-		</div>
-		<div
-			class="vt-cell vt-header-cell"
-			role="button"
-			tabindex="0"
-			onclick={() => sort('author')}
-			onkeydown={e => (e.key === 'Enter' || e.key === ' ') && sort('author')}
-		>
-			Author{getSortIndicator('author')}
-		</div>
-		<div
-			class="vt-cell vt-header-cell"
-			role="button"
-			tabindex="0"
-			onclick={() => sort('repo')}
-			onkeydown={e => (e.key === 'Enter' || e.key === ' ') && sort('repo')}
-		>
-			Repo{getSortIndicator('repo')}
-		</div>
-		<div
-			class="vt-cell vt-header-cell"
-			role="button"
-			tabindex="0"
-			onclick={() => sort('added')}
-			onkeydown={e => (e.key === 'Enter' || e.key === ' ') && sort('added')}
-		>
-			Added Date{getSortIndicator('added')}
-		</div>
-		<div
-			class="vt-cell vt-header-cell"
-			role="button"
-			tabindex="0"
-			onclick={() => sort('removed')}
-			onkeydown={e => (e.key === 'Enter' || e.key === ' ') && sort('removed')}
-		>
-			Removed Date{getSortIndicator('removed')}
-		</div>
-	{/snippet}
+	<VirtualTable items={filtered} colCount={6} colWidths={['16%', '22%', '18%', '22%', '11%', '11%']} minWidth={'72rem'} itemHeight={50} height={600}>
+		{#snippet header()}
+			<div
+				class="vt-cell vt-header-cell"
+				role="button"
+				tabindex="0"
+				onclick={() => sort('id')}
+				onkeydown={e => (e.key === 'Enter' || e.key === ' ') && sort('id')}
+			>
+				Id{getSortIndicator('id')}
+			</div>
+			<div
+				class="vt-cell vt-header-cell"
+				role="button"
+				tabindex="0"
+				onclick={() => sort('name')}
+				onkeydown={e => (e.key === 'Enter' || e.key === ' ') && sort('name')}
+			>
+				Name{getSortIndicator('name')}
+			</div>
+			<div
+				class="vt-cell vt-header-cell"
+				role="button"
+				tabindex="0"
+				onclick={() => sort('author')}
+				onkeydown={e => (e.key === 'Enter' || e.key === ' ') && sort('author')}
+			>
+				Author{getSortIndicator('author')}
+			</div>
+			<div
+				class="vt-cell vt-header-cell"
+				role="button"
+				tabindex="0"
+				onclick={() => sort('repo')}
+				onkeydown={e => (e.key === 'Enter' || e.key === ' ') && sort('repo')}
+			>
+				Repo{getSortIndicator('repo')}
+			</div>
+			<div
+				class="vt-cell vt-header-cell"
+				role="button"
+				tabindex="0"
+				onclick={() => sort('added')}
+				onkeydown={e => (e.key === 'Enter' || e.key === ' ') && sort('added')}
+			>
+				Added Date{getSortIndicator('added')}
+			</div>
+			<div
+				class="vt-cell vt-header-cell"
+				role="button"
+				tabindex="0"
+				onclick={() => sort('removed')}
+				onkeydown={e => (e.key === 'Enter' || e.key === ' ') && sort('removed')}
+			>
+				Removed Date{getSortIndicator('removed')}
+			</div>
+		{/snippet}
 
-	{#snippet row(datum: OverviewDataPoint, index: number)}
-		<div class="vt-cell">
-			{#if type === 'plugin'}
-				<a href={'/obsidian-stats/plugins/' + datum.id}>{datum.id}</a>
-			{:else}
-				<a href={'/obsidian-stats/themes/' + datum.id}>{datum.name}</a>
-			{/if}
-		</div>
-		<div class="vt-cell"><span>{datum.name}</span></div>
-		<div class="vt-cell"><span>{datum.author}</span></div>
-		<div class="vt-cell">
-			<a href={'https://github.com/' + datum.repo} target="_blank">{datum.repo}</a>
-		</div>
-		<div class="vt-cell">
-			<a href={'https://github.com/obsidianmd/obsidian-releases/commit/' + datum.added_commit.hash} target="_blank">{datum.added_commit.date}</a>
-		</div>
-		<div class="vt-cell">
-			{#if datum.removed_commit}
-				<a href={'https://github.com/obsidianmd/obsidian-releases/commit/' + datum.removed_commit.hash} target="_blank">{datum.removed_commit.date}</a>
-			{/if}
-		</div>
-	{/snippet}
-</VirtualTable>
+		{#snippet row(datum: OverviewDataPoint, index: number)}
+			<div class="vt-cell">
+				{#if type === 'plugin'}
+					<a href={'/obsidian-stats/plugins/' + datum.id}>{datum.id}</a>
+				{:else}
+					<a href={'/obsidian-stats/themes/' + datum.id}>{datum.name}</a>
+				{/if}
+			</div>
+			<div class="vt-cell"><span>{datum.name}</span></div>
+			<div class="vt-cell"><span>{datum.author}</span></div>
+			<div class="vt-cell">
+				<a href={'https://github.com/' + datum.repo} target="_blank">{datum.repo}</a>
+			</div>
+			<div class="vt-cell">
+				<a href={'https://github.com/obsidianmd/obsidian-releases/commit/' + datum.added_commit.hash} target="_blank">{datum.added_commit.date}</a>
+			</div>
+			<div class="vt-cell">
+				{#if datum.removed_commit}
+					<a href={'https://github.com/obsidianmd/obsidian-releases/commit/' + datum.removed_commit.hash} target="_blank">{datum.removed_commit.date}</a>
+				{/if}
+			</div>
+		{/snippet}
+	</VirtualTable>
+{/if}
 
 <style>
 	.table-controls {
@@ -211,6 +244,28 @@
 		white-space: nowrap;
 		font-size: 0.9rem;
 		opacity: 0.7;
+	}
+
+	.table-placeholder {
+		margin-block: 1rem;
+		width: 100%;
+		height: 600px;
+		position: relative;
+	}
+
+	.table-placeholder::before {
+		content: '';
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		width: 24px;
+		height: 24px;
+		margin-top: -12px;
+		margin-left: -12px;
+		border-radius: 50%;
+		border: 2px solid var(--sl-color-bg-accent);
+		border-top-color: transparent;
+		animation: spinner 600ms linear infinite;
 	}
 
 	.vt-header-cell {

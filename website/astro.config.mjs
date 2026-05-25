@@ -21,9 +21,11 @@ export default defineConfig({
 			sidebar: [
 				{
 					label: 'Home',
-					autogenerate: {
-						directory: 'home',
-					},
+					items: [
+						{
+							autogenerate: { directory: "home" }
+						}
+					],
 				},
 				{
 					label: 'Plugin Stats',

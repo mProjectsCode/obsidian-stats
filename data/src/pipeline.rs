@@ -11,11 +11,9 @@ use crate::{
     theme::data::build_theme_stats,
 };
 
-type PipelineStepFn = fn() -> Result<(), Box<dyn Error>>;
-
 struct PipelineStep {
     label: &'static str,
-    run: PipelineStepFn,
+    run: Box<dyn Fn() -> Result<(), Box<dyn Error>>>,
 }
 
 fn run_pipeline_step(step: &PipelineStep) -> Result<(), Box<dyn Error>> {
@@ -31,39 +29,45 @@ fn run_pipeline_step(step: &PipelineStep) -> Result<(), Box<dyn Error>> {
     Ok(())
 }
 
+#[derive(Debug, Clone, Copy, Default)]
+pub struct PipelineOptions {
+    pub force: bool,
+    pub no_clone: bool,
+}
+
 fn process_plugin_licenses_step() -> Result<(), Box<dyn Error>> {
     process_licenses()
 }
 
-pub fn run_data_pipeline() -> Result<(), Box<dyn Error>> {
-    let pipeline = [
+pub fn run_data_pipeline(options: PipelineOptions) -> Result<(), Box<dyn Error>> {
+    let pipeline: Vec<PipelineStep> = vec![
         PipelineStep {
             label: "Building theme data",
-            run: build_theme_stats,
+            run: Box::new(build_theme_stats),
         },
         PipelineStep {
             label: "Building plugin data",
-            run: build_plugin_stats,
+            run: Box::new(build_plugin_stats),
         },
         PipelineStep {
             label: "Cloning plugin repositories",
-            run: clone_plugin_repos,
+            run: Box::new(move || clone_plugin_repos(options.force, options.no_clone)),
         },
         PipelineStep {
             label: "Extracting repository data",
-            run: extract_analysis_data,
+            run: Box::new(extract_analysis_data),
         },
         PipelineStep {
             label: "Extracting licenses data",
-            run: process_plugin_licenses_step,
+            run: Box::new(process_plugin_licenses_step),
         },
         PipelineStep {
             label: "Building release data",
-            run: build_release_stats,
+            run: Box::new(move || build_release_stats(options.force)),
         },
         PipelineStep {
             label: "Building latest data update summary",
-            run: build_latest_data_update_summary,
+            run: Box::new(build_latest_data_update_summary),
         },
     ];
 

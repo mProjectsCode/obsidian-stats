@@ -1,22 +1,24 @@
 .PHONY: all wasm data format lint submodule-update
 
+DATA_MAKE_ARGS := ARGS="$(ARGS)" FORCE="$(FORCE)" NO_CLONE="$(NO_CLONE)"
+
 wasm:
-	cd data-wasm && make
+	$(MAKE) -C data-wasm
 
 data:
-	make submodule-update
-	cd data && make
+	$(MAKE) submodule-update
+	$(MAKE) -C data build $(DATA_MAKE_ARGS)
 
 format:
-	cd data && make format
-	cd data-lib && make format
-	cd data-wasm && make format
+	$(MAKE) -C data format
+	$(MAKE) -C data-lib format
+	$(MAKE) -C data-wasm format
 	cd website && bun run format
 
 lint:
-	cd data && make lint
-	cd data-lib && make lint
-	cd data-wasm && make lint
+	$(MAKE) -C data lint
+	$(MAKE) -C data-lib lint
+	$(MAKE) -C data-wasm lint
 	cd website && bun run check
 
 submodule-update:

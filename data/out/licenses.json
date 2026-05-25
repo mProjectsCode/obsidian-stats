@@ -985,27 +985,27 @@
     }
   ],
   "permissions": [
-    "distribution",
-    "commercial-use",
-    "modifications",
+    "patent-use",
     "private-use",
-    "patent-use"
+    "modifications",
+    "commercial-use",
+    "distribution"
   ],
   "conditions": [
+    "same-license",
+    "same-license--file",
+    "same-license--library",
+    "include-copyright",
     "document-changes",
     "include-copyright--source",
     "disclose-source",
-    "same-license",
-    "same-license--library",
-    "include-copyright",
-    "same-license--file",
     "network-use-disclose"
   ],
   "limitations": [
     "liability",
+    "warranty",
     "patent-use",
-    "trademark-use",
-    "warranty"
+    "trademark-use"
   ],
   "descriptions": {
     "permissions": [

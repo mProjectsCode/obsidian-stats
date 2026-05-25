@@ -32,6 +32,16 @@ const compactReleaseStatusDescriptions: Record<string, string> = {
 	no_release: 'No latest release was available on GitHub.',
 	no_main_js_asset: 'Release exists, but no main.js asset was found.',
 	not_modified: 'Release metadata was unchanged from the last run.',
+	no_release_for_version: 'No release was found that satisfied the version requirement for this plugin.',
+	rate_limited: 'The release acquisition attempt was blocked by GitHub rate limits.',
+	version_history_missing: 'The plugin entry did not have a version history available during release acquisition, which is required to determine the latest version.',
+};
+
+const cloneStatusDescriptions: Record<string, string> = {
+	ok: 'The local repository checkout exists and matches the latest known plugin version tag.',
+	failed: 'The latest tag checkout failed during repository cloning.',
+	skipped_removed: 'The plugin has been removed from the community list, so no repository checkout is maintained.',
+	version_history_missing: 'The plugin entry did not have a version history available, so the latest version tag could not be selected for cloning.',
 };
 
 const repoAnalysisErrorDescriptions: Record<string, string> = {
@@ -134,9 +144,9 @@ function formatDay(date: string | null): string {
 			<td>Repository cloning</td>
 			<td>{formatUnix(summary.clone_run_at_unix)}</td>
 			<td
-				>{numberFormatter.format(summary.clone.ok)} cloned, {numberFormatter.format(summary.clone.failed)} failed, {
+				>{numberFormatter.format(summary.clone.ok)} current tag checkouts, {numberFormatter.format(summary.clone.failed)} failed, {
 					numberFormatter.format(summary.clone.skipped)
-				} skipped</td
+				} removed skipped</td
 			>
 		</tr>
 		<tr>
@@ -178,6 +188,36 @@ function formatDay(date: string | null): string {
 		</>
 	)
 }
+
+<h2>Repository Clone Status</h2>
+
+<p>
+	This table breaks down local plugin repository checkouts. Active plugin repositories are shallow cloned at the latest known plugin version tag, and an existing
+	checkout is reused while that tag stays current.
+</p>
+
+<table>
+	<thead>
+		<tr>
+			<th>Status</th>
+			<th>Share</th>
+			<th>Meaning</th>
+		</tr>
+	</thead>
+	<tbody>
+		{
+			summary.clone.status_counts.map(status => (
+				<tr>
+					<td>
+						<code>{status.label}</code> ({numberFormatter.format(status.count)})
+					</td>
+					<td>{percentFormatter.format(status.share)}</td>
+					<td>{cloneStatusDescriptions[status.label] ?? 'Less common edge-case status from repository cloning.'}</td>
+				</tr>
+			))
+		}
+	</tbody>
+</table>
 
 <h2>Release Acquisition Status</h2>
 
