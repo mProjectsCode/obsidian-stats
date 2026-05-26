@@ -4,8 +4,11 @@ use crate::{
     alerts,
     latest_data_update::build_latest_data_update_summary,
     plugins::{
-        analysis::extract_analysis_data, clone_repos::clone_plugin_repos, data::build_plugin_stats,
+        analysis::extract_analysis_data,
+        clone_repos::clone_plugin_repos,
+        data::{build_plugin_stats, read_plugin_data},
         license::process_licenses,
+        release_acquisition::acquire_plugin_release_main_js,
     },
     release::data::build_release_stats,
     theme::data::build_theme_stats,
@@ -39,6 +42,11 @@ fn process_plugin_licenses_step() -> Result<(), Box<dyn Error>> {
     process_licenses()
 }
 
+fn acquire_plugin_releases_step(force: bool) -> Result<(), Box<dyn Error>> {
+    let plugin_data = read_plugin_data()?;
+    acquire_plugin_release_main_js(&plugin_data, force)
+}
+
 pub fn run_data_pipeline(options: PipelineOptions) -> Result<(), Box<dyn Error>> {
     let pipeline: Vec<PipelineStep> = vec![
         PipelineStep {
@@ -52,6 +60,10 @@ pub fn run_data_pipeline(options: PipelineOptions) -> Result<(), Box<dyn Error>>
         PipelineStep {
             label: "Cloning plugin repositories",
             run: Box::new(move || clone_plugin_repos(options.force, options.no_clone)),
+        },
+        PipelineStep {
+            label: "Acquiring plugin release assets",
+            run: Box::new(move || acquire_plugin_releases_step(options.force)),
         },
         PipelineStep {
             label: "Extracting repository data",
