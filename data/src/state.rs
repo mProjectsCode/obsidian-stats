@@ -10,10 +10,26 @@ pub fn read_json_or_default<T>(path: &Path) -> T
 where
     T: DeserializeOwned + Default,
 {
-    File::open(path)
-        .ok()
-        .and_then(|file| serde_json::from_reader(BufReader::new(file)).ok())
-        .unwrap_or_default()
+    match File::open(path) {
+        Ok(file) => match serde_json::from_reader(BufReader::new(file)) {
+            Ok(data) => data,
+            Err(error) => {
+                eprintln!(
+                    "Warning: failed to parse state file {}; using default state: {error}",
+                    path.display()
+                );
+                T::default()
+            }
+        },
+        Err(error) if error.kind() == std::io::ErrorKind::NotFound => T::default(),
+        Err(error) => {
+            eprintln!(
+                "Warning: failed to read state file {}; using default state: {error}",
+                path.display()
+            );
+            T::default()
+        }
+    }
 }
 
 pub fn write_json_atomic<T: Serialize>(

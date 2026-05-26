@@ -6,6 +6,7 @@ use data_lib::{
 use hashbrown::HashMap;
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 use std::{
+    error::Error,
     path::Path,
     process::Command,
     sync::atomic::{AtomicUsize, Ordering},
@@ -19,62 +20,72 @@ use crate::{
     progress::should_log_progress,
 };
 
-fn load_plugin_list_history() -> Vec<PluginList> {
-    let commits = get_obs_repo_changes();
+fn load_plugin_list_history() -> Result<Vec<PluginList>, Box<dyn Error>> {
+    let commits = get_obs_repo_changes()?;
     let total_commits = commits.len();
+    let obs_repo_path = Path::new(OBS_RELEASES_REPO_PATH).canonicalize()?;
 
     assert!(!commits.is_empty(), "No plugin list changes found");
 
     println!("Loading plugin list history from {total_commits} commits...");
     let processed = AtomicUsize::new(0);
 
-    commits
+    let results = commits
         .par_iter()
-        .filter_map(|commit| {
+        .map(|commit| {
             let list = Command::new("git")
                 .args([
                     "cat-file",
                     "-p",
                     &format!("{}:{}", commit.hash, PLUGIN_LIST_PATH),
                 ])
-                .current_dir(
-                    Path::new(OBS_RELEASES_REPO_PATH)
-                        .canonicalize()
-                        .expect("Failed to canonicalize path"),
-                )
+                .current_dir(&obs_repo_path)
                 .output()
-                .expect("Failed to execute git command");
+                .map_err(|error| {
+                    format!(
+                        "failed to execute git cat-file for plugin list at {}: {error}",
+                        commit.to_fancy_string()
+                    )
+                })?;
+
+            if !list.status.success() {
+                return Err(format!(
+                    "failed to read plugin list at commit {}: {}",
+                    commit.to_fancy_string(),
+                    String::from_utf8_lossy(&list.stderr).trim()
+                ));
+            }
 
             let list_str = String::from_utf8_lossy(&list.stdout).to_string();
             if list_str.is_empty() {
-                eprintln!("Empty plugin list at commit {}", commit.to_fancy_string());
-                return None;
+                return Err(format!(
+                    "empty plugin list at commit {}",
+                    commit.to_fancy_string()
+                ));
             }
-            let parsed_list: Result<ObsPluginList, serde_json::Error> =
-                serde_json::from_str(&list_str);
-            let result = match parsed_list {
-                Ok(list) => Some(PluginList {
+            let result = serde_json::from_str::<ObsPluginList>(&list_str)
+                .map(|list| PluginList {
                     entries: list.to_hashmap(),
                     commit: commit.clone(),
-                }),
-                Err(e) => {
-                    eprintln!(
-                        "Error parsing plugin list at commit {}: {}",
-                        commit.to_fancy_string(),
-                        e
-                    );
-                    None
-                }
-            };
+                })
+                .map_err(|error| {
+                    format!(
+                        "error parsing plugin list at commit {}: {error}",
+                        commit.to_fancy_string()
+                    )
+                })?;
 
             let done = processed.fetch_add(1, Ordering::Relaxed) + 1;
             if should_log_progress(done, total_commits) {
                 println!("  Plugin list history progress: {done} / {total_commits}");
             }
 
-            result
+            Ok(result)
         })
-        .collect()
+        .collect::<Result<Vec<_>, String>>()
+        .map_err(std::io::Error::other)?;
+
+    Ok(results)
 }
 
 fn build_plugin_change_timeline(plugin_lists: &[PluginList]) -> Vec<BorrowedPluginData<'_>> {
@@ -150,50 +161,62 @@ fn build_version_history(
     }
 }
 
-fn load_plugin_download_stat_history() -> Vec<PluginDownloadStats> {
+fn load_plugin_download_stat_history() -> Result<Vec<PluginDownloadStats>, Box<dyn Error>> {
     println!("Fetching plugin download stats...");
 
-    let commits = get_obs_repo_changes();
+    let commits = get_obs_repo_changes()?;
     let total_commits = commits.len();
+    let obs_repo_path = Path::new(OBS_RELEASES_REPO_PATH).canonicalize()?;
     println!("Loading plugin download stats from {total_commits} commits...");
     let processed = AtomicUsize::new(0);
 
-    commits
+    let results = commits
         .par_iter()
-        .filter_map(|commit| {
+        .map(|commit| {
             let stats = Command::new("git")
                 .args([
                     "cat-file",
                     "-p",
                     &format!("{}:{}", commit.hash, PLUGIN_STATS_PATH),
                 ])
-                .current_dir(
-                    Path::new(OBS_RELEASES_REPO_PATH)
-                        .canonicalize()
-                        .expect("Failed to canonicalize path"),
-                )
+                .current_dir(&obs_repo_path)
                 .output()
-                .expect("Failed to execute git command");
+                .map_err(|error| {
+                    format!(
+                        "failed to execute git cat-file for plugin download stats at {}: {error}",
+                        commit.to_fancy_string()
+                    )
+                })?;
+
+            if !stats.status.success() {
+                return Err(format!(
+                    "failed to read plugin download stats at commit {}: {}",
+                    commit.to_fancy_string(),
+                    String::from_utf8_lossy(&stats.stderr).trim()
+                ));
+            }
 
             let stats_str = String::from_utf8_lossy(&stats.stdout).to_string();
-            let parsed_stats: Result<ObsDownloadStats, serde_json::Error> =
-                serde_json::from_str(&stats_str);
-            let result = match parsed_stats {
-                Ok(stats) => Some(PluginDownloadStats::from_obs_data(stats, commit.clone())),
-                Err(e) => {
-                    eprintln!("Error parsing plugin download stats: {e}");
-                    None
-                }
-            };
+            let result = serde_json::from_str::<ObsDownloadStats>(&stats_str)
+                .map(|stats| PluginDownloadStats::from_obs_data(stats, commit.clone()))
+                .map_err(|error| {
+                    format!(
+                        "error parsing plugin download stats at commit {}: {error}",
+                        commit.to_fancy_string()
+                    )
+                })?;
 
             let done = processed.fetch_add(1, Ordering::Relaxed) + 1;
             if should_log_progress(done, total_commits) {
                 println!("  Plugin download history progress: {done} / {total_commits}");
             }
 
-            result
+            Ok(result)
         })
-        .collect()
+        .collect::<Result<Vec<_>, String>>()
+        .map_err(std::io::Error::other)?;
+
+    Ok(results)
 }
 
 fn filter_low_signal_plugins(plugin_data: Vec<BorrowedPluginData>) -> Vec<BorrowedPluginData> {
@@ -222,7 +245,7 @@ pub fn build_plugin_stats() -> Result<(), Box<dyn std::error::Error>> {
     let time = std::time::Instant::now();
     let mut time2 = std::time::Instant::now();
 
-    let plugin_lists = load_plugin_list_history();
+    let plugin_lists = load_plugin_list_history()?;
 
     println!("Get plugin lists: {:#?}", time2.elapsed());
     time2 = std::time::Instant::now();
@@ -232,7 +255,7 @@ pub fn build_plugin_stats() -> Result<(), Box<dyn std::error::Error>> {
     println!("Build Plugin Data {:#?}", time2.elapsed());
     time2 = std::time::Instant::now();
 
-    let download_stats = load_plugin_download_stat_history();
+    let download_stats = load_plugin_download_stat_history()?;
 
     println!("Get plugin download stats: {:#?}", time2.elapsed());
     time2 = std::time::Instant::now();

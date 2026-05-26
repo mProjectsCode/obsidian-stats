@@ -61,7 +61,7 @@ The data collection consists of multiple phases:
     2. Interpolate download data and save to `data/out/releases-github-interpolated`
     3. Get the Obsidian changelog, process and save to `data/out/releases-changelog`
 
-Currently you select which steps to run by commenting out the steps that you don't want in `data/src/main.rs`.
+The data pipeline currently runs the configured steps in `data/src/pipeline.rs`. Use `--force` to ignore refresh windows and `--no-clone` to skip repository recloning.
 
 ## Credits
 

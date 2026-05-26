@@ -1,5 +1,6 @@
 use std::ops::Index;
 
+use hashbrown::HashMap;
 use wasm_bindgen::prelude::wasm_bindgen;
 
 use crate::{
@@ -26,10 +27,15 @@ pub struct PluginDataArray {
 
 impl PluginDataArray {
     pub fn new(data: Vec<PluginData>, extended: Vec<PluginExtraData>) -> Self {
+        let mut extended_by_id = extended
+            .into_iter()
+            .map(|entry| (entry.id.clone(), entry))
+            .collect::<HashMap<_, _>>();
+
         let data = data
             .into_iter()
             .map(|d| FullPluginData {
-                extended: extended.iter().find(|r| r.id == d.id).cloned(),
+                extended: extended_by_id.remove(&d.id),
                 data: d,
             })
             .collect();
@@ -389,6 +395,17 @@ impl PluginDataArrayView {
                         }
                     }
                 });
+
+                if released_in_month == 0 {
+                    return InactivityByReleaseDataPoint {
+                        date: date.to_fancy_string(),
+                        inactive_one_year: 0.0,
+                        inactive_two_years: 0.0,
+                        inactive_three_years: 0.0,
+                        inactive_four_years: 0.0,
+                        inactive_five_years: 0.0,
+                    };
+                }
 
                 InactivityByReleaseDataPoint {
                     date: date.to_fancy_string(),
@@ -1069,7 +1086,7 @@ impl PluginDataArrayView {
                 let milestone_points: Vec<MilestoneDataPoint> = milestones_in_month
                     .into_iter()
                     .map(|m| MilestoneDataPoint {
-                        milestone_type: m.milestone_type.to_string().to_string(),
+                        milestone_type: m.milestone_type.as_str().to_string(),
                         milestone_value: m.milestone_value,
                         date: m.date.to_fancy_string(),
                         plugin_id: m.plugin_id,

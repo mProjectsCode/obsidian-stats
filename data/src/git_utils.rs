@@ -4,7 +4,8 @@ use data_lib::commit::Commit;
 
 use crate::constants::OBS_RELEASES_REPO_PATH;
 
-pub fn get_obs_repo_changes() -> Vec<Commit> {
+pub fn get_obs_repo_changes() -> Result<Vec<Commit>, Box<dyn std::error::Error>> {
+    let repo_path = Path::new(OBS_RELEASES_REPO_PATH).canonicalize()?;
     let git_output = Command::new("git")
         .args([
             "--no-pager",
@@ -16,13 +17,18 @@ pub fn get_obs_repo_changes() -> Vec<Commit> {
             "--date=iso-strict",
             "--grep=stats\\|chore",
         ])
-        .current_dir(
-            Path::new(OBS_RELEASES_REPO_PATH)
-                .canonicalize()
-                .expect("Failed to canonicalize path"),
-        )
-        .output()
-        .expect("Failed to execute git command");
+        .current_dir(repo_path)
+        .output()?;
 
-    Commit::from_git_log(String::from_utf8_lossy(&git_output.stdout).to_string())
+    if !git_output.status.success() {
+        return Err(format!(
+            "git log failed: {}",
+            String::from_utf8_lossy(&git_output.stderr).trim()
+        )
+        .into());
+    }
+
+    Ok(Commit::from_git_log(
+        String::from_utf8_lossy(&git_output.stdout).to_string(),
+    ))
 }

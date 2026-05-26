@@ -4,12 +4,28 @@ import { loadWasm, wasm } from './wasmLoader';
 
 async function readChunksInDir(dir: string): Promise<string[]> {
 	const dirFiles = await fs.readdir(path.resolve(process.cwd(), dir));
-	const jsonFiles = dirFiles.filter(file => file.endsWith('.json'));
+	const jsonFiles = dirFiles.filter(file => file.endsWith('.json')).sort(compareChunkFiles);
 	return Promise.all(jsonFiles.map(file => fs.readFile(path.resolve(process.cwd(), dir, file), 'utf-8')));
 }
 
 async function readDataFile(file: string): Promise<string> {
 	return fs.readFile(path.resolve(process.cwd(), file), 'utf-8');
+}
+
+function compareChunkFiles(left: string, right: string): number {
+	const leftIndex = chunkIndex(left);
+	const rightIndex = chunkIndex(right);
+
+	if (leftIndex !== undefined && rightIndex !== undefined) {
+		return leftIndex - rightIndex;
+	}
+
+	return left.localeCompare(right);
+}
+
+function chunkIndex(file: string): number | undefined {
+	const match = /^chunk[-_](\d+)\.json$/.exec(file);
+	return match ? Number.parseInt(match[1], 10) : undefined;
 }
 
 // ---------------------------------

@@ -2,6 +2,7 @@ use data_lib::{input_data::ObsThemeList, theme::ThemeData};
 use hashbrown::HashMap;
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 use std::{
+    error::Error,
     path::Path,
     process::Command,
     sync::atomic::{AtomicUsize, Ordering},
@@ -15,62 +16,72 @@ use crate::{
     theme::{BorrowedThemeData, ThemeIdCounter, ThemeList},
 };
 
-fn get_theme_lists() -> Vec<ThemeList> {
-    let commits = get_obs_repo_changes();
+fn get_theme_lists() -> Result<Vec<ThemeList>, Box<dyn Error>> {
+    let commits = get_obs_repo_changes()?;
     let total_commits = commits.len();
+    let obs_repo_path = Path::new(OBS_RELEASES_REPO_PATH).canonicalize()?;
 
     assert!(!commits.is_empty(), "No theme list changes found");
 
     println!("Loading theme list history from {total_commits} commits...");
     let processed = AtomicUsize::new(0);
 
-    commits
+    let results = commits
         .par_iter()
-        .filter_map(|commit| {
+        .map(|commit| {
             let list = Command::new("git")
                 .args([
                     "cat-file",
                     "-p",
                     &format!("{}:{}", commit.hash, THEME_LIST_PATH),
                 ])
-                .current_dir(
-                    Path::new(OBS_RELEASES_REPO_PATH)
-                        .canonicalize()
-                        .expect("Failed to canonicalize path"),
-                )
+                .current_dir(&obs_repo_path)
                 .output()
-                .expect("Failed to execute git command");
+                .map_err(|error| {
+                    format!(
+                        "failed to execute git cat-file for theme list at {}: {error}",
+                        commit.to_fancy_string()
+                    )
+                })?;
+
+            if !list.status.success() {
+                return Err(format!(
+                    "failed to read theme list at commit {}: {}",
+                    commit.to_fancy_string(),
+                    String::from_utf8_lossy(&list.stderr).trim()
+                ));
+            }
 
             let list_str = String::from_utf8_lossy(&list.stdout).to_string();
             if list_str.is_empty() {
-                eprintln!("Empty theme list at commit {}", commit.to_fancy_string());
-                return None;
+                return Err(format!(
+                    "empty theme list at commit {}",
+                    commit.to_fancy_string()
+                ));
             }
-            let parsed_list: Result<ObsThemeList, serde_json::Error> =
-                serde_json::from_str(&list_str);
-            let result = match parsed_list {
-                Ok(list) => Some(ThemeList {
+            let result = serde_json::from_str::<ObsThemeList>(&list_str)
+                .map(|list| ThemeList {
                     entries: list.to_hashmap(),
                     commit: commit.clone(),
-                }),
-                Err(e) => {
-                    eprintln!(
-                        "Error parsing theme list at commit {}: {}",
-                        commit.to_fancy_string(),
-                        e
-                    );
-                    None
-                }
-            };
+                })
+                .map_err(|error| {
+                    format!(
+                        "error parsing theme list at commit {}: {error}",
+                        commit.to_fancy_string()
+                    )
+                })?;
 
             let done = processed.fetch_add(1, Ordering::Relaxed) + 1;
             if should_log_progress(done, total_commits) {
                 println!("  Theme list history progress: {done} / {total_commits}");
             }
 
-            result
+            Ok(result)
         })
-        .collect()
+        .collect::<Result<Vec<_>, String>>()
+        .map_err(std::io::Error::other)?;
+
+    Ok(results)
 }
 
 fn build_theme_data(theme_lists: &[ThemeList]) -> Vec<BorrowedThemeData<'_>> {
@@ -129,7 +140,7 @@ pub fn build_theme_stats() -> Result<(), Box<dyn std::error::Error>> {
     let time = std::time::Instant::now();
     let mut time2 = std::time::Instant::now();
 
-    let theme_lists = get_theme_lists();
+    let theme_lists = get_theme_lists()?;
 
     println!("Get theme lists: {:#?}", time2.elapsed());
     time2 = std::time::Instant::now();

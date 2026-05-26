@@ -52,6 +52,8 @@ impl Date {
                 parts[1].parse::<u32>(),
                 parts[2].parse::<u32>(),
             )
+            && (1..=12).contains(&month)
+            && (1..=get_days_in_month(month, year)).contains(&day)
         {
             return Some(Date::new(year, month, day));
         }
@@ -110,8 +112,8 @@ impl Date {
         let mut month = self.month;
         let mut year = self.year;
 
-        while day > self.get_month_length() {
-            day -= self.get_month_length();
+        while day > get_days_in_month(month, year) {
+            day -= get_days_in_month(month, year);
             month += 1;
             if month > 12 {
                 month = 1;
@@ -318,6 +320,19 @@ fn date_advance() {
     let mut date5 = Date::new(2023, 12, 31);
     date5.advance_month();
     assert_eq!(date5.to_fancy_string(), "2024-01-01");
+
+    let mut date6 = Date::new(2023, 1, 31);
+    date6.advance_days(60);
+    assert_eq!(date6.to_fancy_string(), "2023-04-01");
+}
+
+#[test]
+fn date_from_string_rejects_invalid_dates() {
+    assert!(Date::from_string("2024-02-29").is_some());
+    assert!(Date::from_string("2023-02-29").is_none());
+    assert!(Date::from_string("2023-13-01").is_none());
+    assert!(Date::from_string("2023-00-01").is_none());
+    assert!(Date::from_string("2023-01-00").is_none());
 }
 
 #[test]
