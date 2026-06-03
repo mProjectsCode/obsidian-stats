@@ -11,13 +11,13 @@ use std::{
 use crate::{
     constants::{OBS_RELEASES_REPO_PATH, THEME_DATA_PATH, THEME_LIST_PATH},
     file_utils::{read_chunked_data, write_in_chunks_atomic},
-    git_utils::get_obs_repo_changes,
+    git_utils::get_obs_repo_changes_for_file,
     progress::should_log_progress,
     theme::{BorrowedThemeData, ThemeIdCounter, ThemeList},
 };
 
 fn get_theme_lists() -> Result<Vec<ThemeList>, Box<dyn Error>> {
-    let commits = get_obs_repo_changes()?;
+    let commits = get_obs_repo_changes_for_file(THEME_LIST_PATH)?;
     let total_commits = commits.len();
     let obs_repo_path = Path::new(OBS_RELEASES_REPO_PATH).canonicalize()?;
 
@@ -25,6 +25,7 @@ fn get_theme_lists() -> Result<Vec<ThemeList>, Box<dyn Error>> {
 
     println!("Loading theme list history from {total_commits} commits...");
     let processed = AtomicUsize::new(0);
+    let skipped = AtomicUsize::new(0);
 
     let results = commits
         .par_iter()
@@ -45,41 +46,42 @@ fn get_theme_lists() -> Result<Vec<ThemeList>, Box<dyn Error>> {
                 })?;
 
             if !list.status.success() {
-                return Err(format!(
-                    "failed to read theme list at commit {}: {}",
-                    commit.to_fancy_string(),
-                    String::from_utf8_lossy(&list.stderr).trim()
-                ));
+                skipped.fetch_add(1, Ordering::Relaxed);
+                return Ok(None);
             }
 
             let list_str = String::from_utf8_lossy(&list.stdout).to_string();
             if list_str.is_empty() {
-                return Err(format!(
-                    "empty theme list at commit {}",
-                    commit.to_fancy_string()
-                ));
+                skipped.fetch_add(1, Ordering::Relaxed);
+                return Ok(None);
             }
-            let result = serde_json::from_str::<ObsThemeList>(&list_str)
-                .map(|list| ThemeList {
+            let result = match serde_json::from_str::<ObsThemeList>(&list_str) {
+                Ok(list) => ThemeList {
                     entries: list.to_hashmap(),
                     commit: commit.clone(),
-                })
-                .map_err(|error| {
-                    format!(
-                        "error parsing theme list at commit {}: {error}",
-                        commit.to_fancy_string()
-                    )
-                })?;
+                },
+                Err(_) => {
+                    skipped.fetch_add(1, Ordering::Relaxed);
+                    return Ok(None);
+                }
+            };
 
             let done = processed.fetch_add(1, Ordering::Relaxed) + 1;
             if should_log_progress(done, total_commits) {
                 println!("  Theme list history progress: {done} / {total_commits}");
             }
 
-            Ok(result)
+            Ok(Some(result))
         })
         .collect::<Result<Vec<_>, String>>()
         .map_err(std::io::Error::other)?;
+
+    let skipped = skipped.load(Ordering::Relaxed);
+    if skipped > 0 {
+        eprintln!("Warning: skipped {skipped} broken theme list commit(s).");
+    }
+
+    let results = results.into_iter().flatten().collect();
 
     Ok(results)
 }

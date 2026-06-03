@@ -126,14 +126,17 @@ fn get_inactivity_warnings(data: &FullPluginData, warnings: &mut Vec<PluginWarni
         return;
     }
 
-    let latest_release_date = data
+    let latest_available_version = data
         .data
         .version_history
-        .last()
+        .iter()
+        .rev()
+        .find(|version| version.deleted_date.is_none());
+    let latest_release_date = latest_available_version
         .map(|v| &v.initial_release_date)
         .unwrap_or(&data.data.added_commit.date);
 
-    let latest_version = data.data.version_history.last().map(|v| &v.version);
+    let latest_version = latest_available_version.map(|v| &v.version);
 
     let now = Date::now();
     let one_year_ago = {

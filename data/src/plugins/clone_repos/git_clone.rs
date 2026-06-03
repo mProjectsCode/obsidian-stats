@@ -193,6 +193,7 @@ fn run_git_clone(
         ])
         .arg(tmp_path)
         .env("GIT_TERMINAL_PROMPT", "0")
+        .env("GIT_LFS_SKIP_SMUDGE", "1")
         .stdout(Stdio::piped())
         .stderr(Stdio::piped())
         .spawn()

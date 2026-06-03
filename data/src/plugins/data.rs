@@ -3,7 +3,7 @@ use data_lib::{
     input_data::{ObsDownloadStats, ObsPluginList},
     plugin::PluginData,
 };
-use hashbrown::HashMap;
+use hashbrown::{HashMap, HashSet};
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 use std::{
     error::Error,
@@ -15,13 +15,13 @@ use std::{
 use crate::{
     constants::{OBS_RELEASES_REPO_PATH, PLUGIN_DATA_PATH, PLUGIN_LIST_PATH, PLUGIN_STATS_PATH},
     file_utils::{read_chunked_data, write_in_chunks_atomic},
-    git_utils::get_obs_repo_changes,
+    git_utils::get_obs_repo_changes_for_file,
     plugins::{BorrowedPluginData, PluginDownloadStats, PluginList, download_backfill},
     progress::should_log_progress,
 };
 
 fn load_plugin_list_history() -> Result<Vec<PluginList>, Box<dyn Error>> {
-    let commits = get_obs_repo_changes()?;
+    let commits = get_obs_repo_changes_for_file(PLUGIN_LIST_PATH)?;
     let total_commits = commits.len();
     let obs_repo_path = Path::new(OBS_RELEASES_REPO_PATH).canonicalize()?;
 
@@ -29,6 +29,7 @@ fn load_plugin_list_history() -> Result<Vec<PluginList>, Box<dyn Error>> {
 
     println!("Loading plugin list history from {total_commits} commits...");
     let processed = AtomicUsize::new(0);
+    let skipped = AtomicUsize::new(0);
 
     let results = commits
         .par_iter()
@@ -49,41 +50,42 @@ fn load_plugin_list_history() -> Result<Vec<PluginList>, Box<dyn Error>> {
                 })?;
 
             if !list.status.success() {
-                return Err(format!(
-                    "failed to read plugin list at commit {}: {}",
-                    commit.to_fancy_string(),
-                    String::from_utf8_lossy(&list.stderr).trim()
-                ));
+                skipped.fetch_add(1, Ordering::Relaxed);
+                return Ok(None);
             }
 
             let list_str = String::from_utf8_lossy(&list.stdout).to_string();
             if list_str.is_empty() {
-                return Err(format!(
-                    "empty plugin list at commit {}",
-                    commit.to_fancy_string()
-                ));
+                skipped.fetch_add(1, Ordering::Relaxed);
+                return Ok(None);
             }
-            let result = serde_json::from_str::<ObsPluginList>(&list_str)
-                .map(|list| PluginList {
+            let result = match serde_json::from_str::<ObsPluginList>(&list_str) {
+                Ok(list) => PluginList {
                     entries: list.to_hashmap(),
                     commit: commit.clone(),
-                })
-                .map_err(|error| {
-                    format!(
-                        "error parsing plugin list at commit {}: {error}",
-                        commit.to_fancy_string()
-                    )
-                })?;
+                },
+                Err(_) => {
+                    skipped.fetch_add(1, Ordering::Relaxed);
+                    return Ok(None);
+                }
+            };
 
             let done = processed.fetch_add(1, Ordering::Relaxed) + 1;
             if should_log_progress(done, total_commits) {
                 println!("  Plugin list history progress: {done} / {total_commits}");
             }
 
-            Ok(result)
+            Ok(Some(result))
         })
         .collect::<Result<Vec<_>, String>>()
         .map_err(std::io::Error::other)?;
+
+    let skipped = skipped.load(Ordering::Relaxed);
+    if skipped > 0 {
+        eprintln!("Warning: skipped {skipped} broken plugin list commit(s).");
+    }
+
+    let results = results.into_iter().flatten().collect();
 
     Ok(results)
 }
@@ -136,14 +138,24 @@ fn build_version_history(
         .enumerate()
         .map(|(idx, entry)| (entry.id.clone(), idx))
         .collect::<HashMap<_, _>>();
+    let mut previous_versions_by_plugin = vec![None::<HashSet<String>>; plugin_data.len()];
 
     let total_stats = download_stats.len();
     for (idx, stat) in download_stats.iter().enumerate() {
         let date = stat.get_date();
+        if download_backfill::is_excluded_download_date(&date) {
+            continue;
+        }
+
         for (id, entry) in stat.entries.iter() {
             if let Some(&plugin_idx) = index_by_id.get(id) {
-                plugin_data[plugin_idx]
-                    .update_version_history_from_versions(&date, &entry.versions);
+                let current_versions = valid_versions(&entry.versions);
+                plugin_data[plugin_idx].update_version_history_from_snapshot(
+                    &date,
+                    previous_versions_by_plugin[plugin_idx].as_ref(),
+                    &current_versions,
+                );
+                previous_versions_by_plugin[plugin_idx] = Some(current_versions);
             }
         }
 
@@ -161,14 +173,23 @@ fn build_version_history(
     }
 }
 
+fn valid_versions(versions: &[String]) -> HashSet<String> {
+    versions
+        .iter()
+        .filter(|version| data_lib::version::Version::validate(version))
+        .cloned()
+        .collect()
+}
+
 fn load_plugin_download_stat_history() -> Result<Vec<PluginDownloadStats>, Box<dyn Error>> {
     println!("Fetching plugin download stats...");
 
-    let commits = get_obs_repo_changes()?;
+    let commits = get_obs_repo_changes_for_file(PLUGIN_STATS_PATH)?;
     let total_commits = commits.len();
     let obs_repo_path = Path::new(OBS_RELEASES_REPO_PATH).canonicalize()?;
     println!("Loading plugin download stats from {total_commits} commits...");
     let processed = AtomicUsize::new(0);
+    let skipped = AtomicUsize::new(0);
 
     let results = commits
         .par_iter()
@@ -189,32 +210,35 @@ fn load_plugin_download_stat_history() -> Result<Vec<PluginDownloadStats>, Box<d
                 })?;
 
             if !stats.status.success() {
-                return Err(format!(
-                    "failed to read plugin download stats at commit {}: {}",
-                    commit.to_fancy_string(),
-                    String::from_utf8_lossy(&stats.stderr).trim()
-                ));
+                skipped.fetch_add(1, Ordering::Relaxed);
+                return Ok(None);
             }
 
             let stats_str = String::from_utf8_lossy(&stats.stdout).to_string();
-            let result = serde_json::from_str::<ObsDownloadStats>(&stats_str)
-                .map(|stats| PluginDownloadStats::from_obs_data(stats, commit.clone()))
-                .map_err(|error| {
-                    format!(
-                        "error parsing plugin download stats at commit {}: {error}",
-                        commit.to_fancy_string()
-                    )
-                })?;
+            let result = match serde_json::from_str::<ObsDownloadStats>(&stats_str) {
+                Ok(stats) => PluginDownloadStats::from_obs_data(stats, commit.clone()),
+                Err(_) => {
+                    skipped.fetch_add(1, Ordering::Relaxed);
+                    return Ok(None);
+                }
+            };
 
             let done = processed.fetch_add(1, Ordering::Relaxed) + 1;
             if should_log_progress(done, total_commits) {
                 println!("  Plugin download history progress: {done} / {total_commits}");
             }
 
-            Ok(result)
+            Ok(Some(result))
         })
         .collect::<Result<Vec<_>, String>>()
         .map_err(std::io::Error::other)?;
+
+    let skipped = skipped.load(Ordering::Relaxed);
+    if skipped > 0 {
+        eprintln!("Warning: skipped {skipped} broken plugin download stats commit(s).");
+    }
+
+    let results = results.into_iter().flatten().collect();
 
     Ok(results)
 }

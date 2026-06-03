@@ -306,7 +306,9 @@ pub fn acquire_plugin_release_main_js(
 pub(crate) fn latest_version_from_history(plugin: &PluginData) -> Option<String> {
     plugin
         .version_history
-        .last()
+        .iter()
+        .rev()
+        .find(|entry| entry.deleted_date.is_none())
         .map(|entry| entry.version.trim().to_string())
         .filter(|version| !version.is_empty())
 }
@@ -412,7 +414,18 @@ fn configured_thread_count(env_var: &str, default_threads: usize) -> usize {
 
 #[cfg(test)]
 mod tests {
-    use super::{PluginReleaseStateEntry, ReleaseFetchStatus, should_retry_release_fetch};
+    use super::{
+        PluginReleaseStateEntry, ReleaseFetchStatus, latest_version_from_history,
+        should_retry_release_fetch,
+    };
+    use data_lib::{
+        commit::Commit,
+        common::{DownloadHistory, VersionHistory},
+        date::Date,
+        input_data::ObsCommunityPlugin,
+        plugin::PluginData,
+        version::Version,
+    };
 
     fn state_entry(status: &str) -> PluginReleaseStateEntry {
         PluginReleaseStateEntry {
@@ -467,6 +480,55 @@ mod tests {
                 ReleaseFetchStatus::from_state_value(status).as_state_value(),
                 status
             );
+        }
+    }
+
+    #[test]
+    fn latest_version_from_history_uses_latest_non_deleted_version() {
+        let plugin = PluginData {
+            id: "plugin".to_string(),
+            added_commit: Commit {
+                date: Date::new(2024, 1, 1),
+                hash: "abc".to_string(),
+            },
+            removed_commit: None,
+            initial_entry: plugin_entry(),
+            current_entry: plugin_entry(),
+            change_history: Vec::new(),
+            download_history: DownloadHistory::default(),
+            download_count: 0,
+            version_history: vec![
+                version_history("1.0.0", Date::new(2024, 1, 1), None),
+                version_history("1.1.0", Date::new(2024, 2, 1), Some(Date::new(2024, 2, 8))),
+            ],
+        };
+
+        assert_eq!(
+            latest_version_from_history(&plugin),
+            Some("1.0.0".to_string())
+        );
+    }
+
+    fn version_history(
+        version: &str,
+        initial_release_date: Date,
+        deleted_date: Option<Date>,
+    ) -> VersionHistory {
+        VersionHistory {
+            version: version.to_string(),
+            version_object: Version::parse(version),
+            initial_release_date,
+            deleted_date,
+        }
+    }
+
+    fn plugin_entry() -> ObsCommunityPlugin {
+        ObsCommunityPlugin {
+            id: "plugin".to_string(),
+            name: "Plugin".to_string(),
+            author: "Author".to_string(),
+            description: "Description".to_string(),
+            repo: "owner/repo".to_string(),
         }
     }
 }

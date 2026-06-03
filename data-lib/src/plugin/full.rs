@@ -410,12 +410,8 @@ impl FullPluginData {
                 let mut prev_date = date.clone();
                 prev_date.reverse_days(7);
 
-                let downloads = self
-                    .find_downloads_in_week(&date)
-                    .and_then(|d| if d > 0 { Some(d) } else { None });
-                let previous_downloads = self
-                    .find_downloads_in_week(&prev_date)
-                    .and_then(|d| if d > 0 { Some(d) } else { None });
+                let downloads = self.find_downloads_in_week(&date).filter(|&d| d > 0);
+                let previous_downloads = self.find_downloads_in_week(&prev_date).filter(|&d| d > 0);
 
                 let delta = match (downloads, previous_downloads) {
                     (Some(d), Some(pd)) if d >= pd => Some(d - pd),
@@ -442,6 +438,7 @@ impl FullPluginData {
             .map(|v| VersionDataPoint {
                 version: v.version.clone(),
                 date: v.initial_release_date.to_fancy_string(),
+                deleted_date: v.deleted_date.as_ref().map(|date| date.to_fancy_string()),
                 deprecated: self
                     .extended
                     .as_ref()

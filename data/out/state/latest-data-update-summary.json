@@ -1,77 +1,77 @@
 {
-  "refreshed_at_unix": 1779707129,
-  "clone_run_at_unix": 1779707128,
-  "release_run_at_unix": 1779707129,
-  "obsidian_release_fetch_at_unix": 1779706346,
-  "latest_plugin_download_snapshot_date": "2026-05-25",
+  "refreshed_at_unix": 1780316048,
+  "clone_run_at_unix": 1780316047,
+  "release_run_at_unix": 1780316048,
+  "obsidian_release_fetch_at_unix": 1780303751,
+  "latest_plugin_download_snapshot_date": "2026-06-01",
   "latest_obsidian_release_date": "2026-03-23",
   "latest_obsidian_version": "1.12.7",
   "plugins": {
-    "total": 4471,
-    "active": 4209,
-    "removed": 262,
-    "total_downloads": 125835678,
-    "version_snapshots": 60065
+    "total": 4710,
+    "active": 4341,
+    "removed": 369,
+    "total_downloads": 127308194,
+    "version_snapshots": 62186
   },
   "themes": {
-    "total": 589,
-    "active": 528,
-    "removed": 61
+    "total": 603,
+    "active": 539,
+    "removed": 64
   },
   "releases": {
-    "changelog_entries": 453,
+    "changelog_entries": 455,
     "github_release_snapshots": 168,
     "interpolated_release_snapshots": 168,
     "asset_count": 946,
-    "download_snapshots": 38934
+    "download_snapshots": 39880
   },
   "clone": {
-    "tracked": 4477,
-    "ok": 4148,
-    "skipped": 262,
-    "failed": 16,
-    "success_rate": 0.9961575408261287,
+    "tracked": 4722,
+    "ok": 4300,
+    "skipped": 373,
+    "failed": 8,
+    "success_rate": 0.9981429897864438,
     "failed_plugins": [
-      "duplicate-line",
-      "vim-toggle",
-      "hackerone",
-      "tasks-calendar-wrapper",
-      "mapbox-location"
+      "hide-tags",
+      "obsidian-enhancing-mindmap",
+      "rich-foot",
+      "cyberware",
+      "tasks-calendar-wrapper"
     ],
     "status_counts": [
       {
         "label": "ok",
-        "count": 4148,
-        "share": 0.9265132901496538
+        "count": 4300,
+        "share": 0.9106310885218127
       },
       {
         "label": "skipped_removed",
-        "count": 262,
-        "share": 0.058521331248603974
+        "count": 373,
+        "share": 0.07899195256247353
       },
       {
         "label": "version_history_missing",
-        "count": 51,
-        "share": 0.0113915568461023
+        "count": 41,
+        "share": 0.00868276154171961
       },
       {
         "label": "failed",
-        "count": 16,
-        "share": 0.0035738217556399374
+        "count": 8,
+        "share": 0.0016941973739940702
       }
     ]
   },
   "release_acquisition": {
-    "tracked": 4291,
-    "ok": 1739,
-    "retained_previous_main_js": 2460,
-    "no_release": 1,
+    "tracked": 4533,
+    "ok": 690,
+    "retained_previous_main_js": 3773,
+    "no_release": 12,
     "no_main_js_asset": 1,
-    "error_count": 5,
-    "main_js_coverage": 4199,
-    "main_js_coverage_rate": 0.9785597762759264,
-    "total_main_js_bytes": 3284023241,
-    "average_main_js_bytes": 782096,
+    "error_count": 0,
+    "main_js_coverage": 4463,
+    "main_js_coverage_rate": 0.9845576880652989,
+    "total_main_js_bytes": 3386599872,
+    "average_main_js_bytes": 758816,
     "largest_main_js": {
       "repo": "salokingreen/NAI4Obsidian",
       "size_bytes": 127704263
@@ -79,69 +79,69 @@
     "status_counts": [
       {
         "label": "main_js_not_updated_since_success",
-        "count": 2460,
-        "share": 0.5732929387089256
+        "count": 3773,
+        "share": 0.8323406132803882
       },
       {
         "label": "ok",
-        "count": 1739,
-        "share": 0.4052668375670007
+        "count": 690,
+        "share": 0.15221707478491064
       },
       {
         "label": "version_history_missing",
-        "count": 67,
-        "share": 0.015614075972966674
+        "count": 57,
+        "share": 0.01257445400397088
       },
       {
         "label": "no_release_for_version",
-        "count": 18,
-        "share": 0.004194826380797017
-      },
-      {
-        "label": "rate_limited",
-        "count": 5,
-        "share": 0.0011652295502213937
+        "count": 11,
+        "share": 0.0024266490183101697
       },
       {
         "label": "no_main_js_asset",
         "count": 1,
-        "share": 0.00023304591004427873
+        "share": 0.00022060445621001543
       },
       {
         "label": "no_release",
         "count": 1,
-        "share": 0.00023304591004427873
+        "share": 0.00022060445621001543
       }
     ]
   },
   "repo_analysis": {
-    "tracked": 4471,
-    "active_success": 4198,
-    "active_failures": 11,
-    "removed_skipped": 262,
-    "coverage_rate": 0.9973865526253267,
+    "tracked": 4710,
+    "active_success": 4305,
+    "active_failures": 36,
+    "removed_skipped": 369,
+    "coverage_rate": 0.9917069799585349,
     "failure_samples": [
-      "bojubot",
-      "book-tracker",
-      "bujuan",
-      "cevent-planner",
-      "cevent-planner-extra"
+      "alert-banner",
+      "bible-reference-preview",
+      "books",
+      "calculator-pro",
+      "calendar-heatmap"
     ],
     "error_counts": [
       {
-        "label": "repository_missing",
-        "count": 11,
-        "share": 0.002613447374673319
+        "label": "main_js_analysis_too_large",
+        "count": 48,
+        "share": 0.0110573600552868
       },
       {
-        "label": "manifest_parse_error",
-        "count": 2,
-        "share": 0.0004751722499406035
+        "label": "repository_missing",
+        "count": 36,
+        "share": 0.0082930200414651
       },
       {
         "label": "manifest_read_error",
-        "count": 1,
-        "share": 0.00023758612497030174
+        "count": 6,
+        "share": 0.00138217000691085
+      },
+      {
+        "label": "manifest_parse_error",
+        "count": 3,
+        "share": 0.000691085003455425
       }
     ]
   }

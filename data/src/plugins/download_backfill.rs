@@ -45,7 +45,7 @@ fn excluded_download_dates() -> ExcludedDates {
     ExcludedDates::new(
         Vec::new(),
         vec![
-            // Something in May 2024 is broken in source data (for example advanced-canvas).
+            // Something in May 2024 is broken in source data (for example augmented-canvas).
             DateRange::new(Date::new(2024, 5, 18), Date::new(2024, 5, 28)),
             // Source snapshots around 2025-01-22 create spikes for almost all plugins.
             DateRange::new(Date::new(2025, 1, 22), Date::new(2025, 1, 28)),
@@ -53,6 +53,10 @@ fn excluded_download_dates() -> ExcludedDates {
             DateRange::new(Date::new(2025, 4, 9), Date::new(2025, 4, 15)),
         ],
     )
+}
+
+pub(crate) fn is_excluded_download_date(date: &Date) -> bool {
+    excluded_download_dates().contains(date)
 }
 
 struct DownloadPoint {
@@ -425,6 +429,12 @@ mod tests {
     #[test]
     fn excluded_download_dates_cover_known_artifact_windows() {
         let excluded = excluded_download_dates();
+
+        assert!(!excluded.contains(&Date::new(2024, 5, 17)));
+        assert!(excluded.contains(&Date::new(2024, 5, 18)));
+        assert!(excluded.contains(&Date::new(2024, 5, 27)));
+        assert!(excluded.contains(&Date::new(2024, 5, 28)));
+        assert!(!excluded.contains(&Date::new(2024, 5, 29)));
 
         assert!(!excluded.contains(&Date::new(2025, 1, 21)));
         assert!(excluded.contains(&Date::new(2025, 1, 22)));

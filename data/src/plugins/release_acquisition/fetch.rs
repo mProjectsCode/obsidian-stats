@@ -137,20 +137,23 @@ fn handle_release_metadata_response(
     }
 
     if status.as_u16() == 403 || status.as_u16() == 429 {
-        alerts::record_rate_limit(
-            format!("plugin release metadata fetch for {}", request.plugin_id),
-            format!("GitHub returned HTTP {}", status.as_u16()),
-        );
+        let retry_wait = retry_wait_seconds(response.headers());
 
         if matches!(rate_limit_mode, RateLimitMode::Sleep)
             && *retries < 1
-            && let Some(wait_secs) = retry_wait_seconds(response.headers())
+            && let Some(wait_secs) = retry_wait
             && wait_secs > 0
         {
             std::thread::sleep(std::time::Duration::from_secs(wait_secs as u64));
             *retries += 1;
             return ResponseHandling::Retry;
         }
+
+        let detail = github_error_detail(status.as_u16(), response);
+        alerts::record_rate_limit(
+            format!("plugin release metadata fetch for {}", request.plugin_id),
+            detail,
+        );
 
         return ResponseHandling::Done(ReleaseFetchResult::Updated(
             Box::new(state_entry(
@@ -164,9 +167,10 @@ fn handle_release_metadata_response(
     }
 
     if !status.is_success() {
+        let detail = github_error_detail(status.as_u16(), response);
         alerts::record_unexpected_error(
             format!("plugin release metadata fetch for {}", request.plugin_id),
-            format!("GitHub returned HTTP {}", status.as_u16()),
+            detail,
         );
         return ResponseHandling::Done(ReleaseFetchResult::Updated(
             Box::new(state_entry(
@@ -388,6 +392,66 @@ fn retry_wait_seconds(headers: &reqwest::header::HeaderMap) -> Option<i64> {
     Some((reset_unix - now).max(0))
 }
 
+fn github_error_detail(status_code: u16, response: Response) -> String {
+    let headers = github_diagnostic_headers(response.headers());
+    let body = response
+        .text()
+        .ok()
+        .map(|body| trim_diagnostic_body(&body))
+        .filter(|body| !body.is_empty());
+
+    let mut detail = format!("GitHub returned HTTP {status_code}");
+    if !headers.is_empty() {
+        detail.push_str("; headers: ");
+        detail.push_str(&headers);
+    }
+    if let Some(body) = body {
+        detail.push_str("; body: ");
+        detail.push_str(&body);
+    }
+
+    detail
+}
+
+fn github_diagnostic_headers(headers: &reqwest::header::HeaderMap) -> String {
+    const HEADER_NAMES: &[&str] = &[
+        "retry-after",
+        "x-ratelimit-limit",
+        "x-ratelimit-remaining",
+        "x-ratelimit-reset",
+        "x-ratelimit-resource",
+        "x-ratelimit-used",
+        "x-github-request-id",
+        "x-oauth-scopes",
+        "x-accepted-oauth-scopes",
+    ];
+
+    HEADER_NAMES
+        .iter()
+        .filter_map(|name| {
+            headers
+                .get(*name)
+                .and_then(|value| value.to_str().ok())
+                .map(|value| format!("{name}={value}"))
+        })
+        .collect::<Vec<_>>()
+        .join(", ")
+}
+
+fn trim_diagnostic_body(body: &str) -> String {
+    const MAX_BODY_CHARS: usize = 1000;
+
+    let body = body.trim();
+    let char_count = body.chars().count();
+    if char_count <= MAX_BODY_CHARS {
+        return body.to_string();
+    }
+
+    let mut trimmed = body.chars().take(MAX_BODY_CHARS).collect::<String>();
+    trimmed.push_str("...");
+    trimmed
+}
+
 fn encode_github_release_tag_for_path(tag: &str) -> String {
     let mut encoded = String::new();
 
@@ -405,8 +469,12 @@ fn encode_github_release_tag_for_path(tag: &str) -> String {
 
 #[cfg(test)]
 mod tests {
-    use super::{encode_github_release_tag_for_path, should_download_main_js_for_release};
+    use super::{
+        encode_github_release_tag_for_path, github_diagnostic_headers,
+        should_download_main_js_for_release, trim_diagnostic_body,
+    };
     use crate::plugins::release_acquisition::PluginReleaseStateEntry;
+    use reqwest::header::{HeaderMap, HeaderValue};
 
     fn state_entry(status: &str) -> PluginReleaseStateEntry {
         PluginReleaseStateEntry {
@@ -447,5 +515,28 @@ mod tests {
         assert_eq!(encode_github_release_tag_for_path("1.2.3"), "1.2.3");
         assert_eq!(encode_github_release_tag_for_path("beta/1"), "beta%2F1");
         assert_eq!(encode_github_release_tag_for_path("v 1.0.0"), "v%201.0.0");
+    }
+
+    #[test]
+    fn formats_github_diagnostic_headers() {
+        let mut headers = HeaderMap::new();
+        headers.insert("x-ratelimit-remaining", HeaderValue::from_static("0"));
+        headers.insert("x-ratelimit-resource", HeaderValue::from_static("core"));
+        headers.insert("x-github-request-id", HeaderValue::from_static("abc:123"));
+        headers.insert("content-type", HeaderValue::from_static("application/json"));
+
+        assert_eq!(
+            github_diagnostic_headers(&headers),
+            "x-ratelimit-remaining=0, x-ratelimit-resource=core, x-github-request-id=abc:123"
+        );
+    }
+
+    #[test]
+    fn trims_long_diagnostic_bodies() {
+        let body = "a".repeat(1001);
+        let trimmed = trim_diagnostic_body(&body);
+
+        assert_eq!(trimmed.chars().count(), 1003);
+        assert!(trimmed.ends_with("..."));
     }
 }

@@ -608,7 +608,12 @@ function formatReleaseFreshness(): string {
 					<tr>
 						<td>{version.version}</td>
 						<td>{version.date}</td>
-						<td>{version.deprecated ? <>Blacklisted</> : <span class="muted">None</span>}</td>
+						<td>
+							{version.deprecated && <>Blacklisted</>}
+							{version.deprecated && version.deleted_date && <>, </>}
+							{version.deleted_date && <>Deleted {version.deleted_date}</>}
+							{!version.deprecated && !version.deleted_date && <span class="muted">None</span>}
+						</td>
 					</tr>
 				))
 			}
@@ -616,10 +621,11 @@ function formatReleaseFreshness(): string {
 	</table>
 
 	{
-		versions.some(x => x.deprecated) && (
+		versions.some(x => x.deprecated || x.deleted_date) && (
 			<p class="muted">
 				<i>Blacklisted</i> versions are versions that are known to cause major issues or contain security concerns and have thus been blacklisted by the
-				Obsidian team. Obsidian will disable plugins on startup whose installed version is blacklisted. It is strongly recommended to update to a newer version.
+				Obsidian team. <i>Deleted</i> versions appeared in the public stats history but are no longer present in current stats. Obsidian will disable plugins on
+				startup whose installed version is blacklisted. It is strongly recommended to update to a newer version.
 			</p>
 		)
 	}

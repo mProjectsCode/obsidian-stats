@@ -5,7 +5,7 @@ use data_lib::{
     input_data::{ObsCommunityPlugin, ObsDownloadStats},
     version::Version,
 };
-use hashbrown::HashMap;
+use hashbrown::{HashMap, HashSet};
 
 use serde::Serialize;
 use serde_json::value;
@@ -81,9 +81,15 @@ pub struct BorrowedPluginData<'a> {
     pub download_history: DownloadHistory,
     pub download_count: u32,
     pub version_history: Vec<VersionHistory>,
-    /// version -> release date
+    /// version -> lifecycle
     #[serde(skip)]
-    version_history_map: HashMap<String, Date>,
+    version_history_map: HashMap<String, VersionLifecycle>,
+}
+
+#[derive(Debug, Clone)]
+struct VersionLifecycle {
+    initial_release_date: Date,
+    deleted_date: Option<Date>,
 }
 
 impl<'a> BorrowedPluginData<'a> {
@@ -179,25 +185,119 @@ impl<'a> BorrowedPluginData<'a> {
                 continue;
             }
 
-            if !self.version_history_map.contains_key(version) {
-                self.version_history_map
-                    .insert(version.clone(), date.clone());
+            self.mark_version_seen(date, version);
+        }
+    }
+
+    pub fn update_version_history_from_snapshot(
+        &mut self,
+        date: &Date,
+        previous_versions: Option<&HashSet<String>>,
+        current_versions: &HashSet<String>,
+    ) {
+        for version in current_versions {
+            self.mark_version_seen(date, version);
+        }
+
+        let Some(previous_versions) = previous_versions else {
+            return;
+        };
+
+        for version in previous_versions.difference(current_versions) {
+            if let Some(lifecycle) = self.version_history_map.get_mut(version)
+                && lifecycle.deleted_date.is_none()
+            {
+                lifecycle.deleted_date = Some(date.clone());
             }
         }
+    }
+
+    fn mark_version_seen(&mut self, date: &Date, version: &str) {
+        if !Version::validate(version) {
+            return;
+        }
+
+        self.version_history_map
+            .entry(version.to_string())
+            .and_modify(|lifecycle| {
+                lifecycle.deleted_date = None;
+            })
+            .or_insert_with(|| VersionLifecycle {
+                initial_release_date: date.clone(),
+                deleted_date: None,
+            });
     }
 
     pub fn sort_version_history(&mut self) {
         self.version_history = self
             .version_history_map
             .iter()
-            .map(|(version, date)| VersionHistory {
+            .map(|(version, lifecycle)| VersionHistory {
                 version: version.clone(),
                 version_object: Version::parse(version),
-                initial_release_date: date.clone(),
+                initial_release_date: lifecycle.initial_release_date.clone(),
+                deleted_date: lifecycle.deleted_date.clone(),
             })
             .collect();
 
         self.version_history
             .sort_by(|a, b| a.version_object.cmp(&b.version_object));
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::BorrowedPluginData;
+    use data_lib::{commit::Commit, date::Date, input_data::ObsCommunityPlugin};
+    use hashbrown::HashSet;
+
+    fn plugin() -> ObsCommunityPlugin {
+        ObsCommunityPlugin {
+            id: "plugin".to_string(),
+            name: "Plugin".to_string(),
+            author: "Author".to_string(),
+            description: "Description".to_string(),
+            repo: "owner/repo".to_string(),
+        }
+    }
+
+    fn versions(values: &[&str]) -> HashSet<String> {
+        values.iter().map(|value| (*value).to_string()).collect()
+    }
+
+    #[test]
+    fn version_history_tracks_deleted_and_reappeared_versions() {
+        let commit = Commit {
+            date: Date::new(2024, 1, 1),
+            hash: "abc".to_string(),
+        };
+        let plugin = plugin();
+        let mut data = BorrowedPluginData::new("plugin".to_string(), &commit, &plugin);
+
+        let first = versions(&["1.0.0", "1.1.0"]);
+        data.update_version_history_from_snapshot(&Date::new(2024, 1, 1), None, &first);
+
+        let second = versions(&["1.0.0"]);
+        data.update_version_history_from_snapshot(&Date::new(2024, 1, 8), Some(&first), &second);
+
+        data.sort_version_history();
+        let removed = data
+            .version_history
+            .iter()
+            .find(|entry| entry.version == "1.1.0")
+            .unwrap();
+        assert_eq!(removed.deleted_date, Some(Date::new(2024, 1, 8)));
+
+        let third = versions(&["1.0.0", "1.1.0"]);
+        data.update_version_history_from_snapshot(&Date::new(2024, 1, 15), Some(&second), &third);
+
+        data.sort_version_history();
+        let reappeared = data
+            .version_history
+            .iter()
+            .find(|entry| entry.version == "1.1.0")
+            .unwrap();
+        assert_eq!(reappeared.initial_release_date, Date::new(2024, 1, 1));
+        assert_eq!(reappeared.deleted_date, None);
     }
 }
