@@ -39,11 +39,14 @@
 			return {
 				date: new Date(version.date),
 				version: version.version,
+				releasedWhileListed: version.released_while_listed,
 			};
 		}),
 	);
 
 	const filteredVersions = $derived(brush.enabled ? mappedVersions?.filter(v => v.date >= brush.x1 && v.date <= brush.x2) : mappedVersions);
+	const listedVersions = $derived(filteredVersions?.filter(version => version.releasedWhileListed));
+	const unlistedVersions = $derived(filteredVersions?.filter(version => !version.releasedWhileListed));
 
 	const undefinedData = undefined as unknown as [];
 </script>
@@ -64,8 +67,11 @@
 	<AxisX removeDuplicateTicks />
 	<AxisY />
 	<Line data={filteredData} x={'date'} y={'downloads'} stroke={'var(--sl-color-text-accent)'}></Line>
-	{#if filteredVersions}
-		<RuleX data={filteredVersions} x={'date'} strokeOpacity={0.3} strokeDasharray={'5'} />
+	{#if listedVersions}
+		<RuleX data={listedVersions} x={'date'} strokeOpacity={0.3} strokeDasharray={'5'} />
+	{/if}
+	{#if unlistedVersions}
+		<RuleX data={unlistedVersions} x={'date'} strokeOpacity={0.55} strokeDasharray={'2'} stroke={'var(--sl-color-text)'} />
 	{/if}
 	<Pointer data={filteredData} x="date" y="downloads" maxDistance={30}>
 		{#snippet children({ data })}
@@ -91,8 +97,11 @@
 	{/if}
 	<Line data={filteredData} x={'date'} y={'delta'} strokeDasharray={'5'} opacity={0.5} stroke={'var(--sl-color-text-accent)'} />
 	<Line data={filteredSmoothedDelta} x={'date'} y={'delta'} stroke={'var(--sl-color-text-accent)'} />
-	{#if filteredVersions}
-		<RuleX data={filteredVersions} x={'date'} strokeOpacity={0.3} strokeDasharray={'5'} />
+	{#if listedVersions}
+		<RuleX data={listedVersions} x={'date'} strokeOpacity={0.3} strokeDasharray={'5'} />
+	{/if}
+	{#if unlistedVersions}
+		<RuleX data={unlistedVersions} x={'date'} strokeOpacity={0.55} strokeDasharray={'2'} stroke={'var(--sl-color-text)'} />
 	{/if}
 	<Pointer data={filteredData} x="date" y="delta" maxDistance={30}>
 		{#snippet children({ data })}

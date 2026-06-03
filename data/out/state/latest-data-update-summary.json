@@ -1,22 +1,22 @@
 {
-  "refreshed_at_unix": 1780316048,
-  "clone_run_at_unix": 1780316047,
-  "release_run_at_unix": 1780316048,
+  "refreshed_at_unix": 1780483288,
+  "clone_run_at_unix": 1780483287,
+  "release_run_at_unix": 1780483288,
   "obsidian_release_fetch_at_unix": 1780303751,
   "latest_plugin_download_snapshot_date": "2026-06-01",
   "latest_obsidian_release_date": "2026-03-23",
   "latest_obsidian_version": "1.12.7",
   "plugins": {
-    "total": 4710,
-    "active": 4341,
-    "removed": 369,
-    "total_downloads": 127308194,
-    "version_snapshots": 62186
+    "total": 4773,
+    "active": 4413,
+    "removed": 360,
+    "total_downloads": 127317579,
+    "version_snapshots": 40608
   },
   "themes": {
-    "total": 603,
-    "active": 539,
-    "removed": 64
+    "total": 605,
+    "active": 542,
+    "removed": 63
   },
   "releases": {
     "changelog_entries": 455,
@@ -26,52 +26,66 @@
     "download_snapshots": 39880
   },
   "clone": {
-    "tracked": 4722,
-    "ok": 4300,
-    "skipped": 373,
-    "failed": 8,
-    "success_rate": 0.9981429897864438,
+    "tracked": 4786,
+    "ok": 4379,
+    "skipped": 365,
+    "failed": 4,
+    "success_rate": 0.999087383070956,
     "failed_plugins": [
       "hide-tags",
-      "obsidian-enhancing-mindmap",
-      "rich-foot",
-      "cyberware",
-      "tasks-calendar-wrapper"
+      "audio-transcript",
+      "smartpick",
+      "cyberware"
     ],
     "status_counts": [
       {
         "label": "ok",
-        "count": 4300,
-        "share": 0.9106310885218127
+        "count": 4379,
+        "share": 0.9149603008775595
       },
       {
         "label": "skipped_removed",
-        "count": 373,
-        "share": 0.07899195256247353
+        "count": 365,
+        "share": 0.07626410363560385
       },
       {
-        "label": "version_history_missing",
-        "count": 41,
-        "share": 0.00868276154171961
+        "label": "manifest_version_invalid",
+        "count": 19,
+        "share": 0.003969912244045131
+      },
+      {
+        "label": "helper_plugin_missing",
+        "count": 11,
+        "share": 0.002298370246552445
+      },
+      {
+        "label": "release_for_manifest_version_missing",
+        "count": 5,
+        "share": 0.0010447137484329294
       },
       {
         "label": "failed",
-        "count": 8,
-        "share": 0.0016941973739940702
+        "count": 4,
+        "share": 0.0008357709987463436
+      },
+      {
+        "label": "version_history_missing",
+        "count": 3,
+        "share": 0.0006268282490597576
       }
     ]
   },
   "release_acquisition": {
-    "tracked": 4533,
-    "ok": 690,
-    "retained_previous_main_js": 3773,
-    "no_release": 12,
-    "no_main_js_asset": 1,
-    "error_count": 0,
-    "main_js_coverage": 4463,
-    "main_js_coverage_rate": 0.9845576880652989,
-    "total_main_js_bytes": 3386599872,
-    "average_main_js_bytes": 758816,
+    "tracked": 4600,
+    "ok": 832,
+    "retained_previous_main_js": 3709,
+    "no_release": 3,
+    "no_main_js_asset": 3,
+    "error_count": 35,
+    "main_js_coverage": 4541,
+    "main_js_coverage_rate": 0.9871739130434782,
+    "total_main_js_bytes": 3409064255,
+    "average_main_js_bytes": 750729,
     "largest_main_js": {
       "repo": "salokingreen/NAI4Obsidian",
       "size_bytes": 127704263
@@ -79,69 +93,84 @@
     "status_counts": [
       {
         "label": "main_js_not_updated_since_success",
-        "count": 3773,
-        "share": 0.8323406132803882
+        "count": 3709,
+        "share": 0.806304347826087
       },
       {
         "label": "ok",
-        "count": 690,
-        "share": 0.15221707478491064
+        "count": 832,
+        "share": 0.1808695652173913
+      },
+      {
+        "label": "manifest_version_invalid",
+        "count": 19,
+        "share": 0.004130434782608695
       },
       {
         "label": "version_history_missing",
-        "count": 57,
-        "share": 0.01257445400397088
+        "count": 18,
+        "share": 0.00391304347826087
       },
       {
-        "label": "no_release_for_version",
+        "label": "helper_plugin_missing",
         "count": 11,
-        "share": 0.0024266490183101697
+        "share": 0.002391304347826087
+      },
+      {
+        "label": "release_for_manifest_version_missing",
+        "count": 5,
+        "share": 0.0010869565217391304
       },
       {
         "label": "no_main_js_asset",
-        "count": 1,
-        "share": 0.00022060445621001543
+        "count": 3,
+        "share": 0.0006521739130434783
+      },
+      {
+        "label": "no_release_for_version",
+        "count": 2,
+        "share": 0.0004347826086956522
       },
       {
         "label": "no_release",
         "count": 1,
-        "share": 0.00022060445621001543
+        "share": 0.0002173913043478261
       }
     ]
   },
   "repo_analysis": {
-    "tracked": 4710,
-    "active_success": 4305,
-    "active_failures": 36,
-    "removed_skipped": 369,
-    "coverage_rate": 0.9917069799585349,
+    "tracked": 4773,
+    "active_success": 4400,
+    "active_failures": 13,
+    "removed_skipped": 360,
+    "coverage_rate": 0.997054158169046,
     "failure_samples": [
-      "alert-banner",
-      "bible-reference-preview",
-      "books",
-      "calculator-pro",
-      "calendar-heatmap"
+      "a-plugins",
+      "apple-books-notes-sync",
+      "floating-heading",
+      "lan-vault-sync",
+      "ownly"
     ],
     "error_counts": [
       {
         "label": "main_js_analysis_too_large",
-        "count": 48,
-        "share": 0.0110573600552868
+        "count": 47,
+        "share": 0.010650351234987537
       },
       {
         "label": "repository_missing",
-        "count": 36,
-        "share": 0.0082930200414651
+        "count": 13,
+        "share": 0.0029458418309539994
       },
       {
         "label": "manifest_read_error",
         "count": 6,
-        "share": 0.00138217000691085
+        "share": 0.0013596193065941536
       },
       {
         "label": "manifest_parse_error",
         "count": 3,
-        "share": 0.000691085003455425
+        "share": 0.0006798096532970768
       }
     ]
   }

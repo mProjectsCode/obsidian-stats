@@ -146,23 +146,9 @@ impl PluginDataSortSpec {
                 .as_ref()
                 .map(|x| &x.date)
                 .cmp(&b.data.removed_commit.as_ref().map(|x| &x.date)),
-            PluginDataSortSpec::DateUpdated => a
-                .data
-                .version_history
-                .last()
-                .map(|x| &x.initial_release_date)
-                .cmp(
-                    &b.data
-                        .version_history
-                        .last()
-                        .map(|x| &x.initial_release_date),
-                ),
+            PluginDataSortSpec::DateUpdated => a.last_updated().cmp(&b.last_updated()),
             PluginDataSortSpec::Downloads => a.data.download_count.cmp(&b.data.download_count),
-            PluginDataSortSpec::Versions => a
-                .data
-                .version_history
-                .len()
-                .cmp(&b.data.version_history.len()),
+            PluginDataSortSpec::Versions => a.listed_version_count().cmp(&b.listed_version_count()),
         }
     }
 }

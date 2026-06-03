@@ -41,7 +41,7 @@ pub enum FundingUrl {
     Object(HashMap<String, String>),
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct PluginManifest {
     pub author: Option<String>,
     #[serde(rename = "minAppVersion")]

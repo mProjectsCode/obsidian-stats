@@ -147,7 +147,9 @@ pub fn get_max_release_count_at_date(
             .data
             .version_history
             .iter()
-            .filter(|v| v.initial_release_date.to_fancy_string() <= date_string)
+            .filter(|v| {
+                v.released_while_listed && v.initial_release_date.to_fancy_string() <= date_string
+            })
             .count() as u32;
 
         if release_count > max_count {

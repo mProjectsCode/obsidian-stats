@@ -85,12 +85,65 @@ impl FullPluginData {
         }
     }
 
-    pub fn last_updated(&self) -> &Date {
+    pub fn last_updated(&self) -> Date {
+        if let Some(date) = self.manifest_release_date() {
+            return date;
+        }
+
         self.data
             .version_history
-            .last()
-            .map_or_else(|| &self.data.added_commit.date, |v| &v.initial_release_date)
+            .iter()
+            .rev()
+            .find(|version| version.released_while_listed)
+            .map_or_else(
+                || self.data.added_commit.date.clone(),
+                |v| v.initial_release_date.clone(),
+            )
     }
+
+    pub fn listed_version_count(&self) -> usize {
+        self.data
+            .version_history
+            .iter()
+            .filter(|version| version.released_while_listed)
+            .count()
+    }
+
+    fn manifest_release_date(&self) -> Option<Date> {
+        let repo = self.repo_data()?;
+        let manifest_version = repo.manifest.as_ref()?.version.as_deref()?.trim();
+        if manifest_version.is_empty() {
+            return None;
+        }
+
+        if repo
+            .latest_release_tag
+            .as_deref()
+            .is_some_and(|tag| release_tag_matches_manifest_version(tag, manifest_version))
+            && let Some(date) = repo
+                .latest_release_published_at
+                .as_deref()
+                .and_then(date_from_iso_timestamp)
+        {
+            return Some(date);
+        }
+
+        self.data
+            .version_history
+            .iter()
+            .find(|version| version.version == manifest_version)
+            .map(|version| version.initial_release_date.clone())
+    }
+}
+
+fn release_tag_matches_manifest_version(tag: &str, manifest_version: &str) -> bool {
+    tag == manifest_version
+        || tag == format!("v{manifest_version}")
+        || tag == format!("V{manifest_version}")
+}
+
+fn date_from_iso_timestamp(timestamp: &str) -> Option<Date> {
+    timestamp.get(..10).and_then(Date::from_string)
 }
 
 #[wasm_bindgen]
@@ -182,10 +235,7 @@ impl FullPluginData {
     }
 
     pub fn last_updated_date(&self) -> Option<String> {
-        self.data
-            .version_history
-            .last()
-            .map(|v| v.initial_release_date.to_fancy_string())
+        Some(self.last_updated().to_fancy_string())
     }
 
     pub fn license_package_json(&self) -> String {
@@ -438,12 +488,13 @@ impl FullPluginData {
             .map(|v| VersionDataPoint {
                 version: v.version.clone(),
                 date: v.initial_release_date.to_fancy_string(),
-                deleted_date: v.deleted_date.as_ref().map(|date| date.to_fancy_string()),
                 deprecated: self
                     .extended
                     .as_ref()
                     .map(|e| e.deprecated_versions.contains(&v.version))
                     .unwrap_or(false),
+                prerelease: v.prerelease,
+                released_while_listed: v.released_while_listed,
             })
             .collect()
     }

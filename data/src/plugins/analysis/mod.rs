@@ -21,7 +21,7 @@ use crate::{
     file_utils::{read_chunked_data_or_default, write_in_chunks_atomic},
     plugins::{
         data::read_plugin_data, license::license_compare::LicenseComparer,
-        release_acquisition::PluginReleaseState,
+        release_acquisition::PluginReleaseState, stats_helper::HelperPluginStore,
     },
     progress::should_log_progress,
     state::read_json_or_default,
@@ -62,6 +62,7 @@ pub fn extract_analysis_data() -> Result<(), Box<dyn std::error::Error>> {
 
     let release_state: PluginReleaseState =
         read_json_or_default(Path::new(PLUGIN_RELEASE_ENRICHMENT_STATE_PATH));
+    let helper_store = HelperPluginStore::read()?;
 
     let mut license_comparer = LicenseComparer::new();
     license_comparer.init();
@@ -96,7 +97,13 @@ pub fn extract_analysis_data() -> Result<(), Box<dyn std::error::Error>> {
                 let mut stats = ExtraRunStats::default();
 
                 let repo = if plugin.removed_commit.is_none() {
-                    match analyze_plugin(plugin, &license_comparer, &release_state, &mut stats) {
+                    match analyze_plugin(
+                        plugin,
+                        &license_comparer,
+                        &release_state,
+                        &helper_store,
+                        &mut stats,
+                    ) {
                         Ok(repo_data) => Ok(repo_data),
                         Err(err) => {
                             stats.repo_extract_failed += 1;

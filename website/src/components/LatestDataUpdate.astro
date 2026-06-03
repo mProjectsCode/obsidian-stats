@@ -21,29 +21,46 @@ const dayFormatter = new Intl.DateTimeFormat('en-US', {
 const releaseStatusDescriptions: Record<string, string> = {
 	ok: 'Latest release metadata was fetched and a usable main.js cache is available.',
 	main_js_not_updated_since_success: 'The latest release was checked, but the last successful cached main.js stayed newer or more useful.',
-	no_release_for_version: 'No release was found that satisfied the latest known plugin version.',
+	no_release_for_version: 'No release was found that satisfied the selected plugin version.',
 	no_release: 'Legacy status: no release was available for this plugin.',
 	no_main_js_asset: 'A release exists, but it does not ship a main.js asset that can be analyzed.',
 	not_modified: 'GitHub returned the same release metadata as the previous run.',
+	helper_plugin_missing: 'The stats-helper data did not contain a matching plugin entry for this community plugin.',
+	manifest_missing: 'The stats-helper plugin entry did not have a manifest available.',
+	manifest_version_missing: 'The stats-helper manifest did not have a version field.',
+	manifest_version_invalid: 'The stats-helper manifest version was not a valid Obsidian plugin version.',
+	manifest_version_prefixed: 'The stats-helper manifest version used a v prefix, which Obsidian does not accept.',
+	release_for_manifest_version_missing: 'The stats-helper releases did not contain a GitHub release matching the manifest version.',
 };
 
 const compactReleaseStatusDescriptions: Record<string, string> = {
 	ok: 'Release and analyzable main.js fetched.',
 	main_js_not_updated_since_success: 'Checked, but kept the previous main.js cache.',
-	no_release_for_version: 'No matching GitHub release was found for the latest known plugin version.',
+	no_release_for_version: 'No matching GitHub release was found for the selected plugin version.',
 	no_release: 'Legacy status: no release was available on GitHub.',
 	no_main_js_asset: 'Release exists, but no main.js asset was found.',
 	not_modified: 'Release metadata was unchanged from the last run.',
 	rate_limited: 'The release acquisition attempt was blocked by GitHub rate limits.',
-	version_history_missing:
-		'The plugin entry did not have a version history available during release acquisition, which is required to determine the latest version.',
+	version_history_missing: 'Legacy status: the plugin entry did not have version history available.',
+	helper_plugin_missing: 'Stats-helper plugin data was missing.',
+	manifest_missing: 'Stats-helper manifest was missing.',
+	manifest_version_missing: 'Stats-helper manifest version was missing.',
+	manifest_version_invalid: 'Stats-helper manifest version was invalid.',
+	manifest_version_prefixed: 'Stats-helper manifest version used a v prefix.',
+	release_for_manifest_version_missing: 'No stats-helper release matched the manifest version.',
 };
 
 const cloneStatusDescriptions: Record<string, string> = {
-	ok: 'The local repository checkout exists and matches the latest known plugin version tag.',
+	ok: 'The local repository checkout exists and matches the stats-helper manifest version tag.',
 	failed: 'The latest tag checkout failed during repository cloning.',
 	skipped_removed: 'The plugin has been removed from the community list, so no repository checkout is maintained.',
-	version_history_missing: 'The plugin entry did not have a version history available, so the latest version tag could not be selected for cloning.',
+	version_history_missing: 'Legacy status: the plugin entry did not have version history available.',
+	helper_plugin_missing: 'The stats-helper data did not contain a matching plugin entry for cloning.',
+	manifest_missing: 'The stats-helper plugin entry did not have a manifest available for cloning.',
+	manifest_version_missing: 'The stats-helper manifest did not have a version field for cloning.',
+	manifest_version_invalid: 'The stats-helper manifest version was not valid for cloning.',
+	manifest_version_prefixed: 'The stats-helper manifest version used a v prefix, which Obsidian does not accept.',
+	release_for_manifest_version_missing: 'The stats-helper releases did not contain a tag matching the manifest version.',
 };
 
 const repoAnalysisErrorDescriptions: Record<string, string> = {

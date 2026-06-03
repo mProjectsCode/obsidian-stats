@@ -119,7 +119,13 @@ fn build_plugin_summary(
             .sum(),
         version_snapshots: plugins
             .iter()
-            .map(|plugin| plugin.version_history.len())
+            .map(|plugin| {
+                plugin
+                    .version_history
+                    .iter()
+                    .filter(|version| version.released_while_listed)
+                    .count()
+            })
             .sum(),
     }
 }
@@ -391,6 +397,19 @@ fn is_release_acquisition_error(status: &str) -> bool {
         || status.contains("failed")
         || status.contains("rate_limit")
         || status.contains("rate_limited")
+        || is_target_release_error(status)
+}
+
+fn is_target_release_error(status: &str) -> bool {
+    matches!(
+        status,
+        "helper_plugin_missing"
+            | "manifest_missing"
+            | "manifest_version_missing"
+            | "manifest_version_invalid"
+            | "manifest_version_prefixed"
+            | "release_for_manifest_version_missing"
+    )
 }
 
 fn clone_status_label(status: &str) -> &str {
@@ -451,6 +470,10 @@ mod tests {
             "main_js_download_failed:write:disk_full"
         ));
         assert!(is_release_acquisition_error("rate_limited"));
+        assert!(is_release_acquisition_error("manifest_version_prefixed"));
+        assert!(is_release_acquisition_error(
+            "release_for_manifest_version_missing"
+        ));
         assert!(!is_release_acquisition_error("ok"));
     }
 

@@ -55,10 +55,6 @@ fn excluded_download_dates() -> ExcludedDates {
     )
 }
 
-pub(crate) fn is_excluded_download_date(date: &Date) -> bool {
-    excluded_download_dates().contains(date)
-}
-
 struct DownloadPoint {
     date: Date,
     day: i32,

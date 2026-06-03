@@ -609,10 +609,15 @@ function formatReleaseFreshness(): string {
 						<td>{version.version}</td>
 						<td>{version.date}</td>
 						<td>
-							{version.deprecated && <>Blacklisted</>}
-							{version.deprecated && version.deleted_date && <>, </>}
-							{version.deleted_date && <>Deleted {version.deleted_date}</>}
-							{!version.deprecated && !version.deleted_date && <span class="muted">None</span>}
+							{
+								[
+									version.deprecated ? 'Blacklisted' : undefined,
+									version.prerelease ? 'Prerelease' : undefined,
+									!version.released_while_listed ? 'Released while not listed' : undefined,
+								]
+									.filter(Boolean)
+									.join(', ') || <span class="muted">None</span>
+							}
 						</td>
 					</tr>
 				))
@@ -621,11 +626,11 @@ function formatReleaseFreshness(): string {
 	</table>
 
 	{
-		versions.some(x => x.deprecated || x.deleted_date) && (
+		versions.some(x => x.deprecated || !x.released_while_listed) && (
 			<p class="muted">
 				<i>Blacklisted</i> versions are versions that are known to cause major issues or contain security concerns and have thus been blacklisted by the
-				Obsidian team. <i>Deleted</i> versions appeared in the public stats history but are no longer present in current stats. Obsidian will disable plugins on
-				startup whose installed version is blacklisted. It is strongly recommended to update to a newer version.
+				Obsidian team. Obsidian will disable plugins on startup whose installed version is blacklisted. <i>Released while not listed</i> versions happened outside the period where the plugin was present in the
+				community plugin list and are excluded from aggregate release statistics.
 			</p>
 		)
 	}

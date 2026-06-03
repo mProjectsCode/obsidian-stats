@@ -4,3 +4,6 @@
 [submodule "choosealicense.com"]
 	path = choosealicense.com
 	url = https://github.com/github/choosealicense.com
+[submodule "obsidian-stats-helper"]
+	path = obsidian-stats-helper
+	url = https://github.com/mProjectsCode/obsidian-stats-helper

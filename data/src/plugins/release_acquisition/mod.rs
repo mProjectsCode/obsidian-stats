@@ -15,6 +15,7 @@ use serde::{Deserialize, Serialize};
 use crate::{
     constants::{DEFAULT_PLUGIN_RELEASE_REFRESH_DAYS, PLUGIN_RELEASE_ENRICHMENT_STATE_PATH},
     github::RateLimitMode,
+    plugins::stats_helper::{HelperPluginStore, TargetReleaseError},
     progress::should_log_progress,
     security::http_client,
     state::{is_fresh, now_unix_seconds, read_json_or_default, write_json_atomic},
@@ -53,6 +54,7 @@ enum ReleaseFetchStatus {
     Ok,
     NotModified,
     VersionHistoryMissing,
+    TargetRelease(TargetReleaseError),
     NoReleaseForVersion,
     NoMainJsAsset,
     MainJsNotUpdatedSinceSuccess,
@@ -85,6 +87,20 @@ impl ReleaseFetchStatus {
             "ok" => Self::Ok,
             "not_modified" => Self::NotModified,
             "version_history_missing" => Self::VersionHistoryMissing,
+            "helper_plugin_missing" => Self::TargetRelease(TargetReleaseError::HelperPluginMissing),
+            "manifest_missing" => Self::TargetRelease(TargetReleaseError::ManifestMissing),
+            "manifest_version_missing" => {
+                Self::TargetRelease(TargetReleaseError::ManifestVersionMissing)
+            }
+            "manifest_version_invalid" => {
+                Self::TargetRelease(TargetReleaseError::ManifestVersionInvalid)
+            }
+            "manifest_version_prefixed" => {
+                Self::TargetRelease(TargetReleaseError::ManifestVersionPrefixed)
+            }
+            "release_for_manifest_version_missing" => {
+                Self::TargetRelease(TargetReleaseError::ReleaseForManifestVersionMissing)
+            }
             "no_release_for_version" => Self::NoReleaseForVersion,
             "no_main_js_asset" => Self::NoMainJsAsset,
             "main_js_not_updated_since_success" => Self::MainJsNotUpdatedSinceSuccess,
@@ -101,6 +117,7 @@ impl ReleaseFetchStatus {
             Self::Ok => "ok".to_string(),
             Self::NotModified => "not_modified".to_string(),
             Self::VersionHistoryMissing => "version_history_missing".to_string(),
+            Self::TargetRelease(error) => error.as_state_value().to_string(),
             Self::NoReleaseForVersion => "no_release_for_version".to_string(),
             Self::NoMainJsAsset => "no_main_js_asset".to_string(),
             Self::MainJsNotUpdatedSinceSuccess => "main_js_not_updated_since_success".to_string(),
@@ -192,6 +209,7 @@ pub fn acquire_plugin_release_main_js(
     let mut state: PluginReleaseState =
         read_json_or_default(Path::new(PLUGIN_RELEASE_ENRICHMENT_STATE_PATH));
     let mut stats = AcquireRunStats::default();
+    let helper_store = HelperPluginStore::read()?;
 
     let mut jobs = Vec::new();
 
@@ -204,11 +222,11 @@ pub fn acquire_plugin_release_main_js(
         let key = plugin.id.clone();
         let repo = plugin.current_entry.repo.clone();
 
-        let previous_entry = state.entries.get(&key).cloned();
-        let target_release_tag = match latest_version_from_history(plugin) {
-            Some(version) => version,
-            None => {
-                let entry = version_history_missing_state_entry(&repo, previous_entry.as_ref());
+        let previous_entry = previous_entry_for_repo(&state, &key, &repo).cloned();
+        let target_release_tag = match helper_store.target_release_for_plugin(plugin) {
+            Ok(target) => target.tag,
+            Err(error) => {
+                let entry = target_release_error_state_entry(&repo, previous_entry.as_ref(), error);
                 if let Some(status) = &entry.latest_release_fetch_status {
                     *stats.status_counts.entry(status.clone()).or_insert(0) += 1;
                 }
@@ -303,19 +321,10 @@ pub fn acquire_plugin_release_main_js(
     Ok(())
 }
 
-pub(crate) fn latest_version_from_history(plugin: &PluginData) -> Option<String> {
-    plugin
-        .version_history
-        .iter()
-        .rev()
-        .find(|entry| entry.deleted_date.is_none())
-        .map(|entry| entry.version.trim().to_string())
-        .filter(|version| !version.is_empty())
-}
-
-fn version_history_missing_state_entry(
+fn target_release_error_state_entry(
     repo: &str,
     previous_entry: Option<&PluginReleaseStateEntry>,
+    error: TargetReleaseError,
 ) -> PluginReleaseStateEntry {
     PluginReleaseStateEntry {
         repo: repo.to_string(),
@@ -331,9 +340,20 @@ fn version_history_missing_state_entry(
         latest_release_tag: None,
         latest_release_published_at: None,
         latest_release_fetch_status: Some(
-            ReleaseFetchStatus::VersionHistoryMissing.as_state_value(),
+            ReleaseFetchStatus::TargetRelease(error).as_state_value(),
         ),
     }
+}
+
+fn previous_entry_for_repo<'a>(
+    state: &'a PluginReleaseState,
+    plugin_id: &str,
+    repo: &str,
+) -> Option<&'a PluginReleaseStateEntry> {
+    state
+        .entries
+        .get(plugin_id)
+        .filter(|entry| entry.repo == repo)
 }
 
 fn process_release_job(
@@ -415,17 +435,10 @@ fn configured_thread_count(env_var: &str, default_threads: usize) -> usize {
 #[cfg(test)]
 mod tests {
     use super::{
-        PluginReleaseStateEntry, ReleaseFetchStatus, latest_version_from_history,
+        PluginReleaseState, PluginReleaseStateEntry, ReleaseFetchStatus, previous_entry_for_repo,
         should_retry_release_fetch,
     };
-    use data_lib::{
-        commit::Commit,
-        common::{DownloadHistory, VersionHistory},
-        date::Date,
-        input_data::ObsCommunityPlugin,
-        plugin::PluginData,
-        version::Version,
-    };
+    use hashbrown::HashMap;
 
     fn state_entry(status: &str) -> PluginReleaseStateEntry {
         PluginReleaseStateEntry {
@@ -440,6 +453,16 @@ mod tests {
             latest_release_published_at: None,
             latest_release_fetch_status: Some(status.to_string()),
         }
+    }
+
+    #[test]
+    fn previous_entry_for_repo_ignores_stale_repo_state() {
+        let state = PluginReleaseState {
+            entries: HashMap::from([("plugin".to_string(), state_entry("ok"))]),
+        };
+
+        assert!(previous_entry_for_repo(&state, "plugin", "owner/repo").is_some());
+        assert!(previous_entry_for_repo(&state, "plugin", "new-owner/repo").is_none());
     }
 
     #[test]
@@ -466,6 +489,9 @@ mod tests {
         assert!(!should_retry_release_fetch(&state_entry(
             "version_history_missing"
         )));
+        assert!(!should_retry_release_fetch(&state_entry(
+            "manifest_version_prefixed"
+        )));
     }
 
     #[test]
@@ -480,55 +506,6 @@ mod tests {
                 ReleaseFetchStatus::from_state_value(status).as_state_value(),
                 status
             );
-        }
-    }
-
-    #[test]
-    fn latest_version_from_history_uses_latest_non_deleted_version() {
-        let plugin = PluginData {
-            id: "plugin".to_string(),
-            added_commit: Commit {
-                date: Date::new(2024, 1, 1),
-                hash: "abc".to_string(),
-            },
-            removed_commit: None,
-            initial_entry: plugin_entry(),
-            current_entry: plugin_entry(),
-            change_history: Vec::new(),
-            download_history: DownloadHistory::default(),
-            download_count: 0,
-            version_history: vec![
-                version_history("1.0.0", Date::new(2024, 1, 1), None),
-                version_history("1.1.0", Date::new(2024, 2, 1), Some(Date::new(2024, 2, 8))),
-            ],
-        };
-
-        assert_eq!(
-            latest_version_from_history(&plugin),
-            Some("1.0.0".to_string())
-        );
-    }
-
-    fn version_history(
-        version: &str,
-        initial_release_date: Date,
-        deleted_date: Option<Date>,
-    ) -> VersionHistory {
-        VersionHistory {
-            version: version.to_string(),
-            version_object: Version::parse(version),
-            initial_release_date,
-            deleted_date,
-        }
-    }
-
-    fn plugin_entry() -> ObsCommunityPlugin {
-        ObsCommunityPlugin {
-            id: "plugin".to_string(),
-            name: "Plugin".to_string(),
-            author: "Author".to_string(),
-            description: "Description".to_string(),
-            repo: "owner/repo".to_string(),
         }
     }
 }

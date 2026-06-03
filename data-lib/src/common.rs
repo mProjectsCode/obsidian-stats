@@ -124,8 +124,22 @@ pub struct VersionHistory {
     #[serde(skip)]
     pub version_object: Option<Version>,
     pub initial_release_date: Date,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub deleted_date: Option<Date>,
+    #[serde(default, skip_serializing_if = "is_false")]
+    pub prerelease: bool,
+    #[serde(default = "default_true", skip_serializing_if = "is_true")]
+    pub released_while_listed: bool,
+}
+
+fn is_false(value: &bool) -> bool {
+    !*value
+}
+
+fn is_true(value: &bool) -> bool {
+    *value
+}
+
+fn default_true() -> bool {
+    true
 }
 
 #[derive(Tsify, Debug, Clone, Serialize)]
@@ -162,9 +176,9 @@ pub struct MultiDownloadDataPoint {
 pub struct VersionDataPoint {
     pub version: String,
     pub date: String,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub deleted_date: Option<String>,
     pub deprecated: bool,
+    pub prerelease: bool,
+    pub released_while_listed: bool,
 }
 
 #[derive(Tsify, Debug, Clone, Serialize)]

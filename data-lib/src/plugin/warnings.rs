@@ -131,12 +131,14 @@ fn get_inactivity_warnings(data: &FullPluginData, warnings: &mut Vec<PluginWarni
         .version_history
         .iter()
         .rev()
-        .find(|version| version.deleted_date.is_none());
-    let latest_release_date = latest_available_version
-        .map(|v| &v.initial_release_date)
-        .unwrap_or(&data.data.added_commit.date);
+        .find(|version| version.released_while_listed);
+    let latest_release_date = data.last_updated();
 
-    let latest_version = latest_available_version.map(|v| &v.version);
+    let latest_version = data
+        .repo_data()
+        .and_then(|repo| repo.manifest.as_ref())
+        .and_then(|manifest| manifest.version.as_ref())
+        .or_else(|| latest_available_version.map(|v| &v.version));
 
     let now = Date::now();
     let one_year_ago = {
@@ -150,13 +152,13 @@ fn get_inactivity_warnings(data: &FullPluginData, warnings: &mut Vec<PluginWarni
         date
     };
 
-    if latest_release_date < &two_years_ago {
+    if latest_release_date < two_years_ago {
         warnings.push(PluginWarning::Inactivity24Months(PluginWarningInactivity {
             severity: PluginWarningSeverity::DANGER,
             last_release_date: latest_release_date.to_fancy_string(),
             latest_version: latest_version.map_or_else(|| "Unknown".to_string(), |v| v.clone()),
         }));
-    } else if latest_release_date < &one_year_ago {
+    } else if latest_release_date < one_year_ago {
         warnings.push(PluginWarning::Inactivity12Months(PluginWarningInactivity {
             severity: PluginWarningSeverity::CAUTION,
             last_release_date: latest_release_date.to_fancy_string(),

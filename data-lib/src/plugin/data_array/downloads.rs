@@ -72,7 +72,7 @@ impl PluginDataArrayView {
                     name: item.name(),
                     date: item.added_commit().date,
                     downloads: item.download_count(),
-                    version_count: item.data.version_history.len() as u32,
+                    version_count: item.listed_version_count() as u32,
                     total_loc,
                 }
             })
@@ -255,7 +255,7 @@ impl PluginDataArrayView {
                         for i in (0..5).rev() {
                             let mut i_years_ago = Date::now();
                             i_years_ago.reverse_days(365 * (i + 1));
-                            if last_updated_date < &i_years_ago {
+                            if last_updated_date < i_years_ago {
                                 inactive[i as usize] += 1;
                                 break;
                             }
@@ -289,7 +289,7 @@ impl PluginDataArrayView {
     pub fn inactivity_distribution(&self, data: &PluginDataArray) -> Vec<i32> {
         let mut tmp: Vec<_> = self
             .iter_data(data)
-            .map(|item| Date::now().diff_in_days(item.last_updated()).abs())
+            .map(|item| Date::now().diff_in_days(&item.last_updated()).abs())
             .collect();
         tmp.sort_by(|a, b| b.cmp(a));
         tmp
@@ -299,13 +299,17 @@ impl PluginDataArrayView {
         let mut points = vec![];
 
         self.iter_data(data).for_each(|item| {
-            item.data.version_history.iter().for_each(|version| {
-                increment_named_data_points(
-                    &mut points,
-                    &version.initial_release_date.week_start().to_fancy_string(),
-                    1.0,
-                );
-            });
+            item.data
+                .version_history
+                .iter()
+                .filter(|version| version.released_while_listed)
+                .for_each(|version| {
+                    increment_named_data_points(
+                        &mut points,
+                        &version.initial_release_date.week_start().to_fancy_string(),
+                        1.0,
+                    );
+                });
         });
 
         points.sort_by(|a, b| a.name.cmp(&b.name));
