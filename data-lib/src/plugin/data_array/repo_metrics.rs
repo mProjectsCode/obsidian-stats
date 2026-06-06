@@ -1,8 +1,11 @@
 use wasm_bindgen::prelude::wasm_bindgen;
 
+use hashbrown::HashSet;
+
 use crate::{
     common::{
-        FILE_EXT_INCLUDED, LOC_EXCLUDED, NamedDataPoint, increment_named_data_points, to_percentage,
+        FILE_EXT_INCLUDED, LOC_EXCLUDED, NamedDataPoint, StackedNamedDataPoint,
+        increment_named_data_points, to_percentage,
     },
     plugin::PluginRepoDataPoints,
 };
@@ -445,6 +448,107 @@ impl PluginDataArrayView {
         )
     }
 
+    pub fn main_js_api_disclosure_distribution(
+        &self,
+        data: &PluginDataArray,
+    ) -> Vec<NamedDataPoint> {
+        let mut points = Vec::new();
+
+        self.iter_data(data).for_each(|item| {
+            let Some(repo_data) = item.repo_data() else {
+                return;
+            };
+
+            let mut seen = HashSet::new();
+            for disclosure in &repo_data.main_js_api_disclosures {
+                if seen.insert(disclosure.id.as_str()) {
+                    increment_named_data_points(
+                        &mut points,
+                        &format_disclosure_id(&disclosure.id),
+                        1.0,
+                    );
+                }
+            }
+        });
+
+        points
+    }
+
+    pub fn main_js_api_capability_distribution(
+        &self,
+        data: &PluginDataArray,
+    ) -> Vec<NamedDataPoint> {
+        let mut points = Vec::new();
+
+        self.iter_data(data).for_each(|item| {
+            let Some(repo_data) = item.repo_data() else {
+                return;
+            };
+
+            let mut seen = HashSet::new();
+            for capability in &repo_data.main_js_api_capabilities {
+                if seen.insert(capability.id.as_str()) {
+                    increment_named_data_points(&mut points, &capability.label, 1.0);
+                }
+            }
+        });
+
+        points
+    }
+
+    pub fn main_js_api_severity_distribution(&self, data: &PluginDataArray) -> Vec<NamedDataPoint> {
+        let mut points = Vec::new();
+
+        self.iter_data(data).for_each(|item| {
+            let Some(repo_data) = item.repo_data() else {
+                return;
+            };
+
+            let mut seen = HashSet::new();
+            for capability in &repo_data.main_js_api_capabilities {
+                if seen.insert(capability.severity.as_str()) {
+                    increment_named_data_points(
+                        &mut points,
+                        &format_api_label(&capability.severity),
+                        1.0,
+                    );
+                }
+            }
+        });
+
+        points
+    }
+
+    pub fn main_js_api_category_severity_distribution(
+        &self,
+        data: &PluginDataArray,
+    ) -> Vec<StackedNamedDataPoint> {
+        let mut points = Vec::new();
+
+        self.iter_data(data).for_each(|item| {
+            let Some(repo_data) = item.repo_data() else {
+                return;
+            };
+
+            let mut seen = HashSet::new();
+            for capability in &repo_data.main_js_api_capabilities {
+                let category = format_api_label(&capability.category);
+                let severity = format_api_label(&capability.severity);
+                if seen.insert((category.clone(), severity.clone())) {
+                    increment_stacked_named_data_points(&mut points, &category, &severity, 1.0);
+                }
+            }
+        });
+
+        points.sort_by(|a, b| {
+            b.value
+                .total_cmp(&a.value)
+                .then_with(|| a.name.cmp(&b.name))
+                .then_with(|| severity_sort_key(&a.layer).cmp(&severity_sort_key(&b.layer)))
+        });
+        points
+    }
+
     /// Return plugin IDs whose estimated target ES version matches `version`.
     pub fn es_version_plugin_ids(&self, data: &PluginDataArray, version: &str) -> Vec<String> {
         let mut ids: Vec<String> = self
@@ -550,4 +654,53 @@ fn boolean_count_distribution(
     });
 
     points
+}
+
+fn increment_stacked_named_data_points(
+    points: &mut Vec<StackedNamedDataPoint>,
+    name: &str,
+    layer: &str,
+    value: f64,
+) {
+    if let Some(point) = points
+        .iter_mut()
+        .find(|point| point.name == name && point.layer == layer)
+    {
+        point.value += value;
+    } else {
+        points.push(StackedNamedDataPoint {
+            name: name.to_string(),
+            layer: layer.to_string(),
+            value,
+        });
+    }
+}
+
+fn severity_sort_key(severity: &str) -> usize {
+    match severity {
+        "Critical" => 0,
+        "Warning" => 1,
+        "Notice" => 2,
+        "Info" => 3,
+        _ => 99,
+    }
+}
+
+fn format_disclosure_id(id: &str) -> String {
+    format_api_label(id.trim_start_matches("disclosure."))
+}
+
+fn format_api_label(value: &str) -> String {
+    value
+        .split(['.', '_'])
+        .filter(|part| !part.is_empty())
+        .map(|part| {
+            let mut chars = part.chars();
+            match chars.next() {
+                Some(first) => first.to_uppercase().collect::<String>() + chars.as_str(),
+                None => String::new(),
+            }
+        })
+        .collect::<Vec<_>>()
+        .join(" ")
 }

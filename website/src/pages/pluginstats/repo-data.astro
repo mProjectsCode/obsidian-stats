@@ -1,6 +1,7 @@
 ---
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
 import BarChart from '../../components/svelte/charts/BarChart.svelte';
+import StackedBarChart from '../../components/svelte/charts/StackedBarChart.svelte';
 import LocDistributionChart from '../../components/svelte/charts/misc/LocDistributionChart.svelte';
 import FileDistributionChart from '../../components/svelte/charts/misc/FileDistributionChart.svelte';
 import ReleaseSizeDistributionChart from '../../components/svelte/charts/misc/ReleaseSizeDistributionChart.svelte';
@@ -55,6 +56,9 @@ const mainJsSourcemapDistribution = view.main_js_sourcemap_distribution(data);
 const mainJsBase64BlobDistribution = view.main_js_base64_blob_distribution(data);
 const mainJsWorkerUsageDistribution = view.main_js_worker_usage_distribution(data);
 const mainJsWebassemblyUsageDistribution = view.main_js_webassembly_usage_distribution(data);
+const mainJsApiSeverityDistribution = view.main_js_api_severity_distribution(data);
+const mainJsApiCategorySeverityDistribution = view.main_js_api_category_severity_distribution(data);
+const mainJsApiCapabilityDistribution = view.main_js_api_capability_distribution(data).filter(point => point.value >= 25);
 const es5Plugins = view.es_version_plugin_ids(data, 'ES5').map(id => {
 	const pluginData = view.get_by_id(data, id);
 
@@ -103,6 +107,7 @@ function formatBytes(bytes: number): string {
 		{ depth: 3, text: 'Embedded Base64 Blobs', slug: 'embedded-base64-blobs' },
 		{ depth: 3, text: 'Worker Usage', slug: 'worker-usage' },
 		{ depth: 3, text: 'WebAssembly Usage', slug: 'webassembly-usage' },
+		{ depth: 3, text: 'main.js API Signals', slug: 'main-js-api-findings' },
 		{ depth: 2, text: 'Dependencies', slug: 'dependencies' },
 		{ depth: 3, text: 'Package Managers', slug: 'package-managers' },
 		{ depth: 3, text: 'Code Bundlers', slug: 'code-bundlers' },
@@ -281,6 +286,26 @@ function formatBytes(bytes: number): string {
 	</p>
 
 	<BarChart dataPoints={mainJsWebassemblyUsageDistribution} xLabel="WebAssembly Usage" yLabel="Plugins" client:idle />
+
+	<h3 id="main-js-api-findings">main.js API Signals</h3>
+
+	<p>
+		The next charts summarize conservative static API signals detected in latest release <code>main.js</code> files. Low-confidence matches and most informational
+		matches are filtered during data export to reduce false positives; remaining signals are still heuristic.
+	</p>
+
+	<BarChart dataPoints={mainJsApiSeverityDistribution} xLabel="Finding Type" yLabel="Plugins" client:idle />
+
+	<p>
+		Categories group related signals such as vault access, network access, editor integrations, dynamic code loading, and performance-sensitive patterns. A
+		plugin is counted once per category and finding type.
+	</p>
+
+	<StackedBarChart dataPoints={mainJsApiCategorySeverityDistribution} xLabel="Category" yLabel="Plugins" skewLabels client:idle />
+
+	<p>The following chart shows common individual capability signals. Capabilities detected in fewer than 25 plugins are omitted.</p>
+
+	<BarChart dataPoints={mainJsApiCapabilityDistribution} xLabel="Capability" yLabel="Plugins" skewLabels client:idle />
 
 	<h2 id="dependencies">Dependencies</h2>
 

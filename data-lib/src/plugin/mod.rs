@@ -84,19 +84,71 @@ pub struct PluginRepoData {
     pub has_i18n_dependencies: bool,
     pub has_i18n_files: bool,
     pub latest_release_main_js_size_bytes: Option<u64>,
+    pub main_js_parse_succeeded: Option<bool>,
+    pub main_js_tolerant_parse_required: Option<bool>,
     pub estimated_target_es_version: Option<String>,
     pub main_js_is_probably_minified: Option<bool>,
     pub main_js_minification_score: Option<f32>,
     pub main_js_includes_sourcemap_comment: Option<bool>,
+    pub main_js_includes_inline_sourcemap: Option<bool>,
     pub main_js_large_base64_blob_count: Option<u32>,
     pub main_js_largest_base64_blob_length: Option<u32>,
+    #[serde(default)]
+    pub main_js_embedded_blob_type_counts: HashMap<String, u32>,
     pub main_js_worker_usage_count: Option<u32>,
     pub main_js_webassembly_usage_count: Option<u32>,
+    pub main_js_dynamic_import_usage_count: Option<u32>,
+    #[serde(default)]
+    pub main_js_bundler_fingerprints: Vec<String>,
+    #[serde(default)]
+    pub main_js_module_system_fingerprints: Vec<String>,
+    pub main_js_size_bucket: Option<String>,
+    pub main_js_line_count_bucket: Option<String>,
+    pub main_js_uses_optional_chaining: Option<bool>,
+    pub main_js_uses_nullish_coalescing: Option<bool>,
+    pub main_js_uses_private_fields: Option<bool>,
+    pub main_js_uses_top_level_await: Option<bool>,
+    #[serde(default)]
+    pub main_js_known_api_host_counts: HashMap<String, u32>,
+    #[serde(default)]
+    pub main_js_embedded_dependency_name_counts: HashMap<String, u32>,
+    pub main_js_license_banner_count: Option<u32>,
+    pub main_js_credential_literal_count: Option<u32>,
+    #[serde(default)]
+    pub main_js_api_capabilities: Vec<MainJsApiCapability>,
+    #[serde(default)]
+    pub main_js_api_disclosures: Vec<MainJsApiDisclosure>,
     pub latest_release_tag: Option<String>,
     pub latest_release_published_at: Option<String>,
     pub latest_release_fetch_status: Option<String>,
     #[serde(default)]
     pub analysis_errors: Vec<PluginRepoAnalysisError>,
+}
+
+#[derive(Tsify, Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[tsify(into_wasm_abi)]
+pub struct MainJsApiCapability {
+    pub id: String,
+    pub label: String,
+    pub category: String,
+    pub severity: String,
+    pub confidence: String,
+    pub evidence: Vec<MainJsApiEvidence>,
+}
+
+#[derive(Tsify, Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[tsify(into_wasm_abi)]
+pub struct MainJsApiDisclosure {
+    pub id: String,
+    pub from_capability: String,
+}
+
+#[derive(Tsify, Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[tsify(into_wasm_abi)]
+pub struct MainJsApiEvidence {
+    pub kind: String,
+    pub symbol: String,
+    pub count: u32,
 }
 
 #[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, Hash)]

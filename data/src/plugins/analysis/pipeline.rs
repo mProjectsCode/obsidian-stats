@@ -1,9 +1,16 @@
 use std::fs;
 
-use data_lib::plugin::{PluginData, PluginRepoAnalysisError, PluginRepoData};
+use data_lib::plugin::{
+    MainJsApiCapability, MainJsApiDisclosure, MainJsApiEvidence, PluginData,
+    PluginRepoAnalysisError, PluginRepoData,
+};
+use hashbrown::HashMap;
 
 use super::{
     mainjs::analyze_main_js,
+    mainjs::api_classifier::{
+        ApiCategory, ApiClassificationResult, ApiMatchKind, ApiSeverity, Confidence,
+    },
     repo::{analyze_repo, into_plugin_repo_data},
     run_stats::ExtraRunStats,
     types::AnalysisResult,
@@ -76,16 +83,152 @@ pub(crate) fn analyze_plugin(
 }
 
 fn apply_mainjs_fields(output: &mut PluginRepoData, result: &AnalysisResult) {
+    output.main_js_parse_succeeded = result.mainjs.parse_succeeded;
+    output.main_js_tolerant_parse_required = result.mainjs.tolerant_parse_required;
     output.main_js_is_probably_minified = result.mainjs.is_probably_minified;
     output.main_js_minification_score = result.mainjs.minification_score;
     output.main_js_includes_sourcemap_comment = result.mainjs.includes_sourcemap_comment;
+    output.main_js_includes_inline_sourcemap = result.mainjs.includes_inline_sourcemap;
     output.main_js_large_base64_blob_count = result.mainjs.large_base64_blob_count;
     output.main_js_largest_base64_blob_length = result.mainjs.largest_base64_blob_length;
+    output.main_js_embedded_blob_type_counts =
+        btree_to_hashmap(&result.mainjs.embedded_blob_type_counts);
     output.main_js_worker_usage_count = result.mainjs.worker_usage_count;
     output.main_js_webassembly_usage_count = result.mainjs.webassembly_usage_count;
+    output.main_js_dynamic_import_usage_count = result.mainjs.dynamic_import_usage_count;
+    output.main_js_bundler_fingerprints = result.mainjs.bundler_fingerprints.clone();
+    output.main_js_module_system_fingerprints = result.mainjs.module_system_fingerprints.clone();
+    output.main_js_size_bucket = result.mainjs.size_bucket.clone();
+    output.main_js_line_count_bucket = result.mainjs.line_count_bucket.clone();
+    output.main_js_uses_optional_chaining = result.mainjs.uses_optional_chaining;
+    output.main_js_uses_nullish_coalescing = result.mainjs.uses_nullish_coalescing;
+    output.main_js_uses_private_fields = result.mainjs.uses_private_fields;
+    output.main_js_uses_top_level_await = result.mainjs.uses_top_level_await;
+    output.main_js_known_api_host_counts = btree_to_hashmap(&result.mainjs.known_api_host_counts);
+    output.main_js_embedded_dependency_name_counts =
+        btree_to_hashmap(&result.mainjs.embedded_dependency_name_counts);
+    output.main_js_license_banner_count = result.mainjs.license_banner_count;
+    output.main_js_credential_literal_count = result.mainjs.credential_literal_count;
+    apply_mainjs_api_usage(output, &result.mainjs.api_usage);
 
     if output.estimated_target_es_version.is_none() {
         output.estimated_target_es_version = result.mainjs.estimated_target_es_version.clone();
+    }
+}
+
+fn btree_to_hashmap(map: &std::collections::BTreeMap<String, u32>) -> HashMap<String, u32> {
+    map.iter()
+        .map(|(key, value)| (key.clone(), *value))
+        .collect()
+}
+
+fn apply_mainjs_api_usage(output: &mut PluginRepoData, api_usage: &ApiClassificationResult) {
+    let public_capability_ids = api_usage
+        .capabilities()
+        .iter()
+        .filter(|capability| {
+            is_public_mainjs_api_capability(
+                capability.severity(),
+                capability.confidence(),
+            )
+        })
+        .map(|capability| capability.id().to_string())
+        .collect::<std::collections::HashSet<_>>();
+
+    output.main_js_api_capabilities = api_usage
+        .capabilities()
+        .iter()
+        .filter(|capability| public_capability_ids.contains(capability.id()))
+        .map(|capability| MainJsApiCapability {
+            id: capability.id().to_string(),
+            label: capability.label().to_string(),
+            category: api_category_name(capability.category()).to_string(),
+            severity: api_severity_name(capability.severity()).to_string(),
+            confidence: confidence_name(capability.confidence()).to_string(),
+            evidence: capability
+                .evidence()
+                .iter()
+                .map(|evidence| MainJsApiEvidence {
+                    kind: api_match_kind_name(evidence.kind()).to_string(),
+                    symbol: evidence.symbol().to_string(),
+                    count: evidence.count(),
+                })
+                .collect(),
+        })
+        .collect();
+    output.main_js_api_disclosures = api_usage
+        .disclosures()
+        .iter()
+        .filter(|disclosure| public_capability_ids.contains(disclosure.source_capability()))
+        .map(|disclosure| MainJsApiDisclosure {
+            id: disclosure.id().to_string(),
+            from_capability: disclosure.source_capability().to_string(),
+        })
+        .collect();
+}
+
+fn is_public_mainjs_api_capability(
+    severity: ApiSeverity,
+    confidence: Confidence,
+) -> bool {
+    if confidence == Confidence::Low {
+        return false;
+    }
+
+    match severity {
+        ApiSeverity::Critical | ApiSeverity::Warning => true,
+        _ => confidence == Confidence::High,
+    }
+}
+
+fn api_category_name(category: ApiCategory) -> &'static str {
+    match category {
+        ApiCategory::Network => "network",
+        ApiCategory::Vault => "vault",
+        ApiCategory::Metadata => "metadata",
+        ApiCategory::Workspace => "workspace",
+        ApiCategory::Editor => "editor",
+        ApiCategory::Ui => "ui",
+        ApiCategory::Settings => "settings",
+        ApiCategory::Lifecycle => "lifecycle",
+        ApiCategory::Filesystem => "filesystem",
+        ApiCategory::Electron => "electron",
+        ApiCategory::Browser => "browser",
+        ApiCategory::Dependency => "dependency",
+        ApiCategory::DynamicCode => "dynamic_code",
+        ApiCategory::Correlation => "correlation",
+    }
+}
+
+fn api_severity_name(severity: ApiSeverity) -> &'static str {
+    match severity {
+        ApiSeverity::Info => "info",
+        ApiSeverity::Notice => "notice",
+        ApiSeverity::Warning => "warning",
+        ApiSeverity::Critical => "critical",
+    }
+}
+
+fn confidence_name(confidence: Confidence) -> &'static str {
+    match confidence {
+        Confidence::High => "high",
+        Confidence::Medium => "medium",
+        Confidence::Low => "low",
+    }
+}
+
+fn api_match_kind_name(kind: ApiMatchKind) -> &'static str {
+    match kind {
+        ApiMatchKind::Call => "call",
+        ApiMatchKind::MemberCall => "member_call",
+        ApiMatchKind::MemberRead => "member_read",
+        ApiMatchKind::Import => "import",
+        ApiMatchKind::StringLiteral => "string_literal",
+        ApiMatchKind::Class => "class",
+        ApiMatchKind::Constructor => "constructor",
+        ApiMatchKind::CallArgument => "call_argument",
+        ApiMatchKind::CustomAst => "custom_ast",
+        ApiMatchKind::Correlation => "correlation",
     }
 }
 

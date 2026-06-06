@@ -3,6 +3,9 @@ use data_lib::plugin::{
     packages::PackageManager, testing::TestingFramework,
 };
 use hashbrown::HashMap;
+use std::collections::BTreeMap;
+
+use super::mainjs::api_classifier::ApiClassificationResult;
 
 #[derive(Debug, Default)]
 pub(super) struct AnalysisResult {
@@ -32,12 +35,30 @@ pub(super) struct RepoResult {
 
 #[derive(Debug, Default)]
 pub(super) struct MainJsResult {
+    pub(super) parse_succeeded: Option<bool>,
+    pub(super) tolerant_parse_required: Option<bool>,
     pub(super) estimated_target_es_version: Option<String>,
     pub(super) is_probably_minified: Option<bool>,
     pub(super) minification_score: Option<f32>,
     pub(super) includes_sourcemap_comment: Option<bool>,
+    pub(super) includes_inline_sourcemap: Option<bool>,
     pub(super) large_base64_blob_count: Option<u32>,
     pub(super) largest_base64_blob_length: Option<u32>,
+    pub(super) embedded_blob_type_counts: BTreeMap<String, u32>,
     pub(super) worker_usage_count: Option<u32>,
     pub(super) webassembly_usage_count: Option<u32>,
+    pub(super) dynamic_import_usage_count: Option<u32>,
+    pub(super) bundler_fingerprints: Vec<String>,
+    pub(super) module_system_fingerprints: Vec<String>,
+    pub(super) size_bucket: Option<String>,
+    pub(super) line_count_bucket: Option<String>,
+    pub(super) uses_optional_chaining: Option<bool>,
+    pub(super) uses_nullish_coalescing: Option<bool>,
+    pub(super) uses_private_fields: Option<bool>,
+    pub(super) uses_top_level_await: Option<bool>,
+    pub(super) known_api_host_counts: BTreeMap<String, u32>,
+    pub(super) embedded_dependency_name_counts: BTreeMap<String, u32>,
+    pub(super) license_banner_count: Option<u32>,
+    pub(super) credential_literal_count: Option<u32>,
+    pub(super) api_usage: ApiClassificationResult,
 }

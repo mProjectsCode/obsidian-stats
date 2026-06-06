@@ -7,7 +7,8 @@ use crate::{
     },
     date::Date,
     plugin::{
-        FundingUrl, LicenseInfo, PluginData, PluginExtraData, PluginRepoData,
+        FundingUrl, LicenseInfo, MainJsApiCapability, MainJsApiDisclosure, PluginData,
+        PluginExtraData, PluginRepoData,
         warnings::{PluginWarning, get_plugin_warnings},
     },
 };
@@ -375,6 +376,14 @@ impl FullPluginData {
     pub fn main_js_webassembly_usage_count(&self) -> Option<u32> {
         self.repo_data()
             .and_then(|r| r.main_js_webassembly_usage_count)
+    }
+
+    pub fn main_js_api_capabilities(&self) -> Option<Vec<MainJsApiCapability>> {
+        self.repo_data().map(|r| r.main_js_api_capabilities.clone())
+    }
+
+    pub fn main_js_api_disclosures(&self) -> Option<Vec<MainJsApiDisclosure>> {
+        self.repo_data().map(|r| r.main_js_api_disclosures.clone())
     }
 
     pub fn latest_release_tag(&self) -> Option<String> {

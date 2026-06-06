@@ -5,7 +5,7 @@ import Commit from './Commit.astro';
 import DownloadChart from './svelte/charts/downloads/DownloadChart.svelte';
 import BarChart from './svelte/charts/BarChart.svelte';
 import { getPluginDataArray, getPluginPageFreshness } from '../utils/data';
-import type { PluginWarning } from '../../../data-wasm/pkg/data_wasm';
+import type { MainJsApiCapability, PluginWarning } from '../../../data-wasm/pkg/data_wasm';
 
 const { pluginId } = Astro.props as { pluginId: string };
 if (!pluginId) {
@@ -83,6 +83,44 @@ const mainJsProbablyMinified = plugin.main_js_is_probably_minified();
 const mainJsLargeBase64BlobCount = plugin.main_js_large_base64_blob_count();
 const mainJsWorkerUsageCount = plugin.main_js_worker_usage_count();
 const mainJsWebassemblyUsageCount = plugin.main_js_webassembly_usage_count();
+const mainJsApiCapabilities = plugin.main_js_api_capabilities();
+const mainJsApiDisclosures = plugin.main_js_api_disclosures();
+
+const severityOrder = new Map([
+	['critical', 0],
+	['warning', 1],
+	['notice', 2],
+	['info', 3],
+]);
+
+const publicMainJsApiCapabilities = (mainJsApiCapabilities ?? []);
+const publicMainJsApiCapabilityIds = new Set(publicMainJsApiCapabilities.map(capability => capability.id));
+const publicMainJsApiDisclosures = (mainJsApiDisclosures ?? []).filter(disclosure =>
+	publicMainJsApiCapabilityIds.has(disclosure.from_capability),
+);
+const capabilityById = new Map(publicMainJsApiCapabilities.map(capability => [capability.id, capability]));
+const apiCapabilities = [...publicMainJsApiCapabilities].sort(
+	(a, b) =>
+		(severityOrder.get(a.severity) ?? 99) - (severityOrder.get(b.severity) ?? 99) ||
+		a.category.localeCompare(b.category) ||
+		a.label.localeCompare(b.label),
+);
+const apiDisclosures = Array.from(
+	publicMainJsApiDisclosures.reduce((groups, disclosure) => {
+		const group = groups.get(disclosure.id) ?? {
+			id: disclosure.id,
+			label: formatApiId(disclosure.id.replace(/^disclosure\./, '')),
+			capabilities: new Set<string>(),
+		};
+		group.capabilities.add(capabilityById.get(disclosure.from_capability)?.label ?? formatApiId(disclosure.from_capability));
+		groups.set(disclosure.id, group);
+		return groups;
+	}, new Map<string, { id: string; label: string; capabilities: Set<string> }>()),
+	([, group]) => ({
+		...group,
+		capabilities: Array.from(group.capabilities).sort(),
+	}),
+).sort((a, b) => a.label.localeCompare(b.label));
 
 function getAsideVariant(warning: PluginWarning): 'note' | 'tip' | 'caution' | 'danger' {
 	if (warning.severity === 'CAUTION') {
@@ -92,6 +130,21 @@ function getAsideVariant(warning: PluginWarning): 'note' | 'tip' | 'caution' | '
 	}
 
 	return 'note';
+}
+
+function formatApiId(value: string): string {
+	return value
+		.split(/[._]/)
+		.filter(Boolean)
+		.map(part => part.charAt(0).toUpperCase() + part.slice(1))
+		.join(' ');
+}
+
+function formatEvidence(capability: MainJsApiCapability): string {
+	return capability.evidence
+		.slice(0, 4)
+		.map(evidence => `${evidence.symbol} (${evidence.count})`)
+		.join(', ');
 }
 
 const loc = plugin.loc();
@@ -527,6 +580,18 @@ function formatReleaseFreshness(): string {
 							<td>{mainJsWebassemblyUsageCount === undefined ? <span class="muted">Unknown</span> : mainJsWebassemblyUsageCount > 0 ? 'Yes' : 'No'}</td>
 						</tr>
 						<tr>
+							<td>main.js API Signals</td>
+							<td>
+								{mainJsApiDisclosures === undefined ? (
+									<span class="muted">Unknown</span>
+								) : apiDisclosures.length > 0 ? (
+									apiDisclosures.map(disclosure => disclosure.label).join(', ')
+								) : (
+									<span class="muted">None detected</span>
+								)}
+							</td>
+						</tr>
+						<tr>
 							<td>Uses BRAT beta releases</td>
 							<td>{plugin.has_beta_manifest() ? 'Yes' : 'No'}</td>
 						</tr>
@@ -556,6 +621,61 @@ function formatReleaseFreshness(): string {
 						</tr>
 					</tbody>
 				</table>
+
+				<h4 id="main-js-api-findings">main.js API Signals</h4>
+
+				<p>
+					These conservative signals come from static analysis of the latest release <code>main.js</code>. Low-confidence matches and most informational
+					matches are hidden to reduce false positives.
+				</p>
+
+				{mainJsApiCapabilities === undefined ? (
+					<p class="muted">No main.js API scan data available.</p>
+				) : apiCapabilities.length === 0 ? (
+					<p class="muted">No main.js API findings detected.</p>
+				) : (
+					<>
+						{apiDisclosures.length > 0 && (
+							<table class="full-width">
+								<thead>
+									<tr>
+										<th>Disclosure</th>
+										<th>Detected From</th>
+									</tr>
+								</thead>
+								<tbody>
+									{apiDisclosures.map(disclosure => (
+										<tr>
+											<td>{disclosure.label}</td>
+											<td>{disclosure.capabilities.join(', ')}</td>
+										</tr>
+									))}
+								</tbody>
+							</table>
+						)}
+
+						<table class="full-width">
+							<thead>
+								<tr>
+									<th>Finding</th>
+									<th>Type</th>
+									<th>Confidence</th>
+									<th>Evidence</th>
+								</tr>
+							</thead>
+							<tbody>
+								{apiCapabilities.map(capability => (
+									<tr>
+										<td>{capability.label}</td>
+										<td>{formatApiId(capability.severity)}</td>
+										<td>{formatApiId(capability.confidence)}</td>
+										<td>{formatEvidence(capability) || <span class="muted">None</span>}</td>
+									</tr>
+								))}
+							</tbody>
+						</table>
+					</>
+				)}
 
 				<p class="muted">
 					The above data may not be accurate and contain errors. For more information refer to the page about{' '}
