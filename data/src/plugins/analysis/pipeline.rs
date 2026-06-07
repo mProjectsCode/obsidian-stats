@@ -127,10 +127,7 @@ fn apply_mainjs_api_usage(output: &mut PluginRepoData, api_usage: &ApiClassifica
         .capabilities()
         .iter()
         .filter(|capability| {
-            is_public_mainjs_api_capability(
-                capability.severity(),
-                capability.confidence(),
-            )
+            is_public_mainjs_api_capability(capability.severity(), capability.confidence())
         })
         .map(|capability| capability.id().to_string())
         .collect::<std::collections::HashSet<_>>();
@@ -167,10 +164,7 @@ fn apply_mainjs_api_usage(output: &mut PluginRepoData, api_usage: &ApiClassifica
         .collect();
 }
 
-fn is_public_mainjs_api_capability(
-    severity: ApiSeverity,
-    confidence: Confidence,
-) -> bool {
+fn is_public_mainjs_api_capability(severity: ApiSeverity, confidence: Confidence) -> bool {
     if confidence == Confidence::Low {
         return false;
     }

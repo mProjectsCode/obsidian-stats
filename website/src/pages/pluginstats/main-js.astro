@@ -1,0 +1,190 @@
+---
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import PluginLink from '../../components/PluginLink.astro';
+import BarChart from '../../components/svelte/charts/BarChart.svelte';
+import CapabilityDistributionChart from '../../components/svelte/charts/mainjs/CapabilityDistributionChart.svelte';
+import MinificationScoreDistributionChart from '../../components/svelte/charts/misc/MinificationScoreDistributionChart.svelte';
+import ReleaseSizeDistributionChart from '../../components/svelte/charts/misc/ReleaseSizeDistributionChart.svelte';
+import SeverityDistributionChart from '../../components/svelte/charts/mainjs/SeverityDistributionChart.svelte';
+import { getPluginDataArray } from '../../utils/data';
+
+const data = await getPluginDataArray();
+const view = data.view();
+
+const releaseSizeDistribution = Array.from(view.release_size_distribution(data));
+const topReleaseSizePlugins = view.top_release_size_plugins(data, 10).map(item => {
+	const pluginData = view.get_by_id(data, item.name);
+
+	return {
+		id: item.name,
+		name: pluginData?.name() ?? item.name,
+		sizeBytes: item.value,
+	};
+});
+const esVersionDistribution = view.es_version_distribution(data);
+const mainJsMinifiedDistribution = view.main_js_minified_distribution(data);
+const mainJsMinificationScoreDistribution = Array.from(view.main_js_minification_score_distribution(data));
+const mainJsSourcemapDistribution = view.main_js_sourcemap_distribution(data);
+const mainJsBase64BlobDistribution = view.main_js_base64_blob_distribution(data);
+const mainJsWorkerUsageDistribution = view.main_js_worker_usage_distribution(data);
+const mainJsWebassemblyUsageDistribution = view.main_js_webassembly_usage_distribution(data);
+const mainJsApiSeverityDistribution = view.main_js_api_severity_distribution(data);
+const mainJsApiCategorySeverityDistribution = view.main_js_api_category_severity_distribution(data);
+const mainJsApiCapabilityDistribution = view.main_js_api_capability_distribution(data).filter(point => point.value >= 25);
+const es5Plugins = view.es_version_plugin_ids(data, 'ES5').map(id => {
+	const pluginData = view.get_by_id(data, id);
+
+	return {
+		id,
+		name: pluginData?.name() ?? id,
+	};
+});
+
+const avgReleaseSize = releaseSizeDistribution.length > 0 ? releaseSizeDistribution.reduce((acc, curr) => acc + curr, 0) / releaseSizeDistribution.length : 0;
+const medReleaseSize = releaseSizeDistribution.length > 0 ? releaseSizeDistribution[Math.floor(releaseSizeDistribution.length / 2)] : 0;
+
+function formatBytes(bytes: number): string {
+	if (bytes === 0) {
+		return '0 B';
+	}
+
+	const units = ['B', 'KB', 'MB', 'GB'];
+	const exponent = Math.min(Math.floor(Math.log(bytes) / Math.log(1024)), units.length - 1);
+	const value = bytes / 1024 ** exponent;
+
+	return `${value.toFixed(value >= 100 ? 0 : value >= 10 ? 1 : 2)} ${units[exponent]}`;
+}
+---
+
+<StarlightPage
+	frontmatter={{
+		title: 'main.js Analysis',
+		description: 'Static analysis of the main.js files distributed in plugin releases.',
+	}}
+	headings={[
+		{ depth: 2, text: 'Release Size Distribution', slug: 'release-size-distribution' },
+		{ depth: 2, text: 'ES Version', slug: 'es-version' },
+		{ depth: 2, text: 'Minification', slug: 'minification' },
+		{ depth: 2, text: 'Source Map Comments', slug: 'source-map-comments' },
+		{ depth: 2, text: 'Embedded Base64 Blobs', slug: 'embedded-base64-blobs' },
+		{ depth: 2, text: 'Worker Usage', slug: 'worker-usage' },
+		{ depth: 2, text: 'WebAssembly Usage', slug: 'webassembly-usage' },
+		{ depth: 2, text: 'API Signals', slug: 'api-signals' },
+	]}
+>
+	<p>
+		This page summarizes static analysis of the <code>main.js</code> files distributed in the latest plugin releases. The results are based on heuristics and should
+		be treated as signals rather than definitive findings.
+	</p>
+
+	<h2 id="release-size-distribution">Release Size Distribution</h2>
+
+	<p>
+		The following chart shows the distribution of latest release <code>main.js</code> sizes per plugin. The average scanned release has a size of {
+			formatBytes(avgReleaseSize)
+		}, while the median is {formatBytes(medReleaseSize)}.
+	</p>
+
+	<ReleaseSizeDistributionChart dataPoints={releaseSizeDistribution} client:idle />
+
+	<details>
+		<summary>Top 10 largest plugins</summary>
+		<ul>
+			{
+				topReleaseSizePlugins.map(plugin => (
+					<li>
+						<PluginLink id={plugin.id} label={plugin.name} /> ({formatBytes(plugin.sizeBytes)})
+					</li>
+				))
+			}
+		</ul>
+	</details>
+
+	<h2 id="es-version">ES Version</h2>
+
+	<p>
+		The next chart shows the estimated ECMAScript target version used by plugin releases. Estimates are based on syntax found in the release's <code
+			>main.js</code
+		>.
+	</p>
+
+	<BarChart dataPoints={esVersionDistribution} xLabel="Target ES Version" yLabel="Plugins" client:idle />
+
+	<details>
+		<summary>Plugins targeting ES5 ({es5Plugins.length})</summary>
+		<ul>
+			{
+				es5Plugins.map(plugin => (
+					<li>
+						<PluginLink id={plugin.id} label={plugin.name} />
+					</li>
+				))
+			}
+		</ul>
+	</details>
+
+	<h2 id="minification">Minification</h2>
+
+	<p>
+		This chart shows whether the latest release <code>main.js</code> appears to be minified. Detection is heuristic and based on source formatting and symbol patterns.
+		It is <a href="https://docs.obsidian.md/plugins/guides/load-time">recommended</a> to minify release builds to reduce file size and improve load times.
+	</p>
+
+	<BarChart dataPoints={mainJsMinifiedDistribution} xLabel="Minification" yLabel="Plugins" client:idle />
+
+	<p>
+		This chart shows the distribution of the minification score for the same heuristic, where <code>0</code> means least likely and <code>1</code> means most likely
+		to be minified.
+	</p>
+
+	<MinificationScoreDistributionChart dataPoints={mainJsMinificationScoreDistribution} client:idle />
+
+	<h2 id="source-map-comments">Source Map Comments</h2>
+
+	<p>
+		This chart shows whether the latest release <code>main.js</code> includes a <code>sourceMappingURL</code> comment. Source maps can improve debugging and stack
+		traces, but shipping them can also increase release size.
+	</p>
+
+	<BarChart dataPoints={mainJsSourcemapDistribution} xLabel="Source Map Comments" yLabel="Plugins" client:idle />
+
+	<h2 id="embedded-base64-blobs">Embedded Base64 Blobs</h2>
+
+	<p>
+		This chart shows whether the latest release <code>main.js</code> contains large base64-like blobs, which can indicate embedded assets or WebAssembly usage.
+	</p>
+
+	<BarChart dataPoints={mainJsBase64BlobDistribution} xLabel="Large Base64 Blobs" yLabel="Plugins" client:idle />
+
+	<h2 id="worker-usage">Worker Usage</h2>
+
+	<p>The next chart shows whether plugin releases reference Worker APIs in their latest <code>main.js</code>.</p>
+
+	<BarChart dataPoints={mainJsWorkerUsageDistribution} xLabel="Worker Usage" yLabel="Plugins" client:idle />
+
+	<h2 id="webassembly-usage">WebAssembly Usage</h2>
+
+	<p>The next chart shows whether plugin releases reference WebAssembly APIs in their latest <code>main.js</code>.</p>
+
+	<BarChart dataPoints={mainJsWebassemblyUsageDistribution} xLabel="WebAssembly Usage" yLabel="Plugins" client:idle />
+
+	<h2 id="api-signals">API Signals</h2>
+
+	<p>
+		The next charts summarize conservative static API signals detected in latest release <code>main.js</code> files. Low-confidence matches and most informational
+		matches are filtered during data export to reduce false positives; remaining signals are still heuristic.
+	</p>
+
+	<BarChart dataPoints={mainJsApiSeverityDistribution} xLabel="Finding Type" yLabel="Plugins" client:idle />
+
+	<p>
+		Categories group related signals such as vault access, network access, editor integrations, dynamic code loading, and performance-sensitive patterns. A
+		plugin is counted once per category and severity.
+	</p>
+
+	<SeverityDistributionChart dataPoints={mainJsApiCategorySeverityDistribution} client:idle />
+
+	<p>The following chart shows common individual capability signals. Capabilities detected in fewer than 25 plugins are omitted.</p>
+
+	<CapabilityDistributionChart dataPoints={mainJsApiCapabilityDistribution} client:idle />
+</StarlightPage>

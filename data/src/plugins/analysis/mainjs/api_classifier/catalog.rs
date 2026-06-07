@@ -1,9 +1,15 @@
-use std::collections::BTreeSet;
+use std::{collections::BTreeSet, sync::OnceLock};
 
 use super::custom_matchers;
 use super::rule::{ApiCatalogError, ApiCategory, ApiRule, ApiSeverity, Confidence};
 
-pub(in crate::plugins::analysis::mainjs) fn obsidian_api_rules() -> Vec<ApiRule> {
+pub(in crate::plugins::analysis::mainjs) fn obsidian_api_rules() -> &'static [ApiRule] {
+    static RULES: OnceLock<Vec<ApiRule>> = OnceLock::new();
+
+    RULES.get_or_init(build_obsidian_api_rules)
+}
+
+fn build_obsidian_api_rules() -> Vec<ApiRule> {
     let rules = vec![
         ApiRule::builder("network.browser")
             .label("Uses browser network APIs")
@@ -11,7 +17,7 @@ pub(in crate::plugins::analysis::mainjs) fn obsidian_api_rules() -> Vec<ApiRule>
             .severity(ApiSeverity::Notice)
             .confidence(Confidence::High)
             .global_calls(["fetch"])
-            .member_calls(["navigator.sendBeacon"])
+            .rooted_member_calls(["navigator.sendBeacon"])
             .constructors(["XMLHttpRequest", "WebSocket", "EventSource"])
             .implies(["disclosure.network_access"])
             .build(),
@@ -133,9 +139,6 @@ pub(in crate::plugins::analysis::mainjs) fn obsidian_api_rules() -> Vec<ApiRule>
                 "aws-sdk",
                 "@aws-sdk/client-s3",
             ])
-            // REVIEW: `mastodon` is a broad substring and can match prose, IDs, or unrelated
-            // package names. Prefer concrete host/API markers when the catalog grows endpoint
-            // pattern support.
             .string_literals([
                 "api.github.com",
                 "gitlab.com",
@@ -152,7 +155,6 @@ pub(in crate::plugins::analysis::mainjs) fn obsidian_api_rules() -> Vec<ApiRule>
                 "api.telegram.org",
                 "discord.com/api",
                 "hooks.slack.com",
-                "mastodon",
             ])
             .implies([
                 "disclosure.network_access",
@@ -173,13 +175,11 @@ pub(in crate::plugins::analysis::mainjs) fn obsidian_api_rules() -> Vec<ApiRule>
                 "@segment/analytics-node",
                 "@datadog/browser-rum",
             ])
-            // REVIEW: provider substrings such as `posthog` and generic package imports such as
-            // `analytics` can report telemetry from labels, docs, or wrapper names. The disclosure
-            // is reasonable for known SDK imports, but string-only matches should eventually use
-            // stricter host/package patterns.
             .string_literals([
                 "sentry.io",
-                "posthog",
+                "app.posthog.com",
+                "us.i.posthog.com",
+                "eu.i.posthog.com",
                 "plausible.io",
                 "google-analytics.com",
                 "googletagmanager.com",
@@ -198,7 +198,7 @@ pub(in crate::plugins::analysis::mainjs) fn obsidian_api_rules() -> Vec<ApiRule>
             .category(ApiCategory::Network)
             .severity(ApiSeverity::Info)
             .confidence(Confidence::Medium)
-            .string_literals(["User-Agent", "user-agent", "headers", "Authorization"])
+            .string_literals(["User-Agent", "user-agent", "Authorization"])
             .build(),
         ApiRule::builder("network.remote_dom_loading")
             .label("Loads remote image, script, or style elements")
@@ -220,7 +220,7 @@ pub(in crate::plugins::analysis::mainjs) fn obsidian_api_rules() -> Vec<ApiRule>
             .category(ApiCategory::Vault)
             .severity(ApiSeverity::Info)
             .confidence(Confidence::High)
-            .member_calls([
+            .rooted_member_calls([
                 "this.app.vault.read",
                 "this.app.vault.cachedRead",
                 "this.app.vault.readBinary",
@@ -235,7 +235,7 @@ pub(in crate::plugins::analysis::mainjs) fn obsidian_api_rules() -> Vec<ApiRule>
             .category(ApiCategory::Vault)
             .severity(ApiSeverity::Notice)
             .confidence(Confidence::High)
-            .member_calls([
+            .rooted_member_calls([
                 "this.app.vault.create",
                 "this.app.vault.createBinary",
                 "this.app.vault.modify",
@@ -254,7 +254,7 @@ pub(in crate::plugins::analysis::mainjs) fn obsidian_api_rules() -> Vec<ApiRule>
             .category(ApiCategory::Vault)
             .severity(ApiSeverity::Warning)
             .confidence(Confidence::High)
-            .member_calls([
+            .rooted_member_calls([
                 "this.app.vault.delete",
                 "this.app.vault.trash",
                 "this.app.vault.rename",
@@ -271,7 +271,7 @@ pub(in crate::plugins::analysis::mainjs) fn obsidian_api_rules() -> Vec<ApiRule>
             .category(ApiCategory::Vault)
             .severity(ApiSeverity::Info)
             .confidence(Confidence::High)
-            .member_calls([
+            .rooted_member_calls([
                 "this.app.vault.getFiles",
                 "this.app.vault.getMarkdownFiles",
                 "this.app.vault.getAllLoadedFiles",
@@ -286,7 +286,7 @@ pub(in crate::plugins::analysis::mainjs) fn obsidian_api_rules() -> Vec<ApiRule>
             .category(ApiCategory::Vault)
             .severity(ApiSeverity::Info)
             .confidence(Confidence::High)
-            .member_calls([
+            .rooted_member_calls([
                 "this.app.vault.createFolder",
                 "this.app.vault.getFolderByPath",
                 "this.app.vault.getRoot",
@@ -300,7 +300,7 @@ pub(in crate::plugins::analysis::mainjs) fn obsidian_api_rules() -> Vec<ApiRule>
             .category(ApiCategory::Vault)
             .severity(ApiSeverity::Info)
             .confidence(Confidence::High)
-            .member_calls([
+            .rooted_member_calls([
                 "this.app.vault.getResourcePath",
                 "this.app.vault.adapter.getResourcePath",
                 "app.vault.getResourcePath",
@@ -312,7 +312,7 @@ pub(in crate::plugins::analysis::mainjs) fn obsidian_api_rules() -> Vec<ApiRule>
             .category(ApiCategory::Vault)
             .severity(ApiSeverity::Notice)
             .confidence(Confidence::High)
-            .member_calls([
+            .rooted_member_calls([
                 "this.app.vault.adapter.read",
                 "this.app.vault.adapter.write",
                 "this.app.vault.adapter.append",
@@ -359,7 +359,7 @@ pub(in crate::plugins::analysis::mainjs) fn obsidian_api_rules() -> Vec<ApiRule>
             .category(ApiCategory::Vault)
             .severity(ApiSeverity::Info)
             .confidence(Confidence::High)
-            .member_calls([
+            .rooted_member_calls([
                 "this.app.workspace.openLinkText",
                 "this.app.workspace.getLeaf.openFile",
                 "this.app.fileManager.createNewMarkdownFile",
@@ -383,7 +383,7 @@ pub(in crate::plugins::analysis::mainjs) fn obsidian_api_rules() -> Vec<ApiRule>
                 "app.metadataCache.resolvedLinks",
                 "app.metadataCache.unresolvedLinks",
             ])
-            .member_calls([
+            .rooted_member_calls([
                 "this.app.metadataCache.getFileCache",
                 "this.app.metadataCache.getCache",
                 "this.app.metadataCache.getFirstLinkpathDest",
@@ -399,7 +399,7 @@ pub(in crate::plugins::analysis::mainjs) fn obsidian_api_rules() -> Vec<ApiRule>
             .severity(ApiSeverity::Info)
             .confidence(Confidence::Medium)
             .member_reads(["frontmatter"])
-            .member_calls([
+            .rooted_member_calls([
                 "this.app.fileManager.processFrontMatter",
                 "app.fileManager.processFrontMatter",
             ])
@@ -410,9 +410,9 @@ pub(in crate::plugins::analysis::mainjs) fn obsidian_api_rules() -> Vec<ApiRule>
             .category(ApiCategory::Metadata)
             .severity(ApiSeverity::Info)
             .confidence(Confidence::Medium)
-            .member_call("this.app.metadataCache.on")
+            .rooted_member_calls(["this.app.metadataCache.on"])
             .arg_string(0, ["changed", "deleted", "resolved"])
-            .member_call("app.metadataCache.on")
+            .rooted_member_calls(["app.metadataCache.on"])
             .arg_string(0, ["changed", "deleted", "resolved"])
             .build(),
         ApiRule::builder("metadata.traversal")
@@ -465,7 +465,7 @@ pub(in crate::plugins::analysis::mainjs) fn obsidian_api_rules() -> Vec<ApiRule>
             // REVIEW: `getLeaf` can be used for simple file opening, not only layout manipulation.
             // It still implies workspace layout because requesting leaves can create/split panes; a
             // future call-argument/state matcher could separate read-only lookup from mutation.
-            .member_calls([
+            .rooted_member_calls([
                 "this.registerView",
                 "this.app.workspace.getLeaf",
                 "this.app.workspace.getLeavesOfType",
@@ -489,7 +489,7 @@ pub(in crate::plugins::analysis::mainjs) fn obsidian_api_rules() -> Vec<ApiRule>
                 "this.app.workspace.activeEditor",
                 "app.workspace.activeEditor",
             ])
-            .member_calls([
+            .rooted_member_calls([
                 "this.app.workspace.getActiveFile",
                 "app.workspace.getActiveFile",
             ])
@@ -516,7 +516,7 @@ pub(in crate::plugins::analysis::mainjs) fn obsidian_api_rules() -> Vec<ApiRule>
             .category(ApiCategory::Workspace)
             .severity(ApiSeverity::Info)
             .confidence(Confidence::Medium)
-            .member_calls([
+            .rooted_member_calls([
                 "this.app.workspace.getLayout",
                 "this.app.workspace.setLayout",
                 "this.app.workspace.requestSaveLayout",
@@ -552,6 +552,7 @@ pub(in crate::plugins::analysis::mainjs) fn obsidian_api_rules() -> Vec<ApiRule>
                 "obsidian.SuggestModal",
                 "obsidian.FuzzySuggestModal",
             ])
+            .classes(["Modal", "Notice", "SuggestModal", "FuzzySuggestModal"])
             .build(),
         ApiRule::builder("ui.dom_heavy")
             .label("Performs DOM-heavy UI manipulation")
@@ -655,9 +656,6 @@ pub(in crate::plugins::analysis::mainjs) fn obsidian_api_rules() -> Vec<ApiRule>
             .category(ApiCategory::Settings)
             .severity(ApiSeverity::Info)
             .confidence(Confidence::High)
-            // REVIEW: constructors named `Setting` or `PluginSettingTab` are matched regardless of
-            // whether they came from Obsidian. The module-qualified constructor variants help, but
-            // bare local classes with the same names can still match.
             .member_calls(["this.addSettingTab"])
             .constructors([
                 "PluginSettingTab",
@@ -672,10 +670,8 @@ pub(in crate::plugins::analysis::mainjs) fn obsidian_api_rules() -> Vec<ApiRule>
             .category(ApiCategory::Lifecycle)
             .severity(ApiSeverity::Info)
             .confidence(Confidence::Medium)
-            // REVIEW: `this.onload`/`this.onunload` are member calls in this catalog, so class method
-            // definitions are mostly covered by raw string fallback rather than AST structure.
             .member_calls(["this.onload", "this.onunload"])
-            .string_literals(["onload", "onunload", "loadData", "saveData"])
+            .custom_ast("lifecycle_methods", custom_matchers::lifecycle_methods)
             .build(),
         ApiRule::builder("lifecycle.events")
             .label("Registers events, DOM handlers, or intervals")
@@ -703,7 +699,7 @@ pub(in crate::plugins::analysis::mainjs) fn obsidian_api_rules() -> Vec<ApiRule>
                 "this.app.plugins.manifests",
                 "app.plugins.manifests",
             ])
-            .member_calls(["this.app.plugins.getPlugin", "app.plugins.getPlugin"])
+            .rooted_member_calls(["this.app.plugins.getPlugin", "app.plugins.getPlugin"])
             .implies(["disclosure.plugin_internals"])
             .build(),
         ApiRule::builder("platform.branching")
@@ -800,7 +796,7 @@ pub(in crate::plugins::analysis::mainjs) fn obsidian_api_rules() -> Vec<ApiRule>
             .category(ApiCategory::Browser)
             .severity(ApiSeverity::Notice)
             .confidence(Confidence::High)
-            .member_calls([
+            .rooted_member_calls([
                 "navigator.clipboard.read",
                 "navigator.clipboard.readText",
                 "navigator.clipboard.write",
@@ -828,7 +824,7 @@ pub(in crate::plugins::analysis::mainjs) fn obsidian_api_rules() -> Vec<ApiRule>
             .category(ApiCategory::Browser)
             .severity(ApiSeverity::Warning)
             .confidence(Confidence::High)
-            .member_calls([
+            .rooted_member_calls([
                 "navigator.geolocation.getCurrentPosition",
                 "navigator.mediaDevices.getUserMedia",
                 "Notification.requestPermission",
@@ -908,6 +904,10 @@ pub(in crate::plugins::analysis::mainjs) fn obsidian_api_rules() -> Vec<ApiRule>
             .calls(["import"])
             .global_calls(["eval"])
             .constructors(["Function"])
+            .custom_ast(
+                "dynamic_code_execution",
+                custom_matchers::dynamic_code_execution,
+            )
             .custom_ast(
                 "remote_dom_script_injection",
                 custom_matchers::remote_dom_script_injection,

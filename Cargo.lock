@@ -529,6 +529,7 @@ dependencies = [
  "hashbrown 0.17.1",
  "indicatif",
  "itertools 0.14.0",
+ "libc",
  "quick-xml",
  "rayon",
  "regex",

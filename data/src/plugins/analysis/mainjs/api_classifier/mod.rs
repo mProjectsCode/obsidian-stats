@@ -1,7 +1,6 @@
-use std::collections::BTreeSet;
+use std::collections::{BTreeMap, BTreeSet};
 
-use swc_ecma_ast::{CallExpr, Callee, Expr, Program};
-use swc_ecma_visit::{Visit, VisitWith};
+use swc_ecma_ast::Program;
 
 mod catalog;
 mod context;
@@ -15,146 +14,109 @@ pub(in crate::plugins::analysis) use result::{ApiClassificationResult, ApiMatchK
 pub(in crate::plugins::analysis) use rule::{ApiCategory, ApiSeverity, Confidence};
 
 use result::{ApiCapability, ApiEvidence, Disclosure};
-use rule::{ApiRule, MemberCallMatcher};
+use rule::ApiRule;
 use symbol_index::SymbolIndex;
 
 #[cfg(test)]
 use rule::{ApiCatalogError, ApiRuleBuildError};
 
 pub(super) fn classify_api_usage(
-    source: &str,
+    _source: &str,
     program: Option<&Program>,
     rules: &[ApiRule],
 ) -> ApiClassificationResult {
-    let context = context::ApiMatchContext::new(source, program);
-    let symbol_index = SymbolIndex::collect(source, program, rules);
+    let context = context::ApiMatchContext::new(program);
+    let (symbol_index, argument_evidence) =
+        SymbolIndex::collect_for_rules(program, &context.aliases, rules);
+    let primitive_matches = rules
+        .iter()
+        .enumerate()
+        .map(|(index, rule)| rule_match(rule, &symbol_index, &context, &argument_evidence[index]))
+        .collect::<Vec<_>>();
     let mut result = ApiClassificationResult::default();
     let mut emitted_ids = BTreeSet::new();
+    let mut emitted_owners = BTreeMap::<String, BTreeSet<usize>>::new();
 
-    for rule in rules {
-        if !correlation_matches(rule, &emitted_ids) {
-            continue;
-        }
-
-        let mut evidence = rule_evidence(rule, &symbol_index, &context);
-        if evidence.is_empty() {
-            if rule.matcher.is_empty() && rule.is_correlation() {
-                evidence = correlation_evidence(rule);
-            } else {
+    loop {
+        let mut emitted_any = false;
+        for (rule, primitive_match) in rules.iter().zip(&primitive_matches) {
+            let correlation_owners = correlation_owners(rule, &emitted_owners);
+            if emitted_ids.contains(&rule.id)
+                || (rule.is_correlation() && correlation_owners.is_empty())
+            {
                 continue;
             }
-        }
-        if evidence.is_empty() {
-            continue;
-        }
-        if distinct_evidence_count(&evidence) < rule.min_distinct_evidence {
-            continue;
-        }
 
-        emit_rule(rule, evidence, &mut result, &mut emitted_ids);
+            let mut evidence = primitive_match.evidence.clone();
+            if evidence.is_empty() {
+                if rule.matcher.is_empty() && rule.is_correlation() {
+                    evidence = correlation_evidence(rule);
+                } else {
+                    continue;
+                }
+            }
+            if evidence.is_empty()
+                || distinct_evidence_count(&evidence) < rule.min_distinct_evidence
+            {
+                continue;
+            }
+
+            let owners = if rule.is_correlation() {
+                correlation_owners
+            } else {
+                primitive_match.owners.clone()
+            };
+            emit_rule(
+                rule,
+                evidence,
+                owners,
+                &mut result,
+                &mut emitted_ids,
+                &mut emitted_owners,
+            );
+            emitted_any = true;
+        }
+        if !emitted_any {
+            break;
+        }
     }
 
     result
 }
 
-fn rule_evidence(
+struct RuleMatch {
+    evidence: Vec<ApiEvidence>,
+    owners: BTreeSet<usize>,
+}
+
+fn rule_match(
     rule: &ApiRule,
     symbol_index: &SymbolIndex,
     context: &context::ApiMatchContext<'_>,
-) -> Vec<ApiEvidence> {
+    argument_evidence: &[ApiEvidence],
+) -> RuleMatch {
     let mut evidence = symbol_index.evidence_for(rule);
-    evidence.extend(argument_member_call_evidence(rule, context));
+    let owners = symbol_index.owners_for_evidence(&evidence);
+    evidence.extend_from_slice(argument_evidence);
     if context.program.is_some() {
         for matcher in &rule.matcher.custom_ast {
             evidence.extend((matcher.matcher)(context));
         }
     }
     evidence.truncate(rule.evidence_limit);
-    evidence
-}
-
-fn argument_member_call_evidence(
-    rule: &ApiRule,
-    context: &context::ApiMatchContext<'_>,
-) -> Vec<ApiEvidence> {
-    let Some(program) = context.program else {
-        return Vec::new();
-    };
-    let matchers = rule
-        .matcher
-        .member_calls
-        .iter()
-        .filter(|matcher| !matcher.arg_strings.is_empty())
-        .collect::<Vec<_>>();
-    if matchers.is_empty() {
-        return Vec::new();
-    }
-
-    let mut visitor = ArgumentMemberCallVisitor {
-        context,
-        matchers,
-        evidence: Vec::new(),
-    };
-    program.visit_with(&mut visitor);
-    visitor.evidence
-}
-
-struct ArgumentMemberCallVisitor<'a> {
-    context: &'a context::ApiMatchContext<'a>,
-    matchers: Vec<&'a MemberCallMatcher>,
-    evidence: Vec<ApiEvidence>,
-}
-
-impl Visit for ArgumentMemberCallVisitor<'_> {
-    fn visit_call_expr(&mut self, call: &CallExpr) {
-        let Some(member) = call_member_callee(call) else {
-            call.visit_children_with(self);
-            return;
-        };
-
-        for matcher in &self.matchers {
-            if !self
-                .context
-                .is_member_call_match(member, &matcher.chain, &matcher.provenance)
-            {
-                continue;
-            }
-            if matcher.arg_strings.iter().all(|arg_matcher| {
-                self.context
-                    .literal_arg(call, arg_matcher.index)
-                    .is_some_and(|value| {
-                        arg_matcher.values.iter().any(|expected| expected == &value)
-                    })
-            }) {
-                self.evidence.push(ApiEvidence {
-                    kind: ApiMatchKind::CallArgument,
-                    symbol: matcher.evidence_symbol(),
-                    count: 1,
-                });
-            }
-        }
-
-        call.visit_children_with(self);
-    }
-}
-
-fn call_member_callee(call: &CallExpr) -> Option<&swc_ecma_ast::MemberExpr> {
-    let Callee::Expr(callee) = &call.callee else {
-        return None;
-    };
-    let Expr::Member(member) = &**callee else {
-        return None;
-    };
-    Some(member)
+    RuleMatch { evidence, owners }
 }
 
 fn emit_rule(
     rule: &ApiRule,
     evidence: Vec<ApiEvidence>,
+    owners: BTreeSet<usize>,
     result: &mut ApiClassificationResult,
     emitted_ids: &mut BTreeSet<String>,
+    emitted_owners: &mut BTreeMap<String, BTreeSet<usize>>,
 ) {
     emitted_ids.insert(rule.id.clone());
+    emitted_owners.insert(rule.id.clone(), owners.clone());
     result.capabilities.push(ApiCapability {
         id: rule.id.clone(),
         label: rule.label.clone(),
@@ -166,6 +128,10 @@ fn emit_rule(
 
     for disclosure_id in &rule.implies {
         emitted_ids.insert(disclosure_id.clone());
+        emitted_owners
+            .entry(disclosure_id.clone())
+            .or_default()
+            .extend(owners.iter().copied());
         result.disclosures.push(Disclosure {
             id: disclosure_id.clone(),
             from_capability: rule.id.clone(),
@@ -173,15 +139,43 @@ fn emit_rule(
     }
 }
 
-fn correlation_matches(rule: &ApiRule, emitted_ids: &BTreeSet<String>) -> bool {
-    rule.when_all
-        .iter()
-        .all(|dependency| emitted_ids.contains(dependency))
-        && (rule.when_any.is_empty()
-            || rule
-                .when_any
-                .iter()
-                .any(|dependency| emitted_ids.contains(dependency)))
+fn correlation_owners(
+    rule: &ApiRule,
+    emitted_owners: &BTreeMap<String, BTreeSet<usize>>,
+) -> BTreeSet<usize> {
+    if !rule.is_correlation() {
+        return BTreeSet::new();
+    }
+
+    let mut required = rule.when_all.iter();
+    let mut owners = if let Some(first) = required.next() {
+        let Some(owners) = emitted_owners.get(first) else {
+            return BTreeSet::new();
+        };
+        owners.clone()
+    } else {
+        emitted_owners
+            .values()
+            .flat_map(|owners| owners.iter().copied())
+            .collect()
+    };
+    for dependency in required {
+        let Some(dependency_owners) = emitted_owners.get(dependency) else {
+            return BTreeSet::new();
+        };
+        owners.retain(|owner| dependency_owners.contains(owner));
+    }
+
+    if !rule.when_any.is_empty() {
+        let any_owners = rule
+            .when_any
+            .iter()
+            .filter_map(|dependency| emitted_owners.get(dependency))
+            .flat_map(|owners| owners.iter().copied())
+            .collect::<BTreeSet<_>>();
+        owners.retain(|owner| any_owners.contains(owner));
+    }
+    owners
 }
 
 fn correlation_evidence(rule: &ApiRule) -> Vec<ApiEvidence> {

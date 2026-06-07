@@ -1,10 +1,15 @@
 use std::{
     fmt,
+    io::{self, Read},
     path::Path,
-    process::{Command, Stdio},
+    process::{Child, Command, Stdio},
     thread,
+    thread::JoinHandle,
     time::{Duration, Instant},
 };
+
+#[cfg(unix)]
+use std::os::unix::process::CommandExt;
 
 use data_lib::plugin::PluginData;
 
@@ -180,7 +185,8 @@ fn run_git_clone(
 ) -> Result<(), CloneError> {
     let repo_url =
         github_repo_url(&plugin.current_entry.repo).map_err(CloneError::InvalidRepoSlug)?;
-    let mut child = Command::new("git")
+    let mut command = Command::new("git");
+    command
         .args([
             "clone",
             "--depth",
@@ -195,31 +201,50 @@ fn run_git_clone(
         .env("GIT_TERMINAL_PROMPT", "0")
         .env("GIT_LFS_SKIP_SMUDGE", "1")
         .stdout(Stdio::piped())
-        .stderr(Stdio::piped())
+        .stderr(Stdio::piped());
+
+    run_clone_command(&mut command, clone_timeout)
+}
+
+fn run_clone_command(command: &mut Command, clone_timeout: Duration) -> Result<(), CloneError> {
+    #[cfg(unix)]
+    command.process_group(0);
+
+    let mut child = command
         .spawn()
         .map_err(|error| CloneError::GitStart(error.to_string()))?;
+    let stdout_reader = spawn_output_reader(
+        child
+            .stdout
+            .take()
+            .ok_or_else(|| CloneError::GitOutput("git stdout was not piped".to_string()))?,
+        false,
+    );
+    let stderr_reader = spawn_output_reader(
+        child
+            .stderr
+            .take()
+            .ok_or_else(|| CloneError::GitOutput("git stderr was not piped".to_string()))?,
+        true,
+    );
 
     let started = Instant::now();
     loop {
         match child.try_wait() {
-            Ok(Some(_)) => {
-                let output = child
-                    .wait_with_output()
-                    .map_err(|error| CloneError::GitOutput(error.to_string()))?;
-                if output.status.success() {
+            Ok(Some(status)) => {
+                let stderr = finish_output_readers(stdout_reader, stderr_reader)?;
+                if status.success() {
                     return Ok(());
                 }
 
-                return Err(CloneError::GitFailed(format_git_clone_error(
-                    &output.stderr,
-                )));
+                return Err(CloneError::GitFailed(format_git_clone_error(&stderr)));
             }
             Ok(None) if started.elapsed() >= clone_timeout => {
-                let _ = child.kill();
-                let output = child.wait_with_output();
-                let detail = output
+                terminate_clone(&mut child);
+                let _ = child.wait();
+                let detail = finish_output_readers(stdout_reader, stderr_reader)
                     .ok()
-                    .map(|output| command_output_tail(&output.stderr))
+                    .map(|stderr| command_output_tail(&stderr))
                     .filter(|detail| !detail.is_empty());
                 return Err(CloneError::GitTimeout {
                     seconds: clone_timeout.as_secs(),
@@ -230,6 +255,70 @@ fn run_git_clone(
             Err(error) => return Err(CloneError::GitWait(error.to_string())),
         }
     }
+}
+
+fn spawn_output_reader<R>(mut reader: R, retain_tail: bool) -> JoinHandle<io::Result<Vec<u8>>>
+where
+    R: Read + Send + 'static,
+{
+    thread::spawn(move || {
+        const RETAINED_OUTPUT_BYTES: usize = 16 * 1024;
+
+        let mut retained = Vec::new();
+        let mut buffer = [0_u8; 8 * 1024];
+        loop {
+            let bytes_read = reader.read(&mut buffer)?;
+            if bytes_read == 0 {
+                break;
+            }
+            if !retain_tail {
+                continue;
+            }
+
+            retained.extend_from_slice(&buffer[..bytes_read]);
+            if retained.len() > RETAINED_OUTPUT_BYTES {
+                let excess = retained.len() - RETAINED_OUTPUT_BYTES;
+                retained.drain(..excess);
+            }
+        }
+        Ok(retained)
+    })
+}
+
+fn finish_output_readers(
+    stdout_reader: JoinHandle<io::Result<Vec<u8>>>,
+    stderr_reader: JoinHandle<io::Result<Vec<u8>>>,
+) -> Result<Vec<u8>, CloneError> {
+    join_output_reader("stdout", stdout_reader)?;
+    join_output_reader("stderr", stderr_reader)
+}
+
+fn join_output_reader(
+    stream_name: &str,
+    reader: JoinHandle<io::Result<Vec<u8>>>,
+) -> Result<Vec<u8>, CloneError> {
+    reader
+        .join()
+        .map_err(|_| CloneError::GitOutput(format!("{stream_name} reader thread panicked")))?
+        .map_err(|error| {
+            CloneError::GitOutput(format!("failed to read git {stream_name}: {error}"))
+        })
+}
+
+#[cfg(unix)]
+fn terminate_clone(child: &mut Child) {
+    let process_group = -(child.id() as i32);
+    // The clone command starts in its own process group, so this also stops
+    // helpers such as git-remote-https and index-pack that inherit its pipes.
+    let killed_group = unsafe { libc::kill(process_group, libc::SIGKILL) == 0 };
+    if !killed_group {
+        let _ = child.kill();
+    }
+}
+
+#[cfg(not(unix))]
+fn terminate_clone(child: &mut Child) {
+    let _ = child.kill();
 }
 
 fn format_git_clone_error(stderr: &[u8]) -> String {
@@ -264,7 +353,12 @@ fn command_output_tail(output: &[u8]) -> String {
 
 #[cfg(test)]
 mod tests {
-    use super::CloneError;
+    use std::{
+        process::{Command, Stdio},
+        time::{Duration, Instant},
+    };
+
+    use super::{CloneError, run_clone_command};
 
     #[test]
     fn clone_error_status_keeps_failed_prefix_and_detail() {
@@ -277,5 +371,35 @@ mod tests {
             error.as_state_value(),
             "failed:timed out after 30s: remote hung up"
         );
+    }
+
+    #[cfg(unix)]
+    #[test]
+    fn timeout_kills_helpers_that_keep_output_pipes_open() {
+        let mut command = Command::new("sh");
+        command
+            .args(["-c", "(sleep 30) & wait"])
+            .stdout(Stdio::piped())
+            .stderr(Stdio::piped());
+        let started = Instant::now();
+
+        let result = run_clone_command(&mut command, Duration::from_millis(100));
+
+        assert!(matches!(result, Err(CloneError::GitTimeout { .. })));
+        assert!(started.elapsed() < Duration::from_secs(3));
+    }
+
+    #[cfg(unix)]
+    #[test]
+    fn clone_output_is_drained_before_the_process_exits() {
+        let mut command = Command::new("sh");
+        command
+            .args(["-c", "dd if=/dev/zero bs=1024 count=256 1>&2 2>/dev/null"])
+            .stdout(Stdio::piped())
+            .stderr(Stdio::piped());
+
+        let result = run_clone_command(&mut command, Duration::from_secs(3));
+
+        assert!(result.is_ok());
     }
 }

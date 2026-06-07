@@ -58,8 +58,8 @@ pub(super) fn analyze_main_js(source: &str) -> MainJsResult {
 
     let api_rules = api_classifier::obsidian_api_rules();
     if !api_rules.is_empty() {
-        debug_assert!(api_classifier::validate_catalog(&api_rules).is_ok());
-        result.api_usage = api_classifier::classify_api_usage(source, program.as_ref(), &api_rules);
+        debug_assert!(api_classifier::validate_catalog(api_rules).is_ok());
+        result.api_usage = api_classifier::classify_api_usage(source, program.as_ref(), api_rules);
     }
 
     result

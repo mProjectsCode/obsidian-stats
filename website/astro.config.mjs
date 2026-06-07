@@ -60,6 +60,10 @@ export default defineConfig({
 							link: '/pluginstats/repo-data',
 						},
 						{
+							label: 'main.js Analysis',
+							link: '/pluginstats/main-js',
+						},
+						{
 							label: 'Licenses',
 							link: '/pluginstats/licenses',
 						},

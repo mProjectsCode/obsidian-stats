@@ -132,6 +132,20 @@ impl ApiRuleBuilder {
         self
     }
 
+    pub(super) fn rooted_member_calls<I, S>(mut self, member_calls: I) -> Self
+    where
+        I: IntoIterator<Item = S>,
+        S: Into<String>,
+    {
+        self.matcher.member_calls.extend(
+            member_calls
+                .into_iter()
+                .map(Into::into)
+                .map(MemberCallMatcher::rooted_chain),
+        );
+        self
+    }
+
     pub(super) fn member_call(mut self, member_call: impl Into<String>) -> Self {
         self.matcher
             .member_calls
@@ -463,6 +477,14 @@ impl MemberCallMatcher {
         }
     }
 
+    fn rooted_chain(chain: String) -> Self {
+        Self {
+            chain,
+            provenance: MemberCallProvenance::Rooted,
+            arg_strings: Vec::new(),
+        }
+    }
+
     fn module_member(module: String, member: String) -> Self {
         Self {
             chain: member,
@@ -473,7 +495,7 @@ impl MemberCallMatcher {
 
     pub(super) fn evidence_symbol(&self) -> String {
         match &self.provenance {
-            MemberCallProvenance::Any => self.chain.clone(),
+            MemberCallProvenance::Any | MemberCallProvenance::Rooted => self.chain.clone(),
             MemberCallProvenance::ModuleNamespace { module } => format!("{module}.{}", self.chain),
         }
     }
@@ -482,6 +504,7 @@ impl MemberCallMatcher {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub(super) enum MemberCallProvenance {
     Any,
+    Rooted,
     ModuleNamespace { module: String },
 }
 
@@ -498,13 +521,42 @@ impl ApiMatcher {
     }
 
     fn normalized(mut self) -> Self {
+        for call in &mut self.calls {
+            call.name = call.name.trim().to_string();
+            match &mut call.provenance {
+                CallProvenance::Any | CallProvenance::Global => {}
+                CallProvenance::ModuleExport { module } => {
+                    *module = module.trim().to_string();
+                }
+            }
+        }
+        self.calls.retain(|call| {
+            !call.name.is_empty()
+                && match &call.provenance {
+                    CallProvenance::Any | CallProvenance::Global => true,
+                    CallProvenance::ModuleExport { module } => !module.is_empty(),
+                }
+        });
         self.calls
             .sort_by(|left, right| left.sort_key().cmp(&right.sort_key()));
         self.calls.dedup();
+        for member_call in &mut self.member_calls {
+            member_call.chain = normalize_member_chain(&member_call.chain);
+            if let MemberCallProvenance::ModuleNamespace { module } = &mut member_call.provenance {
+                *module = module.trim().to_string();
+            }
+        }
+        self.member_calls.retain(|call| {
+            !call.chain.is_empty()
+                && match &call.provenance {
+                    MemberCallProvenance::Any | MemberCallProvenance::Rooted => true,
+                    MemberCallProvenance::ModuleNamespace { module } => !module.is_empty(),
+                }
+        });
         self.member_calls
             .sort_by(|left, right| left.sort_key().cmp(&right.sort_key()));
         self.member_calls.dedup();
-        normalize_strings(&mut self.member_reads);
+        normalize_member_chains(&mut self.member_reads);
         normalize_strings(&mut self.imports);
         normalize_strings(&mut self.string_literals);
         normalize_strings(&mut self.classes);
@@ -536,6 +588,25 @@ fn normalize_strings(values: &mut Vec<String>) {
     values.dedup();
 }
 
+fn normalize_member_chains(values: &mut Vec<String>) {
+    values.retain(|value| !value.trim().is_empty());
+    for value in values.iter_mut() {
+        *value = normalize_member_chain(value);
+    }
+    values.retain(|value| !value.is_empty());
+    values.sort();
+    values.dedup();
+}
+
+fn normalize_member_chain(value: &str) -> String {
+    value
+        .split('.')
+        .map(str::trim)
+        .filter(|segment| !segment.is_empty())
+        .collect::<Vec<_>>()
+        .join(".")
+}
+
 impl CallMatcher {
     fn sort_key(&self) -> (&str, &str) {
         match &self.provenance {
@@ -550,6 +621,7 @@ impl MemberCallMatcher {
     fn sort_key(&self) -> (&str, &str) {
         match &self.provenance {
             MemberCallProvenance::Any => ("any", &self.chain),
+            MemberCallProvenance::Rooted => ("rooted", &self.chain),
             MemberCallProvenance::ModuleNamespace { module } => (module, &self.chain),
         }
     }
