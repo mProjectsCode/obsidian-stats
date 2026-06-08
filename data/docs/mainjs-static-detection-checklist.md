@@ -235,7 +235,7 @@ fn obsidian_api_rules() -> Vec<ApiRule> {
 
         ApiRule::new("correlation.vault_read_plus_network")
             .label("Reads vault data and uses network")
-            .category(ApiCategory::Correlation)
+            .category(ApiCategory::Network)
             .severity(ApiSeverity::Warning)
             .confidence(Confidence::Medium)
             .when_all([
@@ -251,7 +251,7 @@ Suggested Rust types:
 
 - [ ] `ApiRule`: finished immutable rule consumed by the analyzer.
 - [ ] `ApiRuleBuilder`: fluent builder returned by `ApiRule::new(id)`.
-- [ ] `ApiCategory`: enum for `Network`, `Vault`, `Metadata`, `Workspace`, `Editor`, `Ui`, `Settings`, `Lifecycle`, `Filesystem`, `Electron`, `Browser`, `Dependency`, `DynamicCode`, and `Correlation`.
+- [ ] `ApiCategory`: enum for `Network`, `Vault`, `Metadata`, `Workspace`, `Editor`, `Ui`, `Settings`, `Lifecycle`, `Filesystem`, `Electron`, `Browser`, `Dependency`, and `DynamicCode`.
 - [ ] `ApiSeverity`: enum for `Info`, `Notice`, `Warning`, and `Critical`.
 - [ ] `Confidence`: enum for `High`, `Medium`, and `Low`.
 - [ ] `ApiMatcher`: typed matcher collection with calls, member calls, member reads, imports, string literals, classes, and constructor calls.

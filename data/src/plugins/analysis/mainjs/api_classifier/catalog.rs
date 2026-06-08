@@ -14,7 +14,7 @@ fn build_obsidian_api_rules() -> Vec<ApiRule> {
         ApiRule::builder("network.browser")
             .label("Uses browser network APIs")
             .category(ApiCategory::Network)
-            .severity(ApiSeverity::Notice)
+            .severity(ApiSeverity::Info)
             .confidence(Confidence::High)
             .global_calls(["fetch"])
             .rooted_member_calls(["navigator.sendBeacon"])
@@ -24,7 +24,7 @@ fn build_obsidian_api_rules() -> Vec<ApiRule> {
         ApiRule::builder("network.obsidian")
             .label("Uses Obsidian request APIs")
             .category(ApiCategory::Network)
-            .severity(ApiSeverity::Notice)
+            .severity(ApiSeverity::Info)
             .confidence(Confidence::High)
             .module_calls("obsidian", ["request", "requestUrl"])
             .module_member_calls("obsidian", ["request", "requestUrl"])
@@ -36,7 +36,7 @@ fn build_obsidian_api_rules() -> Vec<ApiRule> {
         ApiRule::builder("network.node")
             .label("Uses Node HTTP modules")
             .category(ApiCategory::Network)
-            .severity(ApiSeverity::Notice)
+            .severity(ApiSeverity::Info)
             .confidence(Confidence::High)
             .imports(["http", "https", "node:http", "node:https"])
             .implies(["disclosure.network_access"])
@@ -100,7 +100,7 @@ fn build_obsidian_api_rules() -> Vec<ApiRule> {
         ApiRule::builder("network.ai_provider")
             .label("References AI provider endpoints or SDKs")
             .category(ApiCategory::Network)
-            .severity(ApiSeverity::Notice)
+            .severity(ApiSeverity::Info)
             .confidence(Confidence::Medium)
             .imports([
                 "openai",
@@ -128,7 +128,7 @@ fn build_obsidian_api_rules() -> Vec<ApiRule> {
         ApiRule::builder("network.sync_storage_provider")
             .label("References sync or storage provider endpoints or SDKs")
             .category(ApiCategory::Network)
-            .severity(ApiSeverity::Notice)
+            .severity(ApiSeverity::Info)
             .confidence(Confidence::Medium)
             .imports([
                 "@supabase/supabase-js",
@@ -164,7 +164,7 @@ fn build_obsidian_api_rules() -> Vec<ApiRule> {
         ApiRule::builder("network.telemetry")
             .label("References telemetry or analytics SDKs")
             .category(ApiCategory::Network)
-            .severity(ApiSeverity::Notice)
+            .severity(ApiSeverity::Info)
             .confidence(Confidence::Medium)
             .imports([
                 "@sentry/browser",
@@ -233,7 +233,7 @@ fn build_obsidian_api_rules() -> Vec<ApiRule> {
         ApiRule::builder("vault.write")
             .label("Writes vault files")
             .category(ApiCategory::Vault)
-            .severity(ApiSeverity::Notice)
+            .severity(ApiSeverity::Info)
             .confidence(Confidence::High)
             .rooted_member_calls([
                 "this.app.vault.create",
@@ -310,7 +310,7 @@ fn build_obsidian_api_rules() -> Vec<ApiRule> {
         ApiRule::builder("vault.adapter")
             .label("Uses adapter-level vault filesystem APIs")
             .category(ApiCategory::Vault)
-            .severity(ApiSeverity::Notice)
+            .severity(ApiSeverity::Info)
             .confidence(Confidence::High)
             .rooted_member_calls([
                 "this.app.vault.adapter.read",
@@ -342,7 +342,7 @@ fn build_obsidian_api_rules() -> Vec<ApiRule> {
         ApiRule::builder("vault.obsidian_config")
             .label("References .obsidian configuration paths")
             .category(ApiCategory::Vault)
-            .severity(ApiSeverity::Notice)
+            .severity(ApiSeverity::Info)
             .confidence(Confidence::Medium)
             .string_literals([".obsidian/", ".obsidian\\"])
             .implies(["disclosure.obsidian_config_access"])
@@ -575,7 +575,7 @@ fn build_obsidian_api_rules() -> Vec<ApiRule> {
         ApiRule::builder("ui.file_dialog")
             .label("Uses file dialogs or DOM file inputs")
             .category(ApiCategory::Ui)
-            .severity(ApiSeverity::Notice)
+            .severity(ApiSeverity::Info)
             .confidence(Confidence::Medium)
             .member_calls(["dialog.showOpenDialog", "dialog.showSaveDialog"])
             .custom_ast("dom_file_input", custom_matchers::dom_file_input)
@@ -689,7 +689,7 @@ fn build_obsidian_api_rules() -> Vec<ApiRule> {
         ApiRule::builder("plugins.internal_access")
             .label("Accesses plugin internals or other plugins")
             .category(ApiCategory::Dependency)
-            .severity(ApiSeverity::Notice)
+            .severity(ApiSeverity::Info)
             .confidence(Confidence::Medium)
             .member_reads([
                 "this.app.plugins",
@@ -794,7 +794,7 @@ fn build_obsidian_api_rules() -> Vec<ApiRule> {
         ApiRule::builder("browser.clipboard")
             .label("Reads or writes clipboard data")
             .category(ApiCategory::Browser)
-            .severity(ApiSeverity::Notice)
+            .severity(ApiSeverity::Info)
             .confidence(Confidence::High)
             .rooted_member_calls([
                 "navigator.clipboard.read",
@@ -863,7 +863,7 @@ fn build_obsidian_api_rules() -> Vec<ApiRule> {
         ApiRule::builder("browser.broad_input_hooks")
             .label("Registers broad keyboard handlers or clipboard hooks")
             .category(ApiCategory::Browser)
-            .severity(ApiSeverity::Notice)
+            .severity(ApiSeverity::Info)
             .confidence(Confidence::Medium)
             .member_call("document.addEventListener")
             .arg_string(0, ["keydown", "keyup", "paste", "copy", "cut"])
@@ -899,7 +899,7 @@ fn build_obsidian_api_rules() -> Vec<ApiRule> {
         ApiRule::builder("dynamic_code")
             .label("Evaluates dynamic code or injects scripts")
             .category(ApiCategory::DynamicCode)
-            .severity(ApiSeverity::Critical)
+            .severity(ApiSeverity::Warning)
             .confidence(Confidence::High)
             .calls(["import"])
             .global_calls(["eval"])

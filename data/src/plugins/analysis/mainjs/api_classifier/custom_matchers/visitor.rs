@@ -1,103 +1,24 @@
 use std::collections::{BTreeMap, BTreeSet};
 
 use swc_ecma_ast::{
-    AssignExpr, AssignTarget, CallExpr, Callee, ClassMethod, Expr, FnDecl, MemberExpr, NewExpr,
-    Pat, PropName, SimpleAssignTarget, VarDeclarator,
+    AssignExpr, CallExpr, Callee, ClassMethod, Expr, FnDecl, MemberExpr, NewExpr, VarDeclarator,
 };
 use swc_ecma_visit::{Visit, VisitWith};
 
-use super::context::ApiMatchContext;
-use super::result::{ApiEvidence, ApiMatchKind};
-use super::symbol_index::{AliasInfo, BindingKey, expr_name, member_chain, member_prop_name};
+use super::super::symbol_index::{
+    AliasInfo, BindingKey, SymbolCallProvenance, expr_name, member_prop_name,
+};
+use super::SemanticIndex;
+use super::ast::{
+    assigned_ident, assigned_member, binding_ident, call_member_callee, create_element_tag,
+    expr_contains_remote_url, expr_ident, ident_arg, is_append_child_call, is_metadata_cache_call,
+    is_string_timer_call, prop_name, string_arg, string_expr,
+};
 
-#[derive(Debug, Default)]
-pub(super) struct SemanticIndex {
-    remote_resource_appends: BTreeSet<String>,
-    script_appends: BTreeSet<BindingKey>,
-    file_inputs: BTreeSet<BindingKey>,
-    adapter_operations: BTreeSet<String>,
-    metadata_properties: BTreeSet<String>,
-    dynamic_code_sites: BTreeSet<String>,
-    lifecycle_methods: BTreeSet<String>,
-}
-
-impl SemanticIndex {
-    pub(super) fn collect(program: &swc_ecma_ast::Program, aliases: &AliasInfo) -> Self {
-        let mut visitor = SemanticVisitor::new(aliases);
-        program.visit_with(&mut visitor);
-        visitor.index
-    }
-}
-
-pub(super) fn remote_dom_loading(context: &ApiMatchContext<'_>) -> Vec<ApiEvidence> {
-    context
-        .semantics
-        .remote_resource_appends
-        .iter()
-        .map(|tag| custom_evidence(format!("remote_dom_loading:{tag}")))
-        .collect()
-}
-
-pub(super) fn remote_dom_script_injection(context: &ApiMatchContext<'_>) -> Vec<ApiEvidence> {
-    context
-        .semantics
-        .script_appends
-        .iter()
-        .map(|binding| custom_evidence(format!("remote_dom_script_injection:{binding}")))
-        .collect()
-}
-
-pub(super) fn dom_file_input(context: &ApiMatchContext<'_>) -> Vec<ApiEvidence> {
-    context
-        .semantics
-        .file_inputs
-        .iter()
-        .map(|binding| custom_evidence(format!("dom_file_input:{binding}")))
-        .collect()
-}
-
-pub(super) fn adapter_operation(context: &ApiMatchContext<'_>) -> Vec<ApiEvidence> {
-    context
-        .semantics
-        .adapter_operations
-        .iter()
-        .map(|operation| custom_evidence(format!("vault_adapter:{operation}")))
-        .collect()
-}
-
-pub(super) fn metadata_cache_extraction(context: &ApiMatchContext<'_>) -> Vec<ApiEvidence> {
-    context
-        .semantics
-        .metadata_properties
-        .iter()
-        .map(|property| custom_evidence(format!("metadata_cache:{property}")))
-        .collect()
-}
-
-pub(super) fn dynamic_code_execution(context: &ApiMatchContext<'_>) -> Vec<ApiEvidence> {
-    context
-        .semantics
-        .dynamic_code_sites
-        .iter()
-        .map(|site| custom_evidence(format!("dynamic_code:{site}")))
-        .collect()
-}
-
-pub(super) fn lifecycle_methods(context: &ApiMatchContext<'_>) -> Vec<ApiEvidence> {
-    context
-        .semantics
-        .lifecycle_methods
-        .iter()
-        .map(|method| custom_evidence(format!("lifecycle_method:{method}")))
-        .collect()
-}
-
-fn custom_evidence(symbol: String) -> ApiEvidence {
-    ApiEvidence {
-        kind: ApiMatchKind::CustomAst,
-        symbol,
-        count: 1,
-    }
+pub(super) fn collect(program: &swc_ecma_ast::Program, aliases: &AliasInfo) -> SemanticIndex {
+    let mut visitor = SemanticVisitor::new(aliases);
+    program.visit_with(&mut visitor);
+    visitor.index
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
@@ -222,8 +143,7 @@ impl<'a> SemanticVisitor<'a> {
                 let binding = self.binding(ident);
                 self.dynamic_callables.get(&binding).copied().or_else(|| {
                     let name = ident.sym.as_ref();
-                    (self.aliases.call_provenance(name, ident.span)
-                        == super::symbol_index::SymbolCallProvenance::Global)
+                    (self.aliases.call_provenance(name, ident.span) == SymbolCallProvenance::Global)
                         .then_some(match name {
                             "eval" => Some(DynamicCallable::Eval),
                             "Function" => Some(DynamicCallable::FunctionConstructor),
@@ -511,160 +431,3 @@ const METADATA_PROPS: &[&str] = &[
     "sections",
     "listItems",
 ];
-
-fn binding_ident(pat: &Pat) -> Option<&swc_ecma_ast::BindingIdent> {
-    match pat {
-        Pat::Ident(ident) => Some(ident),
-        _ => None,
-    }
-}
-
-fn create_element_tag(expr: &Expr) -> Option<String> {
-    let Expr::Call(call) = expr else {
-        return None;
-    };
-    let member = call_member_callee(call)?;
-    if member_chain(member).as_deref() != Some("document.createElement") {
-        return None;
-    }
-    string_arg(call, 0)
-}
-
-fn prop_name(name: &PropName) -> Option<String> {
-    match name {
-        PropName::Ident(ident) => Some(ident.sym.to_string()),
-        PropName::Str(value) => Some(value.value.to_string_lossy().to_string()),
-        PropName::Computed(computed) => string_expr(&computed.expr),
-        PropName::Num(_) | PropName::BigInt(_) => None,
-    }
-}
-
-fn is_string_timer_call(call: &CallExpr, aliases: &AliasInfo) -> bool {
-    if call
-        .args
-        .first()
-        .and_then(|argument| string_expr(&argument.expr))
-        .is_none()
-    {
-        return false;
-    }
-
-    let Callee::Expr(callee) = &call.callee else {
-        return false;
-    };
-    match &**callee {
-        Expr::Ident(ident) => {
-            matches!(ident.sym.as_ref(), "setTimeout" | "setInterval")
-                && aliases.call_provenance(ident.sym.as_ref(), ident.span)
-                    == super::symbol_index::SymbolCallProvenance::Global
-        }
-        Expr::Member(member) => aliases.rooted_member_chain(member).is_some_and(|chain| {
-            matches!(
-                chain.as_str(),
-                "globalThis.setTimeout"
-                    | "globalThis.setInterval"
-                    | "window.setTimeout"
-                    | "window.setInterval"
-                    | "self.setTimeout"
-                    | "self.setInterval"
-            )
-        }),
-        _ => false,
-    }
-}
-
-fn is_metadata_cache_call(expr: &Expr) -> bool {
-    let Expr::Call(call) = expr else {
-        return false;
-    };
-    call_member_callee(call)
-        .and_then(member_chain)
-        .is_some_and(|chain| {
-            matches!(
-                chain.as_str(),
-                "this.app.metadataCache.getFileCache"
-                    | "app.metadataCache.getFileCache"
-                    | "this.app.metadataCache.getCache"
-                    | "app.metadataCache.getCache"
-            )
-        })
-}
-
-fn is_append_child_call(call: &CallExpr) -> bool {
-    call_member_callee(call)
-        .and_then(member_chain)
-        .is_some_and(|chain| {
-            matches!(
-                chain.as_str(),
-                "document.body.appendChild"
-                    | "document.head.appendChild"
-                    | "document.documentElement.appendChild"
-                    | "document.body.append"
-                    | "document.head.append"
-                    | "document.documentElement.append"
-                    | "document.body.prepend"
-                    | "document.head.prepend"
-                    | "document.documentElement.prepend"
-                    | "document.body.insertBefore"
-                    | "document.head.insertBefore"
-                    | "document.documentElement.insertBefore"
-            )
-        })
-}
-
-fn call_member_callee(call: &CallExpr) -> Option<&MemberExpr> {
-    let Callee::Expr(callee) = &call.callee else {
-        return None;
-    };
-    let Expr::Member(member) = &**callee else {
-        return None;
-    };
-    Some(member)
-}
-
-fn assigned_ident(target: &AssignTarget) -> Option<&swc_ecma_ast::Ident> {
-    let AssignTarget::Simple(SimpleAssignTarget::Ident(ident)) = target else {
-        return None;
-    };
-    Some(&ident.id)
-}
-
-fn assigned_member(target: &AssignTarget) -> Option<(&swc_ecma_ast::Ident, String)> {
-    let AssignTarget::Simple(SimpleAssignTarget::Member(member)) = target else {
-        return None;
-    };
-    Some((expr_ident(&member.obj)?, member_prop_name(&member.prop)?))
-}
-
-fn string_arg(call: &CallExpr, index: usize) -> Option<String> {
-    string_expr(&call.args.get(index)?.expr)
-}
-
-fn ident_arg(call: &CallExpr, index: usize) -> Option<&swc_ecma_ast::Ident> {
-    expr_ident(&call.args.get(index)?.expr)
-}
-
-fn expr_ident(expr: &Expr) -> Option<&swc_ecma_ast::Ident> {
-    match expr {
-        Expr::Ident(ident) => Some(ident),
-        Expr::Paren(paren) => expr_ident(&paren.expr),
-        _ => None,
-    }
-}
-
-fn string_expr(expr: &Expr) -> Option<String> {
-    match expr {
-        Expr::Lit(swc_ecma_ast::Lit::Str(value)) => Some(value.value.to_string_lossy().to_string()),
-        Expr::Tpl(tpl) if tpl.exprs.is_empty() && tpl.quasis.len() == 1 => {
-            tpl.quasis.first().map(|quasi| quasi.raw.to_string())
-        }
-        Expr::Paren(paren) => string_expr(&paren.expr),
-        _ => None,
-    }
-}
-
-fn expr_contains_remote_url(expr: &Expr) -> bool {
-    string_expr(expr)
-        .as_deref()
-        .is_some_and(|value| value.starts_with("https://") || value.starts_with("http://"))
-}

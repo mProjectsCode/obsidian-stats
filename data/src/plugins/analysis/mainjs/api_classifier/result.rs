@@ -65,6 +65,23 @@ impl ApiClassificationResult {
     }
 }
 
+impl ApiMatchKind {
+    pub(in crate::plugins::analysis) fn as_str(self) -> &'static str {
+        match self {
+            Self::Call => "call",
+            Self::MemberCall => "member_call",
+            Self::MemberRead => "member_read",
+            Self::Import => "import",
+            Self::StringLiteral => "string_literal",
+            Self::Class => "class",
+            Self::Constructor => "constructor",
+            Self::CallArgument => "call_argument",
+            Self::CustomAst => "custom_ast",
+            Self::Correlation => "correlation",
+        }
+    }
+}
+
 impl ApiCapability {
     pub(in crate::plugins::analysis) fn id(&self) -> &str {
         &self.id

@@ -1,16 +1,11 @@
 use data_lib::plugin::{
-    LicenseInfo, PluginManifest, PluginRepoAnalysisError, bundlers::Bundler,
+    LicenseInfo, PluginManifest, PluginRepoAnalysisError, PluginRepoData, bundlers::Bundler,
     packages::PackageManager, testing::TestingFramework,
 };
 use hashbrown::HashMap;
 use std::collections::BTreeMap;
 
 use super::mainjs::api_classifier::ApiClassificationResult;
-
-#[derive(Debug, Default)]
-pub(super) struct AnalysisResult {
-    pub(super) mainjs: MainJsResult,
-}
 
 #[derive(Debug)]
 pub(super) struct RepoResult {
@@ -31,6 +26,61 @@ pub(super) struct RepoResult {
     pub(super) has_i18n_dependencies: bool,
     pub(super) has_i18n_files: bool,
     pub(super) analysis_errors: Vec<PluginRepoAnalysisError>,
+}
+
+impl RepoResult {
+    pub(super) fn into_plugin_repo_data(self) -> PluginRepoData {
+        PluginRepoData {
+            uses_typescript: self.uses_typescript,
+            has_package_json: self.has_package_json,
+            package_managers: self.package_managers,
+            testing_frameworks: self.testing_frameworks,
+            bundlers: self.bundlers,
+            dependencies: self.dependencies,
+            dev_dependencies: self.dev_dependencies,
+            has_test_files: self.has_test_files,
+            has_beta_manifest: self.has_beta_manifest,
+            file_type_counts: self.file_type_counts,
+            package_json_license: self.package_json_license,
+            file_license: self.file_license,
+            manifest: self.manifest,
+            lines_of_code: self.lines_of_code,
+            has_i18n_dependencies: self.has_i18n_dependencies,
+            has_i18n_files: self.has_i18n_files,
+            latest_release_main_js_size_bytes: None,
+            main_js_parse_succeeded: None,
+            main_js_tolerant_parse_required: None,
+            estimated_target_es_version: None,
+            main_js_is_probably_minified: None,
+            main_js_minification_score: None,
+            main_js_includes_sourcemap_comment: None,
+            main_js_includes_inline_sourcemap: None,
+            main_js_large_base64_blob_count: None,
+            main_js_largest_base64_blob_length: None,
+            main_js_embedded_blob_type_counts: HashMap::new(),
+            main_js_worker_usage_count: None,
+            main_js_webassembly_usage_count: None,
+            main_js_dynamic_import_usage_count: None,
+            main_js_bundler_fingerprints: Vec::new(),
+            main_js_module_system_fingerprints: Vec::new(),
+            main_js_size_bucket: None,
+            main_js_line_count_bucket: None,
+            main_js_uses_optional_chaining: None,
+            main_js_uses_nullish_coalescing: None,
+            main_js_uses_private_fields: None,
+            main_js_uses_top_level_await: None,
+            main_js_known_api_host_counts: HashMap::new(),
+            main_js_embedded_dependency_name_counts: HashMap::new(),
+            main_js_license_banner_count: None,
+            main_js_credential_literal_count: None,
+            main_js_api_capabilities: Vec::new(),
+            main_js_api_disclosures: Vec::new(),
+            latest_release_tag: None,
+            latest_release_published_at: None,
+            latest_release_fetch_status: None,
+            analysis_errors: self.analysis_errors,
+        }
+    }
 }
 
 #[derive(Debug, Default)]

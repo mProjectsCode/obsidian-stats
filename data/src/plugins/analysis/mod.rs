@@ -28,6 +28,7 @@ use crate::{
 };
 
 mod mainjs;
+mod output;
 mod pipeline;
 mod repo;
 mod repo_analysis;

@@ -9,8 +9,8 @@
 
 	const { dataPoints }: Props = $props();
 
-	const severityOrder = ['Info', 'Notice', 'Warning', 'Critical'];
-	const severityColors = ['var(--sl-color-text-accent)', 'var(--sl-color-green-high)', 'var(--sl-color-orange)', 'var(--sl-color-red)'];
+	const severityOrder = ['Info', 'Warning'];
+	const severityColors = ['var(--sl-color-text-accent)', 'var(--sl-color-orange)'];
 
 	const categoryTotals = $derived.by(() => {
 		const totals = new Map<string, number>();
