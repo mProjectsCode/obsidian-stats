@@ -157,6 +157,36 @@ impl AliasCollector {
         }
     }
 
+    fn module_alias_provenance(&self, expr: &Expr) -> Option<BindingProvenance> {
+        match expr {
+            Expr::Ident(ident) => match self.visible_binding(ident.sym.as_ref())? {
+                provenance @ (BindingProvenance::ModuleExport { .. }
+                | BindingProvenance::ModuleNamespace { .. }) => Some(provenance.clone()),
+                BindingProvenance::Local | BindingProvenance::ValueAlias { .. } => None,
+            },
+            Expr::Member(member) => {
+                let Expr::Ident(root) = &*member.obj else {
+                    return None;
+                };
+                let BindingProvenance::ModuleNamespace { module } =
+                    self.visible_binding(root.sym.as_ref())?
+                else {
+                    return None;
+                };
+                Some(BindingProvenance::ModuleExport {
+                    module: module.clone(),
+                    export: member_prop_name(&member.prop)?,
+                })
+            }
+            Expr::Paren(paren) => self.module_alias_provenance(&paren.expr),
+            Expr::Seq(sequence) => sequence
+                .exprs
+                .last()
+                .and_then(|expr| self.module_alias_provenance(expr)),
+            _ => None,
+        }
+    }
+
     pub(super) fn parameter_aliases(&self) -> BTreeMap<(usize, String), BindingProvenance> {
         let mut aliases = BTreeMap::<(usize, String), Option<String>>::new();
         for (callee, arguments) in &self.calls {
@@ -220,6 +250,10 @@ impl Visit for AliasCollector {
     fn visit_var_decl(&mut self, var_decl: &VarDecl) {
         let scope = self.binding_scope(var_decl.kind);
         for declarator in &var_decl.decls {
+            let module_alias = declarator
+                .init
+                .as_deref()
+                .and_then(|init| self.module_alias_provenance(init));
             let value_alias = declarator
                 .init
                 .as_deref()
@@ -229,6 +263,8 @@ impl Visit for AliasCollector {
                 && let Some(module) = require_module_name(init)
             {
                 collect_require_aliases(&declarator.name, module, scope, self);
+            } else if let (Pat::Ident(ident), Some(provenance)) = (&declarator.name, module_alias) {
+                self.insert(scope, ident.id.sym.to_string(), provenance);
             } else if let Some(target) = value_alias {
                 collect_value_aliases(&declarator.name, &target, scope, self);
             }
@@ -238,8 +274,11 @@ impl Visit for AliasCollector {
 
     fn visit_assign_expr(&mut self, assignment: &AssignExpr) {
         let provenance = self
-            .rooted_expr_name(&assignment.right)
-            .map(|target| BindingProvenance::ValueAlias { target })
+            .module_alias_provenance(&assignment.right)
+            .or_else(|| {
+                self.rooted_expr_name(&assignment.right)
+                    .map(|target| BindingProvenance::ValueAlias { target })
+            })
             .unwrap_or(BindingProvenance::Local);
         match &assignment.left {
             AssignTarget::Simple(SimpleAssignTarget::Ident(ident)) => {

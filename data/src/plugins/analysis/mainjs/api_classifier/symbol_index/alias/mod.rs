@@ -141,10 +141,10 @@ impl AliasInfo {
         member: &MemberExpr,
     ) -> Option<SymbolMemberProvenance> {
         let chain = member_chain(member)?;
-        self.member_call_provenance_from_raw(member, &chain)
+        self.member_call_provenance_for_chain(member, &chain)
     }
 
-    pub(super) fn member_call_provenance_from_raw(
+    pub(super) fn member_call_provenance_for_chain(
         &self,
         member: &MemberExpr,
         chain: &str,
@@ -206,17 +206,17 @@ impl AliasInfo {
         &self,
         member: &MemberExpr,
     ) -> Option<String> {
-        let raw = member_chain(member)?;
-        self.rooted_member_chain_from_raw(member, &raw)
+        let syntactic_chain = member_chain(member)?;
+        self.resolve_member_chain(member, &syntactic_chain)
     }
 
-    pub(super) fn rooted_member_chain_from_raw(
+    pub(super) fn resolve_member_chain(
         &self,
         member: &MemberExpr,
-        raw: &str,
+        syntactic_chain: &str,
     ) -> Option<String> {
-        for prefix_end in member_prefix_ends(raw) {
-            let property = &raw[..prefix_end];
+        for prefix_end in member_prefix_ends(syntactic_chain) {
+            let property = &syntactic_chain[..prefix_end];
             let Some(assignments) = self.property_assignments.get(property) else {
                 continue;
             };
@@ -228,13 +228,15 @@ impl AliasInfo {
                 .find(|assignment| contains(self.scopes[assignment.scope].span, member.span))
             {
                 let target = assignment.target.as_ref()?;
-                return Some(format!("{target}{}", &raw[prefix_end..]));
+                return Some(format!("{target}{}", &syntactic_chain[prefix_end..]));
             }
         }
         let Some(root) = member_root_ident(member) else {
-            return raw.starts_with("this.").then(|| raw.to_string());
+            return syntactic_chain
+                .starts_with("this.")
+                .then(|| syntactic_chain.to_string());
         };
-        let suffix = raw.strip_prefix(root.sym.as_ref())?;
+        let suffix = syntactic_chain.strip_prefix(root.sym.as_ref())?;
         match self.binding_at(root.sym.as_ref(), root.span) {
             Some(BindingProvenance::ValueAlias { target }) => Some(format!("{target}{suffix}")),
             Some(
@@ -242,7 +244,7 @@ impl AliasInfo {
                 | BindingProvenance::ModuleExport { .. }
                 | BindingProvenance::ModuleNamespace { .. },
             ) => None,
-            None => Some(raw.to_string()),
+            None => Some(syntactic_chain.to_string()),
         }
     }
 

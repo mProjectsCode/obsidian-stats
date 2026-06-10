@@ -6,13 +6,13 @@ use swc_ecma_ast::{
 use swc_ecma_visit::{Visit, VisitWith};
 
 use super::super::symbol_index::{
-    AliasInfo, BindingKey, SymbolCallProvenance, expr_name, member_prop_name,
+    AliasInfo, BindingKey, SymbolCallProvenance, member_prop_name, static_string,
 };
 use super::SemanticIndex;
 use super::ast::{
     assigned_ident, assigned_member, binding_ident, call_member_callee, create_element_tag,
     expr_contains_remote_url, expr_ident, ident_arg, is_append_child_call, is_metadata_cache_call,
-    is_string_timer_call, prop_name, string_arg, string_expr,
+    is_string_timer_call, prop_name, string_arg,
 };
 
 pub(super) fn collect(program: &swc_ecma_ast::Program, aliases: &AliasInfo) -> SemanticIndex {
@@ -45,7 +45,6 @@ struct SemanticVisitor<'a> {
     remote_resources: BTreeMap<BindingKey, String>,
     remote_resource_bindings: BTreeSet<BindingKey>,
     inputs: BTreeSet<BindingKey>,
-    adapters: BTreeSet<BindingKey>,
     caches: BTreeSet<BindingKey>,
     dynamic_callables: BTreeMap<BindingKey, DynamicCallable>,
     function_effects: BTreeMap<BindingKey, BTreeMap<usize, BTreeSet<ParameterEffect>>>,
@@ -62,7 +61,6 @@ impl<'a> SemanticVisitor<'a> {
             remote_resources: BTreeMap::new(),
             remote_resource_bindings: BTreeSet::new(),
             inputs: BTreeSet::new(),
-            adapters: BTreeSet::new(),
             caches: BTreeSet::new(),
             dynamic_callables: BTreeMap::new(),
             function_effects: BTreeMap::new(),
@@ -80,7 +78,6 @@ impl<'a> SemanticVisitor<'a> {
         self.remote_resources.remove(binding);
         self.remote_resource_bindings.remove(binding);
         self.inputs.remove(binding);
-        self.adapters.remove(binding);
         self.caches.remove(binding);
         self.dynamic_callables.remove(binding);
     }
@@ -100,13 +97,6 @@ impl<'a> SemanticVisitor<'a> {
                 }
                 _ => {}
             }
-        } else if expr_name(value).is_some_and(|name| {
-            matches!(
-                name.as_str(),
-                "this.app.vault.adapter" | "app.vault.adapter"
-            )
-        }) {
-            self.adapters.insert(binding);
         } else if is_metadata_cache_call(value) {
             self.caches.insert(binding);
         } else if let Some(callable) = self.dynamic_callable(value) {
@@ -127,9 +117,6 @@ impl<'a> SemanticVisitor<'a> {
             }
             if self.inputs.contains(&source) {
                 self.inputs.insert(binding.clone());
-            }
-            if self.adapters.contains(&source) {
-                self.adapters.insert(binding.clone());
             }
             if self.caches.contains(&source) {
                 self.caches.insert(binding);
@@ -337,7 +324,7 @@ impl Visit for SemanticVisitor<'_> {
             }
             if property == "type"
                 && self.inputs.contains(&object)
-                && string_expr(&assign.right).as_deref() == Some("file")
+                && static_string(&assign.right).as_deref() == Some("file")
             {
                 self.index.file_inputs.insert(object);
             }
@@ -383,16 +370,6 @@ impl Visit for SemanticVisitor<'_> {
             self.remote_scripts.insert(object);
         }
 
-        if let Some(member) = call_member_callee(call)
-            && let Some(ident) = expr_ident(&member.obj)
-            && let object = self.binding(ident)
-            && self.adapters.contains(&object)
-            && let Some(operation) = member_prop_name(&member.prop)
-            && ADAPTER_OPS.contains(&operation.as_str())
-        {
-            self.index.adapter_operations.insert(operation);
-        }
-
         self.apply_function_effects(call);
         call.visit_children_with(self);
     }
@@ -416,11 +393,6 @@ impl Visit for SemanticVisitor<'_> {
         member.visit_children_with(self);
     }
 }
-
-const ADAPTER_OPS: &[&str] = &[
-    "read", "write", "append", "mkdir", "rmdir", "remove", "rename", "copy", "exists", "list",
-    "stat",
-];
 
 const METADATA_PROPS: &[&str] = &[
     "tags",

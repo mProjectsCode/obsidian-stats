@@ -8,7 +8,7 @@ mod taxonomy;
 pub(super) use error::{ApiCatalogError, ApiRuleBuildError};
 pub(super) use matcher::{
     ApiMatcher, ArgStringMatcher, CallMatcher, CallProvenance, CustomMatcher, MemberCallMatcher,
-    MemberCallProvenance,
+    MemberCallProvenance, canonical_rooted_chain,
 };
 pub(in crate::plugins::analysis) use taxonomy::{ApiCategory, ApiSeverity, Confidence};
 

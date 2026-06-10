@@ -213,7 +213,7 @@ fn build_obsidian_api_rules() -> Vec<ApiRule> {
             .category(ApiCategory::Vault)
             .severity(ApiSeverity::Info)
             .confidence(Confidence::High)
-            .member_reads(["this.app.vault", "app.vault"])
+            .member_reads(["app.vault"])
             .build(),
         ApiRule::builder("vault.read")
             .label("Reads vault files")
@@ -221,9 +221,6 @@ fn build_obsidian_api_rules() -> Vec<ApiRule> {
             .severity(ApiSeverity::Info)
             .confidence(Confidence::High)
             .rooted_member_calls([
-                "this.app.vault.read",
-                "this.app.vault.cachedRead",
-                "this.app.vault.readBinary",
                 "app.vault.read",
                 "app.vault.cachedRead",
                 "app.vault.readBinary",
@@ -236,11 +233,6 @@ fn build_obsidian_api_rules() -> Vec<ApiRule> {
             .severity(ApiSeverity::Info)
             .confidence(Confidence::High)
             .rooted_member_calls([
-                "this.app.vault.create",
-                "this.app.vault.createBinary",
-                "this.app.vault.modify",
-                "this.app.vault.modifyBinary",
-                "this.app.vault.append",
                 "app.vault.create",
                 "app.vault.createBinary",
                 "app.vault.modify",
@@ -255,10 +247,6 @@ fn build_obsidian_api_rules() -> Vec<ApiRule> {
             .severity(ApiSeverity::Warning)
             .confidence(Confidence::High)
             .rooted_member_calls([
-                "this.app.vault.delete",
-                "this.app.vault.trash",
-                "this.app.vault.rename",
-                "this.app.vault.copy",
                 "app.vault.delete",
                 "app.vault.trash",
                 "app.vault.rename",
@@ -272,9 +260,6 @@ fn build_obsidian_api_rules() -> Vec<ApiRule> {
             .severity(ApiSeverity::Info)
             .confidence(Confidence::High)
             .rooted_member_calls([
-                "this.app.vault.getFiles",
-                "this.app.vault.getMarkdownFiles",
-                "this.app.vault.getAllLoadedFiles",
                 "app.vault.getFiles",
                 "app.vault.getMarkdownFiles",
                 "app.vault.getAllLoadedFiles",
@@ -287,9 +272,6 @@ fn build_obsidian_api_rules() -> Vec<ApiRule> {
             .severity(ApiSeverity::Info)
             .confidence(Confidence::High)
             .rooted_member_calls([
-                "this.app.vault.createFolder",
-                "this.app.vault.getFolderByPath",
-                "this.app.vault.getRoot",
                 "app.vault.createFolder",
                 "app.vault.getFolderByPath",
                 "app.vault.getRoot",
@@ -301,8 +283,6 @@ fn build_obsidian_api_rules() -> Vec<ApiRule> {
             .severity(ApiSeverity::Info)
             .confidence(Confidence::High)
             .rooted_member_calls([
-                "this.app.vault.getResourcePath",
-                "this.app.vault.adapter.getResourcePath",
                 "app.vault.getResourcePath",
                 "app.vault.adapter.getResourcePath",
             ])
@@ -312,31 +292,7 @@ fn build_obsidian_api_rules() -> Vec<ApiRule> {
             .category(ApiCategory::Vault)
             .severity(ApiSeverity::Info)
             .confidence(Confidence::High)
-            .rooted_member_calls([
-                "this.app.vault.adapter.read",
-                "this.app.vault.adapter.write",
-                "this.app.vault.adapter.append",
-                "this.app.vault.adapter.mkdir",
-                "this.app.vault.adapter.rmdir",
-                "this.app.vault.adapter.remove",
-                "this.app.vault.adapter.rename",
-                "this.app.vault.adapter.copy",
-                "this.app.vault.adapter.exists",
-                "this.app.vault.adapter.list",
-                "this.app.vault.adapter.stat",
-                "app.vault.adapter.read",
-                "app.vault.adapter.write",
-                "app.vault.adapter.append",
-                "app.vault.adapter.mkdir",
-                "app.vault.adapter.rmdir",
-                "app.vault.adapter.remove",
-                "app.vault.adapter.rename",
-                "app.vault.adapter.copy",
-                "app.vault.adapter.exists",
-                "app.vault.adapter.list",
-                "app.vault.adapter.stat",
-            ])
-            .custom_ast("adapter_operation", custom_matchers::adapter_operation)
+            .member_reads(["app.vault.adapter"])
             .implies(["disclosure.adapter_file_access"])
             .build(),
         ApiRule::builder("vault.obsidian_config")
@@ -360,10 +316,6 @@ fn build_obsidian_api_rules() -> Vec<ApiRule> {
             .severity(ApiSeverity::Info)
             .confidence(Confidence::High)
             .rooted_member_calls([
-                "this.app.workspace.openLinkText",
-                "this.app.workspace.getLeaf.openFile",
-                "this.app.fileManager.createNewMarkdownFile",
-                "this.app.fileManager.renameFile",
                 "app.workspace.openLinkText",
                 "app.workspace.getLeaf.openFile",
                 "app.fileManager.createNewMarkdownFile",
@@ -376,17 +328,11 @@ fn build_obsidian_api_rules() -> Vec<ApiRule> {
             .severity(ApiSeverity::Info)
             .confidence(Confidence::High)
             .member_reads([
-                "this.app.metadataCache",
                 "app.metadataCache",
-                "this.app.metadataCache.resolvedLinks",
-                "this.app.metadataCache.unresolvedLinks",
                 "app.metadataCache.resolvedLinks",
                 "app.metadataCache.unresolvedLinks",
             ])
             .rooted_member_calls([
-                "this.app.metadataCache.getFileCache",
-                "this.app.metadataCache.getCache",
-                "this.app.metadataCache.getFirstLinkpathDest",
                 "app.metadataCache.getFileCache",
                 "app.metadataCache.getCache",
                 "app.metadataCache.getFirstLinkpathDest",
@@ -399,10 +345,7 @@ fn build_obsidian_api_rules() -> Vec<ApiRule> {
             .severity(ApiSeverity::Info)
             .confidence(Confidence::Medium)
             .member_reads(["frontmatter"])
-            .rooted_member_calls([
-                "this.app.fileManager.processFrontMatter",
-                "app.fileManager.processFrontMatter",
-            ])
+            .rooted_member_calls(["app.fileManager.processFrontMatter"])
             .implies(["disclosure.metadata_access"])
             .build(),
         ApiRule::builder("metadata.events")
@@ -410,8 +353,6 @@ fn build_obsidian_api_rules() -> Vec<ApiRule> {
             .category(ApiCategory::Metadata)
             .severity(ApiSeverity::Info)
             .confidence(Confidence::Medium)
-            .rooted_member_calls(["this.app.metadataCache.on"])
-            .arg_string(0, ["changed", "deleted", "resolved"])
             .rooted_member_calls(["app.metadataCache.on"])
             .arg_string(0, ["changed", "deleted", "resolved"])
             .build(),
@@ -423,9 +364,6 @@ fn build_obsidian_api_rules() -> Vec<ApiRule> {
             // REVIEW: `Object.keys/values/entries` are not bound to metadataCache maps. This rule can
             // fire when a plugin reads one metadataCache property and uses Object traversal elsewhere.
             .member_reads([
-                "this.app.metadataCache.resolvedLinks",
-                "this.app.metadataCache.unresolvedLinks",
-                "this.app.metadataCache.fileCache",
                 "app.metadataCache.resolvedLinks",
                 "app.metadataCache.unresolvedLinks",
                 "app.metadataCache.fileCache",
@@ -455,7 +393,7 @@ fn build_obsidian_api_rules() -> Vec<ApiRule> {
             .category(ApiCategory::Workspace)
             .severity(ApiSeverity::Info)
             .confidence(Confidence::High)
-            .member_reads(["this.app.workspace", "app.workspace"])
+            .member_reads(["app.workspace"])
             .build(),
         ApiRule::builder("workspace.views")
             .label("Registers or manipulates workspace views and panes")
@@ -467,11 +405,6 @@ fn build_obsidian_api_rules() -> Vec<ApiRule> {
             // future call-argument/state matcher could separate read-only lookup from mutation.
             .rooted_member_calls([
                 "this.registerView",
-                "this.app.workspace.getLeaf",
-                "this.app.workspace.getLeavesOfType",
-                "this.app.workspace.detachLeavesOfType",
-                "this.app.workspace.setViewState",
-                "this.app.workspace.revealLeaf",
                 "app.workspace.getLeaf",
                 "app.workspace.getLeavesOfType",
                 "app.workspace.detachLeavesOfType",
@@ -485,14 +418,8 @@ fn build_obsidian_api_rules() -> Vec<ApiRule> {
             .category(ApiCategory::Workspace)
             .severity(ApiSeverity::Info)
             .confidence(Confidence::High)
-            .member_reads([
-                "this.app.workspace.activeEditor",
-                "app.workspace.activeEditor",
-            ])
-            .rooted_member_calls([
-                "this.app.workspace.getActiveFile",
-                "app.workspace.getActiveFile",
-            ])
+            .member_reads(["app.workspace.activeEditor"])
+            .rooted_member_calls(["app.workspace.getActiveFile"])
             .build(),
         ApiRule::builder("workspace.editor_commands")
             .label("Registers editor callbacks, menus, or command palette integrations")
@@ -517,9 +444,6 @@ fn build_obsidian_api_rules() -> Vec<ApiRule> {
             .severity(ApiSeverity::Info)
             .confidence(Confidence::Medium)
             .rooted_member_calls([
-                "this.app.workspace.getLayout",
-                "this.app.workspace.setLayout",
-                "this.app.workspace.requestSaveLayout",
                 "app.workspace.getLayout",
                 "app.workspace.setLayout",
                 "app.workspace.requestSaveLayout",
@@ -692,14 +616,11 @@ fn build_obsidian_api_rules() -> Vec<ApiRule> {
             .severity(ApiSeverity::Info)
             .confidence(Confidence::Medium)
             .member_reads([
-                "this.app.plugins",
                 "app.plugins",
-                "this.app.plugins.enabledPlugins",
                 "app.plugins.enabledPlugins",
-                "this.app.plugins.manifests",
                 "app.plugins.manifests",
             ])
-            .rooted_member_calls(["this.app.plugins.getPlugin", "app.plugins.getPlugin"])
+            .rooted_member_calls(["app.plugins.getPlugin"])
             .implies(["disclosure.plugin_internals"])
             .build(),
         ApiRule::builder("platform.branching")

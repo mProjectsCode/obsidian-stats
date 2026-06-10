@@ -226,17 +226,17 @@ fn argument_constrained_rules_are_collected_independently() {
 }
 
 #[test]
-fn adapter_alias_operation_matches_but_adapter_reference_alone_does_not_disclose() {
+fn adapter_access_matches_without_an_operation_allowlist() {
     let reference = r#"const adapter = this.app.vault.adapter;"#;
     let reference_program = parse_program(reference);
     let reference_result =
         classify_api_usage(reference, reference_program.as_ref(), obsidian_api_rules());
-    assert!(!reference_result.has_capability("vault.adapter"));
-    assert!(!reference_result.has_disclosure("disclosure.adapter_file_access"));
+    assert!(reference_result.has_capability("vault.adapter"));
+    assert!(reference_result.has_disclosure("disclosure.adapter_file_access"));
 
     let operation = r#"
             const adapter = this.app.vault.adapter;
-            await adapter.read("daily.md");
+            await adapter.someFutureMethod("daily.md");
         "#;
     let operation_program = parse_program(operation);
     let operation_result =
@@ -246,7 +246,7 @@ fn adapter_alias_operation_matches_but_adapter_reference_alone_does_not_disclose
 }
 
 #[test]
-fn adapter_flow_does_not_cross_sibling_function_bindings() {
+fn adapter_access_is_detected_even_without_a_later_operation() {
     let source = r#"
             function captureAdapter() {
                 const adapter = this.app.vault.adapter;
@@ -259,7 +259,7 @@ fn adapter_flow_does_not_cross_sibling_function_bindings() {
     let program = parse_program(source);
     let result = classify_api_usage(source, program.as_ref(), obsidian_api_rules());
 
-    assert!(!result.has_capability("vault.adapter"));
+    assert!(result.has_capability("vault.adapter"));
 }
 
 #[test]

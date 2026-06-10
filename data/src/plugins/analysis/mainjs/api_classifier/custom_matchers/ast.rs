@@ -2,7 +2,9 @@ use swc_ecma_ast::{
     AssignTarget, CallExpr, Callee, Expr, MemberExpr, Pat, PropName, SimpleAssignTarget,
 };
 
-use super::super::symbol_index::{AliasInfo, SymbolCallProvenance, member_chain, member_prop_name};
+use super::super::symbol_index::{
+    AliasInfo, SymbolCallProvenance, member_chain, member_prop_name, static_string,
+};
 
 pub(super) fn binding_ident(pat: &Pat) -> Option<&swc_ecma_ast::BindingIdent> {
     match pat {
@@ -26,7 +28,7 @@ pub(super) fn prop_name(name: &PropName) -> Option<String> {
     match name {
         PropName::Ident(ident) => Some(ident.sym.to_string()),
         PropName::Str(value) => Some(value.value.to_string_lossy().to_string()),
-        PropName::Computed(computed) => string_expr(&computed.expr),
+        PropName::Computed(computed) => static_string(&computed.expr),
         PropName::Num(_) | PropName::BigInt(_) => None,
     }
 }
@@ -35,7 +37,7 @@ pub(super) fn is_string_timer_call(call: &CallExpr, aliases: &AliasInfo) -> bool
     if call
         .args
         .first()
-        .and_then(|argument| string_expr(&argument.expr))
+        .and_then(|argument| static_string(&argument.expr))
         .is_none()
     {
         return false;
@@ -129,7 +131,7 @@ pub(super) fn assigned_member(target: &AssignTarget) -> Option<(&swc_ecma_ast::I
 }
 
 pub(super) fn string_arg(call: &CallExpr, index: usize) -> Option<String> {
-    string_expr(&call.args.get(index)?.expr)
+    static_string(&call.args.get(index)?.expr)
 }
 
 pub(super) fn ident_arg(call: &CallExpr, index: usize) -> Option<&swc_ecma_ast::Ident> {
@@ -144,19 +146,8 @@ pub(super) fn expr_ident(expr: &Expr) -> Option<&swc_ecma_ast::Ident> {
     }
 }
 
-pub(super) fn string_expr(expr: &Expr) -> Option<String> {
-    match expr {
-        Expr::Lit(swc_ecma_ast::Lit::Str(value)) => Some(value.value.to_string_lossy().to_string()),
-        Expr::Tpl(tpl) if tpl.exprs.is_empty() && tpl.quasis.len() == 1 => {
-            tpl.quasis.first().map(|quasi| quasi.raw.to_string())
-        }
-        Expr::Paren(paren) => string_expr(&paren.expr),
-        _ => None,
-    }
-}
-
 pub(super) fn expr_contains_remote_url(expr: &Expr) -> bool {
-    string_expr(expr)
+    static_string(expr)
         .as_deref()
         .is_some_and(|value| value.starts_with("https://") || value.starts_with("http://"))
 }

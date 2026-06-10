@@ -10,7 +10,7 @@ mod ast;
 mod visitor;
 
 pub(super) use alias::{AliasInfo, BindingKey};
-pub(super) use ast::{SymbolCallProvenance, expr_name, member_chain, member_prop_name};
+pub(super) use ast::{SymbolCallProvenance, member_chain, member_prop_name, static_string};
 
 #[derive(Debug, Default)]
 pub(super) struct SymbolIndex {

@@ -163,6 +163,9 @@ impl ApiMatcher {
 
         for member_call in &mut self.member_calls {
             member_call.chain = normalize_member_chain(&member_call.chain);
+            if member_call.provenance == MemberCallProvenance::Rooted {
+                member_call.chain = canonical_rooted_chain(&member_call.chain).to_string();
+            }
             if let MemberCallProvenance::ModuleNamespace { module } = &mut member_call.provenance {
                 *module = module.trim().to_string();
             }
@@ -214,6 +217,7 @@ fn normalize_member_chains(values: &mut Vec<String>) {
     values.retain(|value| !value.trim().is_empty());
     for value in values.iter_mut() {
         *value = normalize_member_chain(value);
+        *value = canonical_rooted_chain(value).to_string();
     }
     values.retain(|value| !value.is_empty());
     values.sort();
@@ -227,4 +231,10 @@ fn normalize_member_chain(value: &str) -> String {
         .filter(|segment| !segment.is_empty())
         .collect::<Vec<_>>()
         .join(".")
+}
+
+pub(in crate::plugins::analysis::mainjs::api_classifier) fn canonical_rooted_chain(
+    value: &str,
+) -> &str {
+    value.strip_prefix("this.").unwrap_or(value)
 }

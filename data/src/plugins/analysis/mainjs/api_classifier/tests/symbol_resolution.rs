@@ -45,6 +45,56 @@ fn obsidian_namespace_import_request_url_counts_as_network_api() {
 }
 
 #[test]
+fn bundled_obsidian_request_calls_count_as_network_api() {
+    for source in [
+        r#"
+            import { requestUrl } from "obsidian";
+            (0, requestUrl)("https://example.com");
+        "#,
+        r#"
+            import * as obsidian from "obsidian";
+            (0, obsidian.request)("https://example.com");
+        "#,
+        r#"
+            const obsidian = require("obsidian");
+            (0, obsidian["requestUrl"])("https://example.com");
+        "#,
+    ] {
+        let program = parse_program(source);
+        let result = classify_api_usage(source, program.as_ref(), obsidian_api_rules());
+
+        assert!(
+            result.has_capability("network.obsidian"),
+            "missed bundled request call in {source}"
+        );
+    }
+}
+
+#[test]
+fn obsidian_request_function_aliases_preserve_module_provenance() {
+    for source in [
+        r#"
+            import { requestUrl } from "obsidian";
+            const send = requestUrl;
+            send("https://example.com");
+        "#,
+        r#"
+            import * as obsidian from "obsidian";
+            const send = obsidian.request;
+            send("https://example.com");
+        "#,
+    ] {
+        let program = parse_program(source);
+        let result = classify_api_usage(source, program.as_ref(), obsidian_api_rules());
+
+        assert!(
+            result.has_capability("network.obsidian"),
+            "missed aliased request call in {source}"
+        );
+    }
+}
+
+#[test]
 fn namespace_member_matchers_support_nested_and_computed_chains() {
     let source = r#"
             import * as obsidian from "obsidian";
@@ -121,6 +171,23 @@ fn rooted_member_matchers_follow_minified_aliases_and_destructuring() {
 
     assert!(result.has_capability("vault.read"));
     assert!(result.has_capability("vault.write"));
+}
+
+#[test]
+fn rooted_member_matchers_canonicalize_this_app_chains() {
+    let source = r#"this.app.vault.read(file);"#;
+    let program = parse_program(source);
+    let rule = ApiRule::builder("test.canonical_app")
+        .label("Canonical app chain")
+        .category(ApiCategory::Vault)
+        .severity(ApiSeverity::Info)
+        .confidence(Confidence::High)
+        .rooted_member_calls(["app.vault.read"])
+        .build()
+        .unwrap();
+    let result = classify_api_usage(source, program.as_ref(), &[rule]);
+
+    assert!(result.has_capability("test.canonical_app"));
 }
 
 #[test]

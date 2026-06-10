@@ -8,10 +8,11 @@ use swc_ecma_visit::{Visit, VisitWith};
 
 use super::alias::AliasInfo;
 use super::ast::{
-    SymbolCallProvenance, SymbolMemberProvenance, expr_member, expr_name, literal_string,
-    member_chain, require_call_module_name,
+    SymbolCallProvenance, SymbolMemberProvenance, effective_callee_expr, expr_member, expr_name,
+    member_chain, require_call_module_name, static_string,
 };
 use super::{ApiEvidence, ApiMatchKind, MemberCallMatcher, MemberCallProvenance, SymbolIndex};
+use crate::plugins::analysis::mainjs::api_classifier::rule::canonical_rooted_chain;
 
 pub(super) fn collect(
     program: &Program,
@@ -23,7 +24,7 @@ pub(super) fn collect(
     let mut visitor = SymbolIndexVisitor {
         index,
         aliases,
-        callee_member_reads_to_skip: BTreeMap::new(),
+        pending_callee_reads: BTreeMap::new(),
         argument_matchers,
         argument_evidence,
     };
@@ -33,23 +34,96 @@ pub(super) fn collect(
 struct SymbolIndexVisitor<'a, 'rules> {
     index: &'a mut SymbolIndex,
     aliases: &'a AliasInfo,
-    callee_member_reads_to_skip: BTreeMap<String, u32>,
+    pending_callee_reads: BTreeMap<String, u32>,
     argument_matchers: &'rules [(usize, MemberCallMatcher)],
     argument_evidence: &'a mut [Vec<ApiEvidence>],
 }
 
 impl SymbolIndexVisitor<'_, '_> {
+    fn record_identifier_call(&mut self, ident: &Ident, owner: usize) {
+        let name = ident.sym.to_string();
+        self.index.increment(ApiMatchKind::Call, name.clone());
+        self.index
+            .record_owner(ApiMatchKind::Call, name.clone(), owner);
+
+        match self.aliases.call_provenance(&name, ident.span) {
+            SymbolCallProvenance::Global => {
+                *self.index.global_calls.entry(name).or_insert(0) += 1;
+            }
+            SymbolCallProvenance::ModuleExport { module, export } => {
+                *self
+                    .index
+                    .module_calls
+                    .entry((module.clone(), export.clone()))
+                    .or_insert(0) += 1;
+                self.index
+                    .record_owner(ApiMatchKind::Call, format!("{module}.{export}"), owner);
+            }
+            SymbolCallProvenance::Local => {}
+        }
+    }
+
+    fn record_member_call(&mut self, member: &MemberExpr, owner: usize, call: Option<&CallExpr>) {
+        let syntactic_chain = member_chain(member);
+        let resolved_chain = syntactic_chain
+            .as_deref()
+            .and_then(|chain| self.aliases.resolve_member_chain(member, chain));
+        let module_member = syntactic_chain
+            .as_deref()
+            .and_then(|chain| self.aliases.member_call_provenance_for_chain(member, chain));
+
+        if let Some(call) = call {
+            self.collect_argument_evidence(
+                call,
+                syntactic_chain.as_deref(),
+                resolved_chain.as_deref(),
+                module_member.as_ref(),
+            );
+        }
+        if let Some(chain) = syntactic_chain {
+            self.index
+                .increment(ApiMatchKind::MemberCall, chain.clone());
+            *self.pending_callee_reads.entry(chain.clone()).or_insert(0) += 1;
+            self.index
+                .record_owner(ApiMatchKind::MemberCall, chain, owner);
+        }
+        if let Some(chain) = resolved_chain {
+            let chain = canonical_rooted_chain(&chain).to_string();
+            *self
+                .index
+                .rooted_member_calls
+                .entry(chain.clone())
+                .or_insert(0) += 1;
+            self.index
+                .record_owner(ApiMatchKind::MemberCall, chain, owner);
+        }
+        if let Some(SymbolMemberProvenance::ModuleNamespace { module, member }) = module_member {
+            *self
+                .index
+                .module_member_calls
+                .entry((module.clone(), member.clone()))
+                .or_insert(0) += 1;
+            self.index.record_owner(
+                ApiMatchKind::MemberCall,
+                format!("{module}.{member}"),
+                owner,
+            );
+        }
+    }
+
     fn collect_argument_evidence(
         &mut self,
         call: &CallExpr,
-        raw_chain: Option<&str>,
-        rooted_chain: Option<&str>,
+        syntactic_chain: Option<&str>,
+        resolved_chain: Option<&str>,
         module_member: Option<&SymbolMemberProvenance>,
     ) {
         for (rule_index, matcher) in self.argument_matchers {
             let member_matches = match &matcher.provenance {
-                MemberCallProvenance::Any => raw_chain == Some(&matcher.chain),
-                MemberCallProvenance::Rooted => rooted_chain == Some(&matcher.chain),
+                MemberCallProvenance::Any => syntactic_chain == Some(&matcher.chain),
+                MemberCallProvenance::Rooted => resolved_chain
+                    .map(canonical_rooted_chain)
+                    .is_some_and(|chain| chain == matcher.chain),
                 MemberCallProvenance::ModuleNamespace { module } => matches!(
                     module_member,
                     Some(SymbolMemberProvenance::ModuleNamespace {
@@ -62,7 +136,7 @@ impl SymbolIndexVisitor<'_, '_> {
                 && matcher.arg_strings.iter().all(|arg_matcher| {
                     call.args
                         .get(arg_matcher.index)
-                        .and_then(|argument| literal_string(&argument.expr))
+                        .and_then(|argument| static_string(&argument.expr))
                         .is_some_and(|value| {
                             arg_matcher.values.iter().any(|expected| expected == &value)
                         })
@@ -91,84 +165,14 @@ impl Visit for SymbolIndexVisitor<'_, '_> {
         }
 
         match &call.callee {
-            Callee::Expr(callee) => match &**callee {
+            Callee::Expr(callee) => match effective_callee_expr(callee) {
                 Expr::Ident(ident) => {
-                    let name = ident.sym.to_string();
-                    self.index.increment(ApiMatchKind::Call, name.clone());
                     let owner = self.aliases.owner_at(ident.span);
-                    self.index
-                        .record_owner(ApiMatchKind::Call, name.clone(), owner);
-                    match self.aliases.call_provenance(&name, ident.span) {
-                        SymbolCallProvenance::Global => {
-                            *self.index.global_calls.entry(name).or_insert(0) += 1;
-                        }
-                        SymbolCallProvenance::ModuleExport { module, export } => {
-                            *self
-                                .index
-                                .module_calls
-                                .entry((module.clone(), export.clone()))
-                                .or_insert(0) += 1;
-                            self.index.record_owner(
-                                ApiMatchKind::Call,
-                                format!("{module}.{export}"),
-                                owner,
-                            );
-                        }
-                        SymbolCallProvenance::Local => {}
-                    }
+                    self.record_identifier_call(ident, owner);
                 }
                 Expr::Member(member) => {
                     let owner = self.aliases.owner_at(member.span);
-                    let raw_chain = member_chain(member);
-                    let rooted_chain = raw_chain
-                        .as_deref()
-                        .and_then(|chain| self.aliases.rooted_member_chain_from_raw(member, chain));
-                    let module_member = raw_chain.as_deref().and_then(|chain| {
-                        self.aliases.member_call_provenance_from_raw(member, chain)
-                    });
-                    self.collect_argument_evidence(
-                        call,
-                        raw_chain.as_deref(),
-                        rooted_chain.as_deref(),
-                        module_member.as_ref(),
-                    );
-                    if let Some(chain) = raw_chain {
-                        self.index
-                            .increment(ApiMatchKind::MemberCall, chain.clone());
-                        if let Some(SymbolMemberProvenance::ModuleNamespace { module, member }) =
-                            &module_member
-                        {
-                            *self
-                                .index
-                                .module_member_calls
-                                .entry((module.clone(), member.clone()))
-                                .or_insert(0) += 1;
-                        }
-                        *self
-                            .callee_member_reads_to_skip
-                            .entry(chain.clone())
-                            .or_insert(0) += 1;
-                        self.index
-                            .record_owner(ApiMatchKind::MemberCall, chain, owner);
-                    }
-                    if let Some(chain) = rooted_chain {
-                        *self
-                            .index
-                            .rooted_member_calls
-                            .entry(chain.clone())
-                            .or_insert(0) += 1;
-                        self.index
-                            .record_owner(ApiMatchKind::MemberCall, chain, owner);
-                    }
-                    if let Some(SymbolMemberProvenance::ModuleNamespace { module, member }) =
-                        module_member
-                    {
-                        self.index.record_owner(
-                            ApiMatchKind::MemberCall,
-                            format!("{module}.{member}"),
-                            owner,
-                        );
-                    }
+                    self.record_member_call(member, owner, Some(call));
                 }
                 _ => {}
             },
@@ -183,64 +187,8 @@ impl Visit for SymbolIndexVisitor<'_, '_> {
         if let OptChainBase::Call(call) = &*chain.base {
             let owner = self.aliases.owner_at(chain.span);
             match &*call.callee {
-                Expr::Ident(ident) => {
-                    let name = ident.sym.to_string();
-                    self.index.increment(ApiMatchKind::Call, name.clone());
-                    self.index
-                        .record_owner(ApiMatchKind::Call, name.clone(), owner);
-                    match self.aliases.call_provenance(&name, ident.span) {
-                        SymbolCallProvenance::Global => {
-                            *self.index.global_calls.entry(name).or_insert(0) += 1;
-                        }
-                        SymbolCallProvenance::ModuleExport { module, export } => {
-                            *self
-                                .index
-                                .module_calls
-                                .entry((module.clone(), export.clone()))
-                                .or_insert(0) += 1;
-                            self.index.record_owner(
-                                ApiMatchKind::Call,
-                                format!("{module}.{export}"),
-                                owner,
-                            );
-                        }
-                        SymbolCallProvenance::Local => {}
-                    }
-                }
-                Expr::Member(member) => {
-                    if let Some(raw) = member_chain(member) {
-                        self.index.increment(ApiMatchKind::MemberCall, raw.clone());
-                        *self
-                            .callee_member_reads_to_skip
-                            .entry(raw.clone())
-                            .or_insert(0) += 1;
-                        self.index
-                            .record_owner(ApiMatchKind::MemberCall, raw, owner);
-                    }
-                    if let Some(rooted) = self.aliases.rooted_member_chain(member) {
-                        *self
-                            .index
-                            .rooted_member_calls
-                            .entry(rooted.clone())
-                            .or_insert(0) += 1;
-                        self.index
-                            .record_owner(ApiMatchKind::MemberCall, rooted, owner);
-                    }
-                    if let Some(SymbolMemberProvenance::ModuleNamespace { module, member }) =
-                        self.aliases.member_call_provenance(member)
-                    {
-                        *self
-                            .index
-                            .module_member_calls
-                            .entry((module.clone(), member.clone()))
-                            .or_insert(0) += 1;
-                        self.index.record_owner(
-                            ApiMatchKind::MemberCall,
-                            format!("{module}.{member}"),
-                            owner,
-                        );
-                    }
-                }
+                Expr::Ident(ident) => self.record_identifier_call(ident, owner),
+                Expr::Member(member) => self.record_member_call(member, owner, None),
                 _ => {
                     if let Some(raw) = expr_name(&call.callee) {
                         self.index.increment(ApiMatchKind::MemberCall, raw.clone());
@@ -248,6 +196,7 @@ impl Visit for SymbolIndexVisitor<'_, '_> {
                             .record_owner(ApiMatchKind::MemberCall, raw, owner);
                     }
                     if let Some(rooted) = self.aliases.rooted_expr_chain(&call.callee) {
+                        let rooted = canonical_rooted_chain(&rooted).to_string();
                         *self
                             .index
                             .rooted_member_calls
@@ -278,18 +227,19 @@ impl Visit for SymbolIndexVisitor<'_, '_> {
     }
 
     fn visit_member_expr(&mut self, member: &MemberExpr) {
-        let raw_chain = member_chain(member);
-        if let Some(chain) = raw_chain.as_ref() {
-            if let Some(skip_count) = self.callee_member_reads_to_skip.get_mut(chain.as_str()) {
+        let syntactic_chain = member_chain(member);
+        if let Some(chain) = syntactic_chain.as_ref() {
+            if let Some(skip_count) = self.pending_callee_reads.get_mut(chain.as_str()) {
                 *skip_count -= 1;
                 if *skip_count == 0 {
-                    self.callee_member_reads_to_skip.remove(chain.as_str());
+                    self.pending_callee_reads.remove(chain.as_str());
                 }
 
                 member.visit_children_with(self);
                 return;
             }
 
+            let chain = canonical_rooted_chain(chain).to_string();
             self.index
                 .increment(ApiMatchKind::MemberRead, chain.clone());
             self.index.record_owner(
@@ -298,9 +248,9 @@ impl Visit for SymbolIndexVisitor<'_, '_> {
                 self.aliases.owner_at(member.span),
             );
         }
-        let module_member = raw_chain
+        let module_member = syntactic_chain
             .as_deref()
-            .and_then(|chain| self.aliases.member_call_provenance_from_raw(member, chain));
+            .and_then(|chain| self.aliases.member_call_provenance_for_chain(member, chain));
         if let Some(SymbolMemberProvenance::ModuleNamespace {
             module,
             member: class,

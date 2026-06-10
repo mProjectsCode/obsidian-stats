@@ -34,6 +34,17 @@ pub(super) fn expr_member(expr: &Expr) -> Option<&MemberExpr> {
     }
 }
 
+pub(super) fn effective_callee_expr(expr: &Expr) -> &Expr {
+    match expr {
+        Expr::Paren(paren) => effective_callee_expr(&paren.expr),
+        Expr::Seq(sequence) => sequence
+            .exprs
+            .last()
+            .map_or(expr, |expr| effective_callee_expr(expr)),
+        _ => expr,
+    }
+}
+
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub(in crate::plugins::analysis::mainjs::api_classifier) enum SymbolCallProvenance {
     Global,
@@ -198,13 +209,15 @@ fn static_property_name(expr: &Expr) -> Option<String> {
     }
 }
 
-pub(super) fn literal_string(expr: &Expr) -> Option<String> {
+pub(in crate::plugins::analysis::mainjs::api_classifier) fn static_string(
+    expr: &Expr,
+) -> Option<String> {
     match expr {
         Expr::Lit(Lit::Str(value)) => Some(value.value.to_string_lossy().to_string()),
         Expr::Tpl(template) if template.exprs.is_empty() && template.quasis.len() == 1 => {
             template.quasis.first().map(|quasi| quasi.raw.to_string())
         }
-        Expr::Paren(paren) => literal_string(&paren.expr),
+        Expr::Paren(paren) => static_string(&paren.expr),
         _ => None,
     }
 }

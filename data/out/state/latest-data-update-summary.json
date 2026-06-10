@@ -1,15 +1,15 @@
 {
-  "refreshed_at_unix": 1780948603,
-  "clone_run_at_unix": 1780948527,
-  "release_run_at_unix": 1780948564,
+  "refreshed_at_unix": 1780949648,
+  "clone_run_at_unix": 1780949648,
+  "release_run_at_unix": 1780949648,
   "obsidian_release_fetch_at_unix": 1780948603,
   "latest_plugin_download_snapshot_date": "2026-06-08",
   "latest_obsidian_release_date": "2026-03-23",
   "latest_obsidian_version": "1.12.7",
   "plugins": {
-    "total": 4956,
-    "active": 4556,
-    "removed": 400,
+    "total": 4957,
+    "active": 4552,
+    "removed": 405,
     "total_downloads": 128735308,
     "version_snapshots": 41797
   },
@@ -26,64 +26,63 @@
     "download_snapshots": 41772
   },
   "clone": {
-    "tracked": 4972,
-    "ok": 4507,
-    "skipped": 407,
-    "failed": 4,
-    "success_rate": 0.9991132786521836,
+    "tracked": 4973,
+    "ok": 4503,
+    "skipped": 412,
+    "failed": 3,
+    "success_rate": 0.9993342210386151,
     "failed_plugins": [
-      "cyberware",
-      "hide-tags",
       "owen-exporter",
-      "note-pilot"
+      "cyberware",
+      "hide-tags"
     ],
     "status_counts": [
       {
         "label": "ok",
-        "count": 4507,
-        "share": 0.9064762670957361
+        "count": 4503,
+        "share": 0.9054896440780213
       },
       {
         "label": "skipped_removed",
-        "count": 407,
-        "share": 0.08185840707964602
+        "count": 412,
+        "share": 0.0828473758294792
       },
       {
         "label": "helper_plugin_missing",
-        "count": 23,
-        "share": 0.004625905068382945
+        "count": 24,
+        "share": 0.004826060727930827
       },
       {
         "label": "manifest_version_invalid",
         "count": 17,
-        "share": 0.003419147224456959
+        "share": 0.0034184596822843354
       },
       {
         "label": "release_for_manifest_version_missing",
         "count": 11,
-        "share": 0.0022123893805309734
+        "share": 0.0022119445003016287
       },
       {
         "label": "failed",
-        "count": 4,
-        "share": 0.0008045052292839903
+        "count": 3,
+        "share": 0.0006032575909913533
       },
       {
         "label": "version_history_missing",
         "count": 3,
-        "share": 0.0006033789219629927
+        "share": 0.0006032575909913533
       }
     ]
   },
   "release_acquisition": {
-    "tracked": 4782,
+    "tracked": 4783,
     "ok": 360,
     "retained_previous_main_js": 4344,
     "no_release": 3,
     "no_main_js_asset": 3,
-    "error_count": 55,
+    "error_count": 56,
     "main_js_coverage": 4704,
-    "main_js_coverage_rate": 0.9836888331242158,
+    "main_js_coverage_rate": 0.9834831695588543,
     "total_main_js_bytes": 3513719126,
     "average_main_js_bytes": 746964,
     "largest_main_js": {
@@ -94,56 +93,56 @@
       {
         "label": "main_js_not_updated_since_success",
         "count": 4344,
-        "share": 0.9084065244667503
+        "share": 0.9082166004599623
       },
       {
         "label": "ok",
         "count": 360,
-        "share": 0.07528230865746549
+        "share": 0.07526656909889191
       },
       {
         "label": "helper_plugin_missing",
-        "count": 24,
-        "share": 0.005018820577164366
+        "count": 25,
+        "share": 0.0052268450763119385
       },
       {
         "label": "manifest_version_invalid",
         "count": 18,
-        "share": 0.0037641154328732747
+        "share": 0.0037633284549445953
       },
       {
         "label": "version_history_missing",
         "count": 17,
-        "share": 0.0035549979088247597
+        "share": 0.0035542546518921177
       },
       {
         "label": "release_for_manifest_version_missing",
         "count": 13,
-        "share": 0.0027185278126306985
+        "share": 0.002717959439682208
       },
       {
         "label": "no_main_js_asset",
         "count": 3,
-        "share": 0.0006273525721455458
+        "share": 0.0006272214091574326
       },
       {
         "label": "no_release_for_version",
         "count": 2,
-        "share": 0.0004182350480970305
+        "share": 0.000418147606104955
       },
       {
         "label": "no_release",
         "count": 1,
-        "share": 0.00020911752404851526
+        "share": 0.0002090738030524775
       }
     ]
   },
   "repo_analysis": {
-    "tracked": 4956,
-    "active_success": 4530,
+    "tracked": 4957,
+    "active_success": 4526,
     "active_failures": 26,
-    "removed_skipped": 400,
-    "coverage_rate": 0.9942932396839332,
+    "removed_skipped": 405,
+    "coverage_rate": 0.9942882249560633,
     "failure_samples": [
       "alteryx-viewer",
       "arabic-poetry-formatter",
@@ -155,22 +154,22 @@
       {
         "label": "main_js_analysis_too_large",
         "count": 52,
-        "share": 0.01141352063213345
+        "share": 0.011423550087873463
       },
       {
         "label": "repository_missing",
         "count": 26,
-        "share": 0.005706760316066725
+        "share": 0.0057117750439367315
       },
       {
         "label": "manifest_read_error",
         "count": 6,
-        "share": 0.0013169446883230904
+        "share": 0.0013181019332161687
       },
       {
         "label": "manifest_parse_error",
         "count": 3,
-        "share": 0.0006584723441615452
+        "share": 0.0006590509666080844
       }
     ]
   }
