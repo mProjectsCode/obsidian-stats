@@ -16,17 +16,15 @@
 				capability: point.name,
 				value: point.value,
 			}))
-			.sort((a, b) => b.value - a.value || a.capability.localeCompare(b.capability)),
+			.sort((a, b) => a.value - b.value || b.capability.localeCompare(a.capability)),
 	);
 
 	const capabilityOrder = $derived(mappedDataPoints.map(point => point.capability));
 	const maxValue = $derived(Math.max(0, ...mappedDataPoints.map(point => point.value)));
-	const chartHeight = $derived(Math.max(240, mappedDataPoints.length * 34 + 60));
 </script>
 
 <ChartWrapper>
 	<Plot
-		height={chartHeight}
 		x={{ label: 'Plugins →', domain: [0, Math.max(1, maxValue * 1.12)] }}
 		y={{ type: 'band', label: '', domain: capabilityOrder }}
 		class="no-overflow-clip"

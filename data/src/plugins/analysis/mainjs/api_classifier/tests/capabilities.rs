@@ -21,7 +21,7 @@ fn built_in_rules_detect_representative_obsidian_capability_groups() {
             }
         "#;
     let program = parse_program(source);
-    let result = classify_api_usage(source, program.as_ref(), obsidian_api_rules());
+    let result = classify_api_usage(program.as_ref(), obsidian_api_rules());
 
     for expected in [
         "network.obsidian",
@@ -62,7 +62,7 @@ fn local_request_url_function_does_not_count_as_obsidian_network_api() {
             requestUrl("not-network");
         "#;
     let program = parse_program(source);
-    let result = classify_api_usage(source, program.as_ref(), obsidian_api_rules());
+    let result = classify_api_usage(program.as_ref(), obsidian_api_rules());
 
     assert!(!result.has_capability("network.obsidian"));
 }
@@ -71,7 +71,7 @@ fn local_request_url_function_does_not_count_as_obsidian_network_api() {
 fn minified_local_request_url_function_does_not_count_as_obsidian_network_api() {
     let source = r#"function requestUrl(r){return r}requestUrl("not-network");"#;
     let program = parse_program(source);
-    let result = classify_api_usage(source, program.as_ref(), obsidian_api_rules());
+    let result = classify_api_usage(program.as_ref(), obsidian_api_rules());
 
     assert!(!result.has_capability("network.obsidian"));
 }
@@ -85,7 +85,7 @@ fn shadowed_fetch_does_not_count_as_browser_network_api() {
             fetch("not-network");
         "#;
     let program = parse_program(source);
-    let result = classify_api_usage(source, program.as_ref(), obsidian_api_rules());
+    let result = classify_api_usage(program.as_ref(), obsidian_api_rules());
 
     assert!(!result.has_capability("network.browser"));
 }
@@ -94,7 +94,7 @@ fn shadowed_fetch_does_not_count_as_browser_network_api() {
 fn minified_shadowed_fetch_does_not_count_as_browser_network_api() {
     let source = r#"function fetch(r){return r}fetch("not-network");"#;
     let program = parse_program(source);
-    let result = classify_api_usage(source, program.as_ref(), obsidian_api_rules());
+    let result = classify_api_usage(program.as_ref(), obsidian_api_rules());
 
     assert!(!result.has_capability("network.browser"));
 }
@@ -109,7 +109,7 @@ fn local_binding_only_shadows_global_calls_in_its_lexical_scope() {
             fetch("https://example.com");
         "#;
     let program = parse_program(source);
-    let result = classify_api_usage(source, program.as_ref(), obsidian_api_rules());
+    let result = classify_api_usage(program.as_ref(), obsidian_api_rules());
 
     let capability = result
         .capabilities
@@ -135,7 +135,7 @@ fn parameter_shadowing_does_not_hide_global_calls_in_sibling_scopes() {
             }
         "#;
     let program = parse_program(source);
-    let result = classify_api_usage(source, program.as_ref(), obsidian_api_rules());
+    let result = classify_api_usage(program.as_ref(), obsidian_api_rules());
 
     assert!(result.has_capability("network.browser"));
 }

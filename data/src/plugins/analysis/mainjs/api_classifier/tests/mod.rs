@@ -38,19 +38,9 @@ fn benchmark_real_main_js() {
     }
     let semantics_elapsed = semantics_started.elapsed();
 
-    let symbols_started = Instant::now();
-    for _ in 0..iterations {
-        black_box(super::symbol_index::SymbolIndex::collect(
-            Some(black_box(&program)),
-            black_box(&aliases),
-        ));
-    }
-    let symbols_elapsed = symbols_started.elapsed();
-
     let classify_started = Instant::now();
     for _ in 0..iterations {
         black_box(classify_api_usage(
-            black_box(&source),
             Some(black_box(&program)),
             black_box(rules),
         ));
@@ -58,17 +48,16 @@ fn benchmark_real_main_js() {
     let classify_elapsed = classify_started.elapsed();
 
     eprintln!(
-        "bytes={} parse={parse_elapsed:?} aliases_avg={:?} semantics_avg={:?} symbols_avg={:?} classify_avg={:?}",
+        "bytes={} parse={parse_elapsed:?} aliases_avg={:?} semantics_avg={:?} classify_avg={:?}",
         source.len(),
         aliases_elapsed / iterations,
         semantics_elapsed / iterations,
-        symbols_elapsed / iterations,
         classify_elapsed / iterations,
     );
 }
 
 #[test]
-fn builder_rejects_rules_without_a_matcher_or_correlation() {
+fn builder_rejects_rules_without_a_matcher() {
     let error = ApiRule::builder("vault.read")
         .label("Reads vault files")
         .category(ApiCategory::Vault)
@@ -78,20 +67,6 @@ fn builder_rejects_rules_without_a_matcher_or_correlation() {
         .unwrap_err();
 
     assert_eq!(error, ApiRuleBuildError::MissingMatcher);
-}
-
-#[test]
-fn builder_allows_mixed_primitive_and_dependency_rules() {
-    ApiRule::builder("mixed")
-        .label("Mixed")
-        .category(ApiCategory::DynamicCode)
-        .severity(ApiSeverity::Warning)
-        .confidence(Confidence::Medium)
-        .calls(["fetch"])
-        .requires_all(["disclosure.network_access"])
-        .requires_any(["disclosure.note_content_access"])
-        .build()
-        .unwrap();
 }
 
 #[test]
@@ -125,40 +100,8 @@ fn builder_supports_future_matcher_buckets_and_taxonomy_values() {
         .imports(["obsidian"])
         .string_literals(["obsidian://"])
         .classes(["Notice"])
-        .evidence_limit(2)
         .build()
         .unwrap();
-
-    ApiRule::builder("future.correlation")
-        .label("Future correlation")
-        .category(ApiCategory::Network)
-        .severity(ApiSeverity::Warning)
-        .confidence(Confidence::Medium)
-        .when_any(["disclosure.network_access"])
-        .build()
-        .unwrap();
-}
-
-#[test]
-fn min_distinct_evidence_requires_multiple_independent_matches() {
-    let source = r#"
-            fetch("https://example.com/a");
-            fetch("https://example.com/b");
-        "#;
-    let program = parse_program(source);
-    let rule = ApiRule::builder("network.needs_two_symbols")
-        .label("Needs two evidence symbols")
-        .category(ApiCategory::Network)
-        .severity(ApiSeverity::Info)
-        .confidence(Confidence::Medium)
-        .global_calls(["fetch"])
-        .string_literals(["api.example.com"])
-        .min_distinct_evidence(2)
-        .build()
-        .unwrap();
-    let result = classify_api_usage(source, program.as_ref(), &[rule]);
-
-    assert!(!result.has_capability("network.needs_two_symbols"));
 }
 
 #[test]
@@ -168,7 +111,7 @@ fn empty_catalog_emits_no_capabilities_or_disclosures() {
             requestUrl("https://example.com");
         "#;
     let program = parse_program(source);
-    let result = classify_api_usage(source, program.as_ref(), &[]);
+    let result = classify_api_usage(program.as_ref(), &[]);
 
     assert!(result.capabilities.is_empty());
     assert!(result.disclosures.is_empty());
@@ -248,7 +191,7 @@ fn built_in_rules_detect_remaining_static_risk_groups() {
             this.app.vault.getFiles();
         "#;
     let program = parse_program(source);
-    let result = classify_api_usage(source, program.as_ref(), obsidian_api_rules());
+    let result = classify_api_usage(program.as_ref(), obsidian_api_rules());
 
     for expected in [
         "ui.file_dialog",
@@ -290,15 +233,7 @@ fn catalog_validation_rejects_unknown_disclosure_ids() {
             .severity(ApiSeverity::Info)
             .confidence(Confidence::High)
             .global_calls(["fetch"])
-            .implies(["disclosure.network_access"])
-            .build()
-            .unwrap(),
-        ApiRule::builder("correlation.test")
-            .label("Unknown disclosure")
-            .category(ApiCategory::Network)
-            .severity(ApiSeverity::Warning)
-            .confidence(Confidence::Medium)
-            .when_all(["disclosure.not_registered"])
+            .implies(["disclosure.not_registered"])
             .build()
             .unwrap(),
     ];
@@ -311,38 +246,9 @@ fn catalog_validation_rejects_unknown_disclosure_ids() {
     );
 }
 
-#[test]
-fn catalog_validation_rejects_unknown_rule_ids() {
-    let rules = vec![
-        ApiRule::builder("network.test")
-            .label("Test network")
-            .category(ApiCategory::Network)
-            .severity(ApiSeverity::Info)
-            .confidence(Confidence::High)
-            .global_calls(["fetch"])
-            .implies(["disclosure.network_access"])
-            .build()
-            .unwrap(),
-        ApiRule::builder("correlation.test")
-            .label("Unknown rule")
-            .category(ApiCategory::Network)
-            .severity(ApiSeverity::Warning)
-            .confidence(Confidence::Medium)
-            .when_all(["missing.rule"])
-            .build()
-            .unwrap(),
-    ];
-
-    assert_eq!(
-        validate_catalog(&rules),
-        Err(ApiCatalogError::UnknownRule("missing.rule".to_string()))
-    );
-}
-
 mod alias_flow;
 mod capabilities;
 mod classes;
-mod correlations;
 mod network;
 mod semantic_matchers;
 mod symbol_resolution;

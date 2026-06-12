@@ -189,19 +189,6 @@ impl AliasInfo {
         }
     }
 
-    pub(super) fn owner_at(&self, span: Span) -> usize {
-        let mut scope = self.scope_at(span);
-        loop {
-            if self.scopes[scope].kind == ScopeKind::Function {
-                return scope + 1;
-            }
-            let Some(parent) = self.scopes[scope].parent else {
-                return 0;
-            };
-            scope = parent;
-        }
-    }
-
     pub(in crate::plugins::analysis::mainjs::api_classifier) fn rooted_member_chain(
         &self,
         member: &MemberExpr,

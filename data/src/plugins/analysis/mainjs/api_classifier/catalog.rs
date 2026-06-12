@@ -42,7 +42,7 @@ fn build_obsidian_api_rules() -> Vec<ApiRule> {
             .implies(["disclosure.network_access"])
             .build(),
         ApiRule::builder("network.url_construction")
-            .label("Builds URLs or URL parameters")
+            .label("References URLs or constructs URL objects")
             .category(ApiCategory::Network)
             .severity(ApiSeverity::Info)
             .confidence(Confidence::High)
@@ -194,7 +194,7 @@ fn build_obsidian_api_rules() -> Vec<ApiRule> {
             ])
             .build(),
         ApiRule::builder("network.headers")
-            .label("Manipulates user-agent or request headers")
+            .label("References user-agent or authorization headers")
             .category(ApiCategory::Network)
             .severity(ApiSeverity::Info)
             .confidence(Confidence::Medium)
@@ -238,6 +238,9 @@ fn build_obsidian_api_rules() -> Vec<ApiRule> {
                 "app.vault.modify",
                 "app.vault.modifyBinary",
                 "app.vault.append",
+                "app.vault.appendBinary",
+                "app.vault.process",
+                "app.vault.createFolder",
             ])
             .implies(["disclosure.vault_file_write"])
             .build(),
@@ -251,6 +254,8 @@ fn build_obsidian_api_rules() -> Vec<ApiRule> {
                 "app.vault.trash",
                 "app.vault.rename",
                 "app.vault.copy",
+                "app.fileManager.renameFile",
+                "app.fileManager.trashFile",
             ])
             .implies(["disclosure.vault_file_write"])
             .build(),
@@ -263,19 +268,16 @@ fn build_obsidian_api_rules() -> Vec<ApiRule> {
                 "app.vault.getFiles",
                 "app.vault.getMarkdownFiles",
                 "app.vault.getAllLoadedFiles",
+                "app.vault.getAllFolders",
             ])
             .implies(["disclosure.full_vault_access"])
             .build(),
         ApiRule::builder("vault.folder_ops")
-            .label("Uses vault folder APIs")
+            .label("Accesses vault folders")
             .category(ApiCategory::Vault)
             .severity(ApiSeverity::Info)
             .confidence(Confidence::High)
-            .rooted_member_calls([
-                "app.vault.createFolder",
-                "app.vault.getFolderByPath",
-                "app.vault.getRoot",
-            ])
+            .rooted_member_calls(["app.vault.getFolderByPath", "app.vault.getRoot"])
             .build(),
         ApiRule::builder("vault.resources")
             .label("Accesses attachment resource paths")
@@ -315,12 +317,11 @@ fn build_obsidian_api_rules() -> Vec<ApiRule> {
             .category(ApiCategory::Vault)
             .severity(ApiSeverity::Info)
             .confidence(Confidence::High)
-            .rooted_member_calls([
-                "app.workspace.openLinkText",
-                "app.workspace.getLeaf.openFile",
-                "app.fileManager.createNewMarkdownFile",
-                "app.fileManager.renameFile",
-            ])
+            .rooted_member_calls(["app.workspace.openLinkText"])
+            .custom_ast(
+                "workspace_file_opens",
+                custom_matchers::workspace_file_opens,
+            )
             .build(),
         ApiRule::builder("metadata.read")
             .label("Reads Obsidian metadata cache")
@@ -340,13 +341,20 @@ fn build_obsidian_api_rules() -> Vec<ApiRule> {
             .implies(["disclosure.metadata_access"])
             .build(),
         ApiRule::builder("metadata.frontmatter")
-            .label("Reads or processes frontmatter")
+            .label("Reads cached frontmatter")
             .category(ApiCategory::Metadata)
             .severity(ApiSeverity::Info)
             .confidence(Confidence::Medium)
-            .member_reads(["frontmatter"])
-            .rooted_member_calls(["app.fileManager.processFrontMatter"])
+            .custom_ast("frontmatter_reads", custom_matchers::frontmatter_reads)
             .implies(["disclosure.metadata_access"])
+            .build(),
+        ApiRule::builder("metadata.frontmatter_write")
+            .label("Updates frontmatter through Obsidian APIs")
+            .category(ApiCategory::Metadata)
+            .severity(ApiSeverity::Info)
+            .confidence(Confidence::High)
+            .rooted_member_calls(["app.fileManager.processFrontMatter"])
+            .implies(["disclosure.metadata_access", "disclosure.vault_file_write"])
             .build(),
         ApiRule::builder("metadata.events")
             .label("Registers metadata cache event listeners")
@@ -361,14 +369,10 @@ fn build_obsidian_api_rules() -> Vec<ApiRule> {
             .category(ApiCategory::Metadata)
             .severity(ApiSeverity::Info)
             .confidence(Confidence::Medium)
-            // REVIEW: `Object.keys/values/entries` are not bound to metadataCache maps. This rule can
-            // fire when a plugin reads one metadataCache property and uses Object traversal elsewhere.
-            .member_reads([
-                "app.metadataCache.resolvedLinks",
-                "app.metadataCache.unresolvedLinks",
-                "app.metadataCache.fileCache",
-            ])
-            .member_calls(["Object.entries", "Object.keys", "Object.values"])
+            .custom_ast(
+                "metadata_cache_traversal",
+                custom_matchers::metadata_cache_traversal,
+            )
             .build(),
         ApiRule::builder("metadata.extraction")
             .label("Extracts tags, links, embeds, blocks, or headings from metadata")
@@ -400,15 +404,10 @@ fn build_obsidian_api_rules() -> Vec<ApiRule> {
             .category(ApiCategory::Workspace)
             .severity(ApiSeverity::Info)
             .confidence(Confidence::High)
-            // REVIEW: `getLeaf` can be used for simple file opening, not only layout manipulation.
-            // It still implies workspace layout because requesting leaves can create/split panes; a
-            // future call-argument/state matcher could separate read-only lookup from mutation.
             .rooted_member_calls([
                 "this.registerView",
-                "app.workspace.getLeaf",
                 "app.workspace.getLeavesOfType",
                 "app.workspace.detachLeavesOfType",
-                "app.workspace.setViewState",
                 "app.workspace.revealLeaf",
             ])
             .implies(["disclosure.workspace_layout"])
@@ -426,17 +425,7 @@ fn build_obsidian_api_rules() -> Vec<ApiRule> {
             .category(ApiCategory::Workspace)
             .severity(ApiSeverity::Info)
             .confidence(Confidence::Medium)
-            // REVIEW: this does not bind `editorCallback`, `file-menu`, or `editor-menu` to the
-            // `addCommand`/`registerEvent` payload. Same-file unrelated menu strings can contribute
-            // evidence.
-            .member_calls(["this.addCommand", "this.registerEvent"])
-            .string_literals([
-                "editorCallback",
-                "editorCheckCallback",
-                "file-menu",
-                "editor-menu",
-                "menu",
-            ])
+            .custom_ast("editor_integrations", custom_matchers::editor_integrations)
             .build(),
         ApiRule::builder("workspace.layout_persistence")
             .label("Reads or writes workspace layout persistence")
@@ -445,7 +434,7 @@ fn build_obsidian_api_rules() -> Vec<ApiRule> {
             .confidence(Confidence::Medium)
             .rooted_member_calls([
                 "app.workspace.getLayout",
-                "app.workspace.setLayout",
+                "app.workspace.changeLayout",
                 "app.workspace.requestSaveLayout",
             ])
             .implies(["disclosure.workspace_layout"])
@@ -479,22 +468,20 @@ fn build_obsidian_api_rules() -> Vec<ApiRule> {
             .classes(["Modal", "Notice", "SuggestModal", "FuzzySuggestModal"])
             .build(),
         ApiRule::builder("ui.dom_heavy")
-            .label("Performs DOM-heavy UI manipulation")
+            .label("Uses low-level DOM APIs")
             .category(ApiCategory::Ui)
             .severity(ApiSeverity::Info)
             .confidence(Confidence::Medium)
-            // REVIEW: a single `document.createElement` or `createEl` is ordinary Obsidian UI, not
-            // necessarily DOM-heavy. This rule has no disclosure impact, but it can overstate the
-            // capability until we can require repeated DOM operations or a denser evidence threshold.
             .member_calls([
                 "document.createElement",
                 "document.querySelector",
                 "document.querySelectorAll",
                 "document.body.appendChild",
+                "document.head.appendChild",
+                "document.documentElement.appendChild",
             ])
             .calls(["createEl"])
             .constructors(["MutationObserver"])
-            .string_literals(["style", "script"])
             .build(),
         ApiRule::builder("ui.file_dialog")
             .label("Uses file dialogs or DOM file inputs")
@@ -556,7 +543,6 @@ fn build_obsidian_api_rules() -> Vec<ApiRule> {
                 "@codemirror/language",
                 "@codemirror/commands",
             ])
-            .string_literals(["Decoration", "StateField", "Facet", "ViewPlugin", "gutter"])
             .implies(["disclosure.editor_behavior"])
             .build(),
         ApiRule::builder("editor.suggest")
@@ -587,14 +573,13 @@ fn build_obsidian_api_rules() -> Vec<ApiRule> {
                 "obsidian.PluginSettingTab",
                 "obsidian.Setting",
             ])
-            .member_calls(["getSettingDefinitions"])
+            .custom_ast("settings_methods", custom_matchers::settings_methods)
             .build(),
         ApiRule::builder("lifecycle.methods")
             .label("Defines plugin lifecycle methods")
             .category(ApiCategory::Lifecycle)
             .severity(ApiSeverity::Info)
             .confidence(Confidence::Medium)
-            .member_calls(["this.onload", "this.onunload"])
             .custom_ast("lifecycle_methods", custom_matchers::lifecycle_methods)
             .build(),
         ApiRule::builder("lifecycle.events")
@@ -624,33 +609,52 @@ fn build_obsidian_api_rules() -> Vec<ApiRule> {
             .implies(["disclosure.plugin_internals"])
             .build(),
         ApiRule::builder("platform.branching")
-            .label("Branches on desktop, mobile, or OS platform")
+            .label("Checks desktop, mobile, or OS platform flags")
             .category(ApiCategory::Dependency)
             .severity(ApiSeverity::Info)
             .confidence(Confidence::High)
-            // REVIEW: this detects reads of Platform flags, not actual conditional branching. The
-            // disclosure is conservative because these values usually gate platform-specific behavior.
             .module_member_calls(
                 "obsidian",
                 [
                     "Platform.isMobile",
                     "Platform.isDesktop",
+                    "Platform.isMobileApp",
+                    "Platform.isDesktopApp",
+                    "Platform.isIosApp",
+                    "Platform.isAndroidApp",
+                    "Platform.isPhone",
+                    "Platform.isTablet",
                     "Platform.isMacOS",
                     "Platform.isWin",
                     "Platform.isLinux",
+                    "Platform.isSafari",
                 ],
             )
             .member_reads([
                 "Platform.isMobile",
                 "Platform.isDesktop",
+                "Platform.isMobileApp",
+                "Platform.isDesktopApp",
+                "Platform.isIosApp",
+                "Platform.isAndroidApp",
+                "Platform.isPhone",
+                "Platform.isTablet",
                 "Platform.isMacOS",
                 "Platform.isWin",
                 "Platform.isLinux",
+                "Platform.isSafari",
                 "obsidian.Platform.isMobile",
                 "obsidian.Platform.isDesktop",
+                "obsidian.Platform.isMobileApp",
+                "obsidian.Platform.isDesktopApp",
+                "obsidian.Platform.isIosApp",
+                "obsidian.Platform.isAndroidApp",
+                "obsidian.Platform.isPhone",
+                "obsidian.Platform.isTablet",
                 "obsidian.Platform.isMacOS",
                 "obsidian.Platform.isWin",
                 "obsidian.Platform.isLinux",
+                "obsidian.Platform.isSafari",
             ])
             .implies(["disclosure.platform_branching"])
             .build(),
@@ -802,7 +806,7 @@ fn build_obsidian_api_rules() -> Vec<ApiRule> {
             .severity(ApiSeverity::Info)
             .confidence(Confidence::Medium)
             .imports(["jszip", "tar", "zlib", "node:zlib", "fflate"])
-            .string_literals(["gzip", "zip", "JSZip"])
+            .string_literals(["gzip", "zip"])
             .build(),
         ApiRule::builder("crypto.hashing")
             .label("Uses cryptography or hashing APIs")
@@ -847,27 +851,18 @@ pub(in crate::plugins::analysis::mainjs) fn validate_catalog(
     rules: &[ApiRule],
 ) -> Result<(), ApiCatalogError> {
     let mut ids = BTreeSet::new();
-    let mut disclosures = known_disclosures();
+    let disclosures = known_disclosures();
 
     for rule in rules {
         if !ids.insert(rule.id.clone()) {
             return Err(ApiCatalogError::DuplicateRule(rule.id.clone()));
         }
-        disclosures.extend(rule.implies.iter().cloned());
     }
 
     for rule in rules {
-        for reference in rule
-            .implies
-            .iter()
-            .chain(&rule.when_all)
-            .chain(&rule.when_any)
-        {
+        for reference in &rule.implies {
             if reference.starts_with("disclosure.") && !disclosures.contains(reference) {
                 return Err(ApiCatalogError::UnknownDisclosure(reference.clone()));
-            }
-            if !reference.starts_with("disclosure.") && !ids.contains(reference) {
-                return Err(ApiCatalogError::UnknownRule(reference.clone()));
             }
         }
     }

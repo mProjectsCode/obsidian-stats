@@ -98,20 +98,33 @@ pub(in crate::plugins::analysis::mainjs::api_classifier) fn require_module_name(
     expr: &Expr,
 ) -> Option<String> {
     match expr {
-        Expr::Call(call) => require_call_module_name(call)
-            .or_else(|| {
-                call.args
-                    .iter()
-                    .find_map(|arg| require_module_name(&arg.expr))
-            })
-            .or_else(|| match &call.callee {
-                Callee::Expr(callee) => require_module_name(callee),
-                Callee::Super(_) | Callee::Import(_) => None,
-            }),
+        Expr::Call(call) => require_call_module_name(call).or_else(|| {
+            let Callee::Expr(callee) = &call.callee else {
+                return None;
+            };
+            let Expr::Ident(wrapper) = &**callee else {
+                return None;
+            };
+            is_module_interop_wrapper(wrapper.sym.as_ref())
+                .then(|| call.args.first())
+                .flatten()
+                .and_then(|arg| require_module_name(&arg.expr))
+        }),
         Expr::Member(member) => require_module_name(&member.obj),
         Expr::Paren(paren) => require_module_name(&paren.expr),
         _ => None,
     }
+}
+
+fn is_module_interop_wrapper(name: &str) -> bool {
+    matches!(
+        name,
+        "__toESM"
+            | "__importStar"
+            | "__importDefault"
+            | "_interopRequireWildcard"
+            | "_interopRequireDefault"
+    )
 }
 
 pub(super) fn require_call_module_name(call: &CallExpr) -> Option<String> {

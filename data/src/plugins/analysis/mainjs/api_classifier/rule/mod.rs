@@ -23,14 +23,10 @@ pub(in crate::plugins::analysis::mainjs) struct ApiRule {
     pub(super) confidence: Confidence,
     pub(super) matcher: ApiMatcher,
     pub(super) implies: Vec<String>,
-    pub(super) when_all: Vec<String>,
-    pub(super) when_any: Vec<String>,
-    pub(super) evidence_limit: usize,
-    pub(super) min_distinct_evidence: usize,
 }
 
 impl ApiRule {
-    const DEFAULT_EVIDENCE_LIMIT: usize = 5;
+    pub(super) const EVIDENCE_LIMIT: usize = 5;
 
     pub(super) fn builder(id: impl Into<String>) -> ApiRuleBuilder {
         ApiRuleBuilder {
@@ -41,15 +37,7 @@ impl ApiRule {
             confidence: None,
             matcher: ApiMatcher::default(),
             implies: Vec::new(),
-            when_all: Vec::new(),
-            when_any: Vec::new(),
-            evidence_limit: Self::DEFAULT_EVIDENCE_LIMIT,
-            min_distinct_evidence: 1,
         }
-    }
-
-    pub(super) fn is_correlation(&self) -> bool {
-        !self.when_all.is_empty() || !self.when_any.is_empty()
     }
 }
 
@@ -62,10 +50,6 @@ pub(super) struct ApiRuleBuilder {
     confidence: Option<Confidence>,
     matcher: ApiMatcher,
     implies: Vec<String>,
-    when_all: Vec<String>,
-    when_any: Vec<String>,
-    evidence_limit: usize,
-    min_distinct_evidence: usize,
 }
 
 impl ApiRuleBuilder {
@@ -265,51 +249,6 @@ impl ApiRuleBuilder {
         self
     }
 
-    pub(super) fn when_all<I, S>(mut self, when_all: I) -> Self
-    where
-        I: IntoIterator<Item = S>,
-        S: Into<String>,
-    {
-        self.when_all.extend(when_all.into_iter().map(Into::into));
-        self
-    }
-
-    pub(super) fn requires_all<I, S>(self, dependencies: I) -> Self
-    where
-        I: IntoIterator<Item = S>,
-        S: Into<String>,
-    {
-        self.when_all(dependencies)
-    }
-
-    pub(super) fn when_any<I, S>(mut self, when_any: I) -> Self
-    where
-        I: IntoIterator<Item = S>,
-        S: Into<String>,
-    {
-        self.when_any.extend(when_any.into_iter().map(Into::into));
-        self
-    }
-
-    pub(super) fn requires_any<I, S>(self, dependencies: I) -> Self
-    where
-        I: IntoIterator<Item = S>,
-        S: Into<String>,
-    {
-        self.when_any(dependencies)
-    }
-
-    pub(super) fn evidence_limit(mut self, evidence_limit: usize) -> Self {
-        self.evidence_limit = evidence_limit;
-        self
-    }
-
-    #[allow(dead_code)]
-    pub(super) fn min_distinct_evidence(mut self, min_distinct_evidence: usize) -> Self {
-        self.min_distinct_evidence = min_distinct_evidence.max(1);
-        self
-    }
-
     pub(super) fn build(self) -> Result<ApiRule, ApiRuleBuildError> {
         let label = required_string(self.label, ApiRuleBuildError::MissingLabel)?;
         let category = self.category.ok_or(ApiRuleBuildError::MissingCategory)?;
@@ -325,12 +264,7 @@ impl ApiRuleBuilder {
 
         let matcher = self.matcher.normalized();
         let implies = normalized_strings(self.implies);
-        let when_all = normalized_strings(self.when_all);
-        let when_any = normalized_strings(self.when_any);
-
-        let has_primitive_matcher = !matcher.is_empty();
-        let has_correlation = !when_all.is_empty() || !when_any.is_empty();
-        if !has_primitive_matcher && !has_correlation {
+        if matcher.is_empty() {
             return Err(ApiRuleBuildError::MissingMatcher);
         }
         Ok(ApiRule {
@@ -341,10 +275,6 @@ impl ApiRuleBuilder {
             confidence,
             matcher,
             implies,
-            when_all,
-            when_any,
-            evidence_limit: self.evidence_limit,
-            min_distinct_evidence: self.min_distinct_evidence,
         })
     }
 }

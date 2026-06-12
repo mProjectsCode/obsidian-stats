@@ -7,7 +7,7 @@ fn obsidian_named_import_request_url_counts_as_network_api() {
             r("https://example.com");
         "#;
     let program = parse_program(source);
-    let result = classify_api_usage(source, program.as_ref(), obsidian_api_rules());
+    let result = classify_api_usage(program.as_ref(), obsidian_api_rules());
 
     assert!(result.has_capability("network.obsidian"));
 }
@@ -22,7 +22,7 @@ fn named_import_shadowing_is_resolved_at_the_call_site() {
             }
         "#;
     let program = parse_program(source);
-    let result = classify_api_usage(source, program.as_ref(), obsidian_api_rules());
+    let result = classify_api_usage(program.as_ref(), obsidian_api_rules());
 
     let capability = result
         .capabilities
@@ -39,7 +39,7 @@ fn obsidian_namespace_import_request_url_counts_as_network_api() {
             obsidian.requestUrl("https://example.com");
         "#;
     let program = parse_program(source);
-    let result = classify_api_usage(source, program.as_ref(), obsidian_api_rules());
+    let result = classify_api_usage(program.as_ref(), obsidian_api_rules());
 
     assert!(result.has_capability("network.obsidian"));
 }
@@ -61,7 +61,7 @@ fn bundled_obsidian_request_calls_count_as_network_api() {
         "#,
     ] {
         let program = parse_program(source);
-        let result = classify_api_usage(source, program.as_ref(), obsidian_api_rules());
+        let result = classify_api_usage(program.as_ref(), obsidian_api_rules());
 
         assert!(
             result.has_capability("network.obsidian"),
@@ -85,7 +85,7 @@ fn obsidian_request_function_aliases_preserve_module_provenance() {
         "#,
     ] {
         let program = parse_program(source);
-        let result = classify_api_usage(source, program.as_ref(), obsidian_api_rules());
+        let result = classify_api_usage(program.as_ref(), obsidian_api_rules());
 
         assert!(
             result.has_capability("network.obsidian"),
@@ -103,7 +103,7 @@ fn namespace_member_matchers_support_nested_and_computed_chains() {
             }
         "#;
     let program = parse_program(source);
-    let result = classify_api_usage(source, program.as_ref(), obsidian_api_rules());
+    let result = classify_api_usage(program.as_ref(), obsidian_api_rules());
 
     assert!(result.has_capability("platform.branching"));
 }
@@ -117,7 +117,7 @@ fn namespace_import_is_not_available_through_a_shadowing_binding() {
             }
         "#;
     let program = parse_program(source);
-    let result = classify_api_usage(source, program.as_ref(), obsidian_api_rules());
+    let result = classify_api_usage(program.as_ref(), obsidian_api_rules());
 
     assert!(!result.has_capability("network.obsidian"));
 }
@@ -126,7 +126,7 @@ fn namespace_import_is_not_available_through_a_shadowing_binding() {
 fn minified_obsidian_require_namespace_counts_as_network_api() {
     let source = r#"var o=require("obsidian");o.requestUrl("https://example.com");"#;
     let program = parse_program(source);
-    let result = classify_api_usage(source, program.as_ref(), obsidian_api_rules());
+    let result = classify_api_usage(program.as_ref(), obsidian_api_rules());
 
     assert!(result.has_capability("network.obsidian"));
 }
@@ -135,10 +135,47 @@ fn minified_obsidian_require_namespace_counts_as_network_api() {
 fn minified_commonjs_requires_count_as_imports() {
     let source = r#"var f=require("fs"),e=__toESM(require("electron"));f.readFileSync("x");"#;
     let program = parse_program(source);
-    let result = classify_api_usage(source, program.as_ref(), obsidian_api_rules());
+    let result = classify_api_usage(program.as_ref(), obsidian_api_rules());
 
     assert!(result.has_capability("filesystem.node"));
     assert!(result.has_capability("electron.desktop"));
+}
+
+#[test]
+fn arbitrary_require_consumers_do_not_become_module_namespaces() {
+    let source = r#"
+        const fallback = chooseFallback(require("obsidian"));
+        fallback.requestUrl("https://example.com");
+    "#;
+    let program = parse_program(source);
+    let result = classify_api_usage(program.as_ref(), obsidian_api_rules());
+
+    assert!(!result.has_capability("network.obsidian"));
+}
+
+#[test]
+fn recognized_require_interop_wrappers_preserve_module_namespaces() {
+    for wrapper in [
+        "__toESM",
+        "__importStar",
+        "__importDefault",
+        "_interopRequireWildcard",
+        "_interopRequireDefault",
+    ] {
+        let source = format!(
+            r#"
+                const obsidian = {wrapper}(require("obsidian"));
+                obsidian.requestUrl("https://example.com");
+            "#
+        );
+        let program = parse_program(&source);
+        let result = classify_api_usage(program.as_ref(), obsidian_api_rules());
+
+        assert!(
+            result.has_capability("network.obsidian"),
+            "missed wrapper {wrapper}"
+        );
+    }
 }
 
 #[test]
@@ -153,7 +190,7 @@ fn member_matcher_definitions_ignore_whitespace_around_chain_segments() {
         .member_calls([" this . app . vault . read "])
         .build()
         .unwrap();
-    let result = classify_api_usage(source, program.as_ref(), &[rule]);
+    let result = classify_api_usage(program.as_ref(), &[rule]);
 
     assert!(result.has_capability("test.whitespace"));
 }
@@ -167,7 +204,7 @@ fn rooted_member_matchers_follow_minified_aliases_and_destructuring() {
             v.modify(file, text);
         "#;
     let program = parse_program(source);
-    let result = classify_api_usage(source, program.as_ref(), obsidian_api_rules());
+    let result = classify_api_usage(program.as_ref(), obsidian_api_rules());
 
     assert!(result.has_capability("vault.read"));
     assert!(result.has_capability("vault.write"));
@@ -185,7 +222,7 @@ fn rooted_member_matchers_canonicalize_this_app_chains() {
         .rooted_member_calls(["app.vault.read"])
         .build()
         .unwrap();
-    let result = classify_api_usage(source, program.as_ref(), &[rule]);
+    let result = classify_api_usage(program.as_ref(), &[rule]);
 
     assert!(result.has_capability("test.canonical_app"));
 }
@@ -195,6 +232,7 @@ fn rooted_member_matchers_cover_remaining_obsidian_api_groups() {
     let source = r#"
         const vault = this.app.vault;
         vault.createFolder("folder");
+        vault.getRoot();
         vault.getResourcePath(file);
 
         const workspace = this.app.workspace;
@@ -209,7 +247,7 @@ fn rooted_member_matchers_cover_remaining_obsidian_api_groups() {
         plugins.getPlugin("dataview");
     "#;
     let program = parse_program(source);
-    let result = classify_api_usage(source, program.as_ref(), obsidian_api_rules());
+    let result = classify_api_usage(program.as_ref(), obsidian_api_rules());
 
     for expected in [
         "vault.folder_ops",
@@ -242,7 +280,7 @@ fn rooted_member_matchers_reject_local_api_lookalikes() {
             }
         "#;
     let program = parse_program(source);
-    let result = classify_api_usage(source, program.as_ref(), obsidian_api_rules());
+    let result = classify_api_usage(program.as_ref(), obsidian_api_rules());
 
     assert!(!result.has_capability("vault.read"));
     assert!(!result.has_capability("vault.write"));
@@ -252,7 +290,7 @@ fn rooted_member_matchers_reject_local_api_lookalikes() {
 fn minified_obsidian_require_destructuring_counts_as_network_api() {
     let source = r#"var{requestUrl:r}=require("obsidian");r("https://example.com");"#;
     let program = parse_program(source);
-    let result = classify_api_usage(source, program.as_ref(), obsidian_api_rules());
+    let result = classify_api_usage(program.as_ref(), obsidian_api_rules());
 
     assert!(result.has_capability("network.obsidian"));
 }
@@ -261,7 +299,7 @@ fn minified_obsidian_require_destructuring_counts_as_network_api() {
 fn bundled_obsidian_require_wrapper_counts_as_network_api() {
     let source = r#"var o=__toESM(require("obsidian"));o.requestUrl("https://example.com");"#;
     let program = parse_program(source);
-    let result = classify_api_usage(source, program.as_ref(), obsidian_api_rules());
+    let result = classify_api_usage(program.as_ref(), obsidian_api_rules());
 
     assert!(result.has_capability("network.obsidian"));
 }
@@ -281,7 +319,7 @@ fn member_calls_are_not_also_member_reads() {
         .member_reads(["navigator.sendBeacon"])
         .build()
         .unwrap();
-    let result = classify_api_usage(source, program.as_ref(), &[rule]);
+    let result = classify_api_usage(program.as_ref(), &[rule]);
 
     let capability = result.capabilities.first().unwrap();
     assert_eq!(capability.evidence[0].count, 1);
@@ -296,7 +334,7 @@ fn class_matchers_detect_referenced_classes_without_construction() {
             }
         "#;
     let program = parse_program(source);
-    let result = classify_api_usage(source, program.as_ref(), obsidian_api_rules());
+    let result = classify_api_usage(program.as_ref(), obsidian_api_rules());
 
     assert!(result.has_capability("editor.markdown_api"));
 }
@@ -316,7 +354,7 @@ fn unconstrained_calls_still_match_raw_call_names() {
         .calls(["customThing"])
         .build()
         .unwrap();
-    let result = classify_api_usage(source, program.as_ref(), &[rule]);
+    let result = classify_api_usage(program.as_ref(), &[rule]);
 
     assert!(result.has_capability("test.raw_call"));
 }

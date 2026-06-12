@@ -34,7 +34,6 @@ pub(in crate::plugins::analysis) enum ApiMatchKind {
     Constructor,
     CallArgument,
     CustomAst,
-    Correlation,
 }
 
 #[derive(Debug, Clone, Default, PartialEq, Eq)]
@@ -52,12 +51,14 @@ impl ApiClassificationResult {
         &self.disclosures
     }
 
+    #[cfg(test)]
     pub(in crate::plugins::analysis::mainjs) fn has_capability(&self, id: &str) -> bool {
         self.capabilities
             .iter()
             .any(|capability| capability.id == id)
     }
 
+    #[cfg(test)]
     pub(in crate::plugins::analysis::mainjs) fn has_disclosure(&self, id: &str) -> bool {
         self.disclosures
             .iter()
@@ -77,7 +78,6 @@ impl ApiMatchKind {
             Self::Constructor => "constructor",
             Self::CallArgument => "call_argument",
             Self::CustomAst => "custom_ast",
-            Self::Correlation => "correlation",
         }
     }
 }

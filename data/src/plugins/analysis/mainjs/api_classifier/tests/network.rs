@@ -12,7 +12,7 @@ fn built_in_network_rule_detects_common_network_apis() {
             new EventSource("https://example.com/events");
         "#;
     let program = parse_program(source);
-    let result = classify_api_usage(source, program.as_ref(), obsidian_api_rules());
+    let result = classify_api_usage(program.as_ref(), obsidian_api_rules());
 
     assert!(result.has_capability("network.browser"));
     assert!(result.has_capability("network.obsidian"));
@@ -35,13 +35,26 @@ fn string_literal_markers_match_inside_larger_literals() {
             const endpoint = "https://api.openai.com/v1/chat/completions";
         "#;
     let program = parse_program(source);
-    let result = classify_api_usage(source, program.as_ref(), obsidian_api_rules());
+    let result = classify_api_usage(program.as_ref(), obsidian_api_rules());
 
     assert!(result.has_capability("vault.uri"));
     assert!(result.has_capability("vault.obsidian_config"));
     assert!(result.has_capability("network.ai_provider"));
     assert!(result.has_disclosure("disclosure.obsidian_config_access"));
     assert!(result.has_disclosure("disclosure.third_party_services"));
+}
+
+#[test]
+fn string_literal_markers_match_template_literal_segments() {
+    let source = r#"
+            const callback = `obsidian://open?vault=${vault}`;
+            const endpoint = `https://api.openai.com/v1/${resource}`;
+        "#;
+    let program = parse_program(source);
+    let result = classify_api_usage(program.as_ref(), obsidian_api_rules());
+
+    assert!(result.has_capability("vault.uri"));
+    assert!(result.has_capability("network.ai_provider"));
 }
 
 #[test]
@@ -52,10 +65,30 @@ fn parsed_string_markers_ignore_comments() {
             const endpoint = getEndpoint();
         "#;
     let program = parse_program(source);
-    let result = classify_api_usage(source, program.as_ref(), obsidian_api_rules());
+    let result = classify_api_usage(program.as_ref(), obsidian_api_rules());
 
     assert!(!result.has_capability("network.ai_provider"));
     assert!(!result.has_capability("vault.obsidian_config"));
+}
+
+#[test]
+fn string_literal_matchers_do_not_match_identifiers() {
+    let source = r#"
+            const obsidianProtocol = buildProtocol();
+            const apiOpenaiCom = getHost();
+        "#;
+    let program = parse_program(source);
+    let rules = [ApiRule::builder("literal.only")
+        .label("Literal only")
+        .category(ApiCategory::Network)
+        .severity(ApiSeverity::Info)
+        .confidence(Confidence::High)
+        .string_literals(["obsidianProtocol", "apiOpenaiCom"])
+        .build()
+        .unwrap()];
+    let result = classify_api_usage(program.as_ref(), &rules);
+
+    assert!(!result.has_capability("literal.only"));
 }
 
 #[test]
@@ -66,7 +99,7 @@ fn private_network_rule_ignores_version_like_literals() {
             const text = "192.168.";
         "#;
     let program = parse_program(source);
-    let result = classify_api_usage(source, program.as_ref(), obsidian_api_rules());
+    let result = classify_api_usage(program.as_ref(), obsidian_api_rules());
 
     assert!(!result.has_capability("network.private"));
     assert!(!result.has_disclosure("disclosure.private_network_access"));

@@ -13,8 +13,13 @@ pub(super) struct SemanticIndex {
     script_appends: BTreeSet<BindingKey>,
     file_inputs: BTreeSet<BindingKey>,
     metadata_properties: BTreeSet<String>,
+    frontmatter_reads: BTreeSet<String>,
+    metadata_traversals: BTreeSet<String>,
+    editor_integrations: BTreeSet<String>,
+    workspace_file_opens: BTreeSet<String>,
     dynamic_code_sites: BTreeSet<String>,
     lifecycle_methods: BTreeSet<String>,
+    settings_methods: BTreeSet<String>,
 }
 
 impl SemanticIndex {
@@ -45,12 +50,38 @@ pub(super) fn metadata_cache_extraction(context: &ApiMatchContext<'_>) -> Vec<Ap
     custom_evidence(&context.semantics.metadata_properties, "metadata_cache")
 }
 
+pub(super) fn frontmatter_reads(context: &ApiMatchContext<'_>) -> Vec<ApiEvidence> {
+    custom_evidence(&context.semantics.frontmatter_reads, "frontmatter")
+}
+
+pub(super) fn metadata_cache_traversal(context: &ApiMatchContext<'_>) -> Vec<ApiEvidence> {
+    custom_evidence(
+        &context.semantics.metadata_traversals,
+        "metadata_cache_traversal",
+    )
+}
+
+pub(super) fn editor_integrations(context: &ApiMatchContext<'_>) -> Vec<ApiEvidence> {
+    custom_evidence(&context.semantics.editor_integrations, "editor_integration")
+}
+
+pub(super) fn workspace_file_opens(context: &ApiMatchContext<'_>) -> Vec<ApiEvidence> {
+    custom_evidence(
+        &context.semantics.workspace_file_opens,
+        "workspace_file_open",
+    )
+}
+
 pub(super) fn dynamic_code_execution(context: &ApiMatchContext<'_>) -> Vec<ApiEvidence> {
     custom_evidence(&context.semantics.dynamic_code_sites, "dynamic_code")
 }
 
 pub(super) fn lifecycle_methods(context: &ApiMatchContext<'_>) -> Vec<ApiEvidence> {
     custom_evidence(&context.semantics.lifecycle_methods, "lifecycle_method")
+}
+
+pub(super) fn settings_methods(context: &ApiMatchContext<'_>) -> Vec<ApiEvidence> {
+    custom_evidence(&context.semantics.settings_methods, "settings_method")
 }
 
 fn custom_evidence<T: std::fmt::Display + Ord>(

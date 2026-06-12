@@ -1,6 +1,7 @@
 ---
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
 import BarChart from '../../components/svelte/charts/BarChart.svelte';
+import HorizontalBarChart from '../../components/svelte/charts/HorizontalBarChart.svelte';
 import LocDistributionChart from '../../components/svelte/charts/misc/LocDistributionChart.svelte';
 import FileDistributionChart from '../../components/svelte/charts/misc/FileDistributionChart.svelte';
 import { getPluginDataArray } from '../../utils/data';
@@ -97,7 +98,7 @@ const medFileCount = fileCountDistribution.length > 0 ? fileCountDistribution[Ma
 
 	<p>The next chart shows the number of plugins that use a specific programming language, sorted by the number of plugins that use it.</p>
 
-	<BarChart dataPoints={locByUsage} xLabel="Language" yLabel="Plugins" skewLabels client:idle />
+	<HorizontalBarChart dataPoints={locByUsage} xLabel="Plugins" yLabel="Language" logScale client:idle />
 
 	<h3 id="lines-of-code">Lines of Code</h3>
 
@@ -105,7 +106,7 @@ const medFileCount = fileCountDistribution.length > 0 ? fileCountDistribution[Ma
 		The below chart shows the lines of code per programming language, summed over all plugins. Only languages with more than 10,000 lines of code are shown.
 	</p>
 
-	<BarChart dataPoints={locByLanguages} xLabel="Language" yLabel="Lines of Code" skewLabels client:idle />
+	<HorizontalBarChart dataPoints={locByLanguages} xLabel="Lines of Code" yLabel="Language" logScale client:idle />
 
 	<p>
 		The next chart shows the distribution of the total lines of code per plugin. The average plugin has {toCompactString(avgLoc)} lines of code while the median plugin
@@ -121,7 +122,7 @@ const medFileCount = fileCountDistribution.length > 0 ? fileCountDistribution[Ma
 		configuration files like <code>json</code>, <code>yaml</code>, and tool specific extensions like <code>prettierignore</code> are excluded.
 	</p>
 
-	<BarChart dataPoints={fileTypeCounts} xLabel="File Type" yLabel="File Count" skewLabels client:idle />
+	<HorizontalBarChart dataPoints={fileTypeCounts} xLabel="File Count" yLabel="File Type" logScale client:idle />
 
 	<p>
 		The next chart shows the distribution of the number of code files per plugin. The average plugin has {toCompactString(avgFileCount)} code files while the median

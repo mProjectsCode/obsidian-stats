@@ -59,9 +59,10 @@ function formatBytes(bytes: number): string {
 <StarlightPage
 	frontmatter={{
 		title: 'main.js Analysis',
-		description: 'Static analysis of the main.js files distributed in plugin releases.',
+		description: 'Static analysis of main.js files distributed in plugin releases.',
 	}}
 	headings={[
+		{ depth: 2, text: 'API Findings', slug: 'api-findings' },
 		{ depth: 2, text: 'Release Size Distribution', slug: 'release-size-distribution' },
 		{ depth: 2, text: 'ES Version', slug: 'es-version' },
 		{ depth: 2, text: 'Minification', slug: 'minification' },
@@ -69,13 +70,32 @@ function formatBytes(bytes: number): string {
 		{ depth: 2, text: 'Embedded Base64 Blobs', slug: 'embedded-base64-blobs' },
 		{ depth: 2, text: 'Worker Usage', slug: 'worker-usage' },
 		{ depth: 2, text: 'WebAssembly Usage', slug: 'webassembly-usage' },
-		{ depth: 2, text: 'API Signals', slug: 'api-signals' },
 	]}
 >
 	<p>
-		This page summarizes static analysis of the <code>main.js</code> files distributed in the latest plugin releases. The results are based on heuristics and should
-		be treated as signals rather than definitive findings.
+		This page summarizes static analysis of <code>main.js</code> files acquired from the latest plugin releases. The checks do not execute plugin code, and heuristic
+		results should be treated as indications rather than definitive findings.
 	</p>
+
+	<h2 id="api-findings">API Findings</h2>
+
+	<p>
+		The following charts summarize conservative static API findings detected in latest release <code>main.js</code> files. The public data includes warnings and high-confidence
+		informational findings; lower-confidence informational findings are omitted to reduce false positives.
+	</p>
+
+	<BarChart dataPoints={mainJsApiSeverityDistribution} xLabel="Severity" yLabel="Plugins" client:idle />
+
+	<p>
+		Categories group related findings such as vault, network, editor, browser, filesystem, and Electron API access. A plugin is counted once per category and
+		severity.
+	</p>
+
+	<SeverityDistributionChart dataPoints={mainJsApiCategorySeverityDistribution} client:idle />
+
+	<p>The following chart shows common individual capabilities. Capabilities detected in fewer than 25 plugins are omitted.</p>
+
+	<CapabilityDistributionChart dataPoints={mainJsApiCapabilityDistribution} client:idle />
 
 	<h2 id="release-size-distribution">Release Size Distribution</h2>
 
@@ -103,7 +123,7 @@ function formatBytes(bytes: number): string {
 	<h2 id="es-version">ES Version</h2>
 
 	<p>
-		The next chart shows the estimated ECMAScript target version used by plugin releases. Estimates are based on syntax found in the release's <code
+		The next chart shows the estimated minimum ECMAScript version required by plugin releases. Estimates are based on syntax found in each release's <code
 			>main.js</code
 		>.
 	</p>
@@ -143,7 +163,7 @@ function formatBytes(bytes: number): string {
 
 	<p>
 		This chart shows whether the latest release <code>main.js</code> includes a <code>sourceMappingURL</code> comment. Source maps can improve debugging and stack
-		traces, but shipping them can also increase release size.
+		traces. This check only detects the comment; it does not verify that the referenced source map is available.
 	</p>
 
 	<BarChart dataPoints={mainJsSourcemapDistribution} xLabel="Source Map Comments" yLabel="Plugins" client:idle />
@@ -158,33 +178,13 @@ function formatBytes(bytes: number): string {
 
 	<h2 id="worker-usage">Worker Usage</h2>
 
-	<p>The next chart shows whether plugin releases reference Worker APIs in their latest <code>main.js</code>.</p>
+	<p>This chart shows whether the latest release <code>main.js</code> references Web Worker APIs.</p>
 
 	<BarChart dataPoints={mainJsWorkerUsageDistribution} xLabel="Worker Usage" yLabel="Plugins" client:idle />
 
 	<h2 id="webassembly-usage">WebAssembly Usage</h2>
 
-	<p>The next chart shows whether plugin releases reference WebAssembly APIs in their latest <code>main.js</code>.</p>
+	<p>This chart shows whether the latest release <code>main.js</code> references WebAssembly APIs.</p>
 
 	<BarChart dataPoints={mainJsWebassemblyUsageDistribution} xLabel="WebAssembly Usage" yLabel="Plugins" client:idle />
-
-	<h2 id="api-signals">API Signals</h2>
-
-	<p>
-		The next charts summarize conservative static API signals detected in latest release <code>main.js</code> files. Low-confidence matches and most informational
-		matches are filtered during data export to reduce false positives; remaining signals are still heuristic.
-	</p>
-
-	<BarChart dataPoints={mainJsApiSeverityDistribution} xLabel="Finding Type" yLabel="Plugins" client:idle />
-
-	<p>
-		Categories group related signals such as vault access, network access, editor integrations, dynamic code loading, and performance-sensitive patterns. A
-		plugin is counted once per category and severity.
-	</p>
-
-	<SeverityDistributionChart dataPoints={mainJsApiCategorySeverityDistribution} client:idle />
-
-	<p>The following chart shows common individual capability signals. Capabilities detected in fewer than 25 plugins are omitted.</p>
-
-	<CapabilityDistributionChart dataPoints={mainJsApiCapabilityDistribution} client:idle />
 </StarlightPage>

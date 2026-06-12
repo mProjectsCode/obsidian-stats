@@ -93,17 +93,13 @@ const severityOrder = new Map([
 	['info', 3],
 ]);
 
-const publicMainJsApiCapabilities = (mainJsApiCapabilities ?? []);
+const publicMainJsApiCapabilities = mainJsApiCapabilities ?? [];
 const publicMainJsApiCapabilityIds = new Set(publicMainJsApiCapabilities.map(capability => capability.id));
-const publicMainJsApiDisclosures = (mainJsApiDisclosures ?? []).filter(disclosure =>
-	publicMainJsApiCapabilityIds.has(disclosure.from_capability),
-);
+const publicMainJsApiDisclosures = (mainJsApiDisclosures ?? []).filter(disclosure => publicMainJsApiCapabilityIds.has(disclosure.from_capability));
 const capabilityById = new Map(publicMainJsApiCapabilities.map(capability => [capability.id, capability]));
 const apiCapabilities = [...publicMainJsApiCapabilities].sort(
 	(a, b) =>
-		(severityOrder.get(a.severity) ?? 99) - (severityOrder.get(b.severity) ?? 99) ||
-		a.category.localeCompare(b.category) ||
-		a.label.localeCompare(b.label),
+		(severityOrder.get(a.severity) ?? 99) - (severityOrder.get(b.severity) ?? 99) || a.category.localeCompare(b.category) || a.label.localeCompare(b.label),
 );
 const apiDisclosures = Array.from(
 	publicMainJsApiDisclosures.reduce((groups, disclosure) => {
@@ -548,7 +544,9 @@ function formatReleaseFreshness(): string {
 							<td>{plugin.has_test_files() ? 'Yes' : 'No'}</td>
 						</tr>
 						<tr>
-							<td>Latest Release main.js Size</td>
+							<td>
+								Latest Release <code>main.js</code> Size
+							</td>
 							<td>{latestReleaseSizeBytes ? formatBytes(latestReleaseSizeBytes) : <span class="muted">Unknown</span>}</td>
 						</tr>
 						<tr>
@@ -556,11 +554,11 @@ function formatReleaseFreshness(): string {
 							<td>{estimatedTargetEsVersion ?? <span class="muted">Unknown</span>}</td>
 						</tr>
 						<tr>
-							<td>Probably uses Minification</td>
+							<td>Probably Minified</td>
 							<td>{mainJsProbablyMinified === undefined ? <span class="muted">Unknown</span> : mainJsProbablyMinified ? 'Yes' : 'No'}</td>
 						</tr>
 						<tr>
-							<td>Includes large base64 blobs</td>
+							<td>Includes Large Base64 Blobs</td>
 							<td>
 								{mainJsLargeBase64BlobCount === undefined ? (
 									<span class="muted">Unknown</span>
@@ -572,15 +570,15 @@ function formatReleaseFreshness(): string {
 							</td>
 						</tr>
 						<tr>
-							<td>Uses Web Workers</td>
+							<td>References Worker APIs</td>
 							<td>{mainJsWorkerUsageCount === undefined ? <span class="muted">Unknown</span> : mainJsWorkerUsageCount > 0 ? 'Yes' : 'No'}</td>
 						</tr>
 						<tr>
-							<td>Uses WebAssembly</td>
+							<td>References WebAssembly APIs</td>
 							<td>{mainJsWebassemblyUsageCount === undefined ? <span class="muted">Unknown</span> : mainJsWebassemblyUsageCount > 0 ? 'Yes' : 'No'}</td>
 						</tr>
 						<tr>
-							<td>main.js API Signals</td>
+							<td>main.js API Findings</td>
 							<td>
 								{mainJsApiDisclosures === undefined ? (
 									<span class="muted">Unknown</span>
@@ -622,17 +620,17 @@ function formatReleaseFreshness(): string {
 					</tbody>
 				</table>
 
-				<h4 id="main-js-api-findings">main.js API Signals</h4>
+				<h4 id="main-js-api-findings">main.js API Findings</h4>
 
 				<p>
-					These conservative signals come from static analysis of the latest release <code>main.js</code>. Low-confidence matches and most informational
-					matches are hidden to reduce false positives.
+					These conservative findings come from static analysis of the latest release <code>main.js</code>. The table includes warnings and high-confidence
+					informational findings; lower-confidence informational findings are omitted to reduce false positives.
 				</p>
 
 				{mainJsApiCapabilities === undefined ? (
 					<p class="muted">No main.js API scan data available.</p>
 				) : apiCapabilities.length === 0 ? (
-					<p class="muted">No main.js API findings detected.</p>
+					<p class="muted">No public main.js API findings detected.</p>
 				) : (
 					<>
 						{apiDisclosures.length > 0 && (
@@ -729,15 +727,13 @@ function formatReleaseFreshness(): string {
 						<td>{version.version}</td>
 						<td>{version.date}</td>
 						<td>
-							{
-								[
-									version.deprecated ? 'Blacklisted' : undefined,
-									version.prerelease ? 'Prerelease' : undefined,
-									!version.released_while_listed ? 'Released while not listed' : undefined,
-								]
-									.filter(Boolean)
-									.join(', ') || <span class="muted">None</span>
-							}
+							{[
+								version.deprecated ? 'Blacklisted' : undefined,
+								version.prerelease ? 'Prerelease' : undefined,
+								!version.released_while_listed ? 'Released while not listed' : undefined,
+							]
+								.filter(Boolean)
+								.join(', ') || <span class="muted">None</span>}
 						</td>
 					</tr>
 				))
@@ -749,8 +745,8 @@ function formatReleaseFreshness(): string {
 		versions.some(x => x.deprecated || !x.released_while_listed) && (
 			<p class="muted">
 				<i>Blacklisted</i> versions are versions that are known to cause major issues or contain security concerns and have thus been blacklisted by the
-				Obsidian team. Obsidian will disable plugins on startup whose installed version is blacklisted. <i>Released while not listed</i> versions happened outside the period where the plugin was present in the
-				community plugin list and are excluded from aggregate release statistics.
+				Obsidian team. Obsidian will disable plugins on startup whose installed version is blacklisted. <i>Released while not listed</i> versions happened
+				outside the period where the plugin was present in the community plugin list and are excluded from aggregate release statistics.
 			</p>
 		)
 	}

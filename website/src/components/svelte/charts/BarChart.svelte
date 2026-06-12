@@ -11,10 +11,11 @@
 		skewLabels?: boolean;
 		percentages?: boolean;
 		hideBarValues?: boolean;
+		logScale?: boolean;
 		yDomain?: [number, number];
 	}
 
-	const { dataPoints, xLabel, yLabel, yDomain, skewLabels = false, percentages = false, hideBarValues = false }: Props = $props();
+	const { dataPoints, xLabel, yLabel, yDomain, skewLabels = false, percentages = false, hideBarValues = false, logScale = false }: Props = $props();
 
 	const mappedDataPoints = $derived(
 		dataPoints as {
@@ -26,16 +27,28 @@
 	function sortData(a: any, b: any) {
 		return b.value - a.value; // Sort in descending order
 	}
+
+	const maxValue = $derived(Math.max(0, ...mappedDataPoints.map(point => point.value)));
+	const domain = $derived(yDomain ?? [logScale ? 1 : 0, Math.max(1, maxValue * 1.12)]);
 </script>
 
 <ChartWrapper>
 	<Plot
 		x={{ type: 'band', label: `${xLabel} →`, tickRotate: skewLabels ? 45 : 0 }}
-		y={{ label: `↑ ${yLabel}`, domain: yDomain, tickFormat: percentages ? d => `${String(d)}%` : d => toCompactString(d) }}
+		y={{
+			label: `↑ ${yLabel}`,
+			domain,
+			type: logScale ? 'log' : 'linear',
+			tickFormat: percentages ? d => `${String(d)}%` : d => toCompactString(d),
+		}}
 		class="no-overflow-clip"
 	>
 		<GridY />
-		<BarY data={mappedDataPoints} x="name" y="value" fill="var(--sl-color-text-accent)" sort={sortData} />
+		{#if logScale}
+			<BarY data={mappedDataPoints} x="name" y1={() => domain[0]} y2="value" fill="var(--sl-color-text-accent)" sort={sortData} />
+		{:else}
+			<BarY data={mappedDataPoints} x="name" y="value" fill="var(--sl-color-text-accent)" sort={sortData} />
+		{/if}
 		{#if !hideBarValues}
 			<Text
 				data={mappedDataPoints}

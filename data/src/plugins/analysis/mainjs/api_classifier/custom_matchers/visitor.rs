@@ -1,12 +1,14 @@
 use std::collections::{BTreeMap, BTreeSet};
 
 use swc_ecma_ast::{
-    AssignExpr, CallExpr, Callee, ClassMethod, Expr, FnDecl, MemberExpr, NewExpr, VarDeclarator,
+    AssignExpr, CallExpr, Callee, Class, ClassMethod, Expr, FnDecl, MemberExpr, NewExpr, ObjectLit,
+    Prop, PropOrSpread, VarDeclarator,
 };
 use swc_ecma_visit::{Visit, VisitWith};
 
 use super::super::symbol_index::{
-    AliasInfo, BindingKey, SymbolCallProvenance, member_prop_name, static_string,
+    AliasInfo, BindingKey, SymbolCallProvenance, SymbolMemberProvenance, member_prop_name,
+    static_string,
 };
 use super::SemanticIndex;
 use super::ast::{
@@ -46,9 +48,11 @@ struct SemanticVisitor<'a> {
     remote_resource_bindings: BTreeSet<BindingKey>,
     inputs: BTreeSet<BindingKey>,
     caches: BTreeSet<BindingKey>,
+    metadata_maps: BTreeSet<BindingKey>,
     dynamic_callables: BTreeMap<BindingKey, DynamicCallable>,
     function_effects: BTreeMap<BindingKey, BTreeMap<usize, BTreeSet<ParameterEffect>>>,
     current_function: Option<FunctionContext>,
+    in_plugin_setting_tab: bool,
 }
 
 impl<'a> SemanticVisitor<'a> {
@@ -62,9 +66,11 @@ impl<'a> SemanticVisitor<'a> {
             remote_resource_bindings: BTreeSet::new(),
             inputs: BTreeSet::new(),
             caches: BTreeSet::new(),
+            metadata_maps: BTreeSet::new(),
             dynamic_callables: BTreeMap::new(),
             function_effects: BTreeMap::new(),
             current_function: None,
+            in_plugin_setting_tab: false,
         }
     }
 
@@ -79,6 +85,7 @@ impl<'a> SemanticVisitor<'a> {
         self.remote_resource_bindings.remove(binding);
         self.inputs.remove(binding);
         self.caches.remove(binding);
+        self.metadata_maps.remove(binding);
         self.dynamic_callables.remove(binding);
     }
 
@@ -99,6 +106,8 @@ impl<'a> SemanticVisitor<'a> {
             }
         } else if is_metadata_cache_call(value) {
             self.caches.insert(binding);
+        } else if is_metadata_map_expr(value, self.aliases) {
+            self.metadata_maps.insert(binding);
         } else if let Some(callable) = self.dynamic_callable(value) {
             self.dynamic_callables.insert(binding, callable);
         } else if let Some(source) = expr_ident(value) {
@@ -119,7 +128,10 @@ impl<'a> SemanticVisitor<'a> {
                 self.inputs.insert(binding.clone());
             }
             if self.caches.contains(&source) {
-                self.caches.insert(binding);
+                self.caches.insert(binding.clone());
+            }
+            if self.metadata_maps.contains(&source) {
+                self.metadata_maps.insert(binding);
             }
         }
     }
@@ -265,11 +277,23 @@ impl<'a> SemanticVisitor<'a> {
 }
 
 impl Visit for SemanticVisitor<'_> {
+    fn visit_class(&mut self, class: &Class) {
+        let previous = self.in_plugin_setting_tab;
+        self.in_plugin_setting_tab = class
+            .super_class
+            .as_deref()
+            .is_some_and(|super_class| is_plugin_setting_tab(super_class, self.aliases));
+        class.visit_children_with(self);
+        self.in_plugin_setting_tab = previous;
+    }
+
     fn visit_class_method(&mut self, method: &ClassMethod) {
-        if let Some(name) = prop_name(&method.key)
-            && matches!(name.as_str(), "onload" | "onunload")
-        {
-            self.index.lifecycle_methods.insert(name);
+        if let Some(name) = prop_name(&method.key) {
+            if matches!(name.as_str(), "onload" | "onunload") {
+                self.index.lifecycle_methods.insert(name);
+            } else if name == "getSettingDefinitions" && self.in_plugin_setting_tab {
+                self.index.settings_methods.insert(name);
+            }
         }
         method.visit_children_with(self);
     }
@@ -350,6 +374,26 @@ impl Visit for SemanticVisitor<'_> {
             self.append_binding(&binding);
         }
 
+        if let Some(kind) = editor_integration_kind(call, self.aliases) {
+            self.index.editor_integrations.insert(kind);
+        }
+        if is_workspace_file_open(call, self.aliases) {
+            self.index
+                .workspace_file_opens
+                .insert("getLeaf.openFile".to_string());
+        }
+        if let Some(operation) = metadata_traversal_operation(call, self.aliases)
+            && call
+                .args
+                .first()
+                .is_some_and(|argument| match &*argument.expr {
+                    Expr::Ident(ident) => self.metadata_maps.contains(&self.binding(ident)),
+                    expression => is_metadata_map_expr(expression, self.aliases),
+                })
+        {
+            self.index.metadata_traversals.insert(operation);
+        }
+
         if let Some(member) = call_member_callee(call)
             && let Some(ident) = expr_ident(&member.obj)
             && let object = self.binding(ident)
@@ -386,9 +430,12 @@ impl Visit for SemanticVisitor<'_> {
             && let object = self.binding(ident)
             && self.caches.contains(&object)
             && let Some(property) = member_prop_name(&member.prop)
-            && METADATA_PROPS.contains(&property.as_str())
         {
-            self.index.metadata_properties.insert(property);
+            if property == "frontmatter" {
+                self.index.frontmatter_reads.insert(property);
+            } else if METADATA_PROPS.contains(&property.as_str()) {
+                self.index.metadata_properties.insert(property);
+            }
         }
         member.visit_children_with(self);
     }
@@ -403,3 +450,115 @@ const METADATA_PROPS: &[&str] = &[
     "sections",
     "listItems",
 ];
+
+fn resolved_member_chain(member: &MemberExpr, aliases: &AliasInfo) -> Option<String> {
+    aliases
+        .rooted_member_chain(member)
+        .or_else(|| super::super::symbol_index::member_chain(member))
+}
+
+fn is_metadata_map_expr(expr: &Expr, aliases: &AliasInfo) -> bool {
+    let Expr::Member(member) = expr else {
+        return false;
+    };
+    resolved_member_chain(member, aliases).is_some_and(|chain| {
+        matches!(
+            chain.strip_prefix("this.").unwrap_or(&chain),
+            "app.metadataCache.resolvedLinks"
+                | "app.metadataCache.unresolvedLinks"
+                | "app.metadataCache.fileCache"
+        )
+    })
+}
+
+fn metadata_traversal_operation(call: &CallExpr, aliases: &AliasInfo) -> Option<String> {
+    let member = call_member_callee(call)?;
+    let chain = resolved_member_chain(member, aliases)?;
+    matches!(
+        chain.as_str(),
+        "Object.entries" | "Object.keys" | "Object.values"
+    )
+    .then(|| chain.rsplit('.').next().unwrap_or_default().to_string())
+}
+
+fn editor_integration_kind(call: &CallExpr, aliases: &AliasInfo) -> Option<String> {
+    let member = call_member_callee(call)?;
+    let chain = resolved_member_chain(member, aliases)?;
+    match chain.strip_prefix("this.").unwrap_or(&chain) {
+        "addCommand" => call
+            .args
+            .first()
+            .and_then(|argument| editor_callback_property(&argument.expr)),
+        "registerEvent" => call
+            .args
+            .first()
+            .and_then(|argument| workspace_menu_event(&argument.expr, aliases)),
+        _ => None,
+    }
+}
+
+fn editor_callback_property(expr: &Expr) -> Option<String> {
+    let Expr::Object(ObjectLit { props, .. }) = expr else {
+        return None;
+    };
+    props.iter().find_map(|property| {
+        let PropOrSpread::Prop(property) = property else {
+            return None;
+        };
+        let name = match &**property {
+            Prop::KeyValue(property) => prop_name(&property.key),
+            Prop::Method(property) => prop_name(&property.key),
+            Prop::Getter(property) => prop_name(&property.key),
+            Prop::Setter(property) => prop_name(&property.key),
+            Prop::Shorthand(ident) => Some(ident.sym.to_string()),
+            Prop::Assign(_) => None,
+        }?;
+        matches!(name.as_str(), "editorCallback" | "editorCheckCallback").then_some(name)
+    })
+}
+
+fn workspace_menu_event(expr: &Expr, aliases: &AliasInfo) -> Option<String> {
+    let Expr::Call(call) = expr else {
+        return None;
+    };
+    let member = call_member_callee(call)?;
+    let chain = resolved_member_chain(member, aliases)?;
+    if chain.strip_prefix("this.").unwrap_or(&chain) != "app.workspace.on" {
+        return None;
+    }
+    string_arg(call, 0).filter(|event| matches!(event.as_str(), "file-menu" | "editor-menu"))
+}
+
+fn is_workspace_file_open(call: &CallExpr, aliases: &AliasInfo) -> bool {
+    let Some(member) = call_member_callee(call) else {
+        return false;
+    };
+    if member_prop_name(&member.prop).as_deref() != Some("openFile") {
+        return false;
+    }
+    let Expr::Call(get_leaf_call) = &*member.obj else {
+        return false;
+    };
+    let Some(get_leaf_member) = call_member_callee(get_leaf_call) else {
+        return false;
+    };
+    resolved_member_chain(get_leaf_member, aliases).is_some_and(|chain| {
+        chain.strip_prefix("this.").unwrap_or(&chain) == "app.workspace.getLeaf"
+    })
+}
+
+fn is_plugin_setting_tab(expr: &Expr, aliases: &AliasInfo) -> bool {
+    match expr {
+        Expr::Ident(ident) => matches!(
+            aliases.call_provenance(ident.sym.as_ref(), ident.span),
+            SymbolCallProvenance::ModuleExport { module, export }
+                if module == "obsidian" && export == "PluginSettingTab"
+        ),
+        Expr::Member(member) => matches!(
+            aliases.member_call_provenance(member),
+            Some(SymbolMemberProvenance::ModuleNamespace { module, member })
+                if module == "obsidian" && member == "PluginSettingTab"
+        ),
+        _ => false,
+    }
+}

@@ -1,4 +1,4 @@
-use std::collections::{BTreeMap, BTreeSet};
+use std::collections::BTreeMap;
 
 use swc_ecma_ast::Program;
 
@@ -10,7 +10,9 @@ mod ast;
 mod visitor;
 
 pub(super) use alias::{AliasInfo, BindingKey};
-pub(super) use ast::{SymbolCallProvenance, member_chain, member_prop_name, static_string};
+pub(super) use ast::{
+    SymbolCallProvenance, SymbolMemberProvenance, member_chain, member_prop_name, static_string,
+};
 
 #[derive(Debug, Default)]
 pub(super) struct SymbolIndex {
@@ -25,14 +27,9 @@ pub(super) struct SymbolIndex {
     string_literals: BTreeMap<String, u32>,
     classes: BTreeMap<String, u32>,
     constructors: BTreeMap<String, u32>,
-    owners: BTreeMap<(ApiMatchKind, String), Vec<usize>>,
 }
 
 impl SymbolIndex {
-    pub(super) fn collect(program: Option<&Program>, aliases: &AliasInfo) -> Self {
-        Self::collect_with_argument_matchers(program, aliases, &[], 0).0
-    }
-
     pub(super) fn collect_for_rules(
         program: Option<&Program>,
         aliases: &AliasInfo,
@@ -70,7 +67,6 @@ impl SymbolIndex {
                 &mut argument_evidence,
             );
         }
-
         (index, argument_evidence)
     }
 
@@ -88,44 +84,8 @@ impl SymbolIndex {
             &mut evidence,
         );
 
-        evidence.truncate(rule.evidence_limit);
+        evidence.truncate(ApiRule::EVIDENCE_LIMIT);
         evidence
-    }
-
-    pub(super) fn owners_for_evidence(&self, evidence: &[ApiEvidence]) -> BTreeSet<usize> {
-        evidence
-            .iter()
-            .flat_map(|evidence| {
-                if evidence.kind == ApiMatchKind::StringLiteral {
-                    self.owners
-                        .iter()
-                        .filter(move |((kind, literal), _)| {
-                            *kind == ApiMatchKind::StringLiteral
-                                && literal.contains(&evidence.symbol)
-                        })
-                        .flat_map(|(_, owners)| owners.iter().copied())
-                        .collect::<Vec<_>>()
-                } else if evidence.kind == ApiMatchKind::MemberRead
-                    && !evidence.symbol.contains('.')
-                {
-                    let suffix = format!(".{}", evidence.symbol);
-                    self.owners
-                        .iter()
-                        .filter(move |((kind, symbol), _)| {
-                            *kind == ApiMatchKind::MemberRead
-                                && (symbol == &evidence.symbol || symbol.ends_with(&suffix))
-                        })
-                        .flat_map(|(_, owners)| owners.iter().copied())
-                        .collect::<Vec<_>>()
-                } else {
-                    self.owners
-                        .get(&(evidence.kind, evidence.symbol.clone()))
-                        .into_iter()
-                        .flat_map(|owners| owners.iter().copied())
-                        .collect()
-                }
-            })
-            .collect()
     }
 
     fn collect_call_evidence(&self, calls: &[CallMatcher], evidence: &mut Vec<ApiEvidence>) {
@@ -258,7 +218,6 @@ impl SymbolIndex {
             ApiMatchKind::Class => self.classes.get(symbol),
             ApiMatchKind::Constructor => self.constructors.get(symbol),
             ApiMatchKind::CallArgument | ApiMatchKind::CustomAst => None,
-            ApiMatchKind::Correlation => None,
         }
         .copied()
     }
@@ -273,16 +232,8 @@ impl SymbolIndex {
             ApiMatchKind::Class => &mut self.classes,
             ApiMatchKind::Constructor => &mut self.constructors,
             ApiMatchKind::CallArgument | ApiMatchKind::CustomAst => return,
-            ApiMatchKind::Correlation => return,
         };
 
         *target.entry(symbol.into()).or_insert(0) += 1;
-    }
-
-    fn record_owner(&mut self, kind: ApiMatchKind, symbol: impl Into<String>, owner: usize) {
-        let owners = self.owners.entry((kind, symbol.into())).or_default();
-        if !owners.contains(&owner) {
-            owners.push(owner);
-        }
     }
 }
