@@ -624,7 +624,7 @@ function formatReleaseFreshness(): string {
 
 				<p>
 					These conservative findings come from static analysis of the latest release <code>main.js</code>. The table includes warnings and high-confidence
-					informational findings; lower-confidence informational findings are omitted to reduce false positives.
+					informational findings; lower-confidence informational findings are omitted to reduce false positives. Warnings indicate usage of potentially risky APIs, but such APIs can be used safely if handled with care.
 				</p>
 
 				{mainJsApiCapabilities === undefined ? (
