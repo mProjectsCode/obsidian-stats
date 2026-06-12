@@ -73,14 +73,15 @@ function formatBytes(bytes: number): string {
 	]}
 >
 	<p>
-		This page summarizes static analysis of <code>main.js</code> files acquired from the latest plugin releases. The checks do not execute plugin code, and static analysis findings are heuristic and may contain false positives or negatives. 
+		This page summarizes static analysis of <code>main.js</code> files acquired from the latest plugin releases. The checks do not execute plugin code, and static
+		analysis findings are heuristic and may contain false positives or negatives.
 	</p>
-	
+
 	<h2 id="api-findings">API Findings</h2>
-	
+
 	<p>
-		The following charts summarize conservative static API findings detected in latest release <code>main.js</code> files. 
-		They only include high-confidence findings to reduce false positives, so they may undercount actual API usage.
+		The following charts summarize conservative static API findings detected in latest release <code>main.js</code> files. They only include high-confidence findings
+		to reduce false positives, so they may undercount actual API usage.
 	</p>
 
 	<p>The following chart shows common individual capabilities. Capabilities detected in fewer than 25 plugins are omitted.</p>
@@ -91,15 +92,15 @@ function formatBytes(bytes: number): string {
 		Categories group related findings such as vault, network, editor, browser, filesystem, and Electron API access. A plugin is counted once per category and
 		severity.
 	</p>
-	
+
 	<SeverityDistributionChart dataPoints={mainJsApiCategorySeverityDistribution} client:idle />
 
 	<p>
-		This chart shows the distribution of the highest severity level detected for any API usage in each plugin. Warnings indicate usage of potentially risky APIs, but such APIs can be used safely if handled with care.
+		This chart shows the distribution of the highest severity level detected for any API usage in each plugin. Warnings indicate usage of potentially risky
+		APIs, but such APIs can be used safely if handled with care.
 	</p>
-	
-	<BarChart dataPoints={mainJsApiSeverityDistribution} xLabel="Severity" yLabel="Plugins" client:idle />
 
+	<BarChart dataPoints={mainJsApiSeverityDistribution} xLabel="Severity" yLabel="Plugins" client:idle />
 
 	<h2 id="release-size-distribution">Release Size Distribution</h2>
 

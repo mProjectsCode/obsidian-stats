@@ -24,11 +24,7 @@
 </script>
 
 <ChartWrapper>
-	<Plot
-		x={{ label: 'Plugins →', domain: [0, Math.max(1, maxValue * 1.12)] }}
-		y={{ type: 'band', label: '', domain: capabilityOrder }}
-		class="no-overflow-clip"
-	>
+	<Plot x={{ label: 'Plugins →', domain: [0, Math.max(1, maxValue * 1.12)] }} y={{ type: 'band', label: '', domain: capabilityOrder }} class="no-overflow-clip">
 		<GridX />
 		<BarX data={mappedDataPoints} x="value" y="capability" fill="var(--sl-color-text-accent)" />
 		<Text
