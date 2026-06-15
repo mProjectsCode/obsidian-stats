@@ -573,36 +573,6 @@ fn top_release_sizes(view: &PluginDataArrayView, data: &PluginDataArray) -> Vec<
     tmp
 }
 
-fn api_disclosure_distribution(
-    view: &PluginDataArrayView,
-    data: &PluginDataArray,
-    disclosure_id: &str,
-    present_label: &str,
-    absent_label: &str,
-) -> Vec<NamedDataPoint> {
-    let mut points = Vec::new();
-
-    view.iter_data(data).for_each(|item| {
-        let Some(repo_data) = item.repo_data() else {
-            return;
-        };
-
-        if repo_data.main_js_parse_succeeded.is_none() {
-            increment_named_data_points(&mut points, "Unknown", 1.0);
-        } else if repo_data
-            .main_js_api_disclosures
-            .iter()
-            .any(|disclosure| disclosure.id == disclosure_id)
-        {
-            increment_named_data_points(&mut points, present_label, 1.0);
-        } else {
-            increment_named_data_points(&mut points, absent_label, 1.0);
-        }
-    });
-
-    points
-}
-
 fn increment_stacked_named_data_points(
     points: &mut Vec<StackedNamedDataPoint>,
     name: &str,
