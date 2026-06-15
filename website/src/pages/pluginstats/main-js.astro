@@ -24,10 +24,6 @@ const topReleaseSizePlugins = view.top_release_size_plugins(data, 10).map(item =
 const esVersionDistribution = view.es_version_distribution(data);
 const mainJsMinifiedDistribution = view.main_js_minified_distribution(data);
 const mainJsMinificationScoreDistribution = Array.from(view.main_js_minification_score_distribution(data));
-const mainJsSourcemapDistribution = view.main_js_sourcemap_distribution(data);
-const mainJsBase64BlobDistribution = view.main_js_base64_blob_distribution(data);
-const mainJsWorkerUsageDistribution = view.main_js_worker_usage_distribution(data);
-const mainJsWebassemblyUsageDistribution = view.main_js_webassembly_usage_distribution(data);
 const mainJsApiSeverityDistribution = view.main_js_api_severity_distribution(data);
 const mainJsApiCategorySeverityDistribution = view.main_js_api_category_severity_distribution(data);
 const mainJsApiCapabilityDistribution = view.main_js_api_capability_distribution(data).filter(point => point.value >= 25);
