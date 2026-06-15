@@ -1,22 +1,22 @@
 {
-  "refreshed_at_unix": 1781260455,
-  "clone_run_at_unix": 1781260367,
-  "release_run_at_unix": 1781260413,
+  "refreshed_at_unix": 1781519078,
+  "clone_run_at_unix": 1781519078,
+  "release_run_at_unix": 1781519078,
   "obsidian_release_fetch_at_unix": 1781260455,
-  "latest_plugin_download_snapshot_date": "2026-06-08",
+  "latest_plugin_download_snapshot_date": "2026-06-15",
   "latest_obsidian_release_date": "2026-03-23",
   "latest_obsidian_version": "1.12.7",
   "plugins": {
-    "total": 5066,
-    "active": 4677,
-    "removed": 389,
-    "total_downloads": 128750579,
-    "version_snapshots": 42986
+    "total": 5172,
+    "active": 4780,
+    "removed": 392,
+    "total_downloads": 130296963,
+    "version_snapshots": 43966
   },
   "themes": {
-    "total": 619,
-    "active": 558,
-    "removed": 61
+    "total": 622,
+    "active": 560,
+    "removed": 62
   },
   "releases": {
     "changelog_entries": 457,
@@ -26,67 +26,65 @@
     "download_snapshots": 42718
   },
   "clone": {
-    "tracked": 5096,
-    "ok": 4658,
-    "skipped": 402,
-    "failed": 6,
-    "success_rate": 0.9987135506003431,
+    "tracked": 5196,
+    "ok": 4750,
+    "skipped": 408,
+    "failed": 3,
+    "success_rate": 0.9993688196928255,
     "failed_plugins": [
-      "hunspell-spellchecker",
-      "stardew-valley-pals",
-      "liminal",
-      "task-list-kanban",
-      "hide-tags"
+      "hide-tags",
+      "gantt-calendar",
+      "cyberware"
     ],
     "status_counts": [
       {
         "label": "ok",
-        "count": 4658,
-        "share": 0.9140502354788069
+        "count": 4750,
+        "share": 0.9141647421093149
       },
       {
         "label": "skipped_removed",
-        "count": 402,
-        "share": 0.07888540031397175
+        "count": 408,
+        "share": 0.07852193995381063
       },
       {
         "label": "manifest_version_invalid",
-        "count": 17,
-        "share": 0.0033359497645211933
+        "count": 18,
+        "share": 0.003464203233256351
       },
       {
         "label": "release_for_manifest_version_missing",
-        "count": 7,
-        "share": 0.0013736263736263737
-      },
-      {
-        "label": "failed",
-        "count": 6,
-        "share": 0.0011773940345368916
+        "count": 10,
+        "share": 0.001924557351809084
       },
       {
         "label": "helper_plugin_missing",
-        "count": 4,
-        "share": 0.0007849293563579278
+        "count": 5,
+        "share": 0.000962278675904542
+      },
+      {
+        "label": "failed",
+        "count": 3,
+        "share": 0.0005773672055427252
       },
       {
         "label": "version_history_missing",
         "count": 2,
-        "share": 0.0003924646781789639
+        "share": 0.00038491147036181676
       }
     ]
   },
   "release_acquisition": {
-    "tracked": 4907,
-    "ok": 496,
-    "retained_previous_main_js": 4358,
-    "no_release": 1,
-    "no_main_js_asset": 4,
-    "error_count": 32,
-    "main_js_coverage": 4854,
-    "main_js_coverage_rate": 0.9891991033217852,
-    "total_main_js_bytes": 3554434385,
-    "average_main_js_bytes": 732269,
+    "tracked": 5006,
+    "ok": 702,
+    "retained_previous_main_js": 4243,
+    "no_release": 2,
+    "no_main_js_asset": 3,
+    "error_count": 40,
+    "main_js_coverage": 4945,
+    "main_js_coverage_rate": 0.9878146224530563,
+    "total_main_js_bytes": 3568931759,
+    "average_main_js_bytes": 721725,
     "largest_main_js": {
       "repo": "salokingreen/NAI4Obsidian",
       "size_bytes": 127704263
@@ -94,79 +92,84 @@
     "status_counts": [
       {
         "label": "main_js_not_updated_since_success",
-        "count": 4358,
-        "share": 0.8881190136539637
+        "count": 4243,
+        "share": 0.8475829005193768
       },
       {
         "label": "ok",
-        "count": 496,
-        "share": 0.10108008966782148
+        "count": 702,
+        "share": 0.14023172193367958
       },
       {
         "label": "manifest_version_invalid",
-        "count": 17,
-        "share": 0.0034644385571632364
+        "count": 18,
+        "share": 0.003595685177786656
       },
       {
         "label": "version_history_missing",
         "count": 16,
-        "share": 0.0032606480538006927
+        "share": 0.0031961646024770275
       },
       {
         "label": "release_for_manifest_version_missing",
-        "count": 10,
-        "share": 0.002037905033625433
+        "count": 13,
+        "share": 0.0025968837395125848
       },
       {
         "label": "helper_plugin_missing",
-        "count": 5,
-        "share": 0.0010189525168127166
+        "count": 9,
+        "share": 0.001797842588893328
       },
       {
         "label": "no_main_js_asset",
-        "count": 4,
-        "share": 0.0008151620134501732
+        "count": 3,
+        "share": 0.0005992808629644426
       },
       {
         "label": "no_release",
         "count": 1,
-        "share": 0.0002037905033625433
+        "share": 0.00019976028765481422
+      },
+      {
+        "label": "no_release_for_version",
+        "count": 1,
+        "share": 0.00019976028765481422
       }
     ]
   },
   "repo_analysis": {
-    "tracked": 5066,
-    "active_success": 4669,
-    "active_failures": 8,
-    "removed_skipped": 389,
-    "coverage_rate": 0.9982895018174043,
+    "tracked": 5172,
+    "active_success": 4773,
+    "active_failures": 7,
+    "removed_skipped": 392,
+    "coverage_rate": 0.9985355648535564,
     "failure_samples": [
-      "3d-semantic-graph",
-      "better-calendar",
-      "cbz-reader",
-      "forest-syntactic-trees",
-      "hunspell-spellchecker"
+      "dinox-sync",
+      "flash-memo",
+      "kelan-uploader",
+      "lan-vault-sync",
+      "md-to-wechat"
     ],
     "error_counts": [
       {
         "label": "main_js_analysis_too_large",
-        "count": 51,
-        "share": 0.010904425914047467
-      },
-      {
-        "label": "repository_missing",
-        "count": 8,
-        "share": 0.001710498182595681
+        "count": 49,
+        "share": 0.010251046025104602
       },
       {
         "label": "manifest_read_error",
         "count": 7,
-        "share": 0.0014966859097712208
+        "share": 0.0014644351464435147
+      },
+      {
+        "label": "repository_missing",
+        "count": 7,
+        "share": 0.0014644351464435147
       },
       {
         "label": "manifest_parse_error",
         "count": 3,
-        "share": 0.0006414368184733803
+        "share": 0.0006276150627615063
       }
     ]
   }

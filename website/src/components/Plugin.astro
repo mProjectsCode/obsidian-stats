@@ -80,9 +80,6 @@ const changes = plugin.changes();
 const latestReleaseSizeBytes = plugin.latest_release_main_js_size_bytes();
 const estimatedTargetEsVersion = plugin.estimated_target_es_version();
 const mainJsProbablyMinified = plugin.main_js_is_probably_minified();
-const mainJsLargeBase64BlobCount = plugin.main_js_large_base64_blob_count();
-const mainJsWorkerUsageCount = plugin.main_js_worker_usage_count();
-const mainJsWebassemblyUsageCount = plugin.main_js_webassembly_usage_count();
 const mainJsApiCapabilities = plugin.main_js_api_capabilities();
 const mainJsApiDisclosures = plugin.main_js_api_disclosures();
 
@@ -558,32 +555,14 @@ function formatReleaseFreshness(): string {
 							<td>{mainJsProbablyMinified === undefined ? <span class="muted">Unknown</span> : mainJsProbablyMinified ? 'Yes' : 'No'}</td>
 						</tr>
 						<tr>
-							<td>Includes Large Base64 Blobs</td>
-							<td>
-								{mainJsLargeBase64BlobCount === undefined ? (
-									<span class="muted">Unknown</span>
-								) : mainJsLargeBase64BlobCount > 0 ? (
-									`Yes (${mainJsLargeBase64BlobCount})`
-								) : (
-									'No'
-								)}
-							</td>
-						</tr>
-						<tr>
-							<td>References Worker APIs</td>
-							<td>{mainJsWorkerUsageCount === undefined ? <span class="muted">Unknown</span> : mainJsWorkerUsageCount > 0 ? 'Yes' : 'No'}</td>
-						</tr>
-						<tr>
-							<td>References WebAssembly APIs</td>
-							<td>{mainJsWebassemblyUsageCount === undefined ? <span class="muted">Unknown</span> : mainJsWebassemblyUsageCount > 0 ? 'Yes' : 'No'}</td>
-						</tr>
-						<tr>
 							<td>main.js API Findings</td>
 							<td>
 								{mainJsApiDisclosures === undefined ? (
 									<span class="muted">Unknown</span>
-								) : apiDisclosures.length > 0 ? (
-									apiDisclosures.map(disclosure => disclosure.label).join(', ')
+								) : apiDisclosures.length === 1 ? (
+									apiDisclosures.length.toString() + ' disclosure'
+								) : apiDisclosures.length > 1 ? (
+									apiDisclosures.length.toString() + ' disclosures'
 								) : (
 									<span class="muted">None detected</span>
 								)}

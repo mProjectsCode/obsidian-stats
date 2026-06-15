@@ -89,14 +89,6 @@ pub struct PluginRepoData {
     pub estimated_target_es_version: Option<String>,
     pub main_js_is_probably_minified: Option<bool>,
     pub main_js_minification_score: Option<f32>,
-    pub main_js_includes_sourcemap_comment: Option<bool>,
-    pub main_js_includes_inline_sourcemap: Option<bool>,
-    pub main_js_large_base64_blob_count: Option<u32>,
-    pub main_js_largest_base64_blob_length: Option<u32>,
-    #[serde(default)]
-    pub main_js_embedded_blob_type_counts: HashMap<String, u32>,
-    pub main_js_worker_usage_count: Option<u32>,
-    pub main_js_webassembly_usage_count: Option<u32>,
     pub main_js_dynamic_import_usage_count: Option<u32>,
     #[serde(default)]
     pub main_js_bundler_fingerprints: Vec<String>,

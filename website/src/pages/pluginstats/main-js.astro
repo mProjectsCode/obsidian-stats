@@ -66,10 +66,6 @@ function formatBytes(bytes: number): string {
 		{ depth: 2, text: 'Release Size Distribution', slug: 'release-size-distribution' },
 		{ depth: 2, text: 'ES Version', slug: 'es-version' },
 		{ depth: 2, text: 'Minification', slug: 'minification' },
-		{ depth: 2, text: 'Source Map Comments', slug: 'source-map-comments' },
-		{ depth: 2, text: 'Embedded Base64 Blobs', slug: 'embedded-base64-blobs' },
-		{ depth: 2, text: 'Worker Usage', slug: 'worker-usage' },
-		{ depth: 2, text: 'WebAssembly Usage', slug: 'webassembly-usage' },
 	]}
 >
 	<p>
@@ -163,33 +159,4 @@ function formatBytes(bytes: number): string {
 	</p>
 
 	<MinificationScoreDistributionChart dataPoints={mainJsMinificationScoreDistribution} client:idle />
-
-	<h2 id="source-map-comments">Source Map Comments</h2>
-
-	<p>
-		This chart shows whether the latest release <code>main.js</code> includes a <code>sourceMappingURL</code> comment. Source maps can improve debugging and stack
-		traces. This check only detects the comment; it does not verify that the referenced source map is available.
-	</p>
-
-	<BarChart dataPoints={mainJsSourcemapDistribution} xLabel="Source Map Comments" yLabel="Plugins" client:idle />
-
-	<h2 id="embedded-base64-blobs">Embedded Base64 Blobs</h2>
-
-	<p>
-		This chart shows whether the latest release <code>main.js</code> contains large base64-like blobs, which can indicate embedded assets or WebAssembly usage.
-	</p>
-
-	<BarChart dataPoints={mainJsBase64BlobDistribution} xLabel="Large Base64 Blobs" yLabel="Plugins" client:idle />
-
-	<h2 id="worker-usage">Worker Usage</h2>
-
-	<p>This chart shows whether the latest release <code>main.js</code> references Web Worker APIs.</p>
-
-	<BarChart dataPoints={mainJsWorkerUsageDistribution} xLabel="Worker Usage" yLabel="Plugins" client:idle />
-
-	<h2 id="webassembly-usage">WebAssembly Usage</h2>
-
-	<p>This chart shows whether the latest release <code>main.js</code> references WebAssembly APIs.</p>
-
-	<BarChart dataPoints={mainJsWebassemblyUsageDistribution} xLabel="WebAssembly Usage" yLabel="Plugins" client:idle />
 </StarlightPage>

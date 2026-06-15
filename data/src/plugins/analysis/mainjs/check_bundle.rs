@@ -4,7 +4,6 @@ use swc_ecma_ast::Program;
 pub(super) struct BundleShape {
     pub(super) parse_succeeded: bool,
     pub(super) tolerant_parse_required: bool,
-    pub(super) inline_sourcemap: bool,
     pub(super) dynamic_import_count: u32,
     pub(super) bundler_fingerprints: Vec<String>,
     pub(super) module_system_fingerprints: Vec<String>,
@@ -20,7 +19,6 @@ pub(super) fn detect_bundle_shape(source: &str, program: Option<&Program>) -> Bu
     BundleShape {
         parse_succeeded: program.is_some(),
         tolerant_parse_required: false,
-        inline_sourcemap: detect_inline_sourcemap(source),
         dynamic_import_count: count_marker(source, "import("),
         bundler_fingerprints: detect_bundler_fingerprints(source),
         module_system_fingerprints: detect_module_system_fingerprints(source),
@@ -35,17 +33,6 @@ pub(super) fn detect_bundle_shape(source: &str, program: Option<&Program>) -> Bu
             == Some("ES2022")
             && source.contains("await"),
     }
-}
-
-fn detect_inline_sourcemap(source: &str) -> bool {
-    source.lines().any(|line| {
-        let trimmed = line.trim();
-        (trimmed.starts_with("//# sourceMappingURL=data:")
-            || trimmed.starts_with("//@ sourceMappingURL=data:")
-            || trimmed.starts_with("/*# sourceMappingURL=data:")
-            || trimmed.starts_with("/*@ sourceMappingURL=data:"))
-            && trimmed.contains("base64,")
-    })
 }
 
 fn detect_bundler_fingerprints(source: &str) -> Vec<String> {
@@ -172,7 +159,6 @@ mod tests {
         let shape = detect_bundle_shape(source, program.as_ref());
 
         assert!(shape.parse_succeeded);
-        assert!(shape.inline_sourcemap);
         assert_eq!(shape.dynamic_import_count, 1);
         assert!(shape.bundler_fingerprints.contains(&"esbuild".to_string()));
         assert!(

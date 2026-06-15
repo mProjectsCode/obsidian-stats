@@ -391,63 +391,6 @@ impl PluginDataArrayView {
         tmp
     }
 
-    pub fn main_js_sourcemap_distribution(&self, data: &PluginDataArray) -> Vec<NamedDataPoint> {
-        let mut points = Vec::new();
-
-        self.iter_data(data).for_each(|item| {
-            let Some(repo_data) = item.repo_data() else {
-                return;
-            };
-
-            match repo_data.main_js_includes_sourcemap_comment {
-                Some(true) => increment_named_data_points(
-                    &mut points,
-                    "Includes sourceMappingURL comment",
-                    1.0,
-                ),
-                Some(false) => {
-                    increment_named_data_points(&mut points, "No sourceMappingURL comment", 1.0)
-                }
-                None => increment_named_data_points(&mut points, "Unknown", 1.0),
-            }
-        });
-
-        points
-    }
-
-    pub fn main_js_base64_blob_distribution(&self, data: &PluginDataArray) -> Vec<NamedDataPoint> {
-        boolean_count_distribution(
-            self,
-            data,
-            |repo| repo.main_js_large_base64_blob_count,
-            "Has large base64 blobs",
-            "No large base64 blobs",
-        )
-    }
-
-    pub fn main_js_worker_usage_distribution(&self, data: &PluginDataArray) -> Vec<NamedDataPoint> {
-        boolean_count_distribution(
-            self,
-            data,
-            |repo| repo.main_js_worker_usage_count,
-            "Uses Worker APIs",
-            "No Worker API usage",
-        )
-    }
-
-    pub fn main_js_webassembly_usage_distribution(
-        &self,
-        data: &PluginDataArray,
-    ) -> Vec<NamedDataPoint> {
-        boolean_count_distribution(
-            self,
-            data,
-            |repo| repo.main_js_webassembly_usage_count,
-            "Uses WebAssembly APIs",
-            "No WebAssembly API usage",
-        )
-    }
-
     pub fn main_js_api_disclosure_distribution(
         &self,
         data: &PluginDataArray,
@@ -630,10 +573,10 @@ fn top_release_sizes(view: &PluginDataArrayView, data: &PluginDataArray) -> Vec<
     tmp
 }
 
-fn boolean_count_distribution(
+fn api_disclosure_distribution(
     view: &PluginDataArrayView,
     data: &PluginDataArray,
-    get_count: impl Fn(&crate::plugin::PluginRepoData) -> Option<u32>,
+    disclosure_id: &str,
     present_label: &str,
     absent_label: &str,
 ) -> Vec<NamedDataPoint> {
@@ -644,12 +587,16 @@ fn boolean_count_distribution(
             return;
         };
 
-        match get_count(repo_data) {
-            Some(count) if count > 0 => {
-                increment_named_data_points(&mut points, present_label, 1.0)
-            }
-            Some(_) => increment_named_data_points(&mut points, absent_label, 1.0),
-            None => increment_named_data_points(&mut points, "Unknown", 1.0),
+        if repo_data.main_js_parse_succeeded.is_none() {
+            increment_named_data_points(&mut points, "Unknown", 1.0);
+        } else if repo_data
+            .main_js_api_disclosures
+            .iter()
+            .any(|disclosure| disclosure.id == disclosure_id)
+        {
+            increment_named_data_points(&mut points, present_label, 1.0);
+        } else {
+            increment_named_data_points(&mut points, absent_label, 1.0);
         }
     });
 

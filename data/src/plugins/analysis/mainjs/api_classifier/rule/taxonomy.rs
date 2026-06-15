@@ -11,6 +11,7 @@ pub(in crate::plugins::analysis) enum ApiCategory {
     Filesystem,
     Electron,
     Browser,
+    Bundle,
     Dependency,
     DynamicCode,
 }
@@ -29,6 +30,7 @@ impl ApiCategory {
             Self::Filesystem => "filesystem",
             Self::Electron => "electron",
             Self::Browser => "browser",
+            Self::Bundle => "bundle",
             Self::Dependency => "dependency",
             Self::DynamicCode => "dynamic_code",
         }

@@ -21,17 +21,6 @@ impl PluginRepoDataExt for PluginRepoData {
         self.main_js_tolerant_parse_required = result.tolerant_parse_required;
         self.main_js_is_probably_minified = result.is_probably_minified;
         self.main_js_minification_score = result.minification_score;
-        self.main_js_includes_sourcemap_comment = result.includes_sourcemap_comment;
-        self.main_js_includes_inline_sourcemap = result.includes_inline_sourcemap;
-        self.main_js_large_base64_blob_count = result.large_base64_blob_count;
-        self.main_js_largest_base64_blob_length = result.largest_base64_blob_length;
-        self.main_js_embedded_blob_type_counts = result
-            .embedded_blob_type_counts
-            .iter()
-            .map(|(key, value)| (key.clone(), *value))
-            .collect();
-        self.main_js_worker_usage_count = result.worker_usage_count;
-        self.main_js_webassembly_usage_count = result.webassembly_usage_count;
         self.main_js_dynamic_import_usage_count = result.dynamic_import_usage_count;
         self.main_js_bundler_fingerprints = result.bundler_fingerprints.clone();
         self.main_js_module_system_fingerprints = result.module_system_fingerprints.clone();

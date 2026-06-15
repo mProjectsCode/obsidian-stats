@@ -118,9 +118,7 @@ Rules:
 
 Output:
 
-- `large_base64_blob_count`
-- `largest_base64_blob_length`
-- optional guessed type list (wasm/image/unknown)
+- API capability and disclosure with the detected blob count as evidence
 
 ### check_worker
 Detect:
@@ -131,7 +129,7 @@ Detect:
 
 Output:
 
-- worker usage count fields
+- API capability and disclosure with the usage count as evidence
 
 ### check_wasm
 Detect:
@@ -143,7 +141,7 @@ Detect:
 
 Output:
 
-- wasm usage count fields
+- API capability and disclosure with the usage count as evidence
 
 ## Repo Checks (Compartmentalized)
 Split current repo extraction into small checks too.
@@ -183,16 +181,13 @@ Handles i18n signals:
 ## Unified Output Mapping
 Map both main.js and repo check outputs into `PluginRepoData`.
 
-Keep old fields working. Add optional fields for new main.js signals.
+Keep scalar build metrics as fields. Emit source map, base64, Worker, and WebAssembly
+signals through the API capability/disclosure output.
 
 Suggested new fields (simple flat shape):
 
 - `main_js_is_probably_minified: Option<bool>`
 - `main_js_minification_score: Option<f32>`
-- `main_js_large_base64_blob_count: Option<u32>`
-- `main_js_largest_base64_blob_length: Option<u32>`
-- `main_js_worker_usage_count: Option<u32>`
-- `main_js_webassembly_usage_count: Option<u32>`
 
 ## Rollout Steps
 

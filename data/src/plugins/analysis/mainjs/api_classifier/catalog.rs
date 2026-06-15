@@ -895,6 +895,10 @@ fn known_disclosures() -> BTreeSet<String> {
         "disclosure.platform_branching",
         "disclosure.permission_sensitive_browser_api",
         "disclosure.browser_environment_access",
+        "disclosure.source_map_comment",
+        "disclosure.embedded_base64_blob",
+        "disclosure.worker_usage",
+        "disclosure.webassembly_usage",
     ]
     .into_iter()
     .map(str::to_string)

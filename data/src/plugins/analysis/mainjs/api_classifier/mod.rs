@@ -12,13 +12,22 @@ pub(in crate::plugins::analysis) use result::ApiClassificationResult;
 pub(in crate::plugins::analysis) use rule::{ApiSeverity, Confidence};
 
 use result::{ApiCapability, ApiEvidence, Disclosure};
-use rule::ApiRule;
+use rule::{ApiCategory, ApiRule};
 use symbol_index::SymbolIndex;
 
 #[cfg(test)]
-use rule::{ApiCatalogError, ApiCategory, ApiRuleBuildError};
+use rule::{ApiCatalogError, ApiRuleBuildError};
 
+#[cfg(test)]
 pub(super) fn classify_api_usage(
+    program: Option<&Program>,
+    rules: &[ApiRule],
+) -> ApiClassificationResult {
+    classify_api_usage_with_source("", program, rules)
+}
+
+pub(super) fn classify_api_usage_with_source(
+    source: &str,
     program: Option<&Program>,
     rules: &[ApiRule],
 ) -> ApiClassificationResult {
@@ -34,7 +43,93 @@ pub(super) fn classify_api_usage(
         }
     }
 
+    emit_bundle_findings(source, program, &mut result);
+
     result
+}
+
+fn emit_bundle_findings(
+    source: &str,
+    program: Option<&Program>,
+    result: &mut ApiClassificationResult,
+) {
+    if super::check_sourcemap::detect_sourcemap_comment(source) {
+        emit_static_finding(
+            "bundle.source_map_comment",
+            "Includes a source map comment",
+            ApiCategory::Bundle,
+            "sourceMappingURL",
+            1,
+            "disclosure.source_map_comment",
+            result,
+        );
+    }
+
+    let (base64_count, _) = super::check_base64::detect_base64(source);
+    if base64_count > 0 {
+        emit_static_finding(
+            "bundle.embedded_base64_blob",
+            "Includes large embedded base64 blobs",
+            ApiCategory::Bundle,
+            "base64 blob",
+            base64_count,
+            "disclosure.embedded_base64_blob",
+            result,
+        );
+    }
+
+    let worker_count = super::check_worker::detect_worker_usage(source, program);
+    if worker_count > 0 {
+        emit_static_finding(
+            "browser.worker",
+            "Uses Worker APIs",
+            ApiCategory::Browser,
+            "Worker",
+            worker_count,
+            "disclosure.worker_usage",
+            result,
+        );
+    }
+
+    let webassembly_count = super::check_wasm::detect_webassembly_usage(source, program);
+    if webassembly_count > 0 {
+        emit_static_finding(
+            "browser.webassembly",
+            "Uses WebAssembly APIs",
+            ApiCategory::Browser,
+            "WebAssembly",
+            webassembly_count,
+            "disclosure.webassembly_usage",
+            result,
+        );
+    }
+}
+
+fn emit_static_finding(
+    id: &str,
+    label: &str,
+    category: ApiCategory,
+    symbol: &str,
+    count: u32,
+    disclosure_id: &str,
+    result: &mut ApiClassificationResult,
+) {
+    result.capabilities.push(ApiCapability {
+        id: id.to_string(),
+        label: label.to_string(),
+        category,
+        severity: ApiSeverity::Info,
+        confidence: Confidence::High,
+        evidence: vec![ApiEvidence {
+            kind: result::ApiMatchKind::CustomAst,
+            symbol: symbol.to_string(),
+            count,
+        }],
+    });
+    result.disclosures.push(Disclosure {
+        id: disclosure_id.to_string(),
+        from_capability: id.to_string(),
+    });
 }
 
 fn rule_match(

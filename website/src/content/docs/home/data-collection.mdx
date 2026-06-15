@@ -45,10 +45,10 @@ Code bundlers that turn the potentially many source code files of a plugin into 
 
 ### Worker and WebAssembly usage
 
-Web Workers allow JavaScript code to run outside the main UI thread. WebAssembly (Wasm) is a compact binary instruction format that allows code compiled from languages such as Rust or C++ to run in Obsidian's JavaScript environment. We scan `main.js` for references to Worker and WebAssembly APIs. These references indicate that a plugin may use the APIs, but static analysis cannot confirm which code paths run.
+Web Workers allow JavaScript code to run outside the main UI thread. WebAssembly (Wasm) is a compact binary instruction format that allows code compiled from languages such as Rust or C++ to run in Obsidian's JavaScript environment. We scan `main.js` for references to Worker and WebAssembly APIs. These references indicate that a plugin may use the APIs, but static analysis cannot confirm which code paths run. Positive matches are included in the API findings and disclosures.
 
 ### API findings
 
 We parse each available release `main.js` and look for known Obsidian, browser, Node.js, and Electron API patterns. The classifier uses import provenance, member access, call arguments, string literals, and several flow-sensitive checks to reduce false positives. It does not execute plugin code, and minified or dynamically generated code can still produce missed or incorrect findings.
 
-The public data includes warning-level matches and high-confidence informational matches. Lower-confidence informational matches are omitted to keep the displayed results conservative.
+The public data includes warning-level matches and high-confidence informational matches. This also includes source map comments, large embedded base64 blobs, Worker usage, and WebAssembly usage. Lower-confidence informational matches are omitted to keep the displayed results conservative.

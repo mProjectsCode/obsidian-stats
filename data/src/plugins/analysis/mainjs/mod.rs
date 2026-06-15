@@ -24,7 +24,6 @@ pub(super) fn analyze_main_js(source: &str) -> MainJsResult {
     result.parse_succeeded = Some(bundle_shape.parse_succeeded);
     result.tolerant_parse_required = Some(bundle_shape.tolerant_parse_required);
     result.estimated_target_es_version = program.as_ref().and_then(check_es::detect_es_version);
-    result.includes_inline_sourcemap = Some(bundle_shape.inline_sourcemap);
     result.dynamic_import_usage_count = Some(bundle_shape.dynamic_import_count);
     result.bundler_fingerprints = bundle_shape.bundler_fingerprints;
     result.module_system_fingerprints = bundle_shape.module_system_fingerprints;
@@ -43,23 +42,11 @@ pub(super) fn analyze_main_js(source: &str) -> MainJsResult {
         check_minified::detect_minified(source, program.as_ref());
     result.is_probably_minified = Some(is_probably_minified);
     result.minification_score = Some(minification_score);
-    result.includes_sourcemap_comment = Some(check_sourcemap::detect_sourcemap_comment(source));
-
-    let (large_base64_blob_count, largest_base64_blob_length) = check_base64::detect_base64(source);
-    result.large_base64_blob_count = Some(large_base64_blob_count);
-    result.largest_base64_blob_length = Some(largest_base64_blob_length);
-    result.embedded_blob_type_counts = string_signals.embedded_blob_type_counts;
-
-    result.worker_usage_count = Some(check_worker::detect_worker_usage(source, program.as_ref()));
-    result.webassembly_usage_count = Some(check_wasm::detect_webassembly_usage(
-        source,
-        program.as_ref(),
-    ));
-
     let api_rules = api_classifier::obsidian_api_rules();
     if !api_rules.is_empty() {
         debug_assert!(api_classifier::validate_catalog(api_rules).is_ok());
-        result.api_usage = api_classifier::classify_api_usage(program.as_ref(), api_rules);
+        result.api_usage =
+            api_classifier::classify_api_usage_with_source(source, program.as_ref(), api_rules);
     }
 
     result
@@ -109,5 +96,36 @@ mod tests {
 
         assert!(result.api_usage.has_capability("network.browser"));
         assert!(result.api_usage.has_disclosure("disclosure.network_access"));
+    }
+
+    #[test]
+    fn emits_bundle_signals_as_api_findings() {
+        let base64 = "A".repeat(1024);
+        let source = format!(
+            r#"
+            new Worker("worker.js");
+            WebAssembly.compile(bytes);
+            const blob = "{base64}";
+            //# sourceMappingURL=main.js.map
+            "#
+        );
+        let result = analyze_main_js(&source);
+
+        for capability in [
+            "bundle.source_map_comment",
+            "bundle.embedded_base64_blob",
+            "browser.worker",
+            "browser.webassembly",
+        ] {
+            assert!(result.api_usage.has_capability(capability));
+        }
+        for disclosure in [
+            "disclosure.source_map_comment",
+            "disclosure.embedded_base64_blob",
+            "disclosure.worker_usage",
+            "disclosure.webassembly_usage",
+        ] {
+            assert!(result.api_usage.has_disclosure(disclosure));
+        }
     }
 }
