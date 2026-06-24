@@ -4,7 +4,7 @@ import DownloadChart from '../../components/svelte/charts/downloads/DownloadChar
 import DownloadRelationReleaseDateChart from '../../components/svelte/charts/downloads/DownloadRelationReleaseDateChart.svelte';
 import DownloadRelationVersionCountChart from '../../components/svelte/charts/downloads/DownloadRelationVersionCountChart.svelte';
 import DownloadRelationLocChart from '../../components/svelte/charts/downloads/DownloadRelationLocChart.svelte';
-import DownloadNameChart from '../../components/svelte/charts/downloads/DownloadNameChart.svelte';
+// import DownloadNameChart from '../../components/svelte/charts/downloads/DownloadNameChart.svelte';
 import DownloadDistributionChart from '../../components/svelte/charts/downloads/DownloadDistributionChart.svelte';
 import { getPluginDataArray } from '../../utils/data';
 
@@ -51,12 +51,12 @@ const downloadDistributionDataPoints = individualDownloadDataPoints
 	<DownloadRelationLocChart client:idle />
 	<DownloadRelationReleaseDateChart client:idle />
 
-	<p>
+	<!-- <p>
 		The chart below shows the correlation between the name of the plugin and the number of downloads. The regression line is calculated using the Simple Linear
 		Regression algorithm. It is evident that there is a slight correlation between the placement of the plugin in the alphabet and the number of downloads.
 	</p>
 
-	<DownloadNameChart dataPoints={downloadNameDataPoints} client:idle />
+	<DownloadNameChart dataPoints={downloadNameDataPoints} client:idle /> -->
 
 	<p>
 		This chart shows the overall distribution of downloads, it is clear that the majority of plugins have a low number of downloads, with a few plugins having a

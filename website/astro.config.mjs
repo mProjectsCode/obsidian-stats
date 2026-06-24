@@ -115,10 +115,4 @@ export default defineConfig({
 		'/pluginstats/halloffame/': '/obsidian-stats/pluginstats/hall-of-fame/',
 		'/pluginstats/repodata/': '/obsidian-stats/pluginstats/repo-data/',
 	},
-	experimental: {
-		rustCompiler: true,
-		queuedRendering: {
-			enabled: true,
-		},
-	},
 });
