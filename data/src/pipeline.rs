@@ -36,13 +36,19 @@ fn run_pipeline_step(step: &PipelineStep) -> Result<(), Box<dyn Error>> {
 pub struct PipelineOptions {
     pub force: bool,
     pub no_clone: bool,
+    pub no_release: bool,
 }
 
 fn process_plugin_licenses_step() -> Result<(), Box<dyn Error>> {
     process_licenses()
 }
 
-fn acquire_plugin_releases_step(force: bool) -> Result<(), Box<dyn Error>> {
+fn acquire_plugin_releases_step(force: bool, no_release: bool) -> Result<(), Box<dyn Error>> {
+    if no_release {
+        println!("Skipping release acquisition because --no-release was set.");
+        return Ok(());
+    }
+
     let plugin_data = read_plugin_data()?;
     acquire_plugin_release_main_js(&plugin_data, force)
 }
@@ -63,7 +69,7 @@ pub fn run_data_pipeline(options: PipelineOptions) -> Result<(), Box<dyn Error>>
         },
         PipelineStep {
             label: "Acquiring plugin release assets",
-            run: Box::new(move || acquire_plugin_releases_step(options.force)),
+            run: Box::new(move || acquire_plugin_releases_step(options.force, options.no_release)),
         },
         PipelineStep {
             label: "Extracting repository data",

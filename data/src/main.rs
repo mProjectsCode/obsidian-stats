@@ -45,6 +45,7 @@ fn parse_cli_args() -> Option<pipeline::PipelineOptions> {
         match arg.as_str() {
             "--force" => options.force = true,
             "--no-clone" => options.no_clone = true,
+            "--no-release" => options.no_release = true,
             "-h" | "--help" => {
                 print_usage();
                 return None;
@@ -61,8 +62,9 @@ fn parse_cli_args() -> Option<pipeline::PipelineOptions> {
 }
 
 fn print_usage() {
-    println!("Usage: data [--force] [--no-clone]");
+    println!("Usage: data [--force] [--no-clone] [--no-release]");
     println!();
-    println!("  --force     Ignore refresh windows and refresh cached GitHub data.");
-    println!("  --no-clone  Skip repository recloning but run the remaining pipeline steps.");
+    println!("  --force       Ignore refresh windows and refresh cached GitHub data.");
+    println!("  --no-clone    Skip repository recloning but run the remaining pipeline steps.");
+    println!("  --no-release  Skip release acquisition but run the remaining pipeline steps.");
 }

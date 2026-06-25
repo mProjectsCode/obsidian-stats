@@ -10,6 +10,10 @@ ifeq ($(NO_CLONE),1)
 DATA_ARGS += --no-clone
 endif
 
+ifeq ($(NO_RELEASE),1)
+DATA_ARGS += --no-release
+endif
+
 default: build
 
 build:

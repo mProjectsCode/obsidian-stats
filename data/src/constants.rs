@@ -31,7 +31,6 @@ pub const CLONE_STATE_PATH: &str = "./out/state/clone-state.json";
 pub const RELEASE_STATS_STATE_PATH: &str = "./out/state/release-stats-state.json";
 pub const LATEST_DATA_UPDATE_SUMMARY_PATH: &str = "./out/state/latest-data-update-summary.json";
 
-pub const DEFAULT_PLUGIN_RELEASE_REFRESH_DAYS: i64 = 3;
 pub const DEFAULT_CLONE_REFRESH_DAYS: i64 = 3;
 pub const DEFAULT_CLONE_TIMEOUT_SECONDS: u64 = 60;
 pub const DEFAULT_RELEASE_STATS_REFRESH_DAYS: i64 = 3;

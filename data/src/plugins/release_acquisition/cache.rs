@@ -119,6 +119,10 @@ pub(super) fn save_main_js_to_cache(
         Err(err) => return Err(MainJsDownloadError::Request(err.to_string())),
     };
 
+    if rate_limit_remaining_is_zero(response.headers()) {
+        return Err(MainJsDownloadError::RateLimited(response.status().as_u16()));
+    }
+
     if response.status().as_u16() == 403 || response.status().as_u16() == 429 {
         return Err(MainJsDownloadError::RateLimited(response.status().as_u16()));
     }
@@ -194,6 +198,13 @@ fn stream_response_to_file(
     Ok(total)
 }
 
+fn rate_limit_remaining_is_zero(headers: &reqwest::header::HeaderMap) -> bool {
+    headers
+        .get("x-ratelimit-remaining")
+        .and_then(|v| v.to_str().ok())
+        .is_some_and(|value| value.trim() == "0")
+}
+
 pub fn release_main_js_cache_path(plugin_id: &str, release_tag: &str) -> Result<PathBuf, String> {
     let sanitized_tag = release_tag
         .chars()
@@ -210,4 +221,18 @@ pub fn release_main_js_cache_path(plugin_id: &str, release_tag: &str) -> Result<
         validated_plugin_path(Path::new(PLUGIN_RELEASE_MAIN_JS_PATH), plugin_id)?
             .join(format!("{sanitized_tag}-main.js")),
     )
+}
+
+#[cfg(test)]
+mod tests {
+    use super::rate_limit_remaining_is_zero;
+    use reqwest::header::{HeaderMap, HeaderValue};
+
+    #[test]
+    fn detects_zero_rate_limit_remaining_header() {
+        let mut headers = HeaderMap::new();
+        headers.insert("x-ratelimit-remaining", HeaderValue::from_static("0"));
+
+        assert!(rate_limit_remaining_is_zero(&headers));
+    }
 }

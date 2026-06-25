@@ -117,12 +117,29 @@ fn handle_release_metadata_response(
     retries: &mut usize,
 ) -> ResponseHandling {
     let status = response.status();
+    let response_etag = response_etag(&response);
+
+    if rate_limit_remaining_is_zero(response.headers()) {
+        let detail = github_error_detail(status.as_u16(), response);
+        alerts::record_rate_limit(
+            format!("plugin release metadata fetch for {}", request.plugin_id),
+            detail,
+        );
+
+        return ResponseHandling::Done(ReleaseFetchResult::Updated(
+            Box::new(state_entry(
+                request.repo,
+                response_etag,
+                None,
+                ReleaseFetchStatus::RateLimited,
+            )),
+            None,
+        ));
+    }
 
     if status.as_u16() == 304 {
         return ResponseHandling::Done(ReleaseFetchResult::NotModified);
     }
-
-    let response_etag = response_etag(&response);
 
     if status.as_u16() == 404 {
         return ResponseHandling::Done(ReleaseFetchResult::Updated(
@@ -392,6 +409,13 @@ fn retry_wait_seconds(headers: &reqwest::header::HeaderMap) -> Option<i64> {
     Some((reset_unix - now).max(0))
 }
 
+fn rate_limit_remaining_is_zero(headers: &reqwest::header::HeaderMap) -> bool {
+    headers
+        .get("x-ratelimit-remaining")
+        .and_then(|v| v.to_str().ok())
+        .is_some_and(|value| value.trim() == "0")
+}
+
 fn github_error_detail(status_code: u16, response: Response) -> String {
     let headers = github_diagnostic_headers(response.headers());
     let body = response
@@ -471,7 +495,7 @@ fn encode_github_release_tag_for_path(tag: &str) -> String {
 mod tests {
     use super::{
         encode_github_release_tag_for_path, github_diagnostic_headers,
-        should_download_main_js_for_release, trim_diagnostic_body,
+        rate_limit_remaining_is_zero, should_download_main_js_for_release, trim_diagnostic_body,
     };
     use crate::plugins::release_acquisition::PluginReleaseStateEntry;
     use reqwest::header::{HeaderMap, HeaderValue};
@@ -538,5 +562,13 @@ mod tests {
 
         assert_eq!(trimmed.chars().count(), 1003);
         assert!(trimmed.ends_with("..."));
+    }
+
+    #[test]
+    fn detects_zero_rate_limit_remaining_header() {
+        let mut headers = HeaderMap::new();
+        headers.insert("x-ratelimit-remaining", HeaderValue::from_static("0"));
+
+        assert!(rate_limit_remaining_is_zero(&headers));
     }
 }

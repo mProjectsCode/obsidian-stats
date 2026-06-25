@@ -1,6 +1,6 @@
 .PHONY: all wasm data format lint submodule-update
 
-DATA_MAKE_ARGS := ARGS="$(ARGS)" FORCE="$(FORCE)" NO_CLONE="$(NO_CLONE)"
+DATA_MAKE_ARGS := ARGS="$(ARGS)" FORCE="$(FORCE)" NO_CLONE="$(NO_CLONE)" NO_RELEASE="$(NO_RELEASE)"
 
 wasm:
 	$(MAKE) -C data-wasm

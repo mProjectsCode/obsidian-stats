@@ -1,6 +1,9 @@
 use std::{
     path::Path,
-    sync::atomic::{AtomicUsize, Ordering},
+    sync::{
+        Mutex,
+        atomic::{AtomicBool, AtomicUsize, Ordering},
+    },
 };
 
 use data_lib::plugin::PluginData;
@@ -13,12 +16,12 @@ use reqwest::blocking::Client;
 use serde::{Deserialize, Serialize};
 
 use crate::{
-    constants::{DEFAULT_PLUGIN_RELEASE_REFRESH_DAYS, PLUGIN_RELEASE_ENRICHMENT_STATE_PATH},
+    constants::PLUGIN_RELEASE_ENRICHMENT_STATE_PATH,
     github::RateLimitMode,
-    plugins::stats_helper::{HelperPluginStore, TargetReleaseError},
+    plugins::stats_helper::{HelperPluginStore, TargetRelease, TargetReleaseError},
     progress::should_log_progress,
     security::http_client,
-    state::{is_fresh, now_unix_seconds, read_json_or_default, write_json_atomic},
+    state::{now_unix_seconds, read_json_or_default, write_json_atomic},
 };
 
 mod cache;
@@ -162,7 +165,7 @@ struct ReleaseAcquireJob {
     key: String,
     plugin_id: String,
     repo: String,
-    target_release_tag: String,
+    target_release: TargetRelease,
     previous_entry: Option<PluginReleaseStateEntry>,
 }
 
@@ -171,12 +174,13 @@ struct ReleaseAcquireJobResult {
     entry: PluginReleaseStateEntry,
     cache_outcome: Option<MainJsCacheOutcome>,
     not_modified: bool,
+    rate_limited: bool,
 }
 
 #[derive(Default)]
 struct AcquireRunStats {
     skipped_removed: usize,
-    skipped_fresh: usize,
+    skipped_current: usize,
     fetched_http: usize,
     not_modified: usize,
     downloaded_main_js: usize,
@@ -188,10 +192,6 @@ pub fn acquire_plugin_release_main_js(
     plugins: &[PluginData],
     force: bool,
 ) -> Result<(), Box<dyn std::error::Error>> {
-    let refresh_days = std::env::var("PLUGIN_RELEASE_REFRESH_DAYS")
-        .ok()
-        .and_then(|v| v.parse::<i64>().ok())
-        .unwrap_or(DEFAULT_PLUGIN_RELEASE_REFRESH_DAYS);
     let rate_limit_mode = RateLimitMode::from_env();
     let default_threads = std::thread::available_parallelism()
         .map(|n| n.get())
@@ -199,9 +199,8 @@ pub fn acquire_plugin_release_main_js(
     let thread_count = configured_thread_count(PLUGIN_RELEASE_THREADS_ENV, default_threads);
 
     println!(
-        "Release acquisition: processing {} plugins (refresh window: {} days, force: {}, threads: {})",
+        "Release acquisition: processing {} plugins (force: {}, threads: {})",
         plugins.len(),
-        refresh_days,
         force,
         thread_count
     );
@@ -223,8 +222,8 @@ pub fn acquire_plugin_release_main_js(
         let repo = plugin.current_entry.repo.clone();
 
         let previous_entry = previous_entry_for_repo(&state, &key, &repo).cloned();
-        let target_release_tag = match helper_store.target_release_for_plugin(plugin) {
-            Ok(target) => target.tag,
+        let target_release = match helper_store.target_release_for_plugin(plugin) {
+            Ok(target) => target,
             Err(error) => {
                 let entry = target_release_error_state_entry(&repo, previous_entry.as_ref(), error);
                 if let Some(status) = &entry.latest_release_fetch_status {
@@ -237,12 +236,11 @@ pub fn acquire_plugin_release_main_js(
 
         if let Some(entry) = &previous_entry
             && entry.repo == repo
-            && entry.latest_release_tag.as_deref() == Some(target_release_tag.as_str())
+            && entry.latest_release_tag.as_deref() == Some(target_release.tag.as_str())
             && !should_retry_release_fetch(entry)
             && !force
-            && is_fresh(entry.last_checked_unix, refresh_days)
         {
-            stats.skipped_fresh += 1;
+            stats.skipped_current += 1;
             if let Some(status) = &entry.latest_release_fetch_status {
                 *stats.status_counts.entry(status.clone()).or_insert(0) += 1;
             }
@@ -253,7 +251,7 @@ pub fn acquire_plugin_release_main_js(
             key,
             plugin_id: plugin.id.clone(),
             repo,
-            target_release_tag,
+            target_release,
             previous_entry,
         });
     }
@@ -268,19 +266,34 @@ pub fn acquire_plugin_release_main_js(
             .build()
             .expect("Failed to build release acquisition thread pool");
         let processed = AtomicUsize::new(0);
+        let abort_rate_limited = AtomicBool::new(false);
+        let results = Mutex::new(Vec::new());
 
-        let results = thread_pool.install(|| {
-            jobs.into_par_iter()
-                .map(|job| {
-                    let result = process_release_job(job, &client, &rate_limit_mode);
-                    let done = processed.fetch_add(1, Ordering::Relaxed) + 1;
-                    if should_log_progress(done, total_jobs) {
-                        println!("  Release acquisition progress: {done} / {total_jobs}");
-                    }
-                    result
-                })
-                .collect::<Vec<_>>()
+        let run_result = thread_pool.install(|| {
+            jobs.into_par_iter().try_for_each(|job| {
+                if abort_rate_limited.load(Ordering::Relaxed) {
+                    return Err(());
+                }
+                let result = process_release_job(job, &client, &rate_limit_mode);
+                let rate_limited = result.rate_limited;
+                let done = processed.fetch_add(1, Ordering::Relaxed) + 1;
+                if should_log_progress(done, total_jobs) {
+                    println!("  Release acquisition progress: {done} / {total_jobs}");
+                }
+                results
+                    .lock()
+                    .expect("release result mutex poisoned")
+                    .push(result);
+                if rate_limited {
+                    abort_rate_limited.store(true, Ordering::Relaxed);
+                    return Err(());
+                }
+                Ok(())
+            })
         });
+
+        let results = results.into_inner().expect("release result mutex poisoned");
+        let aborted_rate_limited = run_result.is_err();
 
         for result in results {
             if result.not_modified {
@@ -300,13 +313,21 @@ pub fn acquire_plugin_release_main_js(
 
             state.entries.insert(result.key, result.entry);
         }
+
+        if aborted_rate_limited {
+            write_json_atomic(Path::new(PLUGIN_RELEASE_ENRICHMENT_STATE_PATH), &state)?;
+            return Err(
+                "release acquisition aborted because GitHub rate limit remaining reached zero"
+                    .into(),
+            );
+        }
     }
 
     write_json_atomic(Path::new(PLUGIN_RELEASE_ENRICHMENT_STATE_PATH), &state)?;
 
     println!("Release acquisition summary:");
     println!("  Skipped (removed): {}", stats.skipped_removed);
-    println!("  Skipped (fresh): {}", stats.skipped_fresh);
+    println!("  Skipped (current release): {}", stats.skipped_current);
     println!("  HTTP checks: {}", stats.fetched_http);
     println!("  Not modified (ETag): {}", stats.not_modified);
     println!("  main.js downloaded: {}", stats.downloaded_main_js);
@@ -368,7 +389,7 @@ fn process_release_job(
         .as_ref()
         .filter(|entry| !should_retry_release_fetch(entry))
         .filter(|entry| {
-            entry.latest_release_tag.as_deref() == Some(job.target_release_tag.as_str())
+            entry.latest_release_tag.as_deref() == Some(job.target_release.tag.as_str())
         })
         .and_then(|entry| entry.latest_release_etag.as_deref());
 
@@ -376,7 +397,7 @@ fn process_release_job(
         ReleaseFetchRequest {
             plugin_id: &job.plugin_id,
             repo: &job.repo,
-            target_release_tag: &job.target_release_tag,
+            target_release_tag: &job.target_release.tag,
             previous_entry: job.previous_entry.as_ref(),
             previous_etag,
         },
@@ -416,11 +437,23 @@ fn process_release_job(
             .and_then(|prev| prev.last_successful_main_js_release_published_at.clone());
     }
 
+    let rate_limited = entry
+        .latest_release_fetch_status
+        .as_deref()
+        .map(ReleaseFetchStatus::from_state_value)
+        .is_some_and(|status| {
+            matches!(
+                status,
+                ReleaseFetchStatus::RateLimited | ReleaseFetchStatus::MainJsRateLimited
+            )
+        });
+
     ReleaseAcquireJobResult {
         key: job.key,
         entry,
         cache_outcome,
         not_modified,
+        rate_limited,
     }
 }
 
