@@ -1,17 +1,17 @@
 {
-  "refreshed_at_unix": 1782421416,
-  "clone_run_at_unix": 1782421378,
-  "release_run_at_unix": 1782421343,
+  "refreshed_at_unix": 1782472984,
+  "clone_run_at_unix": 1782472977,
+  "release_run_at_unix": 1782472984,
   "obsidian_release_fetch_at_unix": 1782421416,
   "latest_plugin_download_snapshot_date": "2026-06-22",
   "latest_obsidian_release_date": "2026-03-23",
   "latest_obsidian_version": "1.12.7",
   "plugins": {
-    "total": 5500,
-    "active": 5104,
-    "removed": 396,
-    "total_downloads": 131254221,
-    "version_snapshots": 46911
+    "total": 5516,
+    "active": 5115,
+    "removed": 401,
+    "total_downloads": 131254268,
+    "version_snapshots": 47219
   },
   "themes": {
     "total": 652,
@@ -26,11 +26,11 @@
     "download_snapshots": 44610
   },
   "clone": {
-    "tracked": 5526,
-    "ok": 4870,
-    "skipped": 415,
+    "tracked": 5541,
+    "ok": 4895,
+    "skipped": 420,
     "failed": 2,
-    "success_rate": 0.9995894909688013,
+    "success_rate": 0.999591586685726,
     "failed_plugins": [
       "cyberware",
       "hide-tags"
@@ -38,57 +38,57 @@
     "status_counts": [
       {
         "label": "ok",
-        "count": 4870,
-        "share": 0.8812884545783568
+        "count": 4895,
+        "share": 0.8834145461108103
       },
       {
         "label": "skipped_removed",
-        "count": 415,
-        "share": 0.07509952949692364
+        "count": 420,
+        "share": 0.07579859231185707
       },
       {
         "label": "manifest_missing",
         "count": 186,
-        "share": 0.033659066232356136
-      },
-      {
-        "label": "helper_plugin_missing",
-        "count": 23,
-        "share": 0.004162142598624683
+        "share": 0.033567948023822416
       },
       {
         "label": "manifest_version_invalid",
         "count": 21,
-        "share": 0.003800217155266015
+        "share": 0.003789929615592853
       },
       {
         "label": "release_for_manifest_version_missing",
-        "count": 7,
-        "share": 0.0012667390517553383
+        "count": 10,
+        "share": 0.001804728388377549
+      },
+      {
+        "label": "helper_plugin_missing",
+        "count": 5,
+        "share": 0.0009023641941887746
       },
       {
         "label": "failed",
         "count": 2,
-        "share": 0.0003619254433586681
+        "share": 0.00036094567767550983
       },
       {
         "label": "version_history_missing",
         "count": 2,
-        "share": 0.0003619254433586681
+        "share": 0.00036094567767550983
       }
     ]
   },
   "release_acquisition": {
-    "tracked": 5268,
-    "ok": 643,
-    "retained_previous_main_js": 4287,
-    "no_release": 3,
+    "tracked": 5350,
+    "ok": 919,
+    "retained_previous_main_js": 4183,
+    "no_release": 1,
     "no_main_js_asset": 2,
-    "error_count": 317,
-    "main_js_coverage": 4930,
-    "main_js_coverage_rate": 0.9358390280941534,
-    "total_main_js_bytes": 3300425273,
-    "average_main_js_bytes": 669457,
+    "error_count": 230,
+    "main_js_coverage": 5102,
+    "main_js_coverage_rate": 0.9536448598130841,
+    "total_main_js_bytes": 3414783965,
+    "average_main_js_bytes": 669303,
     "largest_main_js": {
       "repo": "zarstensen/obsidian-latex-math",
       "size_bytes": 107883057
@@ -96,94 +96,84 @@
     "status_counts": [
       {
         "label": "main_js_not_updated_since_success",
-        "count": 4287,
-        "share": 0.8137813211845103
+        "count": 4183,
+        "share": 0.7818691588785047
       },
       {
         "label": "ok",
-        "count": 643,
-        "share": 0.12205770690964313
+        "count": 919,
+        "share": 0.17177570093457945
       },
       {
         "label": "manifest_missing",
         "count": 186,
-        "share": 0.03530751708428246
-      },
-      {
-        "label": "rate_limited",
-        "count": 63,
-        "share": 0.011958997722095672
-      },
-      {
-        "label": "helper_plugin_missing",
-        "count": 31,
-        "share": 0.005884586180713743
+        "share": 0.034766355140186916
       },
       {
         "label": "manifest_version_invalid",
         "count": 21,
-        "share": 0.003986332574031891
+        "share": 0.003925233644859813
       },
       {
         "label": "release_for_manifest_version_missing",
-        "count": 16,
-        "share": 0.0030372057706909645
+        "count": 15,
+        "share": 0.002803738317757009
       },
       {
         "label": "version_history_missing",
-        "count": 16,
-        "share": 0.0030372057706909645
+        "count": 15,
+        "share": 0.002803738317757009
+      },
+      {
+        "label": "helper_plugin_missing",
+        "count": 8,
+        "share": 0.0014953271028037382
       },
       {
         "label": "no_main_js_asset",
         "count": 2,
-        "share": 0.00037965072133637056
-      },
-      {
-        "label": "no_release_for_version",
-        "count": 2,
-        "share": 0.00037965072133637056
+        "share": 0.00037383177570093456
       },
       {
         "label": "no_release",
         "count": 1,
-        "share": 0.00018982536066818528
+        "share": 0.00018691588785046728
       }
     ]
   },
   "repo_analysis": {
-    "tracked": 5500,
-    "active_success": 5077,
-    "active_failures": 27,
-    "removed_skipped": 396,
-    "coverage_rate": 0.9947100313479624,
+    "tracked": 5516,
+    "active_success": 5104,
+    "active_failures": 11,
+    "removed_skipped": 401,
+    "coverage_rate": 0.9978494623655914,
     "failure_samples": [
-      "acorny-sync",
-      "apkcore-tts",
-      "auto-linker",
-      "auto-sidebar",
-      "claudian-api"
+      "dotpass",
+      "flowtime",
+      "gitea-cards",
+      "journalistic-importer",
+      "json-inspector"
     ],
     "error_counts": [
       {
         "label": "main_js_analysis_too_large",
-        "count": 45,
-        "share": 0.008816614420062695
+        "count": 46,
+        "share": 0.008993157380254154
       },
       {
         "label": "repository_missing",
-        "count": 27,
-        "share": 0.005289968652037617
+        "count": 11,
+        "share": 0.002150537634408602
       },
       {
         "label": "manifest_read_error",
         "count": 7,
-        "share": 0.001371473354231975
+        "share": 0.0013685239491691105
       },
       {
         "label": "manifest_parse_error",
-        "count": 3,
-        "share": 0.0005877742946708464
+        "count": 2,
+        "share": 0.00039100684261974585
       }
     ]
   }

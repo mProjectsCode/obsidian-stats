@@ -3,6 +3,7 @@ pub const OBSIDIAN_STATS_HELPER_REPO_PATH: &str = "../obsidian-stats-helper";
 
 pub const PLUGIN_LIST_PATH: &str = "community-plugins.json";
 pub const PLUGIN_STATS_PATH: &str = "community-plugin-stats.json";
+pub const STATS_HELPER_PLUGIN_DOWNLOADS_PATH: &str = "data/plugin-downloads.json";
 pub const PLUGIN_DEPRECATIONS_PATH: &str = "community-plugin-deprecation.json";
 pub const PLUGIN_REMOVED_PATH: &str = "community-plugins-removed.json";
 

@@ -7,6 +7,7 @@ use std::{
 };
 
 use data_lib::{
+    commit::Commit,
     common::VersionHistory,
     date::Date,
     plugin::{PluginData, PluginManifest},
@@ -15,7 +16,11 @@ use data_lib::{
 use hashbrown::HashMap;
 use serde::Deserialize;
 
-use crate::constants::OBSIDIAN_STATS_HELPER_REPO_PATH;
+use crate::{
+    constants::{OBSIDIAN_STATS_HELPER_REPO_PATH, STATS_HELPER_PLUGIN_DOWNLOADS_PATH},
+    plugins::{PluginDownloadStat, PluginDownloadStats},
+    progress::should_log_progress,
+};
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct HelperPluginData {
@@ -33,9 +38,22 @@ pub struct HelperRelease {
     #[serde(rename = "publishedAt")]
     pub published_at: Option<String>,
     #[serde(default)]
+    #[serde(rename = "downloadCount")]
+    pub download_count: Option<u32>,
+    #[serde(default)]
     pub prerelease: bool,
     #[serde(default)]
     pub draft: bool,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+struct HelperDownloadSummary {
+    plugins: HashMap<String, HelperDownloadSummaryEntry>,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+struct HelperDownloadSummaryEntry {
+    downloads: u32,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -152,6 +170,125 @@ pub fn build_version_history(helper_plugin: &HelperPluginData) -> Vec<VersionHis
     history
 }
 
+pub fn load_helper_download_stat_history() -> Result<Vec<PluginDownloadStats>, Box<dyn Error>> {
+    println!("Loading stats-helper plugin download history...");
+    load_helper_download_summary_history()
+}
+
+fn load_helper_download_summary_history() -> Result<Vec<PluginDownloadStats>, Box<dyn Error>> {
+    let repo_path = Path::new(OBSIDIAN_STATS_HELPER_REPO_PATH).canonicalize()?;
+    let commits = get_helper_repo_changes_for_file(STATS_HELPER_PLUGIN_DOWNLOADS_PATH)?;
+
+    println!(
+        "Loading stats-helper download summaries from {} commit(s)...",
+        commits.len()
+    );
+    let total_commits = commits.len();
+    let mut history = Vec::with_capacity(commits.len());
+    for (idx, commit) in commits.into_iter().enumerate() {
+        if let Some(content) =
+            read_file_at_commit(&repo_path, &commit, STATS_HELPER_PLUGIN_DOWNLOADS_PATH)?
+        {
+            append_latest_daily_download_summary(
+                &mut history,
+                helper_summary_to_download_stats(content, commit)?,
+            );
+        }
+
+        let done = idx + 1;
+        if should_log_progress(done, total_commits) {
+            println!(
+                "  Stats-helper download summary progress: {} / {}",
+                done, total_commits
+            );
+        }
+    }
+
+    Ok(history)
+}
+
+fn helper_summary_to_download_stats(
+    content: String,
+    commit: Commit,
+) -> Result<PluginDownloadStats, Box<dyn Error>> {
+    let summary: HelperDownloadSummary = serde_json::from_str(&content)?;
+    let entries = summary
+        .plugins
+        .into_iter()
+        .map(|(id, entry)| {
+            (
+                id,
+                PluginDownloadStat {
+                    downloads: entry.downloads,
+                },
+            )
+        })
+        .collect();
+
+    Ok(PluginDownloadStats { entries, commit })
+}
+
+fn append_latest_daily_download_summary(
+    history: &mut Vec<PluginDownloadStats>,
+    stats: PluginDownloadStats,
+) {
+    if history
+        .last()
+        .is_some_and(|previous| previous.commit.date == stats.commit.date)
+    {
+        *history.last_mut().expect("history has last entry") = stats;
+    } else {
+        history.push(stats);
+    }
+}
+
+fn get_helper_repo_changes_for_file(file_path: &str) -> Result<Vec<Commit>, Box<dyn Error>> {
+    let repo_path = Path::new(OBSIDIAN_STATS_HELPER_REPO_PATH).canonicalize()?;
+    let output = std::process::Command::new("git")
+        .args([
+            "--no-pager",
+            "log",
+            "--date-order",
+            "--reverse",
+            "--format=\"%ad %H\"",
+            "--date=iso-strict",
+            "--diff-filter=AM",
+            "--",
+            file_path,
+        ])
+        .current_dir(repo_path)
+        .output()?;
+
+    if !output.status.success() {
+        return Err(format!(
+            "git log failed for stats-helper {file_path}: {}",
+            String::from_utf8_lossy(&output.stderr).trim()
+        )
+        .into());
+    }
+
+    Ok(Commit::from_git_log(
+        String::from_utf8_lossy(&output.stdout).to_string(),
+    ))
+}
+
+fn read_file_at_commit(
+    repo_path: &Path,
+    commit: &Commit,
+    file_path: &str,
+) -> Result<Option<String>, Box<dyn Error>> {
+    let output = std::process::Command::new("git")
+        .args(["cat-file", "-p", &format!("{}:{file_path}", commit.hash)])
+        .current_dir(repo_path)
+        .output()?;
+
+    if output.status.success() {
+        return Ok(Some(String::from_utf8_lossy(&output.stdout).to_string()));
+    }
+
+    Ok(None)
+}
+
 pub fn target_release(
     helper_plugin: &HelperPluginData,
 ) -> Result<TargetRelease, TargetReleaseError> {
@@ -225,9 +362,13 @@ fn date_from_iso_timestamp(timestamp: &str) -> Option<Date> {
 #[cfg(test)]
 mod tests {
     use super::{
-        HelperPluginData, HelperRelease, TargetReleaseError, build_version_history, target_release,
+        HelperPluginData, HelperRelease, TargetReleaseError, append_latest_daily_download_summary,
+        build_version_history, target_release,
     };
+    use crate::plugins::PluginDownloadStats;
     use data_lib::plugin::PluginManifest;
+    use data_lib::{commit::Commit, date::Date};
+    use hashbrown::HashMap;
 
     fn helper_plugin(
         manifest_version: Option<&str>,
@@ -248,6 +389,7 @@ mod tests {
         HelperRelease {
             tag: tag.to_string(),
             published_at: Some("2026-01-02T03:04:05Z".to_string()),
+            download_count: Some(0),
             prerelease,
             draft,
         }
@@ -271,6 +413,42 @@ mod tests {
         assert!(!history[0].prerelease);
         assert_eq!(history[1].version, "1.1.0-beta");
         assert!(history[1].prerelease);
+    }
+
+    #[test]
+    fn append_latest_daily_download_summary_keeps_latest_snapshot_per_day() {
+        let mut history = vec![PluginDownloadStats {
+            commit: Commit {
+                date: Date::new(2026, 6, 26),
+                hash: "morning".to_string(),
+            },
+            entries: HashMap::new(),
+        }];
+
+        append_latest_daily_download_summary(
+            &mut history,
+            PluginDownloadStats {
+                commit: Commit {
+                    date: Date::new(2026, 6, 26),
+                    hash: "evening".to_string(),
+                },
+                entries: HashMap::new(),
+            },
+        );
+        append_latest_daily_download_summary(
+            &mut history,
+            PluginDownloadStats {
+                commit: Commit {
+                    date: Date::new(2026, 6, 27),
+                    hash: "next-day".to_string(),
+                },
+                entries: HashMap::new(),
+            },
+        );
+
+        assert_eq!(history.len(), 2);
+        assert_eq!(history[0].commit.hash, "evening");
+        assert_eq!(history[1].commit.hash, "next-day");
     }
 
     #[test]

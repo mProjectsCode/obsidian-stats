@@ -1,4 +1,5 @@
 use data_lib::{
+    commit::Commit,
     date::Date,
     input_data::{ObsDownloadStats, ObsPluginList},
     plugin::PluginData,
@@ -17,7 +18,7 @@ use crate::{
     file_utils::{read_chunked_data, write_in_chunks_atomic},
     git_utils::get_obs_repo_changes_for_file,
     plugins::{
-        BorrowedPluginData, PluginDownloadStats, PluginList, download_backfill,
+        BorrowedPluginData, PluginDownloadStat, PluginDownloadStats, PluginList, download_backfill,
         stats_helper::{self, HelperPluginStore},
     },
     progress::should_log_progress,
@@ -236,6 +237,123 @@ fn load_plugin_download_stat_history() -> Result<Vec<PluginDownloadStats>, Box<d
     Ok(results)
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+enum DownloadSource {
+    Obsidian,
+    StatsHelper,
+}
+
+#[derive(Debug, Clone)]
+struct DailyDownloadEntry {
+    downloads: u32,
+    source: DownloadSource,
+}
+
+fn merge_plugin_download_stat_histories(
+    obsidian_stats: Vec<PluginDownloadStats>,
+    helper_stats: Vec<PluginDownloadStats>,
+) -> Vec<PluginDownloadStats> {
+    let mut by_date: HashMap<Date, HashMap<String, DailyDownloadEntry>> = HashMap::new();
+
+    for stats in obsidian_stats {
+        merge_download_stat_snapshot(&mut by_date, stats, DownloadSource::Obsidian);
+    }
+
+    for stats in helper_stats {
+        merge_download_stat_snapshot(&mut by_date, stats, DownloadSource::StatsHelper);
+    }
+
+    let mut merged = by_date
+        .into_iter()
+        .map(|(date, entries)| PluginDownloadStats {
+            commit: Commit {
+                hash: format!("merged-downloads:{}", date.to_fancy_string()),
+                date,
+            },
+            entries: entries
+                .into_iter()
+                .map(|(id, entry)| {
+                    (
+                        id,
+                        PluginDownloadStat {
+                            downloads: entry.downloads,
+                        },
+                    )
+                })
+                .collect(),
+        })
+        .collect::<Vec<_>>();
+
+    merged.sort_by(|left, right| left.commit.date.cmp(&right.commit.date));
+    merged
+}
+
+fn merge_download_stat_snapshot(
+    by_date: &mut HashMap<Date, HashMap<String, DailyDownloadEntry>>,
+    stats: PluginDownloadStats,
+    source: DownloadSource,
+) {
+    let date = stats.get_date();
+    let policy = download_source_policy_for_date(&date);
+
+    if !policy_allows_source(policy, source) {
+        return;
+    }
+
+    let entries_for_date = by_date.entry(date).or_default();
+    for (id, entry) in stats.entries {
+        entries_for_date
+            .entry(id)
+            .and_modify(|existing| {
+                if should_replace_daily_download_entry(existing.source, source, policy)
+                    || (existing.source == source && entry.downloads > existing.downloads)
+                {
+                    existing.downloads = entry.downloads;
+                    existing.source = source;
+                }
+            })
+            .or_insert(DailyDownloadEntry {
+                downloads: entry.downloads,
+                source,
+            });
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+enum DownloadSourcePolicy {
+    ObsidianOnly,
+    PreferStatsHelper,
+    StatsHelperOnly,
+}
+
+fn download_source_policy_for_date(date: &Date) -> DownloadSourcePolicy {
+    if date < &Date::new(2026, 6, 1) {
+        DownloadSourcePolicy::ObsidianOnly
+    } else if date <= &Date::new(2026, 6, 30) {
+        DownloadSourcePolicy::PreferStatsHelper
+    } else {
+        DownloadSourcePolicy::StatsHelperOnly
+    }
+}
+
+fn policy_allows_source(policy: DownloadSourcePolicy, source: DownloadSource) -> bool {
+    match policy {
+        DownloadSourcePolicy::ObsidianOnly => source == DownloadSource::Obsidian,
+        DownloadSourcePolicy::PreferStatsHelper => true,
+        DownloadSourcePolicy::StatsHelperOnly => source == DownloadSource::StatsHelper,
+    }
+}
+
+fn should_replace_daily_download_entry(
+    existing: DownloadSource,
+    next: DownloadSource,
+    policy: DownloadSourcePolicy,
+) -> bool {
+    matches!(policy, DownloadSourcePolicy::PreferStatsHelper)
+        && existing == DownloadSource::Obsidian
+        && next == DownloadSource::StatsHelper
+}
+
 fn filter_low_signal_plugins(plugin_data: Vec<BorrowedPluginData>) -> Vec<BorrowedPluginData> {
     let now = Date::now();
 
@@ -272,7 +390,10 @@ pub fn build_plugin_stats() -> Result<(), Box<dyn std::error::Error>> {
     println!("Build Plugin Data {:#?}", time2.elapsed());
     time2 = std::time::Instant::now();
 
-    let download_stats = load_plugin_download_stat_history()?;
+    let obsidian_download_stats = load_plugin_download_stat_history()?;
+    let helper_download_stats = stats_helper::load_helper_download_stat_history()?;
+    let download_stats =
+        merge_plugin_download_stat_histories(obsidian_download_stats, helper_download_stats);
 
     println!("Get plugin download stats: {:#?}", time2.elapsed());
     time2 = std::time::Instant::now();
@@ -302,4 +423,82 @@ pub fn build_plugin_stats() -> Result<(), Box<dyn std::error::Error>> {
 
 pub fn read_plugin_data() -> Result<Vec<PluginData>, Box<dyn std::error::Error>> {
     read_chunked_data(Path::new(PLUGIN_DATA_PATH))
+}
+
+#[cfg(test)]
+mod tests {
+    use super::{
+        DownloadSourcePolicy, download_source_policy_for_date, merge_plugin_download_stat_histories,
+    };
+    use crate::plugins::{PluginDownloadStat, PluginDownloadStats};
+    use data_lib::{commit::Commit, date::Date};
+    use hashbrown::HashMap;
+
+    fn stats(date: Date, source: &str, entries: &[(&str, u32)]) -> PluginDownloadStats {
+        PluginDownloadStats {
+            commit: Commit {
+                date,
+                hash: source.to_string(),
+            },
+            entries: entries
+                .iter()
+                .map(|(id, downloads)| {
+                    (
+                        (*id).to_string(),
+                        PluginDownloadStat {
+                            downloads: *downloads,
+                        },
+                    )
+                })
+                .collect::<HashMap<_, _>>(),
+        }
+    }
+
+    #[test]
+    fn download_source_policy_uses_requested_boundaries() {
+        assert_eq!(
+            download_source_policy_for_date(&Date::new(2026, 5, 31)),
+            DownloadSourcePolicy::ObsidianOnly
+        );
+        assert_eq!(
+            download_source_policy_for_date(&Date::new(2026, 6, 1)),
+            DownloadSourcePolicy::PreferStatsHelper
+        );
+        assert_eq!(
+            download_source_policy_for_date(&Date::new(2026, 6, 30)),
+            DownloadSourcePolicy::PreferStatsHelper
+        );
+        assert_eq!(
+            download_source_policy_for_date(&Date::new(2026, 7, 1)),
+            DownloadSourcePolicy::StatsHelperOnly
+        );
+    }
+
+    #[test]
+    fn june_merge_prefers_helper_but_keeps_obsidian_fallbacks() {
+        let merged = merge_plugin_download_stat_histories(
+            vec![stats(
+                Date::new(2026, 6, 15),
+                "obsidian",
+                &[("a", 100), ("b", 200)],
+            )],
+            vec![stats(Date::new(2026, 6, 15), "helper", &[("a", 90)])],
+        );
+
+        let entries = &merged[0].entries;
+        assert_eq!(entries.get("a").map(|entry| entry.downloads), Some(90));
+        assert_eq!(entries.get("b").map(|entry| entry.downloads), Some(200));
+    }
+
+    #[test]
+    fn post_june_merge_uses_helper_only() {
+        let merged = merge_plugin_download_stat_histories(
+            vec![stats(Date::new(2026, 7, 1), "obsidian", &[("a", 100)])],
+            vec![stats(Date::new(2026, 7, 1), "helper", &[("b", 50)])],
+        );
+
+        let entries = &merged[0].entries;
+        assert!(!entries.contains_key("a"));
+        assert_eq!(entries.get("b").map(|entry| entry.downloads), Some(50));
+    }
 }

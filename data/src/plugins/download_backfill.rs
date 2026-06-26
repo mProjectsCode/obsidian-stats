@@ -133,9 +133,18 @@ fn build_points_by_plugin(
         points_by_plugin.push(Vec::new());
     }
 
-    for stats in download_stats.iter() {
+    println!(
+        "Indexing download points from {} snapshot(s)...",
+        download_stats.len()
+    );
+    let total_snapshots = download_stats.len();
+    for (idx, stats) in download_stats.iter().enumerate() {
         let date = stats.get_date();
         if excluded.contains(&date) {
+            let done = idx + 1;
+            if should_log_progress(done, total_snapshots) {
+                println!("  Download point indexing progress: {done} / {total_snapshots}");
+            }
             continue;
         }
         let day = date.days_since_epoch() as i32;
@@ -148,6 +157,11 @@ fn build_points_by_plugin(
                     downloads: entry.downloads,
                 });
             }
+        }
+
+        let done = idx + 1;
+        if should_log_progress(done, total_snapshots) {
+            println!("  Download point indexing progress: {done} / {total_snapshots}");
         }
     }
 
