@@ -294,9 +294,7 @@ fn merge_download_stat_snapshot(
     source: DownloadSource,
 ) {
     let date = stats.get_date();
-    let policy = download_source_policy_for_date(&date);
-
-    if !policy_allows_source(policy, source) {
+    if source != download_source_for_date(&date) {
         return;
     }
 
@@ -305,9 +303,7 @@ fn merge_download_stat_snapshot(
         entries_for_date
             .entry(id)
             .and_modify(|existing| {
-                if should_replace_daily_download_entry(existing.source, source, policy)
-                    || (existing.source == source && entry.downloads > existing.downloads)
-                {
+                if existing.source == source && entry.downloads > existing.downloads {
                     existing.downloads = entry.downloads;
                     existing.source = source;
                 }
@@ -319,39 +315,12 @@ fn merge_download_stat_snapshot(
     }
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-enum DownloadSourcePolicy {
-    ObsidianOnly,
-    PreferStatsHelper,
-    StatsHelperOnly,
-}
-
-fn download_source_policy_for_date(date: &Date) -> DownloadSourcePolicy {
-    if date < &Date::new(2026, 6, 1) {
-        DownloadSourcePolicy::ObsidianOnly
-    } else if date <= &Date::new(2026, 6, 30) {
-        DownloadSourcePolicy::PreferStatsHelper
+fn download_source_for_date(date: &Date) -> DownloadSource {
+    if date < &Date::new(2026, 7, 1) {
+        DownloadSource::Obsidian
     } else {
-        DownloadSourcePolicy::StatsHelperOnly
+        DownloadSource::StatsHelper
     }
-}
-
-fn policy_allows_source(policy: DownloadSourcePolicy, source: DownloadSource) -> bool {
-    match policy {
-        DownloadSourcePolicy::ObsidianOnly => source == DownloadSource::Obsidian,
-        DownloadSourcePolicy::PreferStatsHelper => true,
-        DownloadSourcePolicy::StatsHelperOnly => source == DownloadSource::StatsHelper,
-    }
-}
-
-fn should_replace_daily_download_entry(
-    existing: DownloadSource,
-    next: DownloadSource,
-    policy: DownloadSourcePolicy,
-) -> bool {
-    matches!(policy, DownloadSourcePolicy::PreferStatsHelper)
-        && existing == DownloadSource::Obsidian
-        && next == DownloadSource::StatsHelper
 }
 
 fn filter_low_signal_plugins(plugin_data: Vec<BorrowedPluginData>) -> Vec<BorrowedPluginData> {
@@ -427,9 +396,7 @@ pub fn read_plugin_data() -> Result<Vec<PluginData>, Box<dyn std::error::Error>>
 
 #[cfg(test)]
 mod tests {
-    use super::{
-        DownloadSourcePolicy, download_source_policy_for_date, merge_plugin_download_stat_histories,
-    };
+    use super::{DownloadSource, download_source_for_date, merge_plugin_download_stat_histories};
     use crate::plugins::{PluginDownloadStat, PluginDownloadStats};
     use data_lib::{commit::Commit, date::Date};
     use hashbrown::HashMap;
@@ -455,27 +422,27 @@ mod tests {
     }
 
     #[test]
-    fn download_source_policy_uses_requested_boundaries() {
+    fn download_source_uses_hard_cutover_boundary() {
         assert_eq!(
-            download_source_policy_for_date(&Date::new(2026, 5, 31)),
-            DownloadSourcePolicy::ObsidianOnly
+            download_source_for_date(&Date::new(2026, 5, 31)),
+            DownloadSource::Obsidian
         );
         assert_eq!(
-            download_source_policy_for_date(&Date::new(2026, 6, 1)),
-            DownloadSourcePolicy::PreferStatsHelper
+            download_source_for_date(&Date::new(2026, 6, 1)),
+            DownloadSource::Obsidian
         );
         assert_eq!(
-            download_source_policy_for_date(&Date::new(2026, 6, 30)),
-            DownloadSourcePolicy::PreferStatsHelper
+            download_source_for_date(&Date::new(2026, 6, 30)),
+            DownloadSource::Obsidian
         );
         assert_eq!(
-            download_source_policy_for_date(&Date::new(2026, 7, 1)),
-            DownloadSourcePolicy::StatsHelperOnly
+            download_source_for_date(&Date::new(2026, 7, 1)),
+            DownloadSource::StatsHelper
         );
     }
 
     #[test]
-    fn june_merge_prefers_helper_but_keeps_obsidian_fallbacks() {
+    fn pre_cutover_merge_uses_obsidian_only() {
         let merged = merge_plugin_download_stat_histories(
             vec![stats(
                 Date::new(2026, 6, 15),
@@ -486,7 +453,7 @@ mod tests {
         );
 
         let entries = &merged[0].entries;
-        assert_eq!(entries.get("a").map(|entry| entry.downloads), Some(90));
+        assert_eq!(entries.get("a").map(|entry| entry.downloads), Some(100));
         assert_eq!(entries.get("b").map(|entry| entry.downloads), Some(200));
     }
 

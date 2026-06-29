@@ -17,7 +17,7 @@ It is important to note that we don't run any code from plugins or themes. We re
 
 ## How we extract and combine data
 
-The data you see on this site is combined from the above mentioned sources. For the download counts, we step through the Git history of the [obsidian-releases](https://github.com/obsidianmd/obsidian-releases) repository. This allows us to see the download counts evolve over time. We can also see when plugins were added to the community plugins list, and when they were removed, as well as when they were updated. This gives us a very detailed picture of the plugin ecosystem.
+The data you see on this site is combined from the above mentioned sources. Through 2026-06-30, plugin download counts come from the Git history of the [obsidian-releases](https://github.com/obsidianmd/obsidian-releases) repository. Starting on 2026-07-01, they come from GitHub release statistics collected for each plugin's `manifest.json` asset. The change is a hard source switch: data from the two sources is not mixed within either period. The repository history also lets us see when plugins were added to the community plugin list, removed, or updated.
 
 But not all data is directly available. For example, since there is no manifest field for the license of a plugin. Because of this we also analyze the plugin repositories and release files of currently listed plugins to derive additional data points. The more interesting of these data points are explained below.
 

@@ -34,6 +34,7 @@ pub const LATEST_DATA_UPDATE_SUMMARY_PATH: &str = "./out/state/latest-data-updat
 
 pub const DEFAULT_CLONE_REFRESH_DAYS: i64 = 3;
 pub const DEFAULT_CLONE_TIMEOUT_SECONDS: u64 = 60;
+pub const DEFAULT_MAX_CLONE_THREADS: usize = 8;
 pub const DEFAULT_RELEASE_STATS_REFRESH_DAYS: i64 = 3;
 
 pub const GITHUB_RATE_LIMIT_MODE_ENV: &str = "GITHUB_RATE_LIMIT_MODE";

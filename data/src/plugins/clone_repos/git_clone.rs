@@ -120,7 +120,15 @@ pub(super) fn clone_repo_preserving_previous(
         let _ = std::fs::remove_dir_all(&backup_path);
     }
 
-    if let Err(error) = run_git_clone(plugin, target_release_tag, &tmp_path, clone_timeout) {
+    let clone_result = run_with_timeout_retry(
+        || run_git_clone(plugin, target_release_tag, &tmp_path, clone_timeout),
+        |error| {
+            println!("  Clone retry: {} {error}; retrying once", plugin.id);
+            let _ = std::fs::remove_dir_all(&tmp_path);
+        },
+    );
+
+    if let Err(error) = clone_result {
         let _ = std::fs::remove_dir_all(&tmp_path);
         return CloneResult::Failed {
             id: plugin.id.clone(),
@@ -174,6 +182,20 @@ pub(super) fn clone_repo_preserving_previous(
                 },
             }
         }
+    }
+}
+
+fn run_with_timeout_retry<T, F, R>(mut operation: F, mut before_retry: R) -> Result<T, CloneError>
+where
+    F: FnMut() -> Result<T, CloneError>,
+    R: FnMut(&CloneError),
+{
+    match operation() {
+        Err(error @ CloneError::GitTimeout { .. }) => {
+            before_retry(&error);
+            operation()
+        }
+        result => result,
     }
 }
 
@@ -354,11 +376,12 @@ fn command_output_tail(output: &[u8]) -> String {
 #[cfg(test)]
 mod tests {
     use std::{
+        cell::Cell,
         process::{Command, Stdio},
         time::{Duration, Instant},
     };
 
-    use super::{CloneError, run_clone_command};
+    use super::{CloneError, run_clone_command, run_with_timeout_retry};
 
     #[test]
     fn clone_error_status_keeps_failed_prefix_and_detail() {
@@ -371,6 +394,66 @@ mod tests {
             error.as_state_value(),
             "failed:timed out after 30s: remote hung up"
         );
+    }
+
+    #[test]
+    fn timeout_is_retried_once() {
+        let attempts = Cell::new(0);
+        let retries = Cell::new(0);
+
+        let result = run_with_timeout_retry(
+            || {
+                attempts.set(attempts.get() + 1);
+                if attempts.get() == 1 {
+                    Err(CloneError::GitTimeout {
+                        seconds: 30,
+                        detail: None,
+                    })
+                } else {
+                    Ok(())
+                }
+            },
+            |_| retries.set(retries.get() + 1),
+        );
+
+        assert!(result.is_ok());
+        assert_eq!(attempts.get(), 2);
+        assert_eq!(retries.get(), 1);
+    }
+
+    #[test]
+    fn non_timeout_failure_is_not_retried() {
+        let attempts = Cell::new(0);
+
+        let result: Result<(), _> = run_with_timeout_retry(
+            || {
+                attempts.set(attempts.get() + 1);
+                Err(CloneError::GitFailed("failed".to_string()))
+            },
+            |_| panic!("non-timeout errors must not be retried"),
+        );
+
+        assert!(matches!(result, Err(CloneError::GitFailed(_))));
+        assert_eq!(attempts.get(), 1);
+    }
+
+    #[test]
+    fn repeated_timeout_stops_after_single_retry() {
+        let attempts = Cell::new(0);
+
+        let result: Result<(), _> = run_with_timeout_retry(
+            || {
+                attempts.set(attempts.get() + 1);
+                Err(CloneError::GitTimeout {
+                    seconds: 30,
+                    detail: None,
+                })
+            },
+            |_| {},
+        );
+
+        assert!(matches!(result, Err(CloneError::GitTimeout { .. })));
+        assert_eq!(attempts.get(), 2);
     }
 
     #[cfg(unix)]

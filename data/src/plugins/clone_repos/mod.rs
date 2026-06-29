@@ -19,7 +19,10 @@ use git_clone::{CloneResult, clone_repo_preserving_previous};
 
 use crate::{
     alerts,
-    constants::{CLONE_STATE_PATH, DEFAULT_CLONE_TIMEOUT_SECONDS, PLUGIN_REPO_PATH},
+    constants::{
+        CLONE_STATE_PATH, DEFAULT_CLONE_TIMEOUT_SECONDS, DEFAULT_MAX_CLONE_THREADS,
+        PLUGIN_REPO_PATH,
+    },
     file_utils::ensure_dir,
     plugins::{data::read_plugin_data, stats_helper::HelperPluginStore},
     progress::should_log_progress,
@@ -69,7 +72,7 @@ pub fn clone_plugin_repos(force: bool, no_clone: bool) -> Result<(), Box<dyn std
             .unwrap_or(DEFAULT_CLONE_TIMEOUT_SECONDS),
     );
     let default_threads = std::thread::available_parallelism()
-        .map(|n| n.get())
+        .map(|n| default_clone_thread_count(n.get()))
         .unwrap_or(4);
     let thread_count = configured_thread_count(CLONE_THREADS_ENV, default_threads);
 
@@ -313,9 +316,13 @@ fn configured_thread_count(env_var: &str, default_threads: usize) -> usize {
         .unwrap_or(default_threads)
 }
 
+fn default_clone_thread_count(available_threads: usize) -> usize {
+    available_threads.min(DEFAULT_MAX_CLONE_THREADS)
+}
+
 #[cfg(test)]
 mod tests {
-    use super::CloneStatus;
+    use super::{CloneStatus, default_clone_thread_count};
 
     #[test]
     fn clone_status_values_match_persisted_labels() {
@@ -324,5 +331,11 @@ mod tests {
             CloneStatus::SkippedRemoved.as_state_value(),
             "skipped_removed"
         );
+    }
+
+    #[test]
+    fn default_clone_concurrency_is_bounded() {
+        assert_eq!(default_clone_thread_count(4), 4);
+        assert_eq!(default_clone_thread_count(64), 8);
     }
 }
