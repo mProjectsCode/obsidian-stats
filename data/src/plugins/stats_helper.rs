@@ -53,7 +53,7 @@ struct HelperDownloadSummary {
 
 #[derive(Debug, Clone, Deserialize)]
 struct HelperDownloadSummaryEntry {
-    downloads: u32,
+    downloads: Option<u32>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -212,18 +212,34 @@ fn helper_summary_to_download_stats(
     commit: Commit,
 ) -> Result<PluginDownloadStats, Box<dyn Error>> {
     let summary: HelperDownloadSummary = serde_json::from_str(&content)?;
+    let mut invalid_entries = Vec::new();
     let entries = summary
         .plugins
         .into_iter()
-        .map(|(id, entry)| {
-            (
-                id,
-                PluginDownloadStat {
-                    downloads: entry.downloads,
-                },
-            )
+        .filter_map(|(id, entry)| {
+            let Some(downloads) = entry.downloads else {
+                invalid_entries.push(id);
+                return None;
+            };
+
+            Some((id, PluginDownloadStat { downloads }))
         })
         .collect();
+
+    // if !invalid_entries.is_empty() {
+    //     invalid_entries.sort_unstable();
+    //     eprintln!(
+    //         "Warning: omitted {} stats-helper download entr{} with null downloads at commit {}: {}",
+    //         invalid_entries.len(),
+    //         if invalid_entries.len() == 1 {
+    //             "y"
+    //         } else {
+    //             "ies"
+    //         },
+    //         commit.hash,
+    //         invalid_entries.join(", ")
+    //     );
+    // }
 
     Ok(PluginDownloadStats { entries, commit })
 }
@@ -363,7 +379,7 @@ fn date_from_iso_timestamp(timestamp: &str) -> Option<Date> {
 mod tests {
     use super::{
         HelperPluginData, HelperRelease, TargetReleaseError, append_latest_daily_download_summary,
-        build_version_history, target_release,
+        build_version_history, helper_summary_to_download_stats, target_release,
     };
     use crate::plugins::PluginDownloadStats;
     use data_lib::plugin::PluginManifest;
@@ -449,6 +465,30 @@ mod tests {
         assert_eq!(history.len(), 2);
         assert_eq!(history[0].commit.hash, "evening");
         assert_eq!(history[1].commit.hash, "next-day");
+    }
+
+    #[test]
+    fn download_summary_omits_entries_with_null_downloads() {
+        let stats = helper_summary_to_download_stats(
+            r#"{
+                "plugins": {
+                    "invalid": { "downloads": null },
+                    "valid": { "downloads": 42 }
+                }
+            }"#
+            .to_string(),
+            Commit {
+                date: Date::new(2026, 6, 30),
+                hash: "bad-summary".to_string(),
+            },
+        )
+        .unwrap();
+
+        assert!(!stats.entries.contains_key("invalid"));
+        assert_eq!(
+            stats.entries.get("valid").map(|entry| entry.downloads),
+            Some(42)
+        );
     }
 
     #[test]
