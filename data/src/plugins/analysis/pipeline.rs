@@ -1,9 +1,9 @@
-use std::fs;
+use std::path::Path;
 
-use data_lib::plugin::{PluginData, PluginRepoAnalysisError, PluginRepoData};
+use data_lib::plugin::{PluginData, PluginRepoData};
 
 use super::{
-    mainjs::analyze_main_js, output::PluginRepoDataExt, repo::analyze_repo,
+    mainjs::analyze_main_js_file, output::PluginRepoDataExt, repo::analyze_repo,
     run_stats::ExtraRunStats,
 };
 use crate::plugins::{
@@ -13,8 +13,6 @@ use crate::plugins::{
     },
     stats_helper::HelperPluginStore,
 };
-
-const MAX_MAIN_JS_ANALYSIS_BYTES: u64 = 10 * 1024 * 1024;
 
 pub(crate) fn analyze_plugin(
     plugin: &PluginData,
@@ -38,29 +36,26 @@ pub(crate) fn analyze_plugin(
     if let Some(tag) = state_entry.latest_release_tag.as_deref() {
         let path = release_main_js_cache_path(&plugin.id, tag);
         if let Ok(path) = path {
-            let too_large = fs::metadata(&path)
-                .map(|metadata| metadata.len() > MAX_MAIN_JS_ANALYSIS_BYTES)
-                .unwrap_or(false);
-            if too_large {
-                output
-                    .analysis_errors
-                    .push(PluginRepoAnalysisError::MainJsAnalysisTooLarge);
-                run_stats.release_main_js_scan_failed += 1;
-            } else if let Ok(bytes) = fs::read(path) {
-                if let Ok(source) = std::str::from_utf8(&bytes) {
-                    let mainjs = analyze_main_js(source);
-                    output.apply_main_js_analysis(&mainjs);
-                    run_stats.release_main_js_scanned += 1;
-                } else {
+            if let Ok(mainjs) = analyze_main_js_file(Path::new(&path)) {
+                let failed = mainjs.diagnostics.iter().any(|diagnostic| {
+                    matches!(
+                        diagnostic.code.as_str(),
+                        "source_too_large" | "invalid_utf8"
+                    )
+                });
+                output.apply_main_js_analysis(mainjs);
+                if failed {
                     run_stats.release_main_js_scan_failed += 1;
+                } else {
+                    run_stats.release_main_js_scanned += 1;
                 }
-            } else if output.estimated_target_es_version.is_none() {
+            } else {
                 run_stats.release_main_js_scan_failed += 1;
             }
-        } else if output.estimated_target_es_version.is_none() {
+        } else {
             run_stats.release_main_js_scan_failed += 1;
         }
-    } else if output.estimated_target_es_version.is_none() {
+    } else {
         run_stats.release_main_js_scan_failed += 1;
     }
 

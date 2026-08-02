@@ -46,7 +46,6 @@ pub struct PluginReleaseStateEntry {
     pub latest_release_main_js_size_bytes: Option<u64>,
     pub last_successful_main_js_release_tag: Option<String>,
     pub last_successful_main_js_release_published_at: Option<String>,
-    pub estimated_target_es_version: Option<String>,
     pub latest_release_tag: Option<String>,
     pub latest_release_published_at: Option<String>,
     pub latest_release_fetch_status: Option<String>,
@@ -356,8 +355,6 @@ fn target_release_error_state_entry(
             .and_then(|prev| prev.last_successful_main_js_release_tag.clone()),
         last_successful_main_js_release_published_at: previous_entry
             .and_then(|prev| prev.last_successful_main_js_release_published_at.clone()),
-        estimated_target_es_version: previous_entry
-            .and_then(|prev| prev.estimated_target_es_version.clone()),
         latest_release_tag: None,
         latest_release_published_at: None,
         latest_release_fetch_status: Some(
@@ -412,7 +409,6 @@ fn process_release_job(
                 latest_release_main_js_size_bytes: None,
                 last_successful_main_js_release_tag: None,
                 last_successful_main_js_release_published_at: None,
-                estimated_target_es_version: None,
                 latest_release_tag: None,
                 latest_release_published_at: None,
                 latest_release_fetch_status: Some(ReleaseFetchStatus::NotModified.as_state_value()),
@@ -481,7 +477,6 @@ mod tests {
             latest_release_main_js_size_bytes: None,
             last_successful_main_js_release_tag: None,
             last_successful_main_js_release_published_at: None,
-            estimated_target_es_version: None,
             latest_release_tag: None,
             latest_release_published_at: None,
             latest_release_fetch_status: Some(status.to_string()),

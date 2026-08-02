@@ -5,7 +5,7 @@ import Commit from './Commit.astro';
 import DownloadChart from './svelte/charts/downloads/DownloadChart.svelte';
 import BarChart from './svelte/charts/BarChart.svelte';
 import { getPluginDataArray, getPluginPageFreshness } from '../utils/data';
-import type { MainJsApiCapability, PluginWarning } from '../../../data-wasm/pkg/data_wasm';
+import type { MainJsFinding, PluginWarning } from '../../../data-wasm/pkg/data_wasm';
 
 const { pluginId } = Astro.props as { pluginId: string };
 if (!pluginId) {
@@ -80,38 +80,35 @@ const changes = plugin.changes();
 const latestReleaseSizeBytes = plugin.latest_release_main_js_size_bytes();
 const estimatedTargetEsVersion = plugin.estimated_target_es_version();
 const mainJsProbablyMinified = plugin.main_js_is_probably_minified();
-const mainJsApiCapabilities = plugin.main_js_api_capabilities();
-const mainJsApiDisclosures = plugin.main_js_api_disclosures();
+const mainJsFindings = plugin.main_js_findings();
+const mainJsDisclosures = plugin.main_js_disclosures();
 
 const severityOrder = new Map([
-	['critical', 0],
-	['warning', 1],
-	['notice', 2],
-	['info', 3],
+    ['error', 0],
+    ['warning', 1],
+    ['info', 2],
 ]);
 
-const publicMainJsApiCapabilities = mainJsApiCapabilities ?? [];
-const publicMainJsApiCapabilityIds = new Set(publicMainJsApiCapabilities.map(capability => capability.id));
-const publicMainJsApiDisclosures = (mainJsApiDisclosures ?? []).filter(disclosure => publicMainJsApiCapabilityIds.has(disclosure.from_capability));
-const capabilityById = new Map(publicMainJsApiCapabilities.map(capability => [capability.id, capability]));
-const apiCapabilities = [...publicMainJsApiCapabilities].sort(
+const publicMainJsFindings = mainJsFindings ?? [];
+const findingByRuleId = new Map(publicMainJsFindings.map(finding => [finding.rule_id, finding]));
+const apiFindings = [...publicMainJsFindings].sort(
 	(a, b) =>
-		(severityOrder.get(a.severity) ?? 99) - (severityOrder.get(b.severity) ?? 99) || a.category.localeCompare(b.category) || a.label.localeCompare(b.label),
+		(severityOrder.get(a.severity) ?? 99) - (severityOrder.get(b.severity) ?? 99) || a.rule_id.localeCompare(b.rule_id) || a.message.localeCompare(b.message),
 );
 const apiDisclosures = Array.from(
-	publicMainJsApiDisclosures.reduce((groups, disclosure) => {
+	(mainJsDisclosures ?? []).reduce((groups, disclosure) => {
 		const group = groups.get(disclosure.id) ?? {
 			id: disclosure.id,
 			label: formatApiId(disclosure.id.replace(/^disclosure\./, '')),
-			capabilities: new Set<string>(),
+			descriptions: new Set<string>(),
 		};
-		group.capabilities.add(capabilityById.get(disclosure.from_capability)?.label ?? formatApiId(disclosure.from_capability));
+		group.descriptions.add(findingByRuleId.get(disclosure.from_rule_id)?.description ?? 'Unknown rule');
 		groups.set(disclosure.id, group);
 		return groups;
-	}, new Map<string, { id: string; label: string; capabilities: Set<string> }>()),
+	}, new Map<string, { id: string; label: string; descriptions: Set<string> }>()),
 	([, group]) => ({
 		...group,
-		capabilities: Array.from(group.capabilities).sort(),
+		descriptions: Array.from(group.descriptions).sort(),
 	}),
 ).sort((a, b) => a.label.localeCompare(b.label));
 
@@ -133,10 +130,12 @@ function formatApiId(value: string): string {
 		.join(' ');
 }
 
-function formatEvidence(capability: MainJsApiCapability): string {
-	return capability.evidence
-		.slice(0, 4)
-		.map(evidence => `${evidence.symbol} (${evidence.count})`)
+function formatEvidence(finding: MainJsFinding): string {
+	return (finding.evidence ?? [])
+		.map(evidence => {
+			const count = evidence.count ?? 1;
+			return count > 1 ? `${evidence.message} (${count})` : evidence.message;
+		})
 		.join(', ');
 }
 
@@ -552,12 +551,20 @@ function formatReleaseFreshness(): string {
 						</tr>
 						<tr>
 							<td>Probably Minified</td>
-							<td>{mainJsProbablyMinified === undefined ? <span class="muted">Unknown</span> : mainJsProbablyMinified ? 'Yes' : 'No'}</td>
+							<td>
+								{mainJsProbablyMinified === undefined ? (
+									<span class="muted">Unknown</span>
+								) : mainJsProbablyMinified ? (
+									'Yes'
+								) : (
+									'No'
+								)}
+							</td>
 						</tr>
 						<tr>
 							<td>main.js API Findings</td>
 							<td>
-								{mainJsApiDisclosures === undefined ? (
+								{mainJsDisclosures === undefined ? (
 									<span class="muted">Unknown</span>
 								) : apiDisclosures.length === 1 ? (
 									apiDisclosures.length.toString() + ' disclosure'
@@ -602,15 +609,14 @@ function formatReleaseFreshness(): string {
 				<h4 id="main-js-api-findings">main.js API Findings</h4>
 
 				<p>
-					These conservative findings come from static analysis of the latest release <code>main.js</code>. The table includes warnings and high-confidence
-					informational findings; lower-confidence informational findings are omitted to reduce false positives. Warnings indicate usage of potentially risky
-					APIs, but such APIs can be used safely if handled with care.
+					These findings come directly from <a href="https://github.com/mProjectsCode/glass-lint">Glass Lint's</a> JavaScript and Obsidian rule catalogs applied to the latest release <code>main.js</code>. The
+					confidence column is <a href="https://github.com/mProjectsCode/glass-lint">Glass Lint's</a> definite/possible match certainty.
 				</p>
 
-				{mainJsApiCapabilities === undefined ? (
+				{mainJsFindings === undefined ? (
 					<p class="muted">No main.js API scan data available.</p>
-				) : apiCapabilities.length === 0 ? (
-					<p class="muted">No public main.js API findings detected.</p>
+				) : apiFindings.length === 0 ? (
+					<p class="muted">No main.js findings detected.</p>
 				) : (
 					<>
 						{apiDisclosures.length > 0 && (
@@ -618,14 +624,14 @@ function formatReleaseFreshness(): string {
 								<thead>
 									<tr>
 										<th>Disclosure</th>
-										<th>Detected From</th>
+										<th>Rule Descriptions</th>
 									</tr>
 								</thead>
 								<tbody>
 									{apiDisclosures.map(disclosure => (
 										<tr>
 											<td>{disclosure.label}</td>
-											<td>{disclosure.capabilities.join(', ')}</td>
+											<td>{disclosure.descriptions.join(', ')}</td>
 										</tr>
 									))}
 								</tbody>
@@ -642,12 +648,12 @@ function formatReleaseFreshness(): string {
 								</tr>
 							</thead>
 							<tbody>
-								{apiCapabilities.map(capability => (
+								{apiFindings.map(finding => (
 									<tr>
-										<td>{capability.label}</td>
-										<td>{formatApiId(capability.severity)}</td>
-										<td>{formatApiId(capability.confidence)}</td>
-										<td>{formatEvidence(capability) || <span class="muted">None</span>}</td>
+										<td>{finding.description}</td>
+										<td>{formatApiId(finding.severity)}</td>
+										<td>{formatApiId(finding.confidence)}</td>
+										<td>{formatEvidence(finding) || <span class="muted">None</span>}</td>
 									</tr>
 								))}
 							</tbody>

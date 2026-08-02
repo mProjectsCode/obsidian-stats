@@ -3,9 +3,6 @@ use data_lib::plugin::{
     packages::PackageManager, testing::TestingFramework,
 };
 use hashbrown::HashMap;
-use std::collections::BTreeMap;
-
-use super::mainjs::api_classifier::ApiClassificationResult;
 
 #[derive(Debug)]
 pub(super) struct RepoResult {
@@ -48,53 +45,16 @@ impl RepoResult {
             has_i18n_dependencies: self.has_i18n_dependencies,
             has_i18n_files: self.has_i18n_files,
             latest_release_main_js_size_bytes: None,
-            main_js_parse_succeeded: None,
-            main_js_tolerant_parse_required: None,
             estimated_target_es_version: None,
             main_js_is_probably_minified: None,
             main_js_minification_score: None,
-            main_js_dynamic_import_usage_count: None,
-            main_js_bundler_fingerprints: Vec::new(),
-            main_js_module_system_fingerprints: Vec::new(),
-            main_js_size_bucket: None,
-            main_js_line_count_bucket: None,
-            main_js_uses_optional_chaining: None,
-            main_js_uses_nullish_coalescing: None,
-            main_js_uses_private_fields: None,
-            main_js_uses_top_level_await: None,
-            main_js_known_api_host_counts: HashMap::new(),
-            main_js_embedded_dependency_name_counts: HashMap::new(),
-            main_js_license_banner_count: None,
-            main_js_credential_literal_count: None,
-            main_js_api_capabilities: Vec::new(),
-            main_js_api_disclosures: Vec::new(),
+            main_js_findings: Vec::new(),
+            main_js_disclosures: Vec::new(),
+            main_js_diagnostics: Vec::new(),
             latest_release_tag: None,
             latest_release_published_at: None,
             latest_release_fetch_status: None,
             analysis_errors: self.analysis_errors,
         }
     }
-}
-
-#[derive(Debug, Default)]
-pub(super) struct MainJsResult {
-    pub(super) parse_succeeded: Option<bool>,
-    pub(super) tolerant_parse_required: Option<bool>,
-    pub(super) estimated_target_es_version: Option<String>,
-    pub(super) is_probably_minified: Option<bool>,
-    pub(super) minification_score: Option<f32>,
-    pub(super) dynamic_import_usage_count: Option<u32>,
-    pub(super) bundler_fingerprints: Vec<String>,
-    pub(super) module_system_fingerprints: Vec<String>,
-    pub(super) size_bucket: Option<String>,
-    pub(super) line_count_bucket: Option<String>,
-    pub(super) uses_optional_chaining: Option<bool>,
-    pub(super) uses_nullish_coalescing: Option<bool>,
-    pub(super) uses_private_fields: Option<bool>,
-    pub(super) uses_top_level_await: Option<bool>,
-    pub(super) known_api_host_counts: BTreeMap<String, u32>,
-    pub(super) embedded_dependency_name_counts: BTreeMap<String, u32>,
-    pub(super) license_banner_count: Option<u32>,
-    pub(super) credential_literal_count: Option<u32>,
-    pub(super) api_usage: ApiClassificationResult,
 }

@@ -6,7 +6,10 @@ use wasm_bindgen::prelude::wasm_bindgen;
 
 mod summary;
 
-pub use summary::{BuildLatestDataUpdateSummaryInputs, build_latest_data_update_summary};
+pub use summary::{
+    BuildLatestDataUpdateSummaryInputs, PluginSummaryAccumulator, RepoAnalysisSummaryAccumulator,
+    build_latest_data_update_summary, build_latest_data_update_summary_from_parts,
+};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct PluginReleaseStateEntryInput {

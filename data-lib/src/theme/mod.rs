@@ -20,12 +20,14 @@ pub struct ThemeData {
     #[wasm_bindgen(skip)]
     pub added_commit: Commit,
     #[wasm_bindgen(skip)]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
     pub removed_commit: Option<Commit>,
     #[wasm_bindgen(skip)]
     pub initial_entry: ObsCommunityTheme,
     #[wasm_bindgen(skip)]
     pub current_entry: ObsCommunityTheme,
     #[wasm_bindgen(skip)]
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub change_history: Vec<EntryChange>,
 }
 

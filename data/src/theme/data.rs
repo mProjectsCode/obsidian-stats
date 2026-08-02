@@ -10,7 +10,7 @@ use std::{
 
 use crate::{
     constants::{OBS_RELEASES_REPO_PATH, THEME_DATA_PATH, THEME_LIST_PATH},
-    file_utils::{read_chunked_data, write_in_chunks_atomic},
+    file_utils::{DATA_CHUNK_SIZE, read_chunked_data, write_in_chunks_atomic},
     git_utils::get_obs_repo_changes_for_file,
     progress::should_log_progress,
     theme::{BorrowedThemeData, ThemeIdCounter, ThemeList},
@@ -155,7 +155,7 @@ pub fn build_theme_stats() -> Result<(), Box<dyn std::error::Error>> {
     theme_data = filter_themes(theme_data);
     theme_data.sort_by(|a, b| a.id.cmp(&b.id));
 
-    write_in_chunks_atomic(Path::new(THEME_DATA_PATH), &theme_data, 50)?;
+    write_in_chunks_atomic(Path::new(THEME_DATA_PATH), &theme_data, DATA_CHUNK_SIZE)?;
 
     println!("Filtered and write theme data: {:#?}", time2.elapsed());
 

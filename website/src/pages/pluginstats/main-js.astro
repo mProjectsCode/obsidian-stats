@@ -5,7 +5,6 @@ import BarChart from '../../components/svelte/charts/BarChart.svelte';
 import CapabilityDistributionChart from '../../components/svelte/charts/mainjs/CapabilityDistributionChart.svelte';
 import MinificationScoreDistributionChart from '../../components/svelte/charts/misc/MinificationScoreDistributionChart.svelte';
 import ReleaseSizeDistributionChart from '../../components/svelte/charts/misc/ReleaseSizeDistributionChart.svelte';
-import SeverityDistributionChart from '../../components/svelte/charts/mainjs/SeverityDistributionChart.svelte';
 import { getPluginDataArray } from '../../utils/data';
 
 const data = await getPluginDataArray();
@@ -13,146 +12,128 @@ const view = data.view();
 
 const releaseSizeDistribution = Array.from(view.release_size_distribution(data));
 const topReleaseSizePlugins = view.top_release_size_plugins(data, 10).map(item => {
-	const pluginData = view.get_by_id(data, item.name);
+    const pluginData = view.get_by_id(data, item.name);
 
-	return {
-		id: item.name,
-		name: pluginData?.name() ?? item.name,
-		sizeBytes: item.value,
-	};
+    return {
+        id: item.name,
+        name: pluginData?.name() ?? item.name,
+        sizeBytes: item.value,
+    };
 });
 const esVersionDistribution = view.es_version_distribution(data);
+const es5Plugins = view.es_version_plugin_ids(data, 'ES5').map(id => {
+    const pluginData = view.get_by_id(data, id);
+
+    return {
+        id,
+        name: pluginData?.name() ?? id,
+    };
+});
+const mainJsFindingDistribution = view.main_js_finding_distribution(data).filter(point => point.value >= 25);
+const mainJsSeverityDistribution = view.main_js_severity_distribution(data);
 const mainJsMinifiedDistribution = view.main_js_minified_distribution(data);
 const mainJsMinificationScoreDistribution = Array.from(view.main_js_minification_score_distribution(data));
-const mainJsApiSeverityDistribution = view.main_js_api_severity_distribution(data);
-const mainJsApiCategorySeverityDistribution = view.main_js_api_category_severity_distribution(data);
-const mainJsApiCapabilityDistribution = view.main_js_api_capability_distribution(data).filter(point => point.value >= 25);
-const es5Plugins = view.es_version_plugin_ids(data, 'ES5').map(id => {
-	const pluginData = view.get_by_id(data, id);
-
-	return {
-		id,
-		name: pluginData?.name() ?? id,
-	};
-});
-
 const avgReleaseSize = releaseSizeDistribution.length > 0 ? releaseSizeDistribution.reduce((acc, curr) => acc + curr, 0) / releaseSizeDistribution.length : 0;
 const medReleaseSize = releaseSizeDistribution.length > 0 ? releaseSizeDistribution[Math.floor(releaseSizeDistribution.length / 2)] : 0;
 
 function formatBytes(bytes: number): string {
-	if (bytes === 0) {
-		return '0 B';
-	}
+    if (bytes === 0) {
+        return '0 B';
+    }
 
-	const units = ['B', 'KB', 'MB', 'GB'];
-	const exponent = Math.min(Math.floor(Math.log(bytes) / Math.log(1024)), units.length - 1);
-	const value = bytes / 1024 ** exponent;
+    const units = ['B', 'KB', 'MB', 'GB'];
+    const exponent = Math.min(Math.floor(Math.log(bytes) / Math.log(1024)), units.length - 1);
+    const value = bytes / 1024 ** exponent;
 
-	return `${value.toFixed(value >= 100 ? 0 : value >= 10 ? 1 : 2)} ${units[exponent]}`;
+    return value.toFixed(value >= 100 ? 0 : value >= 10 ? 1 : 2) + ' ' + units[exponent];
 }
 ---
 
 <StarlightPage
-	frontmatter={{
-		title: 'main.js Analysis',
-		description: 'Static analysis of main.js files distributed in plugin releases.',
-	}}
-	headings={[
-		{ depth: 2, text: 'API Findings', slug: 'api-findings' },
-		{ depth: 2, text: 'Release Size Distribution', slug: 'release-size-distribution' },
-		{ depth: 2, text: 'ES Version', slug: 'es-version' },
-		{ depth: 2, text: 'Minification', slug: 'minification' },
-	]}
+    frontmatter={{
+        title: 'main.js Analysis',
+        description: 'Static analysis of main.js files distributed in plugin releases.',
+    }}
+    headings={[
+        { depth: 2, text: 'Glass Lint Findings', slug: 'glass-lint-findings' },
+        { depth: 2, text: 'ES Version', slug: 'es-version' },
+        { depth: 2, text: 'Minification', slug: 'minification' },
+        { depth: 2, text: 'Release Size Distribution', slug: 'release-size-distribution' },
+    ]}
 >
-	<p>
-		This page summarizes static analysis of <code>main.js</code> files acquired from the latest plugin releases. The checks do not execute plugin code, and static
-		analysis findings are heuristic and may contain false positives or negatives.
-	</p>
+    <p>
+        This page summarizes <a href="https://github.com/mProjectsCode/glass-lint">Glass Lint's</a>'s JavaScript and Obsidian catalogs applied to the latest plugin release <code>main.js</code> files. The analysis if fully
+        static and doesn't execute plugin code.
+    </p>
 
-	<h2 id="api-findings">API Findings</h2>
+    <h2 id="glass-lint-findings">Glass Lint Findings</h2>
 
-	<p>
-		The following charts summarize conservative static API findings detected in latest release <code>main.js</code> files. They only include high-confidence findings
-		to reduce false positives, so they may undercount actual API usage.
-	</p>
+    <p>Common rules detected in at least 25 plugins are shown below.</p>
 
-	<p>The following chart shows common individual capabilities. Capabilities detected in fewer than 25 plugins are omitted.</p>
+    <CapabilityDistributionChart dataPoints={mainJsFindingDistribution} client:idle />
 
-	<CapabilityDistributionChart dataPoints={mainJsApiCapabilityDistribution} client:idle />
+    <p>This chart counts each plugin once for it's highest severity <a href="https://github.com/mProjectsCode/glass-lint">Glass Lint</a> finding.</p>
 
-	<p>
-		Categories group related findings such as vault, network, editor, browser, filesystem, and Electron API access. A plugin is counted once per category and
-		severity.
-	</p>
+    <BarChart dataPoints={mainJsSeverityDistribution} xLabel="Severity" yLabel="Plugins" client:idle />
 
-	<SeverityDistributionChart dataPoints={mainJsApiCategorySeverityDistribution} client:idle />
+    <h2 id="es-version">ES Version</h2>
 
-	<p>
-		This chart shows the distribution of the highest severity level detected for any API usage in each plugin. Warnings indicate usage of potentially risky
-		APIs, but such APIs can be used safely if handled with care.
-	</p>
+    <p>
+        This chart shows the estimated minimum ECMAScript version required by the syntax found in each latest release <code>main.js</code>. The estimate comes from
+        <a href="https://github.com/mProjectsCode/glass-lint">Glass Lint's</a> syntax analyzer.
+    </p>
 
-	<BarChart dataPoints={mainJsApiSeverityDistribution} xLabel="Severity" yLabel="Plugins" client:idle />
+    <BarChart dataPoints={esVersionDistribution} xLabel="Target ES Version" yLabel="Plugins" client:idle />
 
-	<h2 id="release-size-distribution">Release Size Distribution</h2>
+    <details>
+        <summary>Plugins targeting ES5 ({es5Plugins.length})</summary>
+        <ul>
+            {
+                es5Plugins.map(plugin => (
+                    <li>
+                        <PluginLink id={plugin.id} label={plugin.name} />
+                    </li>
+                ))
+            }
+        </ul>
+    </details>
 
-	<p>
-		The following chart shows the distribution of latest release <code>main.js</code> sizes per plugin. The average scanned release has a size of {
-			formatBytes(avgReleaseSize)
-		}, while the median is {formatBytes(medReleaseSize)}.
-	</p>
+    <h2 id="minification">Minification</h2>
 
-	<ReleaseSizeDistributionChart dataPoints={releaseSizeDistribution} client:idle />
+    <p>
+        This chart shows whether the latest release <code>main.js</code> appears to be minified. Detection is heuristic and based on source formatting and symbol patterns.
+        It is <a href="https://docs.obsidian.md/plugins/guides/load-time">recommended</a> to minify release builds to reduce file size and improve load times.
+    </p>
 
-	<details>
-		<summary>Top 10 largest plugins</summary>
-		<ul>
-			{
-				topReleaseSizePlugins.map(plugin => (
-					<li>
-						<PluginLink id={plugin.id} label={plugin.name} /> ({formatBytes(plugin.sizeBytes)})
-					</li>
-				))
-			}
-		</ul>
-	</details>
+    <BarChart dataPoints={mainJsMinifiedDistribution} xLabel="Minification" yLabel="Plugins" client:idle />
 
-	<h2 id="es-version">ES Version</h2>
+    <p>
+        This chart shows the distribution of the minification score for the same heuristic, where <code>0</code> means least likely and <code>1</code> means most likely
+        to be minified.
+    </p>
 
-	<p>
-		The next chart shows the estimated minimum ECMAScript version required by plugin releases. Estimates are based on syntax found in each release's <code
-			>main.js</code
-		>.
-	</p>
+    <MinificationScoreDistributionChart dataPoints={mainJsMinificationScoreDistribution} client:idle />
 
-	<BarChart dataPoints={esVersionDistribution} xLabel="Target ES Version" yLabel="Plugins" client:idle />
+    <h2 id="release-size-distribution">Release Size Distribution</h2>
 
-	<details>
-		<summary>Plugins targeting ES5 ({es5Plugins.length})</summary>
-		<ul>
-			{
-				es5Plugins.map(plugin => (
-					<li>
-						<PluginLink id={plugin.id} label={plugin.name} />
-					</li>
-				))
-			}
-		</ul>
-	</details>
+    <p>
+        The following chart shows the distribution of latest release <code>main.js</code> sizes per plugin. The average scanned release has a size of {
+            formatBytes(avgReleaseSize)
+        }, while the median is {formatBytes(medReleaseSize)}.
+    </p>
 
-	<h2 id="minification">Minification</h2>
+    <ReleaseSizeDistributionChart dataPoints={releaseSizeDistribution} client:idle />
 
-	<p>
-		This chart shows whether the latest release <code>main.js</code> appears to be minified. Detection is heuristic and based on source formatting and symbol patterns.
-		It is <a href="https://docs.obsidian.md/plugins/guides/load-time">recommended</a> to minify release builds to reduce file size and improve load times.
-	</p>
-
-	<BarChart dataPoints={mainJsMinifiedDistribution} xLabel="Minification" yLabel="Plugins" client:idle />
-
-	<p>
-		This chart shows the distribution of the minification score for the same heuristic, where <code>0</code> means least likely and <code>1</code> means most likely
-		to be minified.
-	</p>
-
-	<MinificationScoreDistributionChart dataPoints={mainJsMinificationScoreDistribution} client:idle />
+    <details>
+        <summary>Top 10 largest plugins</summary>
+        <ul>
+            {
+                topReleaseSizePlugins.map(plugin => (
+                    <li>
+                        <PluginLink id={plugin.id} label={plugin.name} /> ({formatBytes(plugin.sizeBytes)})
+                    </li>
+                ))
+            }
+        </ul>
+    </details>
 </StarlightPage>

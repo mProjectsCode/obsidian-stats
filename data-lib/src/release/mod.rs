@@ -9,7 +9,9 @@ pub mod data_array;
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GithubAssetInfo {
     pub name: String,
+    #[serde(default, skip_serializing_if = "HashMap::is_empty")]
     pub downloads: HashMap<String, u32>,
+    #[serde(default, skip_serializing_if = "is_zero")]
     pub size: u32,
 }
 
@@ -18,7 +20,12 @@ pub struct GithubReleaseInfo {
     pub version: Version,
     pub date: Date,
     pub time: String,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub assets: Vec<GithubAssetInfo>,
+}
+
+fn is_zero(value: &u32) -> bool {
+    *value == 0
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]

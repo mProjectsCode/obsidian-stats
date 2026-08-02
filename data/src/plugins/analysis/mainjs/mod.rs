@@ -1,131 +1,387 @@
-use swc_common::{FileName, SourceMap, sync::Lrc};
-use swc_ecma_ast::{EsVersion as SwcEsVersion, Program};
-use swc_ecma_parser::{EsSyntax, Parser, StringInput, Syntax, lexer::Lexer};
+use std::{
+    collections::HashMap,
+    fs::File,
+    io::{BufReader, Read},
+    path::Path,
+    sync::{Arc, OnceLock},
+};
 
-use super::types::MainJsResult;
+use data_lib::plugin::{
+    MainJsDiagnostic, MainJsDisclosure, MainJsEvidence, MainJsFinding, MainJsLocation,
+};
+use glass_lint_core::{
+    EcmaVersion, Linter, MatchCertainty, analyze_ecma_version,
+    project::{Diagnostic, SourceFile},
+};
+use glass_lint_obsidian::obsidian_config;
 
-pub(super) mod api_classifier;
-mod check_base64;
-mod check_bundle;
-mod check_es;
 mod check_minified;
-mod check_sourcemap;
-mod check_strings;
-mod check_wasm;
-mod check_worker;
+mod disclosures;
 
+#[derive(Debug, Default, PartialEq)]
+pub(super) struct MainJsResult {
+    pub(super) estimated_target_es_version: Option<String>,
+    pub(super) findings: Vec<MainJsFinding>,
+    pub(super) disclosures: Vec<MainJsDisclosure>,
+    pub(super) diagnostics: Vec<MainJsDiagnostic>,
+    pub(super) is_probably_minified: Option<bool>,
+    pub(super) minification_score: Option<f32>,
+}
+
+fn linter() -> &'static Linter {
+    static LINTER: OnceLock<Linter> = OnceLock::new();
+    LINTER.get_or_init(|| {
+        // Glass Lint's pinned core has a fixed 8 MiB source limit. Its
+        // parser emits source_too_large through the normal report path, so
+        // the release pipeline intentionally does not add a second byte
+        // limit or parser here.
+        Linter::new(obsidian_config()).expect("pinned Glass Lint configuration is valid")
+    })
+}
+
+#[cfg_attr(not(test), allow(dead_code))]
 pub(super) fn analyze_main_js(source: &str) -> MainJsResult {
-    let mut result = MainJsResult::default();
+    analyze_main_js_source(Arc::<str>::from(source.to_owned()))
+}
 
-    let program = parse_program(source);
-    let bundle_shape = check_bundle::detect_bundle_shape(source, program.as_ref());
-    let string_signals = check_strings::detect_string_signals(source);
+pub(super) fn analyze_main_js_file(path: &Path) -> std::io::Result<MainJsResult> {
+    let file = File::open(path)?;
+    let mut bytes = Vec::with_capacity(glass_lint_core::MAX_SOURCE_BYTES + 1);
+    BufReader::new(file)
+        .take((glass_lint_core::MAX_SOURCE_BYTES + 1) as u64)
+        .read_to_end(&mut bytes)?;
 
-    result.parse_succeeded = Some(bundle_shape.parse_succeeded);
-    result.tolerant_parse_required = Some(bundle_shape.tolerant_parse_required);
-    result.estimated_target_es_version = program.as_ref().and_then(check_es::detect_es_version);
-    result.dynamic_import_usage_count = Some(bundle_shape.dynamic_import_count);
-    result.bundler_fingerprints = bundle_shape.bundler_fingerprints;
-    result.module_system_fingerprints = bundle_shape.module_system_fingerprints;
-    result.size_bucket = Some(bundle_shape.size_bucket);
-    result.line_count_bucket = Some(bundle_shape.line_count_bucket);
-    result.uses_optional_chaining = Some(bundle_shape.uses_optional_chaining);
-    result.uses_nullish_coalescing = Some(bundle_shape.uses_nullish_coalescing);
-    result.uses_private_fields = Some(bundle_shape.uses_private_fields);
-    result.uses_top_level_await = Some(bundle_shape.uses_top_level_await);
-    result.known_api_host_counts = string_signals.known_api_host_counts;
-    result.embedded_dependency_name_counts = string_signals.dependency_name_counts;
-    result.license_banner_count = Some(string_signals.license_banner_count);
-    result.credential_literal_count = Some(string_signals.credential_literal_count);
+    if bytes.len() > glass_lint_core::MAX_SOURCE_BYTES {
+        return Ok(size_limit_result());
+    }
 
-    let (is_probably_minified, minification_score) =
-        check_minified::detect_minified(source, program.as_ref());
-    result.is_probably_minified = Some(is_probably_minified);
-    result.minification_score = Some(minification_score);
-    let api_rules = api_classifier::obsidian_api_rules();
-    if !api_rules.is_empty() {
-        debug_assert!(api_classifier::validate_catalog(api_rules).is_ok());
-        result.api_usage =
-            api_classifier::classify_api_usage_with_source(source, program.as_ref(), api_rules);
+    let source = match String::from_utf8(bytes) {
+        Ok(source) => Arc::<str>::from(source),
+        Err(_) => return Ok(invalid_utf8_result()),
+    };
+
+    Ok(analyze_main_js_source(source))
+}
+
+fn analyze_main_js_source(source: Arc<str>) -> MainJsResult {
+    let (is_probably_minified, minification_score) = if source.len()
+        <= glass_lint_core::MAX_SOURCE_BYTES
+    {
+        let (is_probably_minified, minification_score) = check_minified::detect_minified(&source);
+        (Some(is_probably_minified), Some(minification_score))
+    } else {
+        (None, None)
+    };
+
+    let source_file = SourceFile::new("main.js", source.clone())
+        .expect("main.js is a valid relative source path");
+    let estimated_target_es_version = detect_ecma_version(&source_file);
+    let report = linter()
+        .lint_source(source_file)
+        .expect("single main.js source is a valid Glass Lint project");
+    let metadata = metadata();
+    let mut result = MainJsResult {
+        estimated_target_es_version,
+        diagnostics: report
+            .diagnostics()
+            .iter()
+            .map(diagnostic_to_model)
+            .collect(),
+        is_probably_minified,
+        minification_score,
+        ..MainJsResult::default()
+    };
+
+    let mut finding_indexes: HashMap<String, usize> = HashMap::new();
+    for file in report.files() {
+        result
+            .diagnostics
+            .extend(file.diagnostics().iter().map(diagnostic_to_model));
+
+        for finding in file.findings() {
+            let rule_id = finding.rule_id().as_str().to_owned();
+            let evidence = finding
+                .evidence()
+                .traces()
+                .iter()
+                .flat_map(|trace| {
+                    trace.steps().iter().map(|step| MainJsEvidence {
+                        message: step.message().to_owned(),
+                        count: 1,
+                    })
+                })
+                .collect::<Vec<_>>();
+            let finding_data = MainJsFinding {
+                description: metadata.get(&rule_id).cloned().unwrap_or_default(),
+                message: finding.message().to_owned(),
+                severity: finding.severity().as_str().to_owned(),
+                confidence: certainty_as_str(finding.certainty()).to_owned(),
+                evidence,
+                rule_id: rule_id.clone(),
+            };
+
+            let is_new = if let Some(index) = finding_indexes.get(&rule_id) {
+                let existing = &mut result.findings[*index];
+                existing.evidence = aggregate_evidence(
+                    existing
+                        .evidence
+                        .drain(..)
+                        .chain(finding_data.evidence)
+                        .collect::<Vec<_>>(),
+                );
+                false
+            } else {
+                let index = result.findings.len();
+                finding_indexes.insert(rule_id.clone(), index);
+                result.findings.push(finding_data);
+                true
+            };
+
+            if is_new {
+                for disclosure in disclosures::for_rule(&rule_id) {
+                    result.disclosures.push(MainJsDisclosure {
+                        id: (*disclosure).to_owned(),
+                        from_rule_id: rule_id.clone(),
+                    });
+                }
+            }
+        }
     }
 
     result
 }
 
-pub(super) fn parse_program(source: &str) -> Option<Program> {
-    let cm = Lrc::new(SourceMap::default());
-    let fm = cm.new_source_file(
-        FileName::Custom("main.js".into()).into(),
-        source.to_string(),
-    );
+fn metadata() -> &'static HashMap<String, String> {
+    static METADATA: OnceLock<HashMap<String, String>> = OnceLock::new();
+    METADATA.get_or_init(|| {
+        linter()
+            .catalog()
+            .metadata()
+            .into_iter()
+            .map(|rule| (rule.id.as_str().to_owned(), rule.description))
+            .collect()
+    })
+}
 
-    let mut parser = Parser::new_from(Lexer::new(
-        Syntax::Es(EsSyntax {
-            jsx: true,
-            fn_bind: true,
-            decorators: true,
-            decorators_before_export: true,
-            export_default_from: true,
-            import_attributes: true,
-            allow_super_outside_method: true,
-            allow_return_outside_function: true,
-            auto_accessors: true,
-            explicit_resource_management: true,
+fn aggregate_evidence(items: Vec<MainJsEvidence>) -> Vec<MainJsEvidence> {
+    let mut indexes: HashMap<String, usize> = HashMap::new();
+    let mut result: Vec<MainJsEvidence> = Vec::new();
+    for item in items {
+        if let Some(index) = indexes.get(&item.message) {
+            result[*index].count = result[*index].count.saturating_add(item.count);
+        } else {
+            indexes.insert(item.message.clone(), result.len());
+            result.push(item);
+        }
+    }
+    result
+}
+
+fn size_limit_result() -> MainJsResult {
+    diagnostic_result(
+        "source_too_large",
+        format!(
+            "source exceeds the {} byte analysis limit",
+            glass_lint_core::MAX_SOURCE_BYTES
+        ),
+    )
+}
+
+fn invalid_utf8_result() -> MainJsResult {
+    diagnostic_result("invalid_utf8", "main.js is not valid UTF-8".to_string())
+}
+
+fn diagnostic_result(code: &str, message: String) -> MainJsResult {
+    MainJsResult {
+        diagnostics: vec![MainJsDiagnostic {
+            code: code.to_string(),
+            message,
+            location: None,
+        }],
+        ..MainJsResult::default()
+    }
+}
+
+fn detect_ecma_version(source: &SourceFile) -> Option<String> {
+    analyze_ecma_version(source)
+        .ok()
+        .and_then(|report| report.minimum_version())
+        .map(|version: EcmaVersion| version.to_string())
+}
+
+fn certainty_as_str(certainty: MatchCertainty) -> &'static str {
+    match certainty {
+        MatchCertainty::Definite => "definite",
+        MatchCertainty::Possible => "possible",
+    }
+}
+
+fn diagnostic_to_model(diagnostic: &Diagnostic) -> MainJsDiagnostic {
+    MainJsDiagnostic {
+        code: diagnostic.code().to_owned(),
+        message: diagnostic.message().to_owned(),
+        location: diagnostic.range().map(|range| MainJsLocation {
+            start_line: range.start().line(),
+            start_column: range.start().column(),
+            end_line: range.end().line(),
+            end_column: range.end().column(),
         }),
-        SwcEsVersion::EsNext,
-        StringInput::from(&*fm),
-        None,
-    ));
-
-    parser.parse_program().ok()
+    }
 }
 
 #[cfg(test)]
 mod tests {
-    use super::analyze_main_js;
+    use super::{analyze_main_js, analyze_main_js_file, disclosures, linter};
+    use tempfile::NamedTempFile;
 
-    #[test]
-    fn detects_network_api_usage() {
-        let result = analyze_main_js(
-            r#"
-            async function load() {
-                await fetch("https://example.com");
-            }
-            "#,
-        );
-
-        assert!(result.api_usage.has_capability("network.browser"));
-        assert!(result.api_usage.has_disclosure("disclosure.network_access"));
+    fn temporary_file(contents: &[u8]) -> NamedTempFile {
+        let mut file = NamedTempFile::new().unwrap();
+        std::io::Write::write_all(&mut file, contents).unwrap();
+        file
     }
 
     #[test]
-    fn emits_bundle_signals_as_api_findings() {
-        let base64 = "A".repeat(1024);
-        let source = format!(
-            r#"
-            new Worker("worker.js");
-            WebAssembly.compile(bytes);
-            const blob = "{base64}";
-            //# sourceMappingURL=main.js.map
-            "#
-        );
-        let result = analyze_main_js(&source);
+    fn reports_js_and_obsidian_findings_with_glass_metadata() {
+        let result =
+            analyze_main_js("fetch('/data'); app.vault.getAbstractFileByPath('notes.md');");
 
-        for capability in [
-            "bundle.source_map_comment",
-            "bundle.embedded_base64_blob",
-            "browser.worker",
-            "browser.webassembly",
-        ] {
-            assert!(result.api_usage.has_capability(capability));
+        assert!(result.findings.iter().any(|finding| {
+            finding.rule_id.starts_with("browser:")
+                && !finding.description.is_empty()
+                && !finding.evidence.is_empty()
+        }));
+        assert!(
+            result
+                .findings
+                .iter()
+                .any(|finding| finding.rule_id.starts_with("obsidian:"))
+        );
+    }
+
+    #[test]
+    fn detects_ecma_version_with_glass_lint_core() {
+        let result = analyze_main_js("async function run() { await work(); }");
+
+        assert_eq!(
+            result.estimated_target_es_version.as_deref(),
+            Some("ES2017")
+        );
+    }
+
+    #[test]
+    fn preserves_parse_diagnostics_and_partial_findings() {
+        let result = analyze_main_js("app.vault.getAbstractFileByPath('notes.md'); }");
+
+        assert!(
+            result
+                .diagnostics
+                .iter()
+                .any(|diagnostic| diagnostic.code == "syntax_error")
+        );
+    }
+
+    #[test]
+    fn empty_and_minified_sources_are_stable() {
+        let empty = analyze_main_js("");
+        let minified = analyze_main_js("fetch('x');app.vault.getAbstractFileByPath('y');");
+
+        assert!(empty.findings.is_empty());
+        assert_eq!(
+            minified,
+            analyze_main_js("fetch('x');app.vault.getAbstractFileByPath('y');")
+        );
+    }
+
+    #[test]
+    fn evidence_is_counted_once_per_message() {
+        let result = analyze_main_js("fetch('one'); fetch('two');");
+        for finding in result.findings {
+            let mut messages = finding
+                .evidence
+                .iter()
+                .map(|evidence| evidence.message.as_str())
+                .collect::<Vec<_>>();
+            messages.sort_unstable();
+            messages.dedup();
+            assert_eq!(messages.len(), finding.evidence.len());
+            assert!(finding.evidence.iter().all(|evidence| evidence.count > 0));
         }
-        for disclosure in [
-            "disclosure.source_map_comment",
-            "disclosure.embedded_base64_blob",
-            "disclosure.worker_usage",
-            "disclosure.webassembly_usage",
-        ] {
-            assert!(result.api_usage.has_disclosure(disclosure));
-        }
+    }
+
+    #[test]
+    fn reports_the_pinned_parser_size_diagnostic() {
+        let result = analyze_main_js(&"x".repeat(glass_lint_core::MAX_SOURCE_BYTES + 1));
+
+        assert!(
+            result
+                .diagnostics
+                .iter()
+                .any(|diagnostic| diagnostic.code == "source_too_large")
+        );
+    }
+
+    #[test]
+    fn file_reader_reports_invalid_utf8() {
+        let file = temporary_file(&[b'v', b'a', 0xff]);
+        let result = analyze_main_js_file(file.path()).unwrap();
+        assert_eq!(result.diagnostics[0].code, "invalid_utf8");
+    }
+
+    #[test]
+    fn oversized_file_takes_precedence_over_invalid_utf8() {
+        let mut contents = vec![b'x'; glass_lint_core::MAX_SOURCE_BYTES + 1];
+        contents[glass_lint_core::MAX_SOURCE_BYTES] = 0xff;
+        let file = temporary_file(&contents);
+        let result = analyze_main_js_file(file.path()).unwrap();
+        assert_eq!(result.diagnostics[0].code, "source_too_large");
+    }
+
+    #[test]
+    fn persists_multiple_disclosures_without_filtering_findings() {
+        let mapped = analyze_main_js("app.vault.adapter.read('notes.md');");
+        assert!(
+            mapped
+                .findings
+                .iter()
+                .any(|finding| finding.rule_id == "obsidian:vault.adapter")
+        );
+        assert_eq!(
+            mapped
+                .disclosures
+                .iter()
+                .filter(|disclosure| disclosure.from_rule_id == "obsidian:vault.adapter")
+                .map(|disclosure| disclosure.id.as_str())
+                .collect::<Vec<_>>(),
+            vec!["disclosure.vault_read", "disclosure.vault_write"]
+        );
+
+        let unmapped = analyze_main_js("app.vault.getAbstractFileByPath('notes.md');");
+        assert!(
+            unmapped
+                .findings
+                .iter()
+                .any(|finding| finding.rule_id == "obsidian:vault.enumerate")
+        );
+        assert!(unmapped.disclosures.iter().any(|disclosure| {
+            disclosure.id == "disclosure.full_vault_access"
+                && disclosure.from_rule_id == "obsidian:vault.enumerate"
+        }));
+    }
+
+    #[test]
+    fn every_glass_lint_rule_has_a_disclosure_mapping() {
+        let missing = linter()
+            .catalog()
+            .rule_ids()
+            .iter()
+            .filter(|rule_id| disclosures::for_rule(rule_id.as_str()).is_empty())
+            .map(|rule_id| rule_id.as_str())
+            .collect::<Vec<_>>();
+
+        assert!(
+            missing.is_empty(),
+            "Glass Lint rules without disclosures: {}",
+            missing.join(", ")
+        );
     }
 }

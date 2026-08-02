@@ -6,7 +6,7 @@ use crate::{
         DEFAULT_RELEASE_STATS_REFRESH_DAYS, RELEASE_CHANGELOG_PATH,
         RELEASE_GITHUB_INTERPOLATED_PATH, RELEASE_GITHUB_RAW_PATH, RELEASE_STATS_STATE_PATH,
     },
-    file_utils::{read_chunked_data_or_default, write_in_chunks_atomic},
+    file_utils::{DATA_CHUNK_SIZE, read_chunked_data_or_default, write_in_chunks_atomic},
     github::RateLimitMode,
     state::{is_fresh, now_unix_seconds, read_json_or_default, write_json_atomic},
 };
@@ -100,11 +100,15 @@ pub fn build_release_stats(force: bool) -> Result<(), Box<dyn std::error::Error>
 
     let interpolated_github_info = interpolate_github_release_info(&raw_github_info);
 
-    write_in_chunks_atomic(Path::new(RELEASE_GITHUB_RAW_PATH), &raw_github_info, 50)?;
+    write_in_chunks_atomic(
+        Path::new(RELEASE_GITHUB_RAW_PATH),
+        &raw_github_info,
+        DATA_CHUNK_SIZE,
+    )?;
     write_in_chunks_atomic(
         Path::new(RELEASE_GITHUB_INTERPOLATED_PATH),
         &interpolated_github_info,
-        50,
+        DATA_CHUNK_SIZE,
     )?;
 
     println!("Github release data: {:#?}", time2.elapsed());
@@ -114,7 +118,11 @@ pub fn build_release_stats(force: bool) -> Result<(), Box<dyn std::error::Error>
         alerts::record_unexpected_error("release changelog fetch", error.to_string());
     })?;
 
-    write_in_chunks_atomic(Path::new(RELEASE_CHANGELOG_PATH), &release_changelog, 50)?;
+    write_in_chunks_atomic(
+        Path::new(RELEASE_CHANGELOG_PATH),
+        &release_changelog,
+        DATA_CHUNK_SIZE,
+    )?;
 
     println!("Changelog data: {:#?}", time2.elapsed());
 

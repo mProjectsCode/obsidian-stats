@@ -7,7 +7,7 @@ use crate::{
     },
     date::Date,
     plugin::{
-        FundingUrl, LicenseInfo, MainJsApiCapability, MainJsApiDisclosure, PluginData,
+        FundingUrl, LicenseInfo, MainJsDiagnostic, MainJsDisclosure, MainJsFinding, PluginData,
         PluginExtraData, PluginRepoData,
         warnings::{PluginWarning, get_plugin_warnings},
     },
@@ -354,12 +354,16 @@ impl FullPluginData {
         self.repo_data().and_then(|r| r.main_js_minification_score)
     }
 
-    pub fn main_js_api_capabilities(&self) -> Option<Vec<MainJsApiCapability>> {
-        self.repo_data().map(|r| r.main_js_api_capabilities.clone())
+    pub fn main_js_findings(&self) -> Option<Vec<MainJsFinding>> {
+        self.repo_data().map(|r| r.main_js_findings.clone())
     }
 
-    pub fn main_js_api_disclosures(&self) -> Option<Vec<MainJsApiDisclosure>> {
-        self.repo_data().map(|r| r.main_js_api_disclosures.clone())
+    pub fn main_js_disclosures(&self) -> Option<Vec<MainJsDisclosure>> {
+        self.repo_data().map(|r| r.main_js_disclosures.clone())
+    }
+
+    pub fn main_js_diagnostics(&self) -> Option<Vec<MainJsDiagnostic>> {
+        self.repo_data().map(|r| r.main_js_diagnostics.clone())
     }
 
     pub fn latest_release_tag(&self) -> Option<String> {

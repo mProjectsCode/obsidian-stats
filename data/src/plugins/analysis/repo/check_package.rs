@@ -8,7 +8,7 @@ use data_lib::{
     },
 };
 
-use super::safe_repo_file_path;
+use super::{check_files::RepoFileSummary, safe_repo_file_path};
 
 pub(super) struct PackageResult {
     pub(super) package_managers: Vec<PackageManager>,
@@ -21,9 +21,9 @@ pub(super) struct PackageResult {
 }
 
 impl PackageResult {
-    pub(super) fn empty(files: &[String]) -> Self {
+    pub(super) fn empty(summary: &RepoFileSummary) -> Self {
         Self {
-            package_managers: PackageManager::find_package_managers(files),
+            package_managers: summary.package_managers.clone(),
             dependencies: Vec::new(),
             dev_dependencies: Vec::new(),
             testing_frameworks: Vec::new(),
@@ -37,10 +37,10 @@ impl PackageResult {
 pub(super) fn run(
     repo_path: &str,
     plugin_id: &str,
-    files: &[String],
+    summary: &RepoFileSummary,
 ) -> Result<PackageResult, PluginRepoAnalysisDetailError> {
-    if !files.iter().any(|file| file == "package.json") {
-        return Ok(PackageResult::empty(files));
+    if !summary.has_package_json {
+        return Ok(PackageResult::empty(summary));
     }
 
     let package_json = read_package_json(repo_path, plugin_id)?;
@@ -58,7 +58,7 @@ pub(super) fn run(
         .map(|s| s.to_string());
 
     Ok(PackageResult {
-        package_managers: PackageManager::find_package_managers(files),
+        package_managers: summary.package_managers.clone(),
         testing_frameworks: TestingFramework::find_testing_frameworks(&all_dependencies),
         bundlers: Bundler::find_bundlers(&all_dependencies),
         has_i18n_dependencies: all_dependencies

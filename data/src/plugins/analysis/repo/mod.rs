@@ -54,21 +54,22 @@ pub(super) fn analyze_repo(
             None
         }
     };
-    let package_data = match check_package::run(&repo_path, &plugin.id, &file_data.files) {
+    let package_data = match check_package::run(&repo_path, &plugin.id, &file_data) {
         Ok(package_data) => package_data,
         Err(error) => {
             analysis_errors.push(error.code());
-            check_package::PackageResult::empty(&file_data.files)
+            check_package::PackageResult::empty(&file_data)
         }
     };
 
     let (package_json_license, file_license) = check_license::run(
         &plugin.id,
         &repo_path,
-        &file_data.files,
+        &file_data,
         package_data.package_json_license.as_deref(),
         license_comparer,
     );
+    let has_i18n_files = check_i18n::has_i18n_files(&file_data);
 
     Ok(RepoResult {
         uses_typescript: file_data.uses_typescript,
@@ -86,7 +87,7 @@ pub(super) fn analyze_repo(
         manifest,
         lines_of_code: file_data.lines_of_code,
         has_i18n_dependencies: package_data.has_i18n_dependencies,
-        has_i18n_files: check_i18n::has_i18n_files(&file_data.files),
+        has_i18n_files,
         analysis_errors,
     })
 }

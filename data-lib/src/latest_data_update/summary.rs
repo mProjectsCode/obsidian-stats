@@ -23,6 +23,143 @@ pub struct BuildLatestDataUpdateSummaryInputs<'a> {
     pub release_stats_state: &'a ReleaseStatsStateInput,
 }
 
+#[derive(Default)]
+pub struct PluginSummaryAccumulator {
+    total: usize,
+    active: usize,
+    removed: usize,
+    total_downloads: u64,
+    version_snapshots: usize,
+    latest_download_snapshot_date: Option<String>,
+    active_ids: HashSet<String>,
+    removed_ids: HashSet<String>,
+}
+
+impl PluginSummaryAccumulator {
+    pub fn add(&mut self, plugin: &PluginData) {
+        self.total += 1;
+        self.total_downloads += plugin.download_count as u64;
+        self.version_snapshots += plugin
+            .version_history
+            .iter()
+            .filter(|version| version.released_while_listed)
+            .count();
+
+        let is_removed = plugin.removed_commit.is_some();
+        let target = if is_removed {
+            &mut self.removed_ids
+        } else {
+            &mut self.active_ids
+        };
+        if target.insert(plugin.id.clone()) {
+            if is_removed {
+                self.removed += 1;
+            } else {
+                self.active += 1;
+            }
+        }
+
+        if let Some(date) = plugin.download_history.0.keys().max()
+            && self
+                .latest_download_snapshot_date
+                .as_ref()
+                .is_none_or(|current| date > current)
+        {
+            self.latest_download_snapshot_date = Some(date.clone());
+        }
+    }
+
+    pub fn finish(&self) -> PluginSummary {
+        PluginSummary {
+            total: self.total,
+            active: self.active,
+            removed: self.removed,
+            total_downloads: self.total_downloads,
+            version_snapshots: self.version_snapshots,
+        }
+    }
+
+    pub fn latest_download_snapshot_date(&self) -> Option<String> {
+        self.latest_download_snapshot_date.clone()
+    }
+
+    pub fn is_active(&self, id: &str) -> bool {
+        self.active_ids.contains(id)
+    }
+
+    pub fn is_removed(&self, id: &str) -> bool {
+        self.removed_ids.contains(id)
+    }
+
+    pub fn active_count(&self) -> usize {
+        self.active
+    }
+}
+
+#[derive(Default)]
+pub struct RepoAnalysisSummaryAccumulator {
+    tracked: usize,
+    active_success: usize,
+    active_failures: usize,
+    removed_skipped: usize,
+    failure_samples: Vec<String>,
+    error_counts: HashMap<PluginRepoAnalysisError, usize>,
+}
+
+impl RepoAnalysisSummaryAccumulator {
+    pub fn add(&mut self, entry: &PluginExtraData, is_active: bool, is_removed: bool) {
+        self.tracked += 1;
+        match (&entry.repo, is_active, is_removed) {
+            (Ok(_), true, _) => self.active_success += 1,
+            (Err(_), true, _) => {
+                self.active_failures += 1;
+                if self.failure_samples.len() < 5 {
+                    self.failure_samples.push(entry.id.clone());
+                }
+            }
+            (Err(_), false, true) => self.removed_skipped += 1,
+            _ => {}
+        }
+
+        if !is_active {
+            return;
+        }
+        match &entry.repo {
+            Ok(repo_data) => {
+                for error in &repo_data.analysis_errors {
+                    *self.error_counts.entry(*error).or_insert(0) += 1;
+                }
+            }
+            Err(error) => {
+                let code = PluginRepoAnalysisError::from_raw(error);
+                *self.error_counts.entry(code).or_insert(0) += 1;
+            }
+        }
+    }
+
+    pub fn finish(self, active_plugin_count: usize) -> RepoAnalysisSummary {
+        let mut error_counts = self
+            .error_counts
+            .into_iter()
+            .map(|(label, count)| CountShare {
+                label: label.as_label().to_string(),
+                count,
+                share: clamp_rate(count, active_plugin_count),
+            })
+            .collect::<Vec<_>>();
+        sort_count_shares(&mut error_counts);
+        RepoAnalysisSummary {
+            tracked: self.tracked,
+            active_success: self.active_success,
+            active_failures: self.active_failures,
+            removed_skipped: self.removed_skipped,
+            coverage_rate: clamp_rate(self.active_success, active_plugin_count),
+            failure_samples: self.failure_samples,
+            error_counts,
+        }
+    }
+}
+
 pub fn build_latest_data_update_summary(
     inputs: BuildLatestDataUpdateSummaryInputs<'_>,
 ) -> LatestDataUpdateSummary {
@@ -38,8 +175,44 @@ pub fn build_latest_data_update_summary(
         release_stats_state,
     } = inputs;
 
-    let active_plugin_ids = plugin_ids_by_removed_state(plugins, false);
-    let removed_plugin_ids = plugin_ids_by_removed_state(plugins, true);
+    let mut plugin_accumulator = PluginSummaryAccumulator::default();
+    for plugin in plugins {
+        plugin_accumulator.add(plugin);
+    }
+    let mut repo_accumulator = RepoAnalysisSummaryAccumulator::default();
+    for entry in repo_analysis_entries {
+        repo_accumulator.add(
+            entry,
+            plugin_accumulator.is_active(&entry.id),
+            plugin_accumulator.is_removed(&entry.id),
+        );
+    }
+    build_latest_data_update_summary_from_parts(
+        plugin_accumulator.finish(),
+        plugin_accumulator.latest_download_snapshot_date(),
+        themes,
+        repo_accumulator.finish(plugin_accumulator.active),
+        changelog_releases,
+        github_releases,
+        interpolated_releases,
+        clone_entries,
+        release_entries,
+        release_stats_state,
+    )
+}
+
+pub fn build_latest_data_update_summary_from_parts(
+    plugin_summary: PluginSummary,
+    latest_plugin_download_snapshot_date: Option<String>,
+    themes: &[ThemeData],
+    repo_analysis_summary: RepoAnalysisSummary,
+    changelog_releases: &[ObsidianReleaseInfo],
+    github_releases: &[GithubReleaseInfo],
+    interpolated_releases: &[GithubReleaseInfo],
+    clone_entries: &HashMap<String, PluginPageCloneFreshness>,
+    release_entries: &[PluginReleaseStateEntryInput],
+    release_stats_state: &ReleaseStatsStateInput,
+) -> LatestDataUpdateSummary {
     let latest_obsidian_release = github_releases.iter().max_by(|left, right| {
         left.date
             .to_fancy_string()
@@ -48,11 +221,6 @@ pub fn build_latest_data_update_summary(
 
     let clone_summary = build_clone_summary(clone_entries);
     let release_acquisition_summary = build_release_acquisition_summary(release_entries);
-    let repo_analysis_summary = build_repo_analysis_summary(
-        repo_analysis_entries,
-        &active_plugin_ids,
-        &removed_plugin_ids,
-    );
     let release_run_at_unix = release_entries
         .iter()
         .map(|entry| entry.last_checked_unix)
@@ -75,58 +243,17 @@ pub fn build_latest_data_update_summary(
         clone_run_at_unix,
         release_run_at_unix,
         obsidian_release_fetch_at_unix: release_stats_state.last_fetch_unix,
-        latest_plugin_download_snapshot_date: latest_plugin_download_snapshot_date(plugins),
+        latest_plugin_download_snapshot_date,
         latest_obsidian_release_date: latest_obsidian_release
             .map(|release| release.date.to_fancy_string()),
         latest_obsidian_version: latest_obsidian_release
             .map(|release| release.version.to_fancy_string()),
-        plugins: build_plugin_summary(plugins, &active_plugin_ids, &removed_plugin_ids),
+        plugins: plugin_summary,
         themes: build_theme_summary(themes),
         releases: build_release_summary(changelog_releases, github_releases, interpolated_releases),
         clone: clone_summary,
         release_acquisition: release_acquisition_summary,
         repo_analysis: repo_analysis_summary,
-    }
-}
-
-fn plugin_ids_by_removed_state(plugins: &[PluginData], removed: bool) -> HashSet<String> {
-    plugins
-        .iter()
-        .filter(|plugin| plugin.removed_commit.is_some() == removed)
-        .map(|plugin| plugin.id.clone())
-        .collect()
-}
-
-fn latest_plugin_download_snapshot_date(plugins: &[PluginData]) -> Option<String> {
-    plugins
-        .iter()
-        .flat_map(|plugin| plugin.download_history.0.keys().cloned())
-        .max()
-}
-
-fn build_plugin_summary(
-    plugins: &[PluginData],
-    active_plugin_ids: &HashSet<String>,
-    removed_plugin_ids: &HashSet<String>,
-) -> PluginSummary {
-    PluginSummary {
-        total: plugins.len(),
-        active: active_plugin_ids.len(),
-        removed: removed_plugin_ids.len(),
-        total_downloads: plugins
-            .iter()
-            .map(|plugin| plugin.download_count as u64)
-            .sum(),
-        version_snapshots: plugins
-            .iter()
-            .map(|plugin| {
-                plugin
-                    .version_history
-                    .iter()
-                    .filter(|version| version.released_while_listed)
-                    .count()
-            })
-            .sum(),
     }
 }
 
@@ -276,84 +403,6 @@ fn release_status_counts(
     counts
 }
 
-fn build_repo_analysis_summary(
-    repo_analysis_entries: &[PluginExtraData],
-    active_plugin_ids: &HashSet<String>,
-    removed_plugin_ids: &HashSet<String>,
-) -> RepoAnalysisSummary {
-    let repo_ok_entries = repo_analysis_entries
-        .iter()
-        .filter_map(|entry| {
-            if let Ok(data) = &entry.repo {
-                Some((entry.id.clone(), data.clone()))
-            } else {
-                None
-            }
-        })
-        .collect::<Vec<_>>();
-    let active_repo_success_entries = repo_ok_entries
-        .iter()
-        .filter(|(id, _)| active_plugin_ids.contains(id))
-        .collect::<Vec<_>>();
-    let active_repo_failure_entries = repo_analysis_entries
-        .iter()
-        .filter(|entry| active_plugin_ids.contains(&entry.id) && entry.repo.is_err())
-        .collect::<Vec<_>>();
-    let removed_repo_skipped_entries = repo_analysis_entries
-        .iter()
-        .filter(|entry| removed_plugin_ids.contains(&entry.id) && entry.repo.is_err())
-        .collect::<Vec<_>>();
-
-    RepoAnalysisSummary {
-        tracked: repo_analysis_entries.len(),
-        active_success: active_repo_success_entries.len(),
-        active_failures: active_repo_failure_entries.len(),
-        removed_skipped: removed_repo_skipped_entries.len(),
-        coverage_rate: clamp_rate(active_repo_success_entries.len(), active_plugin_ids.len()),
-        failure_samples: active_repo_failure_entries
-            .iter()
-            .map(|entry| entry.id.clone())
-            .take(5)
-            .collect(),
-        error_counts: repo_analysis_error_shares(repo_analysis_entries, active_plugin_ids),
-    }
-}
-
-fn repo_analysis_error_shares(
-    repo_analysis_entries: &[PluginExtraData],
-    active_plugin_ids: &HashSet<String>,
-) -> Vec<CountShare> {
-    let mut repo_analysis_error_counts: HashMap<PluginRepoAnalysisError, usize> = HashMap::new();
-    for entry in repo_analysis_entries {
-        if !active_plugin_ids.contains(&entry.id) {
-            continue;
-        }
-
-        match &entry.repo {
-            Ok(repo_data) => {
-                for error in &repo_data.analysis_errors {
-                    *repo_analysis_error_counts.entry(*error).or_insert(0) += 1;
-                }
-            }
-            Err(error) => {
-                let code = PluginRepoAnalysisError::from_raw(error);
-                *repo_analysis_error_counts.entry(code).or_insert(0) += 1;
-            }
-        }
-    }
-
-    let mut shares = repo_analysis_error_counts
-        .iter()
-        .map(|(label, count)| CountShare {
-            label: label.as_label().to_string(),
-            count: *count,
-            share: clamp_rate(*count, active_plugin_ids.len()),
-        })
-        .collect::<Vec<_>>();
-    sort_count_shares(&mut shares);
-    shares
-}
-
 fn status_counts(labels: impl Iterator<Item = String>, total: usize) -> Vec<CountShare> {
     let mut counts = HashMap::new();
     for label in labels {
@@ -456,10 +505,6 @@ mod tests {
         assert_eq!(
             PluginRepoAnalysisError::from_raw("repository_scan_error"),
             PluginRepoAnalysisError::RepositoryScan
-        );
-        assert_eq!(
-            PluginRepoAnalysisError::from_raw("main_js_analysis_too_large"),
-            PluginRepoAnalysisError::MainJsAnalysisTooLarge
         );
     }
 

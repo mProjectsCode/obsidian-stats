@@ -23,7 +23,9 @@ quick-xml = { version = "0.40.0" , features = ["serialize"] }
 reqwest = { version = "0.13.1", features = ["json", "blocking"] }
 tokei = "14.0.0"
 dotenvy = "0.15.7"
-swc_common = "23.0.0"
-swc_ecma_ast = "25.0.0"
-swc_ecma_parser = "41.0.0"
-swc_ecma_visit = "25.0.0"
+glass-lint-core = { git = "https://github.com/mProjectsCode/glass-lint.git", rev = "4d1b832843ee20a3dbb7e9b882151da7d5238ae1", package = "glass-lint-core" }
+glass-lint-js = { git = "https://github.com/mProjectsCode/glass-lint.git", rev = "4d1b832843ee20a3dbb7e9b882151da7d5238ae1", package = "glass-lint-js" }
+glass-lint-obsidian = { git = "https://github.com/mProjectsCode/glass-lint.git", rev = "4d1b832843ee20a3dbb7e9b882151da7d5238ae1", package = "glass-lint-obsidian" }
+
+[dev-dependencies]
+tempfile = "3.27.0"

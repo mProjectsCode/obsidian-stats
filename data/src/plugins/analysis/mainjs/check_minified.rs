@@ -1,7 +1,6 @@
-use swc_ecma_ast::{Ident, Program};
-use swc_ecma_visit::{Visit, VisitWith};
+use std::borrow::Cow;
 
-pub(super) fn detect_minified(source: &str, program: Option<&Program>) -> (bool, f32) {
+pub(super) fn detect_minified(source: &str) -> (bool, f32) {
     let normalized_source = strip_sourcemap_comments(source);
 
     let line_count = normalized_source.lines().count().max(1) as f32;
@@ -54,36 +53,31 @@ pub(super) fn detect_minified(source: &str, program: Option<&Program>) -> (bool,
         score -= 0.05;
     }
 
-    if let Some(program) = program {
-        let mut visitor = IdentStats::default();
-        program.visit_with(&mut visitor);
-        if visitor.total > 0 {
-            let short_ratio = visitor.short as f32 / visitor.total as f32;
-            if short_ratio > 0.55 {
-                score += 0.20;
-            } else if short_ratio > 0.40 {
-                score += 0.10;
-            }
-        }
-    }
-
     let score = score.clamp(0.0, 1.0);
     (score >= 0.5, score)
 }
 
-fn strip_sourcemap_comments(source: &str) -> String {
-    source
-        .lines()
-        .filter(|line| {
-            let trimmed = line.trim();
+fn strip_sourcemap_comments(source: &str) -> Cow<'_, str> {
+    fn is_sourcemap_line(line: &str) -> bool {
+        let trimmed = line.trim();
 
-            !trimmed.starts_with("//# sourceMappingURL=")
-                && !trimmed.starts_with("//@ sourceMappingURL=")
-                && !trimmed.starts_with("/*# sourceMappingURL=")
-                && !trimmed.starts_with("/*@ sourceMappingURL=")
-        })
-        .collect::<Vec<_>>()
-        .join("\n")
+        trimmed.starts_with("//# sourceMappingURL=")
+            || trimmed.starts_with("//@ sourceMappingURL=")
+            || trimmed.starts_with("/*# sourceMappingURL=")
+            || trimmed.starts_with("/*@ sourceMappingURL=")
+    }
+
+    if !source.lines().any(is_sourcemap_line) {
+        return Cow::Borrowed(source);
+    }
+
+    Cow::Owned(
+        source
+            .lines()
+            .filter(|line| !is_sourcemap_line(line))
+            .collect::<Vec<_>>()
+            .join("\n"),
+    )
 }
 
 fn estimate_comment_ratio(source: &str) -> f32 {
@@ -127,21 +121,6 @@ fn estimate_comment_ratio(source: &str) -> f32 {
     comment_lines as f32 / total_lines
 }
 
-#[derive(Default)]
-struct IdentStats {
-    total: usize,
-    short: usize,
-}
-
-impl Visit for IdentStats {
-    fn visit_ident(&mut self, ident: &Ident) {
-        self.total += 1;
-        if ident.sym.len() <= 2 {
-            self.short += 1;
-        }
-    }
-}
-
 #[cfg(test)]
 mod tests {
     use super::{detect_minified, strip_sourcemap_comments};
@@ -160,8 +139,8 @@ mod tests {
         let base = "const veryLongIdentifierName=1;const anotherVeryLongIdentifierName=2;";
         let with_map = format!("{base}\n//# sourceMappingURL=main.js.map");
 
-        let (_, base_score) = detect_minified(base, None);
-        let (_, with_map_score) = detect_minified(&with_map, None);
+        let (_, base_score) = detect_minified(base);
+        let (_, with_map_score) = detect_minified(&with_map);
 
         assert_eq!(base_score, with_map_score);
     }
@@ -171,9 +150,23 @@ mod tests {
         let mostly_code = "const a=1;const b=2;const c=a+b;";
         let with_comments = "// comment\n// comment\n// comment\nconst a=1;const b=2;const c=a+b;";
 
-        let (_, score_without_comments) = detect_minified(mostly_code, None);
-        let (_, score_with_comments) = detect_minified(with_comments, None);
+        let (_, score_without_comments) = detect_minified(mostly_code);
+        let (_, score_with_comments) = detect_minified(with_comments);
 
         assert!(score_with_comments < score_without_comments);
+    }
+
+    #[test]
+    fn distinguishes_formatted_and_compact_sources() {
+        let formatted = r#"
+            function loadData() {
+                const response = await fetch("https://example.com/data");
+                return response.json();
+            }
+        "#;
+        let minified = "function a(){return fetch('https://example.com/data').then(b=>b.json())}";
+
+        assert!(!detect_minified(formatted).0);
+        assert!(detect_minified(minified).0);
     }
 }

@@ -2,11 +2,10 @@ use std::{collections::HashMap, path::Path};
 
 use data_lib::{
     latest_data_update::{
-        BuildLatestDataUpdateSummaryInputs, PluginPageCloneFreshness, PluginReleaseStateEntryInput,
-        ReleaseStatsStateInput,
-        build_latest_data_update_summary as build_latest_data_update_summary_from_inputs,
+        PluginPageCloneFreshness, PluginReleaseStateEntryInput, PluginSummaryAccumulator,
+        ReleaseStatsStateInput, RepoAnalysisSummaryAccumulator,
+        build_latest_data_update_summary_from_parts,
     },
-    plugin::{PluginData, PluginExtraData},
     release::{GithubReleaseInfo, ObsidianReleaseInfo},
     theme::ThemeData,
 };
@@ -19,7 +18,7 @@ use crate::{
         RELEASE_GITHUB_INTERPOLATED_PATH, RELEASE_GITHUB_RAW_PATH, RELEASE_STATS_STATE_PATH,
         THEME_DATA_PATH,
     },
-    file_utils::read_chunked_data,
+    file_utils::{read_chunked_data, read_chunked_data_iter},
     state::{read_json_or_default, write_json_atomic},
 };
 
@@ -34,9 +33,23 @@ struct PluginReleaseState {
 }
 
 pub fn build_latest_data_update_summary() -> Result<(), Box<dyn std::error::Error>> {
-    let plugins: Vec<PluginData> = read_chunked_data(Path::new(PLUGIN_DATA_PATH))?;
+    let mut plugin_accumulator = PluginSummaryAccumulator::default();
+    for chunk in read_chunked_data_iter(Path::new(PLUGIN_DATA_PATH))? {
+        for plugin in chunk? {
+            plugin_accumulator.add(&plugin);
+        }
+    }
     let themes: Vec<ThemeData> = read_chunked_data(Path::new(THEME_DATA_PATH))?;
-    let repo_analysis: Vec<PluginExtraData> = read_chunked_data(Path::new(PLUGIN_REPO_DATA_PATH))?;
+    let mut repo_accumulator = RepoAnalysisSummaryAccumulator::default();
+    for chunk in read_chunked_data_iter(Path::new(PLUGIN_REPO_DATA_PATH))? {
+        for entry in chunk? {
+            repo_accumulator.add(
+                &entry,
+                plugin_accumulator.is_active(&entry.id),
+                plugin_accumulator.is_removed(&entry.id),
+            );
+        }
+    }
     let changelog_releases: Vec<ObsidianReleaseInfo> =
         read_chunked_data(Path::new(RELEASE_CHANGELOG_PATH))?;
     let github_releases: Vec<GithubReleaseInfo> =
@@ -52,18 +65,18 @@ pub fn build_latest_data_update_summary() -> Result<(), Box<dyn std::error::Erro
 
     let release_entries = release_state.entries.into_values().collect::<Vec<_>>();
 
-    let summary =
-        build_latest_data_update_summary_from_inputs(BuildLatestDataUpdateSummaryInputs {
-            plugins: &plugins,
-            themes: &themes,
-            repo_analysis_entries: &repo_analysis,
-            changelog_releases: &changelog_releases,
-            github_releases: &github_releases,
-            interpolated_releases: &interpolated_releases,
-            clone_entries: &clone_state.entries,
-            release_entries: &release_entries,
-            release_stats_state: &release_stats_state,
-        });
+    let summary = build_latest_data_update_summary_from_parts(
+        plugin_accumulator.finish(),
+        plugin_accumulator.latest_download_snapshot_date(),
+        &themes,
+        repo_accumulator.finish(plugin_accumulator.active_count()),
+        &changelog_releases,
+        &github_releases,
+        &interpolated_releases,
+        &clone_state.entries,
+        &release_entries,
+        &release_stats_state,
+    );
 
     write_json_atomic(Path::new(LATEST_DATA_UPDATE_SUMMARY_PATH), &summary)?;
 

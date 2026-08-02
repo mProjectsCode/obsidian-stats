@@ -15,7 +15,10 @@ use std::{
 
 use crate::{
     constants::{OBS_RELEASES_REPO_PATH, PLUGIN_DATA_PATH, PLUGIN_LIST_PATH, PLUGIN_STATS_PATH},
-    file_utils::{read_chunked_data, write_in_chunks_atomic},
+    file_utils::{
+        ChunkReader, DATA_CHUNK_SIZE, read_chunked_data, read_chunked_data_iter,
+        write_in_chunks_atomic,
+    },
     git_utils::get_obs_repo_changes_for_file,
     plugins::{
         BorrowedPluginData, PluginDownloadStat, PluginDownloadStats, PluginList, download_backfill,
@@ -381,7 +384,7 @@ pub fn build_plugin_stats() -> Result<(), Box<dyn std::error::Error>> {
     plugin_data = filter_low_signal_plugins(plugin_data);
     plugin_data.sort_by(|a, b| a.id.cmp(&b.id));
 
-    write_in_chunks_atomic(Path::new(PLUGIN_DATA_PATH), &plugin_data, 50)?;
+    write_in_chunks_atomic(Path::new(PLUGIN_DATA_PATH), &plugin_data, DATA_CHUNK_SIZE)?;
 
     println!("Filtered and write plugin data: {:#?}", time2.elapsed());
 
@@ -394,9 +397,16 @@ pub fn read_plugin_data() -> Result<Vec<PluginData>, Box<dyn std::error::Error>>
     read_chunked_data(Path::new(PLUGIN_DATA_PATH))
 }
 
+pub fn read_plugin_data_chunks() -> Result<ChunkReader<PluginData>, Box<dyn std::error::Error>> {
+    read_chunked_data_iter(Path::new(PLUGIN_DATA_PATH))
+}
+
 #[cfg(test)]
 mod tests {
-    use super::{DownloadSource, download_source_for_date, merge_plugin_download_stat_histories};
+    use super::{
+        DownloadSource, download_source_for_date, merge_plugin_download_stat_histories,
+        read_plugin_data,
+    };
     use crate::plugins::{PluginDownloadStat, PluginDownloadStats};
     use data_lib::{commit::Commit, date::Date};
     use hashbrown::HashMap;
@@ -419,6 +429,12 @@ mod tests {
                 })
                 .collect::<HashMap<_, _>>(),
         }
+    }
+
+    #[test]
+    fn checked_in_plugin_chunks_are_loadable() {
+        let result = read_plugin_data();
+        assert!(result.is_ok(), "plugin data failed to load: {result:?}");
     }
 
     #[test]
