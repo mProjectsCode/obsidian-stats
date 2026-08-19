@@ -3,8 +3,9 @@ use data_lib::{
     date::Date,
     input_data::{ObsDownloadStats, ObsPluginList},
     plugin::PluginData,
+    version::Version,
 };
-use hashbrown::HashMap;
+use hashbrown::{HashMap, HashSet};
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 use std::{
     error::Error,
@@ -22,7 +23,6 @@ use crate::{
     git_utils::get_obs_repo_changes_for_file,
     plugins::{
         BorrowedPluginData, PluginDownloadStat, PluginDownloadStats, PluginList, download_backfill,
-        stats_helper::{self, HelperPluginStore},
     },
     progress::should_log_progress,
 };
@@ -134,47 +134,54 @@ fn build_plugin_change_timeline(plugin_lists: &[PluginList]) -> Vec<BorrowedPlug
     plugin_data_map.into_iter().map(|(_, data)| data).collect()
 }
 
-fn build_version_history(plugin_data: &mut [BorrowedPluginData], helper_store: &HelperPluginStore) {
+fn build_version_history(
+    plugin_data: &mut [BorrowedPluginData],
+    download_stats: &[PluginDownloadStats],
+) {
     println!("Updating version history...");
 
-    let total_plugins = plugin_data.len();
-    let mut missing_helper_data = 0usize;
-    for (idx, entry) in plugin_data.iter_mut().enumerate() {
-        if let Some(helper_plugin) = helper_store
-            .get(&entry.id)
-            .filter(|helper_plugin| helper_plugin.repo == entry.current_entry.repo)
-        {
-            entry.version_history = stats_helper::build_version_history(helper_plugin);
-            let listed_dates = entry
-                .version_history
-                .iter()
-                .map(|version| {
-                    (
-                        version.initial_release_date.clone(),
-                        entry.was_listed_on(&version.initial_release_date),
-                    )
-                })
-                .collect::<Vec<_>>();
-            for (version, (_, released_while_listed)) in
-                entry.version_history.iter_mut().zip(listed_dates)
-            {
-                version.released_while_listed = released_while_listed;
-            }
-        } else {
-            missing_helper_data += 1;
+    let index_by_id = plugin_data
+        .iter()
+        .enumerate()
+        .map(|(idx, entry)| (entry.id.clone(), idx))
+        .collect::<HashMap<_, _>>();
+    let mut previous_versions_by_plugin = vec![None::<HashSet<String>>; plugin_data.len()];
+
+    let total_stats = download_stats.len();
+    for (idx, stat) in download_stats.iter().enumerate() {
+        let date = stat.get_date();
+        if download_backfill::is_excluded_download_date(&date) {
+            continue;
         }
 
-        if should_log_progress(idx + 1, total_plugins) {
+        for (id, entry) in &stat.entries {
+            if let Some(&plugin_idx) = index_by_id.get(id) {
+                let current_versions = entry
+                    .versions
+                    .iter()
+                    .filter(|version| Version::validate(version))
+                    .cloned()
+                    .collect::<HashSet<_>>();
+                plugin_data[plugin_idx].update_version_history_from_snapshot(
+                    &date,
+                    previous_versions_by_plugin[plugin_idx].as_ref(),
+                    &current_versions,
+                );
+                previous_versions_by_plugin[plugin_idx] = Some(current_versions);
+            }
+        }
+
+        if should_log_progress(idx + 1, total_stats) {
             println!(
-                "  Version history progress: {} / {} plugins",
+                "  Version history progress: {} / {} snapshots",
                 idx + 1,
-                total_plugins
+                total_stats
             );
         }
     }
 
-    if missing_helper_data > 0 {
-        eprintln!("Warning: {missing_helper_data} plugin(s) had no stats-helper data.");
+    for entry in plugin_data {
+        entry.sort_version_history();
     }
 }
 
@@ -240,18 +247,21 @@ fn load_plugin_download_stat_history() -> Result<Vec<PluginDownloadStats>, Box<d
     Ok(results)
 }
 
+#[allow(dead_code)]
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 enum DownloadSource {
     Obsidian,
     StatsHelper,
 }
 
+#[allow(dead_code)]
 #[derive(Debug, Clone)]
 struct DailyDownloadEntry {
     downloads: u32,
     source: DownloadSource,
 }
 
+#[allow(dead_code)]
 fn merge_plugin_download_stat_histories(
     obsidian_stats: Vec<PluginDownloadStats>,
     helper_stats: Vec<PluginDownloadStats>,
@@ -280,6 +290,7 @@ fn merge_plugin_download_stat_histories(
                         id,
                         PluginDownloadStat {
                             downloads: entry.downloads,
+                            versions: Vec::new(),
                         },
                     )
                 })
@@ -291,6 +302,7 @@ fn merge_plugin_download_stat_histories(
     merged
 }
 
+#[allow(dead_code)]
 fn merge_download_stat_snapshot(
     by_date: &mut HashMap<Date, HashMap<String, DailyDownloadEntry>>,
     stats: PluginDownloadStats,
@@ -318,6 +330,7 @@ fn merge_download_stat_snapshot(
     }
 }
 
+#[allow(dead_code)]
 fn download_source_for_date(date: &Date) -> DownloadSource {
     if date < &Date::new(2026, 7, 1) {
         DownloadSource::Obsidian
@@ -362,10 +375,7 @@ pub fn build_plugin_stats() -> Result<(), Box<dyn std::error::Error>> {
     println!("Build Plugin Data {:#?}", time2.elapsed());
     time2 = std::time::Instant::now();
 
-    let obsidian_download_stats = load_plugin_download_stat_history()?;
-    let helper_download_stats = stats_helper::load_helper_download_stat_history()?;
-    let download_stats =
-        merge_plugin_download_stat_histories(obsidian_download_stats, helper_download_stats);
+    let download_stats = load_plugin_download_stat_history()?;
 
     println!("Get plugin download stats: {:#?}", time2.elapsed());
     time2 = std::time::Instant::now();
@@ -375,8 +385,7 @@ pub fn build_plugin_stats() -> Result<(), Box<dyn std::error::Error>> {
     println!("Update weekly download stats: {:#?}", time2.elapsed());
     time2 = std::time::Instant::now();
 
-    let helper_store = HelperPluginStore::read()?;
-    build_version_history(&mut plugin_data, &helper_store);
+    build_version_history(&mut plugin_data, &download_stats);
 
     println!("Update version history: {:#?}", time2.elapsed());
     time2 = std::time::Instant::now();
@@ -424,6 +433,7 @@ mod tests {
                         (*id).to_string(),
                         PluginDownloadStat {
                             downloads: *downloads,
+                            versions: Vec::new(),
                         },
                     )
                 })

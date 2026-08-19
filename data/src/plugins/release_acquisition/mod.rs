@@ -18,7 +18,6 @@ use serde::{Deserialize, Serialize};
 use crate::{
     constants::PLUGIN_RELEASE_ENRICHMENT_STATE_PATH,
     github::RateLimitMode,
-    plugins::stats_helper::{HelperPluginStore, TargetRelease, TargetReleaseError},
     progress::should_log_progress,
     security::http_client,
     state::{now_unix_seconds, read_json_or_default, write_json_atomic},
@@ -56,7 +55,6 @@ enum ReleaseFetchStatus {
     Ok,
     NotModified,
     VersionHistoryMissing,
-    TargetRelease(TargetReleaseError),
     NoReleaseForVersion,
     NoMainJsAsset,
     MainJsNotUpdatedSinceSuccess,
@@ -89,20 +87,6 @@ impl ReleaseFetchStatus {
             "ok" => Self::Ok,
             "not_modified" => Self::NotModified,
             "version_history_missing" => Self::VersionHistoryMissing,
-            "helper_plugin_missing" => Self::TargetRelease(TargetReleaseError::HelperPluginMissing),
-            "manifest_missing" => Self::TargetRelease(TargetReleaseError::ManifestMissing),
-            "manifest_version_missing" => {
-                Self::TargetRelease(TargetReleaseError::ManifestVersionMissing)
-            }
-            "manifest_version_invalid" => {
-                Self::TargetRelease(TargetReleaseError::ManifestVersionInvalid)
-            }
-            "manifest_version_prefixed" => {
-                Self::TargetRelease(TargetReleaseError::ManifestVersionPrefixed)
-            }
-            "release_for_manifest_version_missing" => {
-                Self::TargetRelease(TargetReleaseError::ReleaseForManifestVersionMissing)
-            }
             "no_release_for_version" => Self::NoReleaseForVersion,
             "no_main_js_asset" => Self::NoMainJsAsset,
             "main_js_not_updated_since_success" => Self::MainJsNotUpdatedSinceSuccess,
@@ -119,7 +103,6 @@ impl ReleaseFetchStatus {
             Self::Ok => "ok".to_string(),
             Self::NotModified => "not_modified".to_string(),
             Self::VersionHistoryMissing => "version_history_missing".to_string(),
-            Self::TargetRelease(error) => error.as_state_value().to_string(),
             Self::NoReleaseForVersion => "no_release_for_version".to_string(),
             Self::NoMainJsAsset => "no_main_js_asset".to_string(),
             Self::MainJsNotUpdatedSinceSuccess => "main_js_not_updated_since_success".to_string(),
@@ -164,7 +147,7 @@ struct ReleaseAcquireJob {
     key: String,
     plugin_id: String,
     repo: String,
-    target_release: TargetRelease,
+    target_release: String,
     previous_entry: Option<PluginReleaseStateEntry>,
 }
 
@@ -207,8 +190,6 @@ pub fn acquire_plugin_release_main_js(
     let mut state: PluginReleaseState =
         read_json_or_default(Path::new(PLUGIN_RELEASE_ENRICHMENT_STATE_PATH));
     let mut stats = AcquireRunStats::default();
-    let helper_store = HelperPluginStore::read()?;
-
     let mut jobs = Vec::new();
 
     for plugin in plugins {
@@ -221,10 +202,10 @@ pub fn acquire_plugin_release_main_js(
         let repo = plugin.current_entry.repo.clone();
 
         let previous_entry = previous_entry_for_repo(&state, &key, &repo).cloned();
-        let target_release = match helper_store.target_release_for_plugin(plugin) {
-            Ok(target) => target,
-            Err(error) => {
-                let entry = target_release_error_state_entry(&repo, previous_entry.as_ref(), error);
+        let target_release = match latest_version_from_history(plugin) {
+            Some(version) => version,
+            None => {
+                let entry = version_history_missing_state_entry(&repo, previous_entry.as_ref());
                 if let Some(status) = &entry.latest_release_fetch_status {
                     *stats.status_counts.entry(status.clone()).or_insert(0) += 1;
                 }
@@ -235,7 +216,7 @@ pub fn acquire_plugin_release_main_js(
 
         if let Some(entry) = &previous_entry
             && entry.repo == repo
-            && entry.latest_release_tag.as_deref() == Some(target_release.tag.as_str())
+            && entry.latest_release_tag.as_deref() == Some(target_release.as_str())
             && !should_retry_release_fetch(entry)
             && !force
         {
@@ -341,10 +322,9 @@ pub fn acquire_plugin_release_main_js(
     Ok(())
 }
 
-fn target_release_error_state_entry(
+fn version_history_missing_state_entry(
     repo: &str,
     previous_entry: Option<&PluginReleaseStateEntry>,
-    error: TargetReleaseError,
 ) -> PluginReleaseStateEntry {
     PluginReleaseStateEntry {
         repo: repo.to_string(),
@@ -358,9 +338,19 @@ fn target_release_error_state_entry(
         latest_release_tag: None,
         latest_release_published_at: None,
         latest_release_fetch_status: Some(
-            ReleaseFetchStatus::TargetRelease(error).as_state_value(),
+            ReleaseFetchStatus::VersionHistoryMissing.as_state_value(),
         ),
     }
+}
+
+pub(crate) fn latest_version_from_history(plugin: &PluginData) -> Option<String> {
+    plugin
+        .version_history
+        .iter()
+        .rev()
+        .find(|entry| entry.released_while_listed)
+        .map(|entry| entry.version.trim().to_string())
+        .filter(|version| !version.is_empty())
 }
 
 fn previous_entry_for_repo<'a>(
@@ -385,16 +375,14 @@ fn process_release_job(
         .previous_entry
         .as_ref()
         .filter(|entry| !should_retry_release_fetch(entry))
-        .filter(|entry| {
-            entry.latest_release_tag.as_deref() == Some(job.target_release.tag.as_str())
-        })
+        .filter(|entry| entry.latest_release_tag.as_deref() == Some(job.target_release.as_str()))
         .and_then(|entry| entry.latest_release_etag.as_deref());
 
     let (mut entry, cache_outcome, not_modified) = match fetch_release_info(
         ReleaseFetchRequest {
             plugin_id: &job.plugin_id,
             repo: &job.repo,
-            target_release_tag: &job.target_release.tag,
+            target_release_tag: &job.target_release,
             previous_entry: job.previous_entry.as_ref(),
             previous_etag,
         },

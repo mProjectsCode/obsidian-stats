@@ -44,10 +44,10 @@ Depending on your goal, the first thing you might want to run is `make submodule
 
 After that you can run the data collection via `make data`.
 
-The data collection uses the `obsidian-releases`, `obsidian-stats-helper`, and
-`choosealicense.com` submodules. `obsidian-releases/community-plugin-stats.json`
-is used for plugin download counts. Plugin release history and marketplace
-manifest data come from `obsidian-stats-helper`.
+The data collection uses the `obsidian-releases` and `choosealicense.com`
+submodules. `obsidian-releases/community-plugin-stats.json` is used for plugin
+download counts and version history. The `obsidian-stats-helper` submodule and
+its integration are retained as dormant code for now.
 
 The data collection consists of multiple phases:
 
@@ -56,8 +56,7 @@ The data collection consists of multiple phases:
     2. Build and save theme data to `data/out/theme-data`
 2. Plugin Data
     1. Read plugin list and download data from the `obsidian-releases` repo
-    2. Read plugin release and manifest metadata from `obsidian-stats-helper`
-    3. Build plugin, download, and version data
+    2. Build plugin, download, and version data
     3. Save that data to `data/out/plugin-data`
 3. Clone Plugin Repos to `data/out/plugin-repos`
 4. Extract extra data from plugin repos to `data/out/plugin-repo-data`

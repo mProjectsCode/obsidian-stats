@@ -11,19 +11,16 @@ use crate::plugins::{
     release_acquisition::{
         PluginReleaseState, PluginReleaseStateEntry, release_main_js_cache_path,
     },
-    stats_helper::HelperPluginStore,
 };
 
 pub(crate) fn analyze_plugin(
     plugin: &PluginData,
     license_comparer: &LicenseComparer,
     release_state: &PluginReleaseState,
-    helper_store: &HelperPluginStore,
     run_stats: &mut ExtraRunStats,
 ) -> Result<PluginRepoData, String> {
     let repo_result = analyze_repo(plugin, license_comparer).map_err(|error| error.to_string())?;
     let mut output = repo_result.into_plugin_repo_data();
-    output.manifest = helper_store.helper_manifest_for_plugin(plugin);
 
     let Some(state_entry) = matching_release_state_entry(plugin, release_state) else {
         run_stats.release_state_missing += 1;

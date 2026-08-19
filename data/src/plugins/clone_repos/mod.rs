@@ -24,7 +24,7 @@ use crate::{
         PLUGIN_REPO_PATH,
     },
     file_utils::ensure_dir,
-    plugins::{data::read_plugin_data, stats_helper::HelperPluginStore},
+    plugins::{data::read_plugin_data, release_acquisition::latest_version_from_history},
     progress::should_log_progress,
     security::validated_plugin_path,
     state::{now_unix_seconds, read_json_or_default, write_json_atomic},
@@ -36,6 +36,7 @@ const CLONE_THREADS_ENV: &str = "CLONE_THREADS";
 enum CloneStatus {
     Ok,
     SkippedRemoved,
+    VersionHistoryMissing,
 }
 
 impl CloneStatus {
@@ -43,6 +44,7 @@ impl CloneStatus {
         match self {
             Self::Ok => "ok",
             Self::SkippedRemoved => "skipped_removed",
+            Self::VersionHistoryMissing => "version_history_missing",
         }
     }
 }
@@ -78,8 +80,6 @@ pub fn clone_plugin_repos(force: bool, no_clone: bool) -> Result<(), Box<dyn std
 
     let mut state: CloneState = read_json_or_default(Path::new(CLONE_STATE_PATH));
     let run_started_unix = now_unix_seconds();
-    let helper_store = HelperPluginStore::read()?;
-
     println!(
         "Starting cloning process (clone timeout: {}s, force: {}, no_clone: {}, threads: {})...",
         clone_timeout.as_secs(),
@@ -114,9 +114,9 @@ pub fn clone_plugin_repos(force: bool, no_clone: bool) -> Result<(), Box<dyn std
             continue;
         }
 
-        let target_release_tag = match helper_store.target_release_for_plugin(plugin) {
-            Ok(target) => target.tag,
-            Err(error) => {
+        let target_release_tag = match latest_version_from_history(plugin) {
+            Some(version) => version,
+            None => {
                 skipped_missing_version += 1;
                 let previous_success = state.entries.get(&plugin.id).and_then(|entry| {
                     if entry.repo == plugin.current_entry.repo {
@@ -132,7 +132,9 @@ pub fn clone_plugin_repos(force: bool, no_clone: bool) -> Result<(), Box<dyn std
                         target_release_tag: None,
                         last_attempt_unix: run_started_unix,
                         last_success_unix: previous_success,
-                        status: error.as_state_value().to_string(),
+                        status: CloneStatus::VersionHistoryMissing
+                            .as_state_value()
+                            .to_string(),
                     },
                 );
                 continue;

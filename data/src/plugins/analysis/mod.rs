@@ -22,7 +22,7 @@ use crate::{
     file_utils::{DATA_CHUNK_SIZE, write_chunks_atomic_results},
     plugins::{
         data::read_plugin_data_chunks, license::license_compare::LicenseComparer,
-        release_acquisition::PluginReleaseState, stats_helper::HelperPluginStore,
+        release_acquisition::PluginReleaseState,
     },
     state::read_json_or_default,
 };
@@ -49,7 +49,6 @@ pub fn extract_analysis_data() -> Result<(), Box<dyn std::error::Error>> {
 
     let release_state: PluginReleaseState =
         read_json_or_default(Path::new(PLUGIN_RELEASE_ENRICHMENT_STATE_PATH));
-    let helper_store = HelperPluginStore::read()?;
 
     let mut license_comparer = LicenseComparer::new();
     license_comparer.init();
@@ -85,7 +84,6 @@ pub fn extract_analysis_data() -> Result<(), Box<dyn std::error::Error>> {
     let deprecated_versions_by_plugin_ref = &deprecated_versions_by_plugin.0;
     let license_comparer_ref = &license_comparer;
     let release_state_ref = &release_state;
-    let helper_store_ref = &helper_store;
     let worker_result = thread_pool.scope(|scope| {
         for _ in 0..thread_count {
             let worker_queue = Arc::clone(&job_queue);
@@ -101,7 +99,6 @@ pub fn extract_analysis_data() -> Result<(), Box<dyn std::error::Error>> {
                         deprecated_versions_by_plugin_ref,
                         license_comparer_ref,
                         release_state_ref,
-                        helper_store_ref,
                     );
                     if worker_result_tx.send(result).is_err() {
                         worker_queue.close();
@@ -296,7 +293,6 @@ fn analyze_job(
     deprecated_versions_by_plugin: &HashMap<String, Vec<String>>,
     license_comparer: &LicenseComparer,
     release_state: &PluginReleaseState,
-    helper_store: &HelperPluginStore,
 ) -> AnalysisResult {
     let plugin = job.plugin;
     let removal_reason = removed_reason_by_id.get(&plugin.id).cloned();
@@ -307,13 +303,7 @@ fn analyze_job(
 
     let mut stats = ExtraRunStats::default();
     let repo = if plugin.removed_commit.is_none() {
-        match analyze_plugin(
-            &plugin,
-            license_comparer,
-            release_state,
-            helper_store,
-            &mut stats,
-        ) {
+        match analyze_plugin(&plugin, license_comparer, release_state, &mut stats) {
             Ok(repo_data) => Ok(repo_data),
             Err(err) => {
                 stats.repo_extract_failed += 1;

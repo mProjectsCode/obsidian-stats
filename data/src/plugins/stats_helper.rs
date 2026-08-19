@@ -222,7 +222,13 @@ fn helper_summary_to_download_stats(
                 return None;
             };
 
-            Some((id, PluginDownloadStat { downloads }))
+            Some((
+                id,
+                PluginDownloadStat {
+                    downloads,
+                    versions: Vec::new(),
+                },
+            ))
         })
         .collect();
 

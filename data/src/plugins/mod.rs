@@ -3,8 +3,9 @@ use data_lib::{
     common::{DownloadHistory, EntryChange, VersionHistory},
     date::Date,
     input_data::{ObsCommunityPlugin, ObsDownloadStats},
+    version::Version,
 };
-use hashbrown::HashMap;
+use hashbrown::{HashMap, HashSet};
 
 use serde::Serialize;
 use serde_json::value;
@@ -15,6 +16,7 @@ pub mod data;
 pub mod download_backfill;
 pub mod license;
 pub mod release_acquisition;
+#[allow(dead_code)]
 pub mod stats_helper;
 
 const PLUGIN_ADDED_PROPERTY: &str = "Plugin Added";
@@ -30,6 +32,7 @@ pub struct PluginList {
 #[derive(Debug, Clone)]
 pub struct PluginDownloadStat {
     pub downloads: u32,
+    pub versions: Vec<String>,
 }
 
 impl<'a> From<HashMap<String, &'a value::RawValue>> for PluginDownloadStat {
@@ -39,7 +42,15 @@ impl<'a> From<HashMap<String, &'a value::RawValue>> for PluginDownloadStat {
             .and_then(|v| v.get().parse::<u32>().ok())
             .unwrap_or(0);
 
-        Self { downloads }
+        let versions = value
+            .into_keys()
+            .filter(|key| key != "downloads" && key != "latest" && key != "updated")
+            .collect();
+
+        Self {
+            downloads,
+            versions,
+        }
     }
 }
 
@@ -76,6 +87,14 @@ pub struct BorrowedPluginData<'a> {
     pub download_history: DownloadHistory,
     pub download_count: u32,
     pub version_history: Vec<VersionHistory>,
+    #[serde(skip)]
+    version_history_map: HashMap<String, VersionLifecycle>,
+}
+
+#[derive(Debug, Clone)]
+struct VersionLifecycle {
+    initial_release_date: Date,
+    released_while_listed: bool,
 }
 
 impl<'a> BorrowedPluginData<'a> {
@@ -84,6 +103,7 @@ impl<'a> BorrowedPluginData<'a> {
         added_commit: &'a Commit,
         initial_entry: &'a ObsCommunityPlugin,
     ) -> Self {
+        let version_history_map = HashMap::new();
         let version_history = vec![];
 
         Self {
@@ -101,6 +121,7 @@ impl<'a> BorrowedPluginData<'a> {
             download_history: DownloadHistory::default(),
             download_count: 0,
             version_history,
+            version_history_map,
         }
     }
 
@@ -148,6 +169,58 @@ impl<'a> BorrowedPluginData<'a> {
                 self.download_count = entry.downloads;
             }
         }
+    }
+
+    pub fn update_version_history_from_snapshot(
+        &mut self,
+        date: &Date,
+        previous_versions: Option<&HashSet<String>>,
+        current_versions: &HashSet<String>,
+    ) {
+        for version in current_versions {
+            self.mark_version_seen(date, version);
+        }
+
+        let Some(previous_versions) = previous_versions else {
+            return;
+        };
+
+        for version in previous_versions.difference(current_versions) {
+            if let Some(lifecycle) = self.version_history_map.get_mut(version) {
+                lifecycle.released_while_listed = false;
+            }
+        }
+    }
+
+    fn mark_version_seen(&mut self, date: &Date, version: &str) {
+        if !Version::validate(version) {
+            return;
+        }
+
+        self.version_history_map
+            .entry(version.to_string())
+            .and_modify(|lifecycle| lifecycle.released_while_listed = true)
+            .or_insert_with(|| VersionLifecycle {
+                initial_release_date: date.clone(),
+                released_while_listed: true,
+            });
+    }
+
+    pub fn sort_version_history(&mut self) {
+        self.version_history = self
+            .version_history_map
+            .iter()
+            .map(|(version, lifecycle)| VersionHistory {
+                version: version.clone(),
+                version_object: Version::parse(version),
+                initial_release_date: lifecycle.initial_release_date.clone(),
+                prerelease: false,
+                released_while_listed: lifecycle.released_while_listed,
+            })
+            .collect();
+
+        self.version_history
+            .sort_by(|left, right| left.version_object.cmp(&right.version_object));
     }
 
     pub fn was_listed_on(&self, date: &Date) -> bool {

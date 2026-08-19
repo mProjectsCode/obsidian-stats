@@ -158,7 +158,7 @@ fn metadata() -> &'static HashMap<String, String> {
             .catalog()
             .metadata()
             .into_iter()
-            .map(|rule| (rule.id.as_str().to_owned(), rule.description))
+            .map(|rule| (rule.id().as_str().to_owned(), rule.description().to_owned()))
             .collect()
     })
 }
@@ -373,7 +373,6 @@ mod tests {
         let missing = linter()
             .catalog()
             .rule_ids()
-            .iter()
             .filter(|rule_id| disclosures::for_rule(rule_id.as_str()).is_empty())
             .map(|rule_id| rule_id.as_str())
             .collect::<Vec<_>>();

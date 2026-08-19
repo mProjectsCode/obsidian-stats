@@ -12,15 +12,15 @@
 		"format": "prettier --write ."
 	},
 	"dependencies": {
-		"@astrojs/check": "0.9.9",
-		"@astrojs/starlight": "0.41.3",
-		"@astrojs/svelte": "9.0.1",
-		"astro": "7.0.6",
-		"prettier": "^3.9.4",
+		"@astrojs/check": "^0.9.10",
+		"@astrojs/starlight": "^0.41.7",
+		"@astrojs/svelte": "^9.0.1",
+		"astro": "^7.2.2",
+		"prettier": "^3.9.6",
 		"prettier-plugin-astro": "^0.14.1",
 		"prettier-plugin-svelte": "^4.1.1",
-		"svelte": "^5.56.4",
-		"svelte-check": "^4.7.2",
+		"svelte": "^5.56.9",
+		"svelte-check": "^4.7.6",
 		"svelteplot": "^0.14.2",
 		"typescript": "^6.0.3"
 	}
