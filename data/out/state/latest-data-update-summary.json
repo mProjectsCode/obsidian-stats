@@ -1,77 +1,77 @@
 {
-  "refreshed_at_unix": 1788251221,
-  "clone_run_at_unix": 1788251118,
-  "release_run_at_unix": 1788251139,
-  "obsidian_release_fetch_at_unix": 1788251221,
-  "latest_plugin_download_snapshot_date": "2026-08-31",
+  "refreshed_at_unix": 1788860353,
+  "clone_run_at_unix": 1788860240,
+  "release_run_at_unix": 1788860260,
+  "obsidian_release_fetch_at_unix": 1788860353,
+  "latest_plugin_download_snapshot_date": "2026-09-07",
   "latest_obsidian_release_date": "2026-08-21",
   "latest_obsidian_version": "1.13.8",
   "plugins": {
-    "total": 7756,
-    "active": 7149,
-    "removed": 607,
-    "total_downloads": 149539458,
-    "version_snapshots": 94693
+    "total": 8020,
+    "active": 7410,
+    "removed": 610,
+    "total_downloads": 151844372,
+    "version_snapshots": 97878
   },
   "themes": {
-    "total": 798,
-    "active": 719,
-    "removed": 79
+    "total": 812,
+    "active": 734,
+    "removed": 78
   },
   "releases": {
-    "changelog_entries": 476,
+    "changelog_entries": 478,
     "github_release_snapshots": 172,
     "interpolated_release_snapshots": 172,
     "asset_count": 974,
-    "download_snapshots": 53243
+    "download_snapshots": 54217
   },
   "clone": {
-    "tracked": 7804,
-    "ok": 7126,
-    "skipped": 650,
-    "failed": 11,
-    "success_rate": 0.9984587361636542,
+    "tracked": 8077,
+    "ok": 7382,
+    "skipped": 662,
+    "failed": 14,
+    "success_rate": 0.9981070849107626,
     "failed_plugins": [
-      "cyberware",
-      "reader-highlighter-tags",
-      "hide-tags",
-      "weixin-sync",
-      "rich-text-editor"
+      "strudel-repl",
+      "imgbox-pro",
+      "dependent-properties",
+      "kuaifanyi",
+      "klomimory"
     ],
     "status_counts": [
       {
         "label": "ok",
-        "count": 7126,
-        "share": 0.9131214761660686
+        "count": 7382,
+        "share": 0.91395320044571
       },
       {
         "label": "skipped_removed",
-        "count": 650,
-        "share": 0.08329062019477192
+        "count": 662,
+        "share": 0.08196112417976972
       },
       {
         "label": "version_history_missing",
-        "count": 17,
-        "share": 0.002178370066632496
+        "count": 19,
+        "share": 0.0023523585489662003
       },
       {
         "label": "failed",
-        "count": 11,
-        "share": 0.0014095335725269093
+        "count": 14,
+        "share": 0.0017333168255540424
       }
     ]
   },
   "release_acquisition": {
-    "tracked": 7581,
-    "ok": 3819,
-    "retained_previous_main_js": 3605,
-    "no_release": 10,
+    "tracked": 7851,
+    "ok": 4133,
+    "retained_previous_main_js": 3558,
+    "no_release": 13,
     "no_main_js_asset": 2,
-    "error_count": 116,
-    "main_js_coverage": 7523,
-    "main_js_coverage_rate": 0.9923492942883525,
-    "total_main_js_bytes": 5023060625,
-    "average_main_js_bytes": 667693,
+    "error_count": 114,
+    "main_js_coverage": 7789,
+    "main_js_coverage_rate": 0.992102916825882,
+    "total_main_js_bytes": 5170953229,
+    "average_main_js_bytes": 663878,
     "largest_main_js": {
       "repo": "salokingreen/NAI4Obsidian",
       "size_bytes": 127704263
@@ -79,569 +79,564 @@
     "status_counts": [
       {
         "label": "ok",
-        "count": 3819,
-        "share": 0.5037593984962406
+        "count": 4133,
+        "share": 0.5264297541714431
       },
       {
         "label": "main_js_not_updated_since_success",
-        "count": 3605,
-        "share": 0.4755309325946445
+        "count": 3558,
+        "share": 0.4531906763469622
       },
       {
         "label": "version_history_missing",
-        "count": 29,
-        "share": 0.00382535285582377
+        "count": 31,
+        "share": 0.003948541587058973
+      },
+      {
+        "label": "no_release_for_version",
+        "count": 12,
+        "share": 0.0015284677111196026
       },
       {
         "label": "helper_plugin_missing",
         "count": 10,
-        "share": 0.001319087191663369
-      },
-      {
-        "label": "no_release_for_version",
-        "count": 9,
-        "share": 0.001187178472497032
+        "share": 0.0012737230925996689
       },
       {
         "label": "release_for_manifest_version_missing",
-        "count": 7,
-        "share": 0.0009233610341643582
+        "count": 6,
+        "share": 0.0007642338555598013
       },
       {
         "label": "no_main_js_asset",
         "count": 2,
-        "share": 0.00026381743833267377
+        "share": 0.0002547446185199338
       },
       {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/AI-Scarlett/obsidian-omnichannel-diary/releases/download/0.4.6/main.js)",
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/BenRuns/table-calc-plugin/releases/download/2.1.0/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
-      },
-      {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/Alecwce/obsidian-git-facil/releases/download/1.3.1/main.js)",
-        "count": 1,
-        "share": 0.00013190871916633689
-      },
-      {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/ArmanJR/obsidian-mermaid-relay/releases/download/0.1.2/main.js)",
-        "count": 1,
-        "share": 0.00013190871916633689
-      },
-      {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/BCS1037/codian/releases/download/1.3.3/main.js)",
-        "count": 1,
-        "share": 0.00013190871916633689
-      },
-      {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/BenGutteridge1/vault-searchlight/releases/download/1.3.2/main.js)",
-        "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
         "label": "main_js_download_failed:request:error sending request for url (https://github.com/CarlB01/myBrain/releases/download/1.0.50/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/DavidHurtadoAI/just-simple-excalidraw/releases/download/0.1.9/main.js)",
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/DDEOK/Obsidian-Single-HTML-Export/releases/download/0.10.0/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/FabianUntermoser/obsidian-neighbouring-files-plugin/releases/download/1.2.0/main.js)",
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/DavidHurtadoAI/just-simple-teleprompter/releases/download/0.1.16/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/HatanoChihiro/obsidian-webnovel-assistant/releases/download/3.9.2/main.js)",
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/DerellNar/VTMV5-Dice-Roller/releases/download/1.0.3/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/Heziode/obsidian-antidote/releases/download/2.3.0/main.js)",
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/GMSZ-1603/obsidian-personal-workbench/releases/download/1.3.4/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/InfernoMoon/dnd-wiki/releases/download/1.0.3/main.js)",
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/GammaFunds/European-Law-Lookup/releases/download/0.4.3/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/JamieStudio-lab/obsidian-gentlepomodoro/releases/download/0.5.8/main.js)",
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/Ghatazhak/tome-connector/releases/download/1.0.4/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/Kamijoucen/obsidian-openyolo/releases/download/1.1.2/main.js)",
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/GinaOfTheSea/emberly-obsidian-plugin/releases/download/0.1.2/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/KornilovIvan/Time-Visualization/releases/download/1.4.3/main.js)",
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/JIHO-0629/llm-wiki-sync/releases/download/0.9.1/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/KuroTheCoder/DiscordEmojiPicker/releases/download/1.3.0/main.js)",
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/Justinnnnnnn045/anki-markdown-sync/releases/download/0.1.5/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
         "label": "main_js_download_failed:request:error sending request for url (https://github.com/LiamRiddell/obsidian-solve/releases/download/2.0.1/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/LiveAQuietLife/obsidian-verso/releases/download/1.2.0/main.js)",
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/LimNiemdung/obsidian-ribbon-folder/releases/download/1.0.9/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/LubrieDev/lmath/releases/download/2.0.2/main.js)",
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/NeuroCloud-Activate/semantic-todoist-sync/releases/download/0.8.38/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/Marco-Pozzecco/mnemoloop-plugin/releases/download/1.9.0/main.js)",
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/No-Instructions/Relay-Comments/releases/download/0.2.1/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/MohammadKanaan/enhanced-memos-sync/releases/download/0.3.1/main.js)",
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/OssAhmad/obsidian-examined-human/releases/download/0.9.4/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/Moyf/colorful-highlights/releases/download/1.1.1/main.js)",
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/PavelPeng7/omni-workbench/releases/download/0.3.12/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/MrMupfel/FinKey/releases/download/1.1.0/main.js)",
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/RUverse/journal-view/releases/download/1.2.1/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/NSDerred/teacher-planner-obsidian/releases/download/0.3.8/main.js)",
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/RafaelGB/Obsidian-ZettelFlow/releases/download/3.1.0/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/NellowTCS/Obsidian-IroView/releases/download/1.0.2/main.js)",
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/Resolve-public/writing-assistant-chat/releases/download/1.5.6/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
-      },
-      {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/NeoMei/SessionReviewer/releases/download/0.2.11/main.js)",
-        "count": 1,
-        "share": 0.00013190871916633689
-      },
-      {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/ObsidianRelay/lingua-study/releases/download/1.2.2/main.js)",
-        "count": 1,
-        "share": 0.00013190871916633689
-      },
-      {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/OssAhmad/obsidian-examined-human/releases/download/0.9.2/main.js)",
-        "count": 1,
-        "share": 0.00013190871916633689
-      },
-      {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/Puhhh/clear-unused-images-obsidian/releases/download/1.11.0/main.js)",
-        "count": 1,
-        "share": 0.00013190871916633689
-      },
-      {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/RUverse/journal-view/releases/download/1.2.0/main.js)",
-        "count": 1,
-        "share": 0.00013190871916633689
-      },
-      {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/RexVane/obsidian-constellation-sync/releases/download/0.2.3/main.js)",
-        "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
         "label": "main_js_download_failed:request:error sending request for url (https://github.com/Roasted-NZ/obsidian-three-d-graph-view/releases/download/0.1.8/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/Scrybbling-together/scrybble/releases/download/3.24.0/main.js)",
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/Sadsnake1/cursor-smith/releases/download/1.5.1/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/ZHYX91/obsidian-property-order/releases/download/0.5.2/main.js)",
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/SakenW/trans-hub-obsidian-localizer/releases/download/0.3.0/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/aione314159/open-terminal/releases/download/1.0.4/main.js)",
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/SpinEchoArcanist/action-kanban/releases/download/12.11.8/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/aldaw/graph-search-sync/releases/download/1.2.4/main.js)",
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/Striker909-Celestial/obsidian-md-to-latex-plugin/releases/download/1.0.9/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
+      },
+      {
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/Superkikim/nexus-ai-chat-importer/releases/download/1.7.0/main.js)",
+        "count": 1,
+        "share": 0.0001273723092599669
+      },
+      {
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/THANSHEER/obsidian-omnichat/releases/download/1.7.4/main.js)",
+        "count": 1,
+        "share": 0.0001273723092599669
+      },
+      {
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/WinterMosquito/Obsidian-Mindmap-Studio/releases/download/0.0.2/main.js)",
+        "count": 1,
+        "share": 0.0001273723092599669
+      },
+      {
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/XEric7/obsidian-base-path-updater/releases/download/0.1.0/main.js)",
+        "count": 1,
+        "share": 0.0001273723092599669
+      },
+      {
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/ZHYX91/obsidian-docwen-assistant/releases/download/2.3.0/main.js)",
+        "count": 1,
+        "share": 0.0001273723092599669
+      },
+      {
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/abcamus/obsidian-sync-vault-ce/releases/download/2.5.2/main.js)",
+        "count": 1,
+        "share": 0.0001273723092599669
+      },
+      {
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/akhmialeuski/advanced-audio-recorder/releases/download/2.2.3/main.js)",
+        "count": 1,
+        "share": 0.0001273723092599669
+      },
+      {
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/alberti42/obsidian-plugins-annotations/releases/download/1.8.2/main.js)",
+        "count": 1,
+        "share": 0.0001273723092599669
       },
       {
         "label": "main_js_download_failed:request:error sending request for url (https://github.com/ali-ulu/huqan-obsidian/releases/download/1.3.1/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/amancioandre/creative-writer/releases/download/0.6.1/main.js)",
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/amancioandre/creative-writer/releases/download/0.8.1/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/ben4202121/buddybridge/releases/download/2.2.0/main.js)",
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/bgarciamoura/obsidian-notion-bases-plugin/releases/download/1.13.0/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/bgrundmann/obsidian-fountain/releases/download/0.34.3/main.js)",
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/biehenjia/onyx/releases/download/0.2.0/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/bhoopeshrk/sync-git/releases/download/1.2.0/main.js)",
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/bramses/chatgpt-md/releases/download/3.3.1/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
-      },
-      {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/blank247d/sectioned-sidebar/releases/download/1.1.7/main.js)",
-        "count": 1,
-        "share": 0.00013190871916633689
-      },
-      {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/caesarloo/obsidian-svn/releases/download/1.2.0/main.js)",
-        "count": 1,
-        "share": 0.00013190871916633689
-      },
-      {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/callumalpass/tasknotes/releases/download/4.12.5/main.js)",
-        "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
         "label": "main_js_download_failed:request:error sending request for url (https://github.com/chiahsien/obsidian-snapshot-sync/releases/download/0.1.1/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/desynkd/chicago/releases/download/1.0.1/main.js)",
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/christian-luger-at/obsidian-focus-first/releases/download/1.6.15/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/dwesolowski/create-nested-note/releases/download/1.0.1/main.js)",
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/derek-larson14/obsidian-claude-sidebar/releases/download/1.10.0/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/ellimist-afk/handwriting/releases/download/1.3.10/main.js)",
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/drshajul/obsidian-any-table-sort/releases/download/0.1.3/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
-      },
-      {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/elliott-json-park/obsidian-vault-orrery/releases/download/1.12.0/main.js)",
-        "count": 1,
-        "share": 0.00013190871916633689
-      },
-      {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/erykjj/conversum/releases/download/1.2.1/main.js)",
-        "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
         "label": "main_js_download_failed:request:error sending request for url (https://github.com/familygithub000/KeyValueReplace/releases/download/1.0.2/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/freestylefly/wesight-obsidian/releases/download/0.9.11/main.js)",
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/felixleopold/obsidian-code-suite/releases/download/1.19.0/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/gabrielbacha/obsidian-base-visuals/releases/download/0.11.0/main.js)",
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/fzk177/project-manager-enhanced/releases/download/1.4.0/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/hansai-art/obsidian-tw-tts/releases/download/0.14.0/main.js)",
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/godfatherlg/fakelink/releases/download/1.22.3/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/heeeyMan/ObsSync/releases/download/0.2.22/main.js)",
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/gregorymanni/Amoeba/releases/download/1.1.0/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/hellokunzai/obsidian-mindmap-xmind/releases/download/1.0.12/main.js)",
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/hayribakici/obsidian-scratchblocks/releases/download/0.0.21/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/henriquemanduca/mysync-plugin/releases/download/2.0.6/main.js)",
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/hjinco/synch/releases/download/0.4.7/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/hjinco/synch/releases/download/0.4.2/main.js)",
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/idoncar2/writing-calendar/releases/download/0.3.13/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
+      },
+      {
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/initialcapacity/obsidian-html-viewer/releases/download/0.0.1788372208/main.js)",
+        "count": 1,
+        "share": 0.0001273723092599669
+      },
+      {
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/initialneil/obsidian-neat-file-tree/releases/download/1.5.0/main.js)",
+        "count": 1,
+        "share": 0.0001273723092599669
       },
       {
         "label": "main_js_download_failed:request:error sending request for url (https://github.com/jamiefdhurst/obsidian-auto-tasks/releases/download/0.11.3/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/jamiefdhurst/obsidian-inbox-organiser/releases/download/0.3.0/main.js)",
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/jcig789/levart/releases/download/1.9.0/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/jiaoyingxing/easy-sync/releases/download/1.4.0/main.js)",
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/jingmengzhiyue/obsidian-okr-manager/releases/download/1.4.0/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
+      },
+      {
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/jmagaram/nvc-obsidian/releases/download/1.0.3/main.js)",
+        "count": 1,
+        "share": 0.0001273723092599669
       },
       {
         "label": "main_js_download_failed:request:error sending request for url (https://github.com/joeutke-dev/pin-obsidian/releases/download/1.0.9/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
         "label": "main_js_download_failed:request:error sending request for url (https://github.com/johannes-kaindl/3d-codeblocks/releases/download/0.3.1/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/julius-gmeinder/anchor-notes/releases/download/1.2.2/main.js)",
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/joybro/obsidian-similar-notes/releases/download/1.7.0/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/justinw0ng/obsidian-atomic/releases/download/1.1.3/main.js)",
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/jsmorabito/obsidian-commander/releases/download/0.5.12/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/kazdonkai/unified-outliner/releases/download/0.5.1/main.js)",
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/kosperun/obsidian-fix-word-layout-uk-en/releases/download/1.1.0/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/kfirgumay2005-hash/Trello-Sync/releases/download/1.5.2/main.js)",
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/kvasonaft/fb2-reader/releases/download/0.3.4/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/kxwu222/mimocode-obsidian/releases/download/1.1.7/main.js)",
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/liert/protocol-structure-viewer/releases/download/1.7.3/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/laillei-plugins/character-archive/releases/download/0.1.24/main.js)",
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/ljcoder2015/obsidian-sheet-plus/releases/download/2.13.2/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/lichao343515276-pixel/obsidian-mdbridge/releases/download/0.9.4/main.js)",
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/m1roff/obsidian-local-web-page-viewer/releases/download/0.1.2/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/llbbaagg66/parallel-translator/releases/download/0.6.0/main.js)",
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/madx/blueprint-obsidian-plugin/releases/download/0.9.1/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/llocphann/Veil/releases/download/1.1.1/main.js)",
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/mshish/shorthand-obsidian-plugin/releases/download/0.8.2/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/lumina-apps/obsidian-lumina/releases/download/1.3.16/main.js)",
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/msweat254/initiative-tracker/releases/download/1.1.0/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/miaoziguan/obsidian-bamboo-immortals/releases/download/3.13.50/main.js)",
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/muzi-xiaoren/Obsidian--TOC--reader/releases/download/1.1.0/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/mikedidomizio/obsidian-divide-and-conquer/releases/download/2.2.1/main.js)",
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/nerdsanddragons/bastion-obsidian-plugin/releases/download/1.2.0/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/mkshp-dev/obsidian-finance-plugin/releases/download/2.4.1/main.js)",
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/nickolay-kondratyev/Obsidian-Seeker/releases/download/1.1.13/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/mnaoumov/obsidian-backlink-cache/releases/download/2.16.4/main.js)",
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/nightfall-yl/obsidian-astral-trek/releases/download/26.1.2/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/mnaoumov/obsidian-nested-properties/releases/download/1.4.4/main.js)",
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/normanify/post-quantum-webdav/releases/download/1.0.6/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/mohamedgb00714/obsidian-autoplans/releases/download/0.1.4/main.js)",
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/p77-don/form-builder/releases/download/0.6.3/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/n1ghtmare-dev/obsidian-cosmograph/releases/download/0.2.2/main.js)",
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/pan4ratte/obsidian-pandoc-gui/releases/download/2.2.0/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/nathanstorm689/outlook-event-notes/releases/download/0.3.4/main.js)",
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/paulchiu/obsidian-fitkit/releases/download/1.2.4/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/nth-chile/obsidian-desktop-sidebar-gestures/releases/download/1.1.0/main.js)",
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/peter-yanase/jadou-obsidian/releases/download/1.1.0/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/obsidian-power-plugins/obsidian-power-explorer/releases/download/1.37.2/main.js)",
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/profesr-chaos/obsidian-checklist-progress-bar/releases/download/1.1.0/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/obsidiest/obsidian-extended-headings/releases/download/1.0.1/main.js)",
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/puriakazemieh/obsidian-inline-handwriting/releases/download/1.0.16/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/paulMrG2/delightful-obsidian/releases/download/1.0.2/main.js)",
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/rheor108/ebbinghaus-review/releases/download/1.0.7/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/pavel-litvinov/obsidian_chat_gpt_plugin/releases/download/0.3.1/main.js)",
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/rogerdigital/vault-inspector/releases/download/0.8.0/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/pcoletsos/obsidian-dynamic-wide-content/releases/download/1.1.10/main.js)",
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/s-t-i-h-i/obsidian-hevy-plugin/releases/download/1.0.2/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/phoenixyun/obsidian-data-autocomplete/releases/download/0.1.10/main.js)",
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/sapplex-sz/continuous-journal-calendar/releases/download/1.0.1/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/ruveydayilmaz/obsidian-mediavault-plugin/releases/download/1.0.7/main.js)",
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/shuuul/obsidian-marp-extended/releases/download/0.12.0/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/ruzx/chemspec/releases/download/1.0.6/main.js)",
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/spencer1975/obsidian-midjourney-viewer/releases/download/1.0.1/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/saimdeniz/activity-dashboard/releases/download/1.0.7/main.js)",
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/takeshy/obsidian-local-llm-hub/releases/download/0.21.0/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/shangeethsivan/Syncidian/releases/download/0.1.6/main.js)",
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/tamiroh/obsidian-interval-timer/releases/download/0.8.0/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/simonzweers/obsidian-dnd-charactersheet/releases/download/1.2.2/main.js)",
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/tbergeron/obsidian-human-readable-dates/releases/download/1.0.14/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/solankidushyant07/instagram-saves-manager/releases/download/1.0.1/main.js)",
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/travisluong/quick-switch-sidebar/releases/download/1.0.0/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/supralune/obsidian-blog-outbox/releases/download/0.2.0/main.js)",
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/tristanvangarsse/completed-tasks-to-notes/releases/download/1.1.1/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/timrs2998/halyard-fetch/releases/download/0.2.1/main.js)",
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/writerP-777/obsidian-writing-studio/releases/download/3.1.0/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/wanglin2/obsidian-simplemindmap/releases/download/0.2.7/main.js)",
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/xarl3z/magzdown-obsidian/releases/download/1.0.5/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
+      },
+      {
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/xesws/socrates-pen/releases/download/0.27.0/main.js)",
+        "count": 1,
+        "share": 0.0001273723092599669
       },
       {
         "label": "main_js_download_failed:request:error sending request for url (https://github.com/xiwei945/word-count-calendar/releases/download/1.2.10/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/xym-py/progress-dashboard/releases/download/1.0.5/main.js)",
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/yyldps/obsidian-bullet-list-outline/releases/download/1.1.3/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       },
       {
-        "label": "main_js_download_failed:request:error sending request for url (https://github.com/yniany/jotback/releases/download/1.0.2/main.js)",
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/zhaohongxuan/obsidian-weread-plugin/releases/download/2.3.0/main.js)",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
+      },
+      {
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/zhimahuzzz/daily-note-flow/releases/download/0.4.2/main.js)",
+        "count": 1,
+        "share": 0.0001273723092599669
+      },
+      {
+        "label": "main_js_download_failed:request:error sending request for url (https://github.com/zhuzhige123/obsidian-weave-reader/releases/download/0.7.35/main.js)",
+        "count": 1,
+        "share": 0.0001273723092599669
       },
       {
         "label": "no_release",
         "count": 1,
-        "share": 0.00013190871916633689
+        "share": 0.0001273723092599669
       }
     ]
   },
   "repo_analysis": {
-    "tracked": 7756,
-    "active_success": 7134,
-    "active_failures": 15,
-    "removed_skipped": 607,
-    "coverage_rate": 0.9979018044481746,
+    "tracked": 8020,
+    "active_success": 7391,
+    "active_failures": 19,
+    "removed_skipped": 610,
+    "coverage_rate": 0.9974358974358974,
     "failure_samples": [
-      "bases-wrap-text",
-      "canvas-image-clipboard",
-      "custom-context",
-      "dgs-wechat-publisher",
-      "digital-desk"
+      "ai-work-review",
+      "canvas-kanban-sync",
+      "class-timetable",
+      "clippings",
+      "dependent-properties"
     ],
     "error_counts": [
       {
         "label": "repository_missing",
-        "count": 15,
-        "share": 0.00209819555182543
+        "count": 19,
+        "share": 0.002564102564102564
       },
       {
         "label": "manifest_read_error",
         "count": 6,
-        "share": 0.000839278220730172
+        "share": 0.0008097165991902834
       },
       {
         "label": "manifest_parse_error",
         "count": 2,
-        "share": 0.00027975940691005733
+        "share": 0.0002699055330634278
       }
     ]
   }
