@@ -132,5 +132,9 @@ pub fn load_latest_data_update_summary(
     set_panic_hook();
 
     serde_json::from_str::<LatestDataUpdateSummary>(latest_data_update_summary)
+        .map(|mut summary| {
+            summary.group_release_statuses();
+            summary
+        })
         .map_err(|e| JsValue::from_str(&format!("Failed to parse latest data update summary: {e}")))
 }

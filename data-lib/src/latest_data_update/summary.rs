@@ -394,13 +394,52 @@ fn release_status_counts(
 ) -> HashMap<String, usize> {
     let mut counts = HashMap::new();
     for entry in release_entries {
-        let status = entry
-            .latest_release_fetch_status
-            .clone()
-            .unwrap_or_else(|| "unknown".to_string());
+        let status = release_status_label(
+            entry
+                .latest_release_fetch_status
+                .as_deref()
+                .unwrap_or("unknown"),
+        );
         *counts.entry(status).or_insert(0) += 1;
     }
     counts
+}
+
+fn release_status_label(status: &str) -> String {
+    if let Some(details) = status.strip_prefix("main_js_download_failed:") {
+        let category = details.split(':').next().unwrap_or(details);
+        return format!("main_js_download_failed:{category}");
+    }
+    match status.split(':').next().unwrap_or(status) {
+        "request_error" => "request_error".to_string(),
+        "parse_error" => "parse_error".to_string(),
+        _ => status.to_string(),
+    }
+}
+
+impl LatestDataUpdateSummary {
+    /// Also group older summaries whose labels still contain per-plugin diagnostics.
+    pub fn group_release_statuses(&mut self) {
+        self.release_acquisition.status_counts =
+            group_release_statuses(std::mem::take(&mut self.release_acquisition.status_counts));
+    }
+}
+
+fn group_release_statuses(statuses: Vec<CountShare>) -> Vec<CountShare> {
+    let mut grouped: HashMap<String, CountShare> = HashMap::new();
+    for status in statuses {
+        let label = release_status_label(&status.label);
+        let entry = grouped.entry(label.clone()).or_insert(CountShare {
+            label,
+            count: 0,
+            share: 0.0,
+        });
+        entry.count += status.count;
+        entry.share += status.share;
+    }
+    let mut statuses = grouped.into_values().collect::<Vec<_>>();
+    sort_count_shares(&mut statuses);
+    statuses
 }
 
 fn status_counts(labels: impl Iterator<Item = String>, total: usize) -> Vec<CountShare> {
@@ -475,8 +514,54 @@ fn clone_status_label(status: &str) -> &str {
 
 #[cfg(test)]
 mod tests {
-    use super::{clone_status_label, is_release_acquisition_error};
+    use super::{
+        build_release_acquisition_summary, clone_status_label, group_release_statuses,
+        is_release_acquisition_error,
+    };
+    use crate::latest_data_update::{CountShare, PluginReleaseStateEntryInput};
     use crate::plugin::PluginRepoAnalysisError;
+
+    #[test]
+    fn groups_download_request_failures_without_losing_other_failure_categories() {
+        let statuses = [
+            "main_js_download_failed:request:error sending request for url (https://github.com/owner/a/releases/download/1/main.js)",
+            "main_js_download_failed:request:error sending request for url (https://github.com/owner/b/releases/download/2/main.js): connection refused",
+            "main_js_download_failed:write:disk full",
+            "ok",
+        ];
+        let entries = statuses.map(|status| PluginReleaseStateEntryInput {
+            repo: "owner/repo".to_string(),
+            last_checked_unix: 0,
+            latest_release_main_js_size_bytes: None,
+            latest_release_fetch_status: Some(status.to_string()),
+        });
+        let summary = build_release_acquisition_summary(&entries);
+        assert_eq!(summary.error_count, 3);
+        assert_eq!(summary.status_counts.len(), 3);
+        assert_eq!(
+            summary.status_counts[0].label,
+            "main_js_download_failed:request"
+        );
+        assert_eq!(summary.status_counts[0].count, 2);
+        assert_eq!(summary.status_counts[0].share, 0.5);
+
+        let old_counts = statuses
+            .iter()
+            .map(|status| CountShare {
+                label: status.to_string(),
+                count: 1,
+                share: 0.25,
+            })
+            .collect();
+        let grouped = group_release_statuses(old_counts);
+        assert_eq!(grouped.len(), 3);
+        assert_eq!(grouped[0].label, summary.status_counts[0].label);
+        assert_eq!(grouped[0].count, 2);
+        assert_eq!(grouped[0].share, 0.5);
+        let grouped_again = group_release_statuses(grouped);
+        assert_eq!(grouped_again[0].count, 2);
+        assert_eq!(grouped_again[0].share, 0.5);
+    }
 
     #[test]
     fn classifies_repository_missing_code() {

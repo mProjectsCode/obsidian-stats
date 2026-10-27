@@ -34,6 +34,17 @@ const releaseStatusDescriptions: Record<string, string> = {
 };
 
 const compactReleaseStatusDescriptions: Record<string, string> = {
+	'main_js_download_failed:request':
+		'The main.js download request failed before a usable HTTP response was received. See pipeline logs for details.',
+	'main_js_download_failed:http': 'GitHub returned an unsuccessful HTTP response for the main.js download.',
+	'main_js_download_failed:read': 'The main.js response could not be read completely.',
+	'main_js_download_failed:write': 'The main.js file could not be saved to the local cache.',
+	'main_js_download_failed:size_mismatch': 'The downloaded main.js size did not match the release asset size.',
+	'main_js_download_failed:invalid_download_url': 'The release asset URL failed validation.',
+	'main_js_download_failed:invalid_cache_path': 'The plugin cache path failed validation.',
+	'main_js_download_failed:invalid_size': 'The release asset size was outside the allowed bounds.',
+	request_error: 'The release metadata request failed before a usable HTTP response was received.',
+	parse_error: 'The release metadata response could not be parsed.',
 	ok: 'Release and analyzable main.js fetched.',
 	main_js_not_updated_since_success: 'Checked, but kept the previous main.js cache.',
 	no_release_for_version: 'No matching GitHub release was found for the selected plugin version.',
@@ -263,7 +274,7 @@ function formatDay(date: string | null | undefined): string {
 			summary.release_acquisition.status_counts.map(status => (
 				<tr>
 					<td>
-						<code>{status.label}</code>
+						<code>{status.label}</code> ({numberFormatter.format(status.count)})
 					</td>
 					<td>{percentFormatter.format(status.share)}</td>
 					<td>

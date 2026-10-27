@@ -116,7 +116,7 @@ pub(super) fn save_main_js_to_cache(
 
     let response = match request.send() {
         Ok(resp) => resp,
-        Err(err) => return Err(MainJsDownloadError::Request(err.to_string())),
+        Err(err) => return Err(MainJsDownloadError::Request(request_error_detail(&err))),
     };
 
     if rate_limit_remaining_is_zero(response.headers()) {
@@ -158,6 +158,19 @@ pub(super) fn save_main_js_to_cache(
             Err(error)
         }
     }
+}
+
+fn request_error_detail(error: &reqwest::Error) -> String {
+    use std::error::Error;
+
+    let mut detail = error.to_string();
+    let mut source = error.source();
+    while let Some(cause) = source {
+        detail.push_str(": ");
+        detail.push_str(&cause.to_string());
+        source = cause.source();
+    }
+    detail
 }
 
 fn stream_response_to_file(
@@ -225,8 +238,23 @@ pub fn release_main_js_cache_path(plugin_id: &str, release_tag: &str) -> Result<
 
 #[cfg(test)]
 mod tests {
-    use super::rate_limit_remaining_is_zero;
+    use super::{rate_limit_remaining_is_zero, request_error_detail};
     use reqwest::header::{HeaderMap, HeaderValue};
+
+    #[test]
+    fn request_diagnostics_include_the_underlying_cause() {
+        use std::error::Error;
+
+        let error = reqwest::blocking::Client::new()
+            .get("https://[invalid/main.js")
+            .build()
+            .unwrap_err();
+        let cause = error.source().expect("URL error should have a cause");
+        let detail = request_error_detail(&error);
+        assert!(detail.starts_with(&error.to_string()));
+        assert!(detail.contains(&cause.to_string()));
+        assert_ne!(detail, error.to_string());
+    }
 
     #[test]
     fn detects_zero_rate_limit_remaining_header() {
