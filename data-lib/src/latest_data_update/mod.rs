@@ -25,7 +25,6 @@ pub struct ReleaseStatsStateInput {
 }
 
 #[derive(Tsify, Debug, Clone, Serialize, Deserialize)]
-#[tsify(into_wasm_abi)]
 pub struct CountShare {
     pub label: String,
     pub count: usize,
@@ -33,7 +32,6 @@ pub struct CountShare {
 }
 
 #[derive(Tsify, Debug, Clone, Serialize, Deserialize)]
-#[tsify(into_wasm_abi)]
 pub struct LatestDataUpdateSummary {
     pub refreshed_at_unix: Option<i64>,
     pub clone_run_at_unix: Option<i64>,
@@ -51,7 +49,6 @@ pub struct LatestDataUpdateSummary {
 }
 
 #[derive(Tsify, Debug, Clone, Serialize, Deserialize)]
-#[tsify(into_wasm_abi)]
 pub struct PluginSummary {
     pub total: usize,
     pub active: usize,
@@ -61,7 +58,6 @@ pub struct PluginSummary {
 }
 
 #[derive(Tsify, Debug, Clone, Serialize, Deserialize)]
-#[tsify(into_wasm_abi)]
 pub struct ThemeSummary {
     pub total: usize,
     pub active: usize,
@@ -69,7 +65,6 @@ pub struct ThemeSummary {
 }
 
 #[derive(Tsify, Debug, Clone, Serialize, Deserialize)]
-#[tsify(into_wasm_abi)]
 pub struct ReleaseSummary {
     pub changelog_entries: usize,
     pub github_release_snapshots: usize,
@@ -79,7 +74,6 @@ pub struct ReleaseSummary {
 }
 
 #[derive(Tsify, Debug, Clone, Serialize, Deserialize)]
-#[tsify(into_wasm_abi)]
 pub struct CloneSummary {
     pub tracked: usize,
     pub ok: usize,
@@ -91,14 +85,12 @@ pub struct CloneSummary {
 }
 
 #[derive(Tsify, Debug, Clone, Serialize, Deserialize)]
-#[tsify(into_wasm_abi)]
 pub struct LargestMainJs {
     pub repo: Option<String>,
     pub size_bytes: u64,
 }
 
 #[derive(Tsify, Debug, Clone, Serialize, Deserialize)]
-#[tsify(into_wasm_abi)]
 pub struct ReleaseAcquisitionSummary {
     pub tracked: usize,
     pub ok: usize,
@@ -115,7 +107,6 @@ pub struct ReleaseAcquisitionSummary {
 }
 
 #[derive(Tsify, Debug, Clone, Serialize, Deserialize)]
-#[tsify(into_wasm_abi)]
 pub struct RepoAnalysisSummary {
     pub tracked: usize,
     pub active_success: usize,
@@ -127,7 +118,6 @@ pub struct RepoAnalysisSummary {
 }
 
 #[derive(Tsify, Debug, Clone, Serialize, Deserialize)]
-#[tsify(into_wasm_abi)]
 pub struct PluginPageCloneFreshness {
     pub repo: String,
     pub target_release_tag: Option<String>,
@@ -137,7 +127,6 @@ pub struct PluginPageCloneFreshness {
 }
 
 #[derive(Tsify, Debug, Clone, Serialize, Deserialize)]
-#[tsify(into_wasm_abi)]
 pub struct PluginPageReleaseFreshness {
     pub repo: String,
     pub last_checked_unix: i64,
@@ -145,7 +134,6 @@ pub struct PluginPageReleaseFreshness {
 }
 
 #[derive(Tsify, Debug, Clone, Serialize)]
-#[tsify(into_wasm_abi)]
 pub struct PluginPageFreshness {
     pub summary: LatestDataUpdateSummary,
     pub clone: Option<PluginPageCloneFreshness>,
@@ -188,6 +176,25 @@ impl PluginPageFreshnessData {
 }
 
 #[wasm_bindgen]
+impl PluginPageFreshnessData {
+    #[wasm_bindgen(js_name = summary)]
+    pub fn summary_wasm(
+        &self,
+    ) -> Result<tsify::Ts<LatestDataUpdateSummary>, wasm_bindgen::JsError> {
+        let value = self.summary();
+        crate::wasm::to_ts(value)
+    }
+
+    #[wasm_bindgen(js_name = get)]
+    pub fn get_wasm(
+        &self,
+        plugin_id: &str,
+    ) -> Result<tsify::Ts<PluginPageFreshness>, wasm_bindgen::JsError> {
+        let value = self.get(plugin_id);
+        crate::wasm::to_ts(value)
+    }
+}
+
 impl PluginPageFreshnessData {
     pub fn summary(&self) -> LatestDataUpdateSummary {
         self.summary.clone()

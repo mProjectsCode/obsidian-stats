@@ -9,6 +9,7 @@ use data_lib::{
     release::{GithubReleaseInfo, ObsidianReleaseInfo, data_array::ReleaseDataArray},
     theme::{ThemeData, data_array::ThemeDataArray},
 };
+use tsify::Ts;
 use wasm_bindgen::prelude::*;
 
 use crate::utils::set_panic_hook;
@@ -128,13 +129,13 @@ pub fn load_plugin_page_freshness_data(
 #[wasm_bindgen]
 pub fn load_latest_data_update_summary(
     latest_data_update_summary: &str,
-) -> Result<LatestDataUpdateSummary, JsValue> {
+) -> Result<Ts<LatestDataUpdateSummary>, JsValue> {
     set_panic_hook();
 
-    serde_json::from_str::<LatestDataUpdateSummary>(latest_data_update_summary)
-        .map(|mut summary| {
-            summary.group_release_statuses();
-            summary
-        })
-        .map_err(|e| JsValue::from_str(&format!("Failed to parse latest data update summary: {e}")))
+    let mut summary = serde_json::from_str::<LatestDataUpdateSummary>(latest_data_update_summary)
+        .map_err(|e| {
+        JsValue::from_str(&format!("Failed to parse latest data update summary: {e}"))
+    })?;
+    summary.group_release_statuses();
+    Ts::from_rust(&summary).map_err(|e| JsValue::from_str(&e.to_string()))
 }

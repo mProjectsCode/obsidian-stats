@@ -16,6 +16,102 @@ use super::{PluginDataArray, PluginDataArrayView};
 #[wasm_bindgen]
 impl PluginDataArrayView {
     /// Get the total downloads (sum of all plugins in the view).
+    #[wasm_bindgen(js_name = total_download_data)]
+    pub fn total_download_data_wasm(
+        &self,
+        data: &PluginDataArray,
+    ) -> Result<Vec<tsify::Ts<DownloadDataPoint>>, wasm_bindgen::JsError> {
+        let value = self.total_download_data(data);
+        crate::wasm::to_ts_vec(value)
+    }
+
+    #[wasm_bindgen(js_name = individual_download_data)]
+    pub fn individual_download_data_wasm(
+        &self,
+        data: &PluginDataArray,
+    ) -> Result<Vec<tsify::Ts<IndividualDownloadDataPoint>>, wasm_bindgen::JsError> {
+        let value = self.individual_download_data(data);
+        crate::wasm::to_ts_vec(value)
+    }
+
+    #[wasm_bindgen(js_name = overview)]
+    pub fn overview_wasm(
+        &self,
+        data: &PluginDataArray,
+    ) -> Result<Vec<tsify::Ts<OverviewDataPoint>>, wasm_bindgen::JsError> {
+        let value = self.overview(data);
+        crate::wasm::to_ts_vec(value)
+    }
+
+    #[wasm_bindgen(js_name = most_downloaded)]
+    pub fn most_downloaded_wasm(
+        &self,
+        data: &PluginDataArray,
+        count: usize,
+        year: Option<u32>,
+        restrict_release_date: bool,
+    ) -> Result<Vec<tsify::Ts<HallOfFameDataPoint>>, wasm_bindgen::JsError> {
+        let value = self.most_downloaded(data, count, year, restrict_release_date);
+        crate::wasm::to_ts_vec(value)
+    }
+
+    #[wasm_bindgen(js_name = monthly_count)]
+    pub fn monthly_count_wasm(
+        &self,
+        data: &PluginDataArray,
+    ) -> Result<Vec<tsify::Ts<CountMonthlyDataPoint>>, wasm_bindgen::JsError> {
+        let value = self.monthly_count(data);
+        crate::wasm::to_ts_vec(value)
+    }
+
+    #[wasm_bindgen(js_name = removed_by_release_month)]
+    pub fn removed_by_release_month_wasm(
+        &self,
+        data: &PluginDataArray,
+    ) -> Result<Vec<tsify::Ts<RemovedByReleaseDataPoint>>, wasm_bindgen::JsError> {
+        let value = self.removed_by_release_month(data);
+        crate::wasm::to_ts_vec(value)
+    }
+
+    #[wasm_bindgen(js_name = inactivity_by_release_month)]
+    pub fn inactivity_by_release_month_wasm(
+        &self,
+        data: &PluginDataArray,
+    ) -> Result<Vec<tsify::Ts<InactivityByReleaseDataPoint>>, wasm_bindgen::JsError> {
+        let value = self.inactivity_by_release_month(data);
+        crate::wasm::to_ts_vec(value)
+    }
+
+    pub fn inactivity_distribution(&self, data: &PluginDataArray) -> Vec<i32> {
+        let mut tmp: Vec<_> = self
+            .iter_data(data)
+            .map(|item| Date::now().diff_in_days(&item.last_updated()).abs())
+            .collect();
+        tmp.sort_by(|a, b| b.cmp(a));
+        tmp
+    }
+
+    #[wasm_bindgen(js_name = updates_weekly)]
+    pub fn updates_weekly_wasm(
+        &self,
+        data: &PluginDataArray,
+    ) -> Result<Vec<tsify::Ts<NamedDataPoint>>, wasm_bindgen::JsError> {
+        let value = self.updates_weekly(data);
+        crate::wasm::to_ts_vec(value)
+    }
+
+    /// Calculate all milestones reached, grouped by month and sorted newest first
+    #[wasm_bindgen(js_name = calculate_milestones)]
+    pub fn calculate_milestones_wasm(
+        &self,
+        data: &PluginDataArray,
+    ) -> Result<Vec<tsify::Ts<MilestoneMonthGroup>>, wasm_bindgen::JsError> {
+        let value = self.calculate_milestones(data);
+        crate::wasm::to_ts_vec(value)
+    }
+}
+
+impl PluginDataArrayView {
     pub fn total_download_data(&self, data: &PluginDataArray) -> Vec<DownloadDataPoint> {
         let start_date = Date::new(2020, 11, 1);
         let end_date = Date::now();
@@ -286,15 +382,6 @@ impl PluginDataArrayView {
             .collect()
     }
 
-    pub fn inactivity_distribution(&self, data: &PluginDataArray) -> Vec<i32> {
-        let mut tmp: Vec<_> = self
-            .iter_data(data)
-            .map(|item| Date::now().diff_in_days(&item.last_updated()).abs())
-            .collect();
-        tmp.sort_by(|a, b| b.cmp(a));
-        tmp
-    }
-
     pub fn updates_weekly(&self, data: &PluginDataArray) -> Vec<NamedDataPoint> {
         let mut points = vec![];
 
@@ -316,7 +403,6 @@ impl PluginDataArrayView {
         points
     }
 
-    /// Calculate all milestones reached, grouped by month and sorted newest first
     pub fn calculate_milestones(&self, data: &PluginDataArray) -> Vec<MilestoneMonthGroup> {
         let milestone_data = milestones::calculate_milestones(data, self);
 

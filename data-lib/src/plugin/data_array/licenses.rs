@@ -10,6 +10,20 @@ use super::{PluginDataArray, PluginDataArrayView};
 
 #[wasm_bindgen]
 impl PluginDataArrayView {
+    #[wasm_bindgen(js_name = license_data_points)]
+    pub fn license_data_points_wasm(
+        &self,
+        data: &PluginDataArray,
+        license_data_string: String,
+    ) -> Result<tsify::Ts<PluginLicenseDataPoints>, wasm_bindgen::JsError> {
+        let value = self
+            .license_data_points(data, license_data_string)
+            .map_err(|error| wasm_bindgen::JsError::new(&error))?;
+        crate::wasm::to_ts(value)
+    }
+}
+
+impl PluginDataArrayView {
     pub fn license_data_points(
         &self,
         data: &PluginDataArray,

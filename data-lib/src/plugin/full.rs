@@ -177,10 +177,10 @@ impl FullPluginData {
         format!("https://github.com/{}", self.data.current_entry.repo)
     }
 
-    pub fn funding_url(&self) -> Option<FundingUrl> {
-        self.repo_data()
-            .and_then(|r| r.manifest.as_ref())
-            .and_then(|manifest| manifest.funding_url.clone())
+    #[wasm_bindgen(js_name = funding_url)]
+    pub fn funding_url_wasm(&self) -> Result<Option<tsify::Ts<FundingUrl>>, wasm_bindgen::JsError> {
+        let value = self.funding_url();
+        value.map(crate::wasm::to_ts).transpose()
     }
 
     pub fn author_url(&self) -> Option<String> {
@@ -224,15 +224,18 @@ impl FullPluginData {
         }
     }
 
-    pub fn added_commit(&self) -> StringCommit {
-        self.data.added_commit.to_string_commit()
+    #[wasm_bindgen(js_name = added_commit)]
+    pub fn added_commit_wasm(&self) -> Result<tsify::Ts<StringCommit>, wasm_bindgen::JsError> {
+        let value = self.added_commit();
+        crate::wasm::to_ts(value)
     }
 
-    pub fn removed_commit(&self) -> Option<StringCommit> {
-        self.data
-            .removed_commit
-            .as_ref()
-            .map(|c| c.to_string_commit())
+    #[wasm_bindgen(js_name = removed_commit)]
+    pub fn removed_commit_wasm(
+        &self,
+    ) -> Result<Option<tsify::Ts<StringCommit>>, wasm_bindgen::JsError> {
+        let value = self.removed_commit();
+        value.map(crate::wasm::to_ts).transpose()
     }
 
     pub fn last_updated_date(&self) -> Option<String> {
@@ -354,16 +357,28 @@ impl FullPluginData {
         self.repo_data().and_then(|r| r.main_js_minification_score)
     }
 
-    pub fn main_js_findings(&self) -> Option<Vec<MainJsFinding>> {
-        self.repo_data().map(|r| r.main_js_findings.clone())
+    #[wasm_bindgen(js_name = main_js_findings)]
+    pub fn main_js_findings_wasm(
+        &self,
+    ) -> Result<Option<Vec<tsify::Ts<MainJsFinding>>>, wasm_bindgen::JsError> {
+        let value = self.main_js_findings();
+        value.map(crate::wasm::to_ts_vec).transpose()
     }
 
-    pub fn main_js_disclosures(&self) -> Option<Vec<MainJsDisclosure>> {
-        self.repo_data().map(|r| r.main_js_disclosures.clone())
+    #[wasm_bindgen(js_name = main_js_disclosures)]
+    pub fn main_js_disclosures_wasm(
+        &self,
+    ) -> Result<Option<Vec<tsify::Ts<MainJsDisclosure>>>, wasm_bindgen::JsError> {
+        let value = self.main_js_disclosures();
+        value.map(crate::wasm::to_ts_vec).transpose()
     }
 
-    pub fn main_js_diagnostics(&self) -> Option<Vec<MainJsDiagnostic>> {
-        self.repo_data().map(|r| r.main_js_diagnostics.clone())
+    #[wasm_bindgen(js_name = main_js_diagnostics)]
+    pub fn main_js_diagnostics_wasm(
+        &self,
+    ) -> Result<Option<Vec<tsify::Ts<MainJsDiagnostic>>>, wasm_bindgen::JsError> {
+        let value = self.main_js_diagnostics();
+        value.map(crate::wasm::to_ts_vec).transpose()
     }
 
     pub fn latest_release_tag(&self) -> Option<String> {
@@ -434,6 +449,73 @@ impl FullPluginData {
     ///     delta: number | undefined; // e.g. 10 (change from previous data point)
     /// }
     /// ```
+    #[wasm_bindgen(js_name = download_data_points)]
+    pub fn download_data_points_wasm(
+        &self,
+    ) -> Result<Vec<tsify::Ts<DownloadDataPoint>>, wasm_bindgen::JsError> {
+        let value = self.download_data_points();
+        crate::wasm::to_ts_vec(value)
+    }
+
+    #[wasm_bindgen(js_name = warnings)]
+    pub fn warnings_wasm(&self) -> Result<Vec<tsify::Ts<PluginWarning>>, wasm_bindgen::JsError> {
+        let value = self.warnings();
+        crate::wasm::to_ts_vec(value)
+    }
+
+    #[wasm_bindgen(js_name = versions)]
+    pub fn versions_wasm(&self) -> Result<Vec<tsify::Ts<VersionDataPoint>>, wasm_bindgen::JsError> {
+        let value = self.versions();
+        crate::wasm::to_ts_vec(value)
+    }
+
+    #[wasm_bindgen(js_name = changes)]
+    pub fn changes_wasm(
+        &self,
+    ) -> Result<Vec<tsify::Ts<EntryChangeDataPoint>>, wasm_bindgen::JsError> {
+        let value = self.changes();
+        crate::wasm::to_ts_vec(value)
+    }
+
+    #[wasm_bindgen(js_name = loc)]
+    pub fn loc_wasm(
+        &self,
+    ) -> Result<Option<Vec<tsify::Ts<NamedDataPoint>>>, wasm_bindgen::JsError> {
+        let value = self.loc();
+        value.map(crate::wasm::to_ts_vec).transpose()
+    }
+}
+
+impl FullPluginData {
+    pub fn funding_url(&self) -> Option<FundingUrl> {
+        self.repo_data()
+            .and_then(|r| r.manifest.as_ref())
+            .and_then(|manifest| manifest.funding_url.clone())
+    }
+
+    pub fn added_commit(&self) -> StringCommit {
+        self.data.added_commit.to_string_commit()
+    }
+
+    pub fn removed_commit(&self) -> Option<StringCommit> {
+        self.data
+            .removed_commit
+            .as_ref()
+            .map(|c| c.to_string_commit())
+    }
+
+    pub fn main_js_findings(&self) -> Option<Vec<MainJsFinding>> {
+        self.repo_data().map(|r| r.main_js_findings.clone())
+    }
+
+    pub fn main_js_disclosures(&self) -> Option<Vec<MainJsDisclosure>> {
+        self.repo_data().map(|r| r.main_js_disclosures.clone())
+    }
+
+    pub fn main_js_diagnostics(&self) -> Option<Vec<MainJsDiagnostic>> {
+        self.repo_data().map(|r| r.main_js_diagnostics.clone())
+    }
+
     pub fn download_data_points(&self) -> Vec<DownloadDataPoint> {
         let end_date = self
             .data
@@ -464,10 +546,6 @@ impl FullPluginData {
                 }
             })
             .collect()
-    }
-
-    pub fn warnings(&self) -> Vec<PluginWarning> {
-        get_plugin_warnings(self)
     }
 
     pub fn versions(&self) -> Vec<VersionDataPoint> {
@@ -507,5 +585,11 @@ impl FullPluginData {
                 })
                 .collect()
         })
+    }
+}
+
+impl FullPluginData {
+    pub fn warnings(&self) -> Vec<PluginWarning> {
+        get_plugin_warnings(self)
     }
 }

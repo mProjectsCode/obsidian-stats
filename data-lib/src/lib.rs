@@ -10,3 +10,5 @@ pub mod release;
 pub mod spline;
 pub mod theme;
 pub mod version;
+
+mod wasm;

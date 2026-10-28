@@ -11,18 +11,14 @@ crate-type = ["cdylib", "rlib"]
 default = ["console_error_panic_hook"]
 
 [dependencies]
+tsify = {version = "0.5.8", features = ["js"]}
 wasm-bindgen = "0.2.101"
 data-lib = { version = "*", path = "../data-lib" }
-serde = {version = "1.0.219", features = ["derive"]}
-serde-deserialize-duplicates = "0.1.2"
 serde_json = {version = "1.0.140", features = ["raw_value"]}
 console_error_panic_hook = { version = "0.1.7", optional = true }
 
 [dev-dependencies]
 wasm-bindgen-test = "0.3.34"
-
-[profile.release]
-opt-level = 3
 
 [package.metadata.wasm-pack.profile.release]
 wasm-opt = false            # Disable wasm-opt, because it's very slow.

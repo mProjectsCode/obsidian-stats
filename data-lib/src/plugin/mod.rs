@@ -40,7 +40,6 @@ pub struct PluginData {
 
 #[derive(Tsify, Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
-#[tsify(into_wasm_abi)]
 pub enum FundingUrl {
     String(String),
     Object(HashMap<String, String>),
@@ -139,7 +138,6 @@ pub struct PluginRepoData {
 }
 
 #[derive(Tsify, Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[tsify(into_wasm_abi)]
 pub struct MainJsFinding {
     pub rule_id: String,
     pub description: String,
@@ -151,14 +149,12 @@ pub struct MainJsFinding {
 }
 
 #[derive(Tsify, Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[tsify(into_wasm_abi)]
 pub struct MainJsDisclosure {
     pub id: String,
     pub from_rule_id: String,
 }
 
 #[derive(Tsify, Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[tsify(into_wasm_abi)]
 pub struct MainJsEvidence {
     pub message: String,
     #[serde(default = "default_evidence_count")]
@@ -166,7 +162,6 @@ pub struct MainJsEvidence {
 }
 
 #[derive(Tsify, Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[tsify(into_wasm_abi)]
 pub struct MainJsLocation {
     pub start_line: u32,
     pub start_column: u32,
@@ -175,7 +170,6 @@ pub struct MainJsLocation {
 }
 
 #[derive(Tsify, Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[tsify(into_wasm_abi)]
 pub struct MainJsDiagnostic {
     pub code: String,
     pub message: String,
@@ -478,7 +472,6 @@ mod serialization_tests {
 }
 
 #[derive(Tsify, Debug, Clone, Serialize, Default)]
-#[tsify(into_wasm_abi)]
 /// All data is in percentages.
 pub struct PluginRepoDataPoints {
     bundlers: Vec<NamedDataPoint>,
@@ -493,7 +486,6 @@ pub struct PluginRepoDataPoints {
 }
 
 #[derive(Tsify, Debug, Clone, Serialize)]
-#[tsify(into_wasm_abi)]
 pub struct PluginLicenseDataPoints {
     licenses: Vec<NamedDataPoint>,
     permissions: Vec<NamedDataPoint>,

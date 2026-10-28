@@ -138,7 +138,6 @@ pub fn get_asset_cpu_instruction_set(
 }
 
 #[derive(Tsify, Debug, Clone, Serialize, Deserialize)]
-#[tsify(into_wasm_abi)]
 pub struct ChangelogDataPoint {
     pub minor_version: String,
     pub first_public_version: String,
@@ -149,7 +148,6 @@ pub struct ChangelogDataPoint {
 }
 
 #[derive(Tsify, Debug, Clone, Hash, PartialEq, Eq)]
-#[tsify(into_wasm_abi)]
 pub enum ChangeLogChangeCategory {
     BreakingChange,
     BugFix,
@@ -233,7 +231,6 @@ impl From<&str> for ChangeLogChangeCategory {
 }
 
 #[derive(Tsify, Debug, Clone, Serialize)]
-#[tsify(into_wasm_abi)]
 pub struct ChangelogChanges {
     pub version: Version,
     pub version_string: String,

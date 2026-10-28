@@ -626,10 +626,8 @@ dependencies = [
  "chumsky",
  "hashbrown 0.17.1",
  "js-sys",
- "rayon",
  "regex",
  "serde",
- "serde-deserialize-duplicates",
  "serde_json",
  "thiserror 2.0.21",
  "tsify",
@@ -642,9 +640,8 @@ version = "0.1.0"
 dependencies = [
  "console_error_panic_hook",
  "data-lib",
- "serde",
- "serde-deserialize-duplicates",
  "serde_json",
+ "tsify",
  "wasm-bindgen",
  "wasm-bindgen-test",
 ]

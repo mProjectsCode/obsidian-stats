@@ -85,6 +85,35 @@ impl ThemeDataArrayView {
         self.data.iter().map(|&index| data[index].clone()).collect()
     }
 
+    #[wasm_bindgen(js_name = overview)]
+    pub fn overview_wasm(
+        &self,
+        data: &ThemeDataArray,
+    ) -> Result<Vec<tsify::Ts<OverviewDataPoint>>, wasm_bindgen::JsError> {
+        let value = self.overview(data);
+        crate::wasm::to_ts_vec(value)
+    }
+
+    #[wasm_bindgen(js_name = monthly_count)]
+    pub fn monthly_count_wasm(
+        &self,
+        data: &ThemeDataArray,
+    ) -> Result<Vec<tsify::Ts<CountMonthlyDataPoint>>, wasm_bindgen::JsError> {
+        let value = self.monthly_count(data);
+        crate::wasm::to_ts_vec(value)
+    }
+
+    #[wasm_bindgen(js_name = removed_by_release_month)]
+    pub fn removed_by_release_month_wasm(
+        &self,
+        data: &ThemeDataArray,
+    ) -> Result<Vec<tsify::Ts<RemovedByReleaseDataPoint>>, wasm_bindgen::JsError> {
+        let value = self.removed_by_release_month(data);
+        crate::wasm::to_ts_vec(value)
+    }
+}
+
+impl ThemeDataArrayView {
     pub fn overview(&self, data: &ThemeDataArray) -> Vec<OverviewDataPoint> {
         self.data
             .iter()

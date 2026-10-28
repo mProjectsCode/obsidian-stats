@@ -77,6 +77,30 @@ impl ThemeData {
         }
     }
 
+    #[wasm_bindgen(js_name = added_commit)]
+    pub fn added_commit_wasm(&self) -> Result<tsify::Ts<StringCommit>, wasm_bindgen::JsError> {
+        let value = self.added_commit();
+        crate::wasm::to_ts(value)
+    }
+
+    #[wasm_bindgen(js_name = removed_commit)]
+    pub fn removed_commit_wasm(
+        &self,
+    ) -> Result<Option<tsify::Ts<StringCommit>>, wasm_bindgen::JsError> {
+        let value = self.removed_commit();
+        value.map(crate::wasm::to_ts).transpose()
+    }
+
+    #[wasm_bindgen(js_name = changes)]
+    pub fn changes_wasm(
+        &self,
+    ) -> Result<Vec<tsify::Ts<EntryChangeDataPoint>>, wasm_bindgen::JsError> {
+        let value = self.changes();
+        crate::wasm::to_ts_vec(value)
+    }
+}
+
+impl ThemeData {
     pub fn added_commit(&self) -> StringCommit {
         self.added_commit.to_string_commit()
     }

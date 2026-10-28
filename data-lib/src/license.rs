@@ -15,7 +15,6 @@ pub struct LicenseData {
 }
 
 #[derive(Tsify, Debug, Clone, Serialize, Deserialize)]
-#[tsify(into_wasm_abi)]
 pub struct LicenseDescription {
     pub description: String,
     pub label: String,
@@ -23,7 +22,6 @@ pub struct LicenseDescription {
 }
 
 #[derive(Tsify, Debug, Clone, Serialize, Deserialize)]
-#[tsify(into_wasm_abi)]
 pub struct LicenseDescriptionNested {
     pub permissions: Vec<LicenseDescription>,
     pub conditions: Vec<LicenseDescription>,

@@ -5,3 +5,6 @@ members = [
     "data-lib",
     "data-wasm"
 ]
+
+[profile.release]
+opt-level = 3

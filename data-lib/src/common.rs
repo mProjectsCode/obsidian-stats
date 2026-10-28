@@ -166,7 +166,6 @@ fn default_true() -> bool {
 }
 
 #[derive(Tsify, Debug, Clone, Serialize)]
-#[tsify(into_wasm_abi)]
 pub struct OverviewDataPoint {
     pub id: String,
     pub name: String,
@@ -178,7 +177,6 @@ pub struct OverviewDataPoint {
 }
 
 #[derive(Tsify, Debug, Clone, Serialize, Deserialize)]
-#[tsify(into_wasm_abi)]
 pub struct DownloadDataPoint {
     pub date: String,
     pub downloads: Option<u32>,
@@ -186,7 +184,6 @@ pub struct DownloadDataPoint {
 }
 
 #[derive(Tsify, Debug, Clone, Serialize, Deserialize)]
-#[tsify(into_wasm_abi)]
 pub struct MultiDownloadDataPoint {
     pub date: String,
     pub category: String,
@@ -195,7 +192,6 @@ pub struct MultiDownloadDataPoint {
 }
 
 #[derive(Tsify, Debug, Clone, Serialize, Deserialize)]
-#[tsify(into_wasm_abi)]
 pub struct VersionDataPoint {
     pub version: String,
     pub date: String,
@@ -205,7 +201,6 @@ pub struct VersionDataPoint {
 }
 
 #[derive(Tsify, Debug, Clone, Serialize)]
-#[tsify(into_wasm_abi)]
 pub struct EntryChangeDataPoint {
     pub property: String,
     pub commit: StringCommit,
@@ -214,7 +209,6 @@ pub struct EntryChangeDataPoint {
 }
 
 #[derive(Tsify, Debug, Clone, Serialize)]
-#[tsify(into_wasm_abi)]
 pub struct IndividualDownloadDataPoint {
     pub id: String,
     pub name: String,
@@ -225,7 +219,6 @@ pub struct IndividualDownloadDataPoint {
 }
 
 #[derive(Tsify, Debug, Clone, Serialize)]
-#[tsify(into_wasm_abi)]
 pub struct HallOfFameDataPoint {
     pub id: String,
     pub name: String,
@@ -235,7 +228,6 @@ pub struct HallOfFameDataPoint {
 }
 
 #[derive(Tsify, Debug, Clone, Serialize)]
-#[tsify(into_wasm_abi)]
 pub struct CountMonthlyDataPoint {
     pub date: String,
     pub total: u32,
@@ -245,14 +237,12 @@ pub struct CountMonthlyDataPoint {
 }
 
 #[derive(Tsify, Debug, Clone, Serialize)]
-#[tsify(into_wasm_abi)]
 pub struct RemovedByReleaseDataPoint {
     pub date: String,
     pub percentage: f64,
 }
 
 #[derive(Tsify, Debug, Clone, Serialize)]
-#[tsify(into_wasm_abi)]
 pub struct InactivityByReleaseDataPoint {
     pub date: String,
     pub inactive_one_year: f64,
@@ -263,7 +253,6 @@ pub struct InactivityByReleaseDataPoint {
 }
 
 #[derive(Tsify, Debug, Clone, Serialize)]
-#[tsify(into_wasm_abi)]
 pub struct NamedDataPoint {
     pub name: String,
     pub value: f64,
@@ -289,7 +278,6 @@ pub fn to_percentage(value: &mut f64, total: f64) {
 }
 
 #[derive(Tsify, Debug, Clone, Serialize)]
-#[tsify(into_wasm_abi)]
 pub struct StackedNamedDataPoint {
     pub name: String,
     pub layer: String,
@@ -297,14 +285,12 @@ pub struct StackedNamedDataPoint {
 }
 
 #[derive(Tsify, Debug, Clone, Serialize)]
-#[tsify(into_wasm_abi)]
 pub struct MilestoneMonthGroup {
     pub month: String,
     pub milestones: Vec<MilestoneDataPoint>,
 }
 
 #[derive(Tsify, Debug, Clone, Serialize)]
-#[tsify(into_wasm_abi)]
 pub struct MilestoneDataPoint {
     pub milestone_type: String,
     pub milestone_value: u32,

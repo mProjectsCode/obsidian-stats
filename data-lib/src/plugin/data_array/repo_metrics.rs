@@ -13,82 +13,301 @@ use super::{PluginDataArray, PluginDataArrayView};
 
 #[wasm_bindgen]
 impl PluginDataArrayView {
-    pub fn repo_data_points(&self, data: &PluginDataArray) -> PluginRepoDataPoints {
-        let mut points = PluginRepoDataPoints::default();
+    #[wasm_bindgen(js_name = repo_data_points)]
+    pub fn repo_data_points_wasm(
+        &self,
+        data: &PluginDataArray,
+    ) -> Result<tsify::Ts<PluginRepoDataPoints>, wasm_bindgen::JsError> {
+        let value = self.repo_data_points(data);
+        crate::wasm::to_ts(value)
+    }
+
+    /// Named data points for mismatched data between the plugin's repo data and the current entry in the community list.
+    /// The data is in percentage form.
+    #[wasm_bindgen(js_name = mismatched_data)]
+    pub fn mismatched_data_wasm(
+        &self,
+        data: &PluginDataArray,
+    ) -> Result<Vec<tsify::Ts<NamedDataPoint>>, wasm_bindgen::JsError> {
+        let value = self.mismatched_data(data);
+        crate::wasm::to_ts_vec(value)
+    }
+
+    /// Usage percentages of optional manifest fields across all plugins in the view.
+    #[wasm_bindgen(js_name = optional_manifest_fields)]
+    pub fn optional_manifest_fields_wasm(
+        &self,
+        data: &PluginDataArray,
+    ) -> Result<Vec<tsify::Ts<NamedDataPoint>>, wasm_bindgen::JsError> {
+        let value = self.optional_manifest_fields(data);
+        crate::wasm::to_ts_vec(value)
+    }
+
+    #[wasm_bindgen(js_name = desktop_only_data)]
+    pub fn desktop_only_data_wasm(
+        &self,
+        data: &PluginDataArray,
+    ) -> Result<Vec<tsify::Ts<NamedDataPoint>>, wasm_bindgen::JsError> {
+        let value = self.desktop_only_data(data);
+        crate::wasm::to_ts_vec(value)
+    }
+
+    #[wasm_bindgen(js_name = lines_of_code_by_language)]
+    pub fn lines_of_code_by_language_wasm(
+        &self,
+        data: &PluginDataArray,
+    ) -> Result<Vec<tsify::Ts<NamedDataPoint>>, wasm_bindgen::JsError> {
+        let value = self.lines_of_code_by_language(data);
+        crate::wasm::to_ts_vec(value)
+    }
+
+    #[wasm_bindgen(js_name = lines_of_code_by_language_usage)]
+    pub fn lines_of_code_by_language_usage_wasm(
+        &self,
+        data: &PluginDataArray,
+    ) -> Result<Vec<tsify::Ts<NamedDataPoint>>, wasm_bindgen::JsError> {
+        let value = self.lines_of_code_by_language_usage(data);
+        crate::wasm::to_ts_vec(value)
+    }
+
+    #[wasm_bindgen(js_name = file_count_by_extension)]
+    pub fn file_count_by_extension_wasm(
+        &self,
+        data: &PluginDataArray,
+    ) -> Result<Vec<tsify::Ts<NamedDataPoint>>, wasm_bindgen::JsError> {
+        let value = self.file_count_by_extension(data);
+        crate::wasm::to_ts_vec(value)
+    }
+
+    pub fn lines_of_code_distribution(&self, data: &PluginDataArray) -> Vec<u32> {
+        let mut tmp: Vec<_> = self
+            .iter_data(data)
+            .map(|item| {
+                let Some(repo_data) = item.repo_data() else {
+                    return 0;
+                };
+
+                repo_data
+                    .lines_of_code
+                    .iter()
+                    .filter(|(lang, _)| !LOC_EXCLUDED.contains(&lang.as_str()))
+                    .map(|(_, loc)| loc)
+                    .sum::<usize>() as u32
+            })
+            .filter(|&count| count > 0)
+            .collect();
+
+        tmp.sort_by(|a, b| b.cmp(a));
+        tmp
+    }
+
+    pub fn file_count_distribution(&self, data: &PluginDataArray) -> Vec<u32> {
+        let mut tmp: Vec<_> = self
+            .iter_data(data)
+            .map(|item| {
+                let Some(repo_data) = item.repo_data() else {
+                    return 0;
+                };
+
+                repo_data
+                    .file_type_counts
+                    .iter()
+                    .filter(|(ext, _)| FILE_EXT_INCLUDED.contains(&ext.to_lowercase().as_str()))
+                    .map(|(_, count)| count)
+                    .sum::<usize>() as u32
+            })
+            .filter(|&count| count > 0)
+            .collect();
+
+        tmp.sort_by(|a, b| b.cmp(a));
+        tmp
+    }
+
+    pub fn release_size_distribution(&self, data: &PluginDataArray) -> Vec<u32> {
+        let mut tmp: Vec<_> = self
+            .iter_data(data)
+            .filter_map(|item| {
+                let repo_data = item.repo_data()?;
+                repo_data
+                    .latest_release_main_js_size_bytes
+                    .map(|size| size.min(u32::MAX as u64) as u32)
+            })
+            .filter(|&size| size > 0)
+            .collect();
+
+        tmp.sort_by(|a, b| b.cmp(a));
+        tmp
+    }
+
+    /// Return plugin IDs sorted by latest release `main.js` size, largest first.
+    pub fn top_release_size_plugin_ids(&self, data: &PluginDataArray, count: usize) -> Vec<String> {
+        top_release_sizes(self, data)
+            .into_iter()
+            .take(count)
+            .map(|(id, _)| id)
+            .collect()
+    }
+
+    /// Return top plugins by latest release `main.js` size.
+    /// The `name` field contains the plugin ID and the `value` field contains bytes.
+    #[wasm_bindgen(js_name = top_release_size_plugins)]
+    pub fn top_release_size_plugins_wasm(
+        &self,
+        data: &PluginDataArray,
+        count: usize,
+    ) -> Result<Vec<tsify::Ts<NamedDataPoint>>, wasm_bindgen::JsError> {
+        let value = self.top_release_size_plugins(data, count);
+        crate::wasm::to_ts_vec(value)
+    }
+
+    #[wasm_bindgen(js_name = es_version_distribution)]
+    pub fn es_version_distribution_wasm(
+        &self,
+        data: &PluginDataArray,
+    ) -> Result<Vec<tsify::Ts<NamedDataPoint>>, wasm_bindgen::JsError> {
+        let value = self.es_version_distribution(data);
+        crate::wasm::to_ts_vec(value)
+    }
+
+    #[wasm_bindgen(js_name = release_fetch_status_distribution)]
+    pub fn release_fetch_status_distribution_wasm(
+        &self,
+        data: &PluginDataArray,
+    ) -> Result<Vec<tsify::Ts<NamedDataPoint>>, wasm_bindgen::JsError> {
+        let value = self.release_fetch_status_distribution(data);
+        crate::wasm::to_ts_vec(value)
+    }
+
+    #[wasm_bindgen(js_name = main_js_disclosure_distribution)]
+    pub fn main_js_disclosure_distribution_wasm(
+        &self,
+        data: &PluginDataArray,
+    ) -> Result<Vec<tsify::Ts<NamedDataPoint>>, wasm_bindgen::JsError> {
+        let value = self.main_js_disclosure_distribution(data);
+        crate::wasm::to_ts_vec(value)
+    }
+
+    #[wasm_bindgen(js_name = main_js_finding_distribution)]
+    pub fn main_js_finding_distribution_wasm(
+        &self,
+        data: &PluginDataArray,
+    ) -> Result<Vec<tsify::Ts<NamedDataPoint>>, wasm_bindgen::JsError> {
+        let value = self.main_js_finding_distribution(data);
+        crate::wasm::to_ts_vec(value)
+    }
+
+    #[wasm_bindgen(js_name = main_js_severity_distribution)]
+    pub fn main_js_severity_distribution_wasm(
+        &self,
+        data: &PluginDataArray,
+    ) -> Result<Vec<tsify::Ts<NamedDataPoint>>, wasm_bindgen::JsError> {
+        let value = self.main_js_severity_distribution(data);
+        crate::wasm::to_ts_vec(value)
+    }
+
+    #[wasm_bindgen(js_name = main_js_minified_distribution)]
+    pub fn main_js_minified_distribution_wasm(
+        &self,
+        data: &PluginDataArray,
+    ) -> Result<Vec<tsify::Ts<NamedDataPoint>>, wasm_bindgen::JsError> {
+        let value = self.main_js_minified_distribution(data);
+        crate::wasm::to_ts_vec(value)
+    }
+
+    pub fn main_js_minification_score_distribution(&self, data: &PluginDataArray) -> Vec<f32> {
+        let mut scores: Vec<_> = self
+            .iter_data(data)
+            .filter_map(|item| item.repo_data()?.main_js_minification_score)
+            .map(|score| score.clamp(0.0, 1.0))
+            .collect();
+        scores.sort_by(|a, b| b.total_cmp(a));
+        scores
+    }
+
+    /// Return plugin IDs whose estimated target ES version matches `version`.
+    pub fn es_version_plugin_ids(&self, data: &PluginDataArray, version: &str) -> Vec<String> {
+        let mut ids: Vec<String> = self
+            .iter_data(data)
+            .filter_map(|item| {
+                let repo_data = item.repo_data()?;
+                let estimated_version = repo_data.estimated_target_es_version.as_deref()?;
+
+                estimated_version
+                    .eq_ignore_ascii_case(version)
+                    .then(|| item.id())
+            })
+            .collect();
+
+        ids.sort();
+        ids
+    }
+
+    #[wasm_bindgen(js_name = i18n_usage)]
+    pub fn i18n_usage_wasm(
+        &self,
+        data: &PluginDataArray,
+    ) -> Result<Vec<tsify::Ts<NamedDataPoint>>, wasm_bindgen::JsError> {
+        let value = self.i18n_usage(data);
+        crate::wasm::to_ts_vec(value)
+    }
+
+    pub fn i18n_plugin_ids(&self, data: &PluginDataArray) -> Vec<String> {
+        let mut ids = Vec::new();
 
         self.iter_data(data).for_each(|item| {
             let Some(repo_data) = item.repo_data() else {
                 return;
             };
 
-            for package_manager in &repo_data.package_managers {
-                increment_named_data_points(
-                    &mut points.package_managers,
-                    package_manager.get_identifier(),
-                    1.0,
-                );
-            }
-            if repo_data.package_managers.is_empty() {
-                points.no_package_managers += 1.0;
-            }
-
-            for bundler in &repo_data.bundlers {
-                increment_named_data_points(&mut points.bundlers, bundler.get_identifier(), 1.0);
-            }
-            if repo_data.bundlers.is_empty() {
-                points.no_bundlers += 1.0;
-            }
-
-            for testing_framework in &repo_data.testing_frameworks {
-                increment_named_data_points(
-                    &mut points.testing_frameworks,
-                    testing_framework.get_identifier(),
-                    1.0,
-                );
-            }
-            if repo_data.testing_frameworks.is_empty() {
-                points.no_testing_frameworks += 1.0;
-            }
-
-            for dependency in &repo_data.dependencies {
-                increment_named_data_points(&mut points.dependencies, dependency, 1.0);
-            }
-            for dev_dependency in &repo_data.dev_dependencies {
-                increment_named_data_points(&mut points.dependencies, dev_dependency, 1.0);
-            }
-
-            if repo_data.uses_typescript {
-                points.typescript += 1.0;
-            }
-            if repo_data.has_beta_manifest {
-                points.beta_manifest += 1.0;
+            if repo_data.has_i18n_dependencies || repo_data.has_i18n_files {
+                ids.push(item.id());
             }
         });
 
-        let total_plugins = self.indices.len() as f64;
-        points.package_managers.iter_mut().for_each(|point| {
-            to_percentage(&mut point.value, total_plugins);
-        });
-        points.bundlers.iter_mut().for_each(|point| {
-            to_percentage(&mut point.value, total_plugins);
-        });
-        points.testing_frameworks.iter_mut().for_each(|point| {
-            to_percentage(&mut point.value, total_plugins);
-        });
-        points.dependencies.iter_mut().for_each(|point| {
-            to_percentage(&mut point.value, total_plugins);
-        });
-        to_percentage(&mut points.no_package_managers, total_plugins);
-        to_percentage(&mut points.no_bundlers, total_plugins);
-        to_percentage(&mut points.no_testing_frameworks, total_plugins);
-        to_percentage(&mut points.typescript, total_plugins);
-        to_percentage(&mut points.beta_manifest, total_plugins);
-
-        points
+        ids.sort();
+        ids
     }
+}
 
-    /// Named data points for mismatched data between the plugin's repo data and the current entry in the community list.
-    /// The data is in percentage form.
+fn top_release_sizes(view: &PluginDataArrayView, data: &PluginDataArray) -> Vec<(String, u64)> {
+    let mut tmp: Vec<(String, u64)> = view
+        .iter_data(data)
+        .filter_map(|item| {
+            let repo_data = item.repo_data()?;
+            let size = repo_data.latest_release_main_js_size_bytes?;
+
+            if size == 0 {
+                return None;
+            }
+
+            Some((item.id(), size))
+        })
+        .collect();
+
+    tmp.sort_by(|a, b| b.1.cmp(&a.1).then_with(|| a.0.cmp(&b.0)));
+    tmp
+}
+
+fn format_disclosure_id(id: &str) -> String {
+    format_api_label(id.trim_start_matches("disclosure."))
+}
+
+fn format_api_label(value: &str) -> String {
+    value
+        .split(['.', '_'])
+        .filter(|part| !part.is_empty())
+        .map(|part| {
+            let mut chars = part.chars();
+            match chars.next() {
+                Some(first) => first.to_uppercase().collect::<String>() + chars.as_str(),
+                None => String::new(),
+            }
+        })
+        .collect::<Vec<_>>()
+        .join(" ")
+}
+
+impl PluginDataArrayView {
     pub fn mismatched_data(&self, data: &PluginDataArray) -> Vec<NamedDataPoint> {
         let mut points = Vec::new();
         self.iter_data(data).for_each(|item| {
@@ -117,7 +336,6 @@ impl PluginDataArrayView {
         points
     }
 
-    /// Usage percentages of optional manifest fields across all plugins in the view.
     pub fn optional_manifest_fields(&self, data: &PluginDataArray) -> Vec<NamedDataPoint> {
         let mut points = Vec::new();
         self.iter_data(data).for_each(|item| {
@@ -233,77 +451,6 @@ impl PluginDataArrayView {
             .collect()
     }
 
-    pub fn lines_of_code_distribution(&self, data: &PluginDataArray) -> Vec<u32> {
-        let mut tmp: Vec<_> = self
-            .iter_data(data)
-            .map(|item| {
-                let Some(repo_data) = item.repo_data() else {
-                    return 0;
-                };
-
-                repo_data
-                    .lines_of_code
-                    .iter()
-                    .filter(|(lang, _)| !LOC_EXCLUDED.contains(&lang.as_str()))
-                    .map(|(_, loc)| loc)
-                    .sum::<usize>() as u32
-            })
-            .filter(|&count| count > 0)
-            .collect();
-
-        tmp.sort_by(|a, b| b.cmp(a));
-        tmp
-    }
-
-    pub fn file_count_distribution(&self, data: &PluginDataArray) -> Vec<u32> {
-        let mut tmp: Vec<_> = self
-            .iter_data(data)
-            .map(|item| {
-                let Some(repo_data) = item.repo_data() else {
-                    return 0;
-                };
-
-                repo_data
-                    .file_type_counts
-                    .iter()
-                    .filter(|(ext, _)| FILE_EXT_INCLUDED.contains(&ext.to_lowercase().as_str()))
-                    .map(|(_, count)| count)
-                    .sum::<usize>() as u32
-            })
-            .filter(|&count| count > 0)
-            .collect();
-
-        tmp.sort_by(|a, b| b.cmp(a));
-        tmp
-    }
-
-    pub fn release_size_distribution(&self, data: &PluginDataArray) -> Vec<u32> {
-        let mut tmp: Vec<_> = self
-            .iter_data(data)
-            .filter_map(|item| {
-                let repo_data = item.repo_data()?;
-                repo_data
-                    .latest_release_main_js_size_bytes
-                    .map(|size| size.min(u32::MAX as u64) as u32)
-            })
-            .filter(|&size| size > 0)
-            .collect();
-
-        tmp.sort_by(|a, b| b.cmp(a));
-        tmp
-    }
-
-    /// Return plugin IDs sorted by latest release `main.js` size, largest first.
-    pub fn top_release_size_plugin_ids(&self, data: &PluginDataArray, count: usize) -> Vec<String> {
-        top_release_sizes(self, data)
-            .into_iter()
-            .take(count)
-            .map(|(id, _)| id)
-            .collect()
-    }
-
-    /// Return top plugins by latest release `main.js` size.
-    /// The `name` field contains the plugin ID and the `value` field contains bytes.
     pub fn top_release_size_plugins(
         &self,
         data: &PluginDataArray,
@@ -440,34 +587,6 @@ impl PluginDataArrayView {
         points
     }
 
-    pub fn main_js_minification_score_distribution(&self, data: &PluginDataArray) -> Vec<f32> {
-        let mut scores: Vec<_> = self
-            .iter_data(data)
-            .filter_map(|item| item.repo_data()?.main_js_minification_score)
-            .map(|score| score.clamp(0.0, 1.0))
-            .collect();
-        scores.sort_by(|a, b| b.total_cmp(a));
-        scores
-    }
-
-    /// Return plugin IDs whose estimated target ES version matches `version`.
-    pub fn es_version_plugin_ids(&self, data: &PluginDataArray, version: &str) -> Vec<String> {
-        let mut ids: Vec<String> = self
-            .iter_data(data)
-            .filter_map(|item| {
-                let repo_data = item.repo_data()?;
-                let estimated_version = repo_data.estimated_target_es_version.as_deref()?;
-
-                estimated_version
-                    .eq_ignore_ascii_case(version)
-                    .then(|| item.id())
-            })
-            .collect();
-
-        ids.sort();
-        ids
-    }
-
     pub fn i18n_usage(&self, data: &PluginDataArray) -> Vec<NamedDataPoint> {
         let mut data_points = Vec::new();
 
@@ -491,59 +610,80 @@ impl PluginDataArrayView {
 
         data_points
     }
+}
 
-    pub fn i18n_plugin_ids(&self, data: &PluginDataArray) -> Vec<String> {
-        let mut ids = Vec::new();
+impl PluginDataArrayView {
+    pub fn repo_data_points(&self, data: &PluginDataArray) -> PluginRepoDataPoints {
+        let mut points = PluginRepoDataPoints::default();
 
         self.iter_data(data).for_each(|item| {
             let Some(repo_data) = item.repo_data() else {
                 return;
             };
 
-            if repo_data.has_i18n_dependencies || repo_data.has_i18n_files {
-                ids.push(item.id());
+            for package_manager in &repo_data.package_managers {
+                increment_named_data_points(
+                    &mut points.package_managers,
+                    package_manager.get_identifier(),
+                    1.0,
+                );
+            }
+            if repo_data.package_managers.is_empty() {
+                points.no_package_managers += 1.0;
+            }
+
+            for bundler in &repo_data.bundlers {
+                increment_named_data_points(&mut points.bundlers, bundler.get_identifier(), 1.0);
+            }
+            if repo_data.bundlers.is_empty() {
+                points.no_bundlers += 1.0;
+            }
+
+            for testing_framework in &repo_data.testing_frameworks {
+                increment_named_data_points(
+                    &mut points.testing_frameworks,
+                    testing_framework.get_identifier(),
+                    1.0,
+                );
+            }
+            if repo_data.testing_frameworks.is_empty() {
+                points.no_testing_frameworks += 1.0;
+            }
+
+            for dependency in &repo_data.dependencies {
+                increment_named_data_points(&mut points.dependencies, dependency, 1.0);
+            }
+            for dev_dependency in &repo_data.dev_dependencies {
+                increment_named_data_points(&mut points.dependencies, dev_dependency, 1.0);
+            }
+
+            if repo_data.uses_typescript {
+                points.typescript += 1.0;
+            }
+            if repo_data.has_beta_manifest {
+                points.beta_manifest += 1.0;
             }
         });
 
-        ids.sort();
-        ids
+        let total_plugins = self.indices.len() as f64;
+        points.package_managers.iter_mut().for_each(|point| {
+            to_percentage(&mut point.value, total_plugins);
+        });
+        points.bundlers.iter_mut().for_each(|point| {
+            to_percentage(&mut point.value, total_plugins);
+        });
+        points.testing_frameworks.iter_mut().for_each(|point| {
+            to_percentage(&mut point.value, total_plugins);
+        });
+        points.dependencies.iter_mut().for_each(|point| {
+            to_percentage(&mut point.value, total_plugins);
+        });
+        to_percentage(&mut points.no_package_managers, total_plugins);
+        to_percentage(&mut points.no_bundlers, total_plugins);
+        to_percentage(&mut points.no_testing_frameworks, total_plugins);
+        to_percentage(&mut points.typescript, total_plugins);
+        to_percentage(&mut points.beta_manifest, total_plugins);
+
+        points
     }
-}
-
-fn top_release_sizes(view: &PluginDataArrayView, data: &PluginDataArray) -> Vec<(String, u64)> {
-    let mut tmp: Vec<(String, u64)> = view
-        .iter_data(data)
-        .filter_map(|item| {
-            let repo_data = item.repo_data()?;
-            let size = repo_data.latest_release_main_js_size_bytes?;
-
-            if size == 0 {
-                return None;
-            }
-
-            Some((item.id(), size))
-        })
-        .collect();
-
-    tmp.sort_by(|a, b| b.1.cmp(&a.1).then_with(|| a.0.cmp(&b.0)));
-    tmp
-}
-
-fn format_disclosure_id(id: &str) -> String {
-    format_api_label(id.trim_start_matches("disclosure."))
-}
-
-fn format_api_label(value: &str) -> String {
-    value
-        .split(['.', '_'])
-        .filter(|part| !part.is_empty())
-        .map(|part| {
-            let mut chars = part.chars();
-            match chars.next() {
-                Some(first) => first.to_uppercase().collect::<String>() + chars.as_str(),
-                None => String::new(),
-            }
-        })
-        .collect::<Vec<_>>()
-        .join(" ")
 }

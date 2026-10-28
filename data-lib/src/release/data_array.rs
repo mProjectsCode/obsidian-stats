@@ -72,6 +72,116 @@ impl ReleaseDataArray {
 
 #[wasm_bindgen]
 impl ReleaseDataArray {
+    #[wasm_bindgen(js_name = total_downloads_per_version_by_os)]
+    pub fn total_downloads_per_version_by_os_wasm(
+        &self,
+    ) -> Result<Vec<tsify::Ts<StackedNamedDataPoint>>, wasm_bindgen::JsError> {
+        let value = self.total_downloads_per_version_by_os();
+        crate::wasm::to_ts_vec(value)
+    }
+
+    #[wasm_bindgen(js_name = total_downloads_per_version_by_os_as_percentages)]
+    pub fn total_downloads_per_version_by_os_as_percentages_wasm(
+        &self,
+    ) -> Result<Vec<tsify::Ts<StackedNamedDataPoint>>, wasm_bindgen::JsError> {
+        let value = self.total_downloads_per_version_by_os_as_percentages();
+        crate::wasm::to_ts_vec(value)
+    }
+
+    #[wasm_bindgen(js_name = get_asset_type_percentages)]
+    pub fn get_asset_type_percentages_wasm(
+        &self,
+    ) -> Result<Vec<tsify::Ts<StackedNamedDataPoint>>, wasm_bindgen::JsError> {
+        let value = self.get_asset_type_percentages();
+        crate::wasm::to_ts_vec(value)
+    }
+
+    #[wasm_bindgen(js_name = get_asset_instruction_set_percentages)]
+    pub fn get_asset_instruction_set_percentages_wasm(
+        &self,
+    ) -> Result<Vec<tsify::Ts<StackedNamedDataPoint>>, wasm_bindgen::JsError> {
+        let value = self.get_asset_instruction_set_percentages();
+        crate::wasm::to_ts_vec(value)
+    }
+
+    #[wasm_bindgen(js_name = get_asset_size_by_version)]
+    pub fn get_asset_size_by_version_wasm(
+        &self,
+    ) -> Result<Vec<tsify::Ts<StackedNamedDataPoint>>, wasm_bindgen::JsError> {
+        let value = self.get_asset_size_by_version();
+        crate::wasm::to_ts_vec(value)
+    }
+
+    #[wasm_bindgen(js_name = get_changelog_overview)]
+    pub fn get_changelog_overview_wasm(
+        &self,
+    ) -> Result<Vec<tsify::Ts<ChangelogDataPoint>>, wasm_bindgen::JsError> {
+        let value = self.get_changelog_overview();
+        crate::wasm::to_ts_vec(value)
+    }
+
+    #[wasm_bindgen(js_name = get_changelog_changes)]
+    pub fn get_changelog_changes_wasm(
+        &self,
+    ) -> Result<Vec<tsify::Ts<ChangelogChanges>>, wasm_bindgen::JsError> {
+        let value = self.get_changelog_changes();
+        crate::wasm::to_ts_vec(value)
+    }
+
+    #[wasm_bindgen(js_name = get_changelog_changes_as_data_points)]
+    pub fn get_changelog_changes_as_data_points_wasm(
+        &self,
+    ) -> Result<Vec<tsify::Ts<StackedNamedDataPoint>>, wasm_bindgen::JsError> {
+        let value = self.get_changelog_changes_as_data_points();
+        crate::wasm::to_ts_vec(value)
+    }
+
+    #[wasm_bindgen(js_name = get_changelog_changes_for_minor_releases)]
+    pub fn get_changelog_changes_for_minor_releases_wasm(
+        &self,
+    ) -> Result<Vec<tsify::Ts<ChangelogChanges>>, wasm_bindgen::JsError> {
+        let value = self.get_changelog_changes_for_minor_releases();
+        crate::wasm::to_ts_vec(value)
+    }
+
+    #[wasm_bindgen(js_name = get_changelog_categories)]
+    pub fn get_changelog_categories_wasm(
+        &self,
+    ) -> Result<Vec<tsify::Ts<ChangeLogChangeCategory>>, wasm_bindgen::JsError> {
+        let value = self.get_changelog_categories();
+        crate::wasm::to_ts_vec(value)
+    }
+
+    #[wasm_bindgen(js_name = weekly_download_data)]
+    pub fn weekly_download_data_wasm(
+        &self,
+        minor: Version,
+    ) -> Result<Vec<tsify::Ts<MultiDownloadDataPoint>>, wasm_bindgen::JsError> {
+        let value = self.weekly_download_data(minor);
+        crate::wasm::to_ts_vec(value)
+    }
+
+    pub fn get_all_minor_versions(&self) -> Vec<Version> {
+        let mut versions = self
+            .raw_data
+            .iter()
+            .map(|release| release.version.get_minor())
+            .collect::<Vec<_>>();
+
+        versions.sort();
+        versions.dedup();
+        versions
+    }
+}
+
+struct Heading {
+    level: u8,
+    category: ChangeLogChangeCategory,
+    start: usize,
+    end: usize,
+}
+
+impl ReleaseDataArray {
     pub fn total_downloads_per_version_by_os(&self) -> Vec<StackedNamedDataPoint> {
         self.raw_data
             .iter()
@@ -521,23 +631,4 @@ impl ReleaseDataArray {
             })
             .collect()
     }
-
-    pub fn get_all_minor_versions(&self) -> Vec<Version> {
-        let mut versions = self
-            .raw_data
-            .iter()
-            .map(|release| release.version.get_minor())
-            .collect::<Vec<_>>();
-
-        versions.sort();
-        versions.dedup();
-        versions
-    }
-}
-
-struct Heading {
-    level: u8,
-    category: ChangeLogChangeCategory,
-    start: usize,
-    end: usize,
 }

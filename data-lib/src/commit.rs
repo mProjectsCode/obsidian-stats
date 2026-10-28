@@ -43,7 +43,6 @@ impl Commit {
 }
 
 #[derive(Tsify, Debug, Clone, Serialize)]
-#[tsify(into_wasm_abi)]
 pub struct StringCommit {
     pub date: String,
     pub hash: String,

@@ -8,14 +8,12 @@ use crate::{
 };
 
 #[derive(Tsify, Debug, Clone, Serialize)]
-#[tsify(into_wasm_abi)]
 pub enum PluginWarningSeverity {
     CAUTION,
     DANGER,
 }
 
 #[derive(Tsify, Debug, Clone, Serialize)]
-#[tsify(into_wasm_abi)]
 #[serde(tag = "id")]
 pub enum PluginWarning {
     Inactivity12Months(PluginWarningInactivity),
@@ -31,7 +29,6 @@ pub enum PluginWarning {
 }
 
 #[derive(Tsify, Debug, Clone, Serialize)]
-#[tsify(into_wasm_abi)]
 pub struct PluginWarningInactivity {
     pub severity: PluginWarningSeverity,
     pub last_release_date: String,
@@ -39,7 +36,6 @@ pub struct PluginWarningInactivity {
 }
 
 #[derive(Tsify, Debug, Clone, Serialize)]
-#[tsify(into_wasm_abi)]
 pub struct PluginWarningRemoved {
     pub severity: PluginWarningSeverity,
     pub removed_commit: StringCommit,
@@ -47,14 +43,12 @@ pub struct PluginWarningRemoved {
 }
 
 #[derive(Tsify, Debug, Clone, Serialize)]
-#[tsify(into_wasm_abi)]
 pub struct PluginWarningMismatchedManifestData {
     pub severity: PluginWarningSeverity,
     pub data: Vec<PluginWarningMismatchedManifestDataField>,
 }
 
 #[derive(Tsify, Debug, Clone, Serialize)]
-#[tsify(into_wasm_abi)]
 pub struct PluginWarningMismatchedManifestDataField {
     pub field: String,
     pub manifest_value: String,
@@ -62,26 +56,22 @@ pub struct PluginWarningMismatchedManifestDataField {
 }
 
 #[derive(Tsify, Debug, Clone, Serialize)]
-#[tsify(into_wasm_abi)]
 pub struct PluginWarningMissingRequiredManifestFields {
     pub severity: PluginWarningSeverity,
     pub fields: Vec<String>,
 }
 
 #[derive(Tsify, Debug, Clone, Serialize)]
-#[tsify(into_wasm_abi)]
 pub struct PluginWarningUnlicensed {
     pub severity: PluginWarningSeverity,
 }
 
 #[derive(Tsify, Debug, Clone, Serialize)]
-#[tsify(into_wasm_abi)]
 pub struct PluginWarningNoLicense {
     pub severity: PluginWarningSeverity,
 }
 
 #[derive(Tsify, Debug, Clone, Serialize)]
-#[tsify(into_wasm_abi)]
 pub struct PluginWarningMismatchedLicense {
     pub severity: PluginWarningSeverity,
     pub license_file: String,
@@ -89,13 +79,11 @@ pub struct PluginWarningMismatchedLicense {
 }
 
 #[derive(Tsify, Debug, Clone, Serialize)]
-#[tsify(into_wasm_abi)]
 pub struct PluginWarningMissingExtendedData {
     pub severity: PluginWarningSeverity,
 }
 
 #[derive(Tsify, Debug, Clone, Serialize)]
-#[tsify(into_wasm_abi)]
 pub struct PluginWarningMissingRepoData {
     pub severity: PluginWarningSeverity,
 
